@@ -6,6 +6,7 @@
   "scripts": {
     "pretest": "standard index.js lib/* test/*.spec.js",
     "test": "mocha --harmony test/*.spec.js",
+    "prepublish": "npm test",
     "coverage": "istanbul --harmony cover _mocha test"
   },
   "repository": {
