@@ -57,5 +57,27 @@ module.exports.parse = (options) => new Promise((resolve) => {
         comments: comments ? comments.entries : []
       })
     })
-    .on('end', () => resolve(component))
+    .on('end', () => {
+      if (options.ignoreName) {
+        const item = component.header.find((item) =>
+          item.hasOwnProperty('entry') &&
+          item.entry.hasOwnProperty('name'))
+
+        if (item) {
+          item.entry = { name: null }
+        }
+      }
+
+      if (options.ignoreDescription) {
+        const item = component.header.find((item) =>
+          item.hasOwnProperty('entry') &&
+          item.entry.hasOwnProperty('name'))
+
+        if (item && item.hasOwnProperty('comments')) {
+          item.comments = []
+        }
+      }
+
+      return resolve(component)
+    })
 })

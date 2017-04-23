@@ -11,7 +11,7 @@ const options = {
 
 /* global describe it */
 
-describe('Parser', () => {
+describe('options', () => {
   it('should faild to parse with missing options.filename', (done) => {
     parser.parse({})
       .catch((err) => {
@@ -30,9 +30,7 @@ describe('Parser', () => {
     parser.parse(_options)
       .then(() => done())
   })
-})
 
-describe('component.header', () => {
   it('should faild with missing options.filename', (done) => {
     parser.parse({})
       .catch((err) => {
@@ -41,6 +39,44 @@ describe('component.header', () => {
       })
   })
 
+  it('should do not have a title with options.ignoreName', (done) => {
+    const _options = {}
+
+    Object.assign(_options, options)
+
+    _options.ignoreName = true
+
+    parser.parse(_options)
+      .then((component) => {
+        const item = component.header.find((item) =>
+          item.hasOwnProperty('entry') &&
+          item.entry.hasOwnProperty('name'))
+
+        assert.equal(item.entry.name, null)
+        done()
+      })
+  })
+
+  it('should do not have a description with options.ignoreDescription', (done) => {
+    const _options = {}
+
+    Object.assign(_options, options)
+
+    _options.ignoreDescription = true
+
+    parser.parse(_options)
+      .then((component) => {
+        const item = component.header.find((item) =>
+          item.hasOwnProperty('entry') &&
+          item.entry.hasOwnProperty('name'))
+
+        assert.equal(item.comments.length, 0)
+        done()
+      })
+  })
+})
+
+describe('component.header', () => {
   let component = {}
 
   it('should parse without error', (done) => {
