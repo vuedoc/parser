@@ -116,13 +116,13 @@ describe('component.props', () => {
       throw err
     })
 
-  it('should contain an entry.model with comments', () => {
+  it('should contain an entry.v-model with comments', () => {
     const item = component.props.find((item) =>
       item.hasOwnProperty('entry') &&
-      item.entry.hasOwnProperty('model'))
+      item.entry.hasOwnProperty('v-model'))
 
     assert.notEqual(typeof item, 'undefined')
-    assert.deepStrictEqual(item.entry.model, {
+    assert.deepStrictEqual(item.entry['v-model'], {
       type: 'Array', required: true, twoWay: true
     })
 

@@ -17,6 +17,7 @@ export default {
   props: {
     /**
      * The checbox model
+     * @model
      */
     model: {
       type: Array,
@@ -36,6 +37,10 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  
+  data () {
+    return {}
   },
   
   created () {

@@ -46,7 +46,7 @@ This will print this JSON output:
   "props": [
     {
       "entry": {
-        "model": {
+        "v-model": {
           "type": "Array",
           "required": true,
           "twoWay": true
