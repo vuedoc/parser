@@ -9,6 +9,12 @@ Generate a JSON documentation for a Vue file component
 npm install --save @vuedoc/parser
 ```
 
+## Options
+- `filename` (*required*) The filename to parse
+- `encoding` (*optional*) `default: utf8`
+- `ignoreName` (*optional*) `default: false` Set `true` to ignore the component name in the result
+- `ignoreDescription` (*optional*) `default: false` Set `true` to ignore the component description in the result
+
 ## Usage
 ```js
 const vuedoc = require('@vuedoc/parser')
