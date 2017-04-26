@@ -80,7 +80,7 @@ This will print this JSON output:
     {
       "name": "label",
       "comments": [
-        "Use this slot to set the checbox label"
+        "Use this slot to set the checkbox label"
       ]
     }
   ],

@@ -34,24 +34,21 @@ module.exports.parse = (options) => new Promise((resolve) => {
       }
     })
     .on('entry', (entry, comments) => {
-      if (comments) {
-        if (!comments.isPrivate) {
-          return component[currentNode].push({
-            entry,
-            comments: comments.entries
-          })
-        }
-      } else {
-        component[currentNode].push({ entry, comments })
+      if (!comments || comments.entries.length === 0 || comments.isPrivate) {
+        return
       }
-    })
-    .on('slot', (name, description) => {
-      component.slots.push({
-        name,
-        comments: description || []
+
+      component[currentNode].push({
+        entry,
+        comments: comments.entries
       })
     })
+    .on('slot', (slot) => component.slots.push(slot))
     .on('event', (name, comments) => {
+      if (comments.entries.length === 0) {
+        return
+      }
+
       component.events.push({
         name,
         comments: comments ? comments.entries : []

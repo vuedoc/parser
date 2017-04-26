@@ -76,7 +76,7 @@ describe('options', () => {
   })
 })
 
-describe('component.header', () => {
+describe('component', () => {
   let component = {}
 
   it('should parse without error', (done) => {
@@ -128,7 +128,7 @@ describe('component.props', () => {
 
     assert.notEqual(typeof item.comments, 'undefined')
     assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'The checbox model')
+    assert.equal(item.comments[0], 'The checkbox model')
   })
 
   it('should contain an entry.disabled with comments', () => {
@@ -141,7 +141,7 @@ describe('component.props', () => {
 
     assert.notEqual(typeof item.comments, 'undefined')
     assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Initial checbox state')
+    assert.equal(item.comments[0], 'Initial checkbox state')
   })
 
   it('should contain an entry.checked with default value and comments', () => {
@@ -155,7 +155,7 @@ describe('component.props', () => {
 
     assert.notEqual(typeof item.comments, 'undefined')
     assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Initial checbox value')
+    assert.equal(item.comments[0], 'Initial checkbox value')
   })
 })
 
@@ -173,20 +173,23 @@ describe('component.slots', () => {
       item.hasOwnProperty('name') && item.name === 'default')
 
     assert.notEqual(typeof item, 'undefined')
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 0)
+    assert.equal(item.description, 'Default slot')
   })
 
-  it('should contain a nammed slot', () => {
+  it('should contain a named slot', () => {
     const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name !== 'default')
+      item.hasOwnProperty('name') && item.name === 'label')
 
     assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.name, 'label')
+    assert.equal(item.description, 'Use this slot to set the checkbox label')
+  })
 
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Use this slot to set the checbox label')
+  it('should contain a named slot with multiline description', () => {
+    const item = component.slots.find((item) =>
+      item.hasOwnProperty('name') && item.name === 'multiline')
+
+    assert.notEqual(typeof item, 'undefined')
+    assert.equal(item.description, 'This\n    is multiline description')
   })
 })
 
@@ -199,7 +202,7 @@ describe('component.events', () => {
       throw err
     })
 
-  it('should contain event', () => {
+  it('should contain event with literal name', () => {
     const item = component.events.find((item) =>
       item.hasOwnProperty('name'))
 
@@ -220,7 +223,7 @@ describe('component.methods', () => {
       throw err
     })
 
-  it('should contain event', () => {
+  it('should contain a method', () => {
     const item = component.methods.find((item) =>
       item.hasOwnProperty('entry'))
 
@@ -228,6 +231,6 @@ describe('component.methods', () => {
     assert.equal(item.entry.check.type, 'FunctionExpression')
     assert.notEqual(typeof item.comments, 'undefined')
     assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Check the checbox')
+    assert.equal(item.comments[0], 'Check the checkbox')
   })
 })
