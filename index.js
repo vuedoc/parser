@@ -17,64 +17,24 @@ module.exports.parse = (options) => new Promise((resolve) => {
   const source = compiler.parseComponent(
     fs.readFileSync(options.filename, options.encoding))
 
+  options.source = options.source || source.script.content
+  options.template = options.template || source.template.content
+
   const component = {
-    header: [],
+    name: null,
+    description: null,
+    props: [],
+    methods: [],
     events: [],
     slots: []
   }
 
-  let currentNode = null
-
-  new Parser(source.script.content, source.template.content, options).walk()
-    .on('node', (node) => {
-      currentNode = node === '$root' ? 'header' : node
-
-      if (!component[currentNode]) {
-        component[currentNode] = []
-      }
-    })
-    .on('entry', (entry, comments) => {
-      if (!comments || comments.entries.length === 0 || comments.isPrivate) {
-        return
-      }
-
-      component[currentNode].push({
-        entry,
-        comments: comments.entries
-      })
-    })
+  new Parser(options).walk()
+    .on('name', (name) => (component.name = name))
+    .on('description', (desc) => (component.description = desc))
+    .on('props', (prop) => component.props.push(prop))
+    .on('methods', (method) => component.methods.push(method))
     .on('slot', (slot) => component.slots.push(slot))
-    .on('event', (name, comments) => {
-      if (comments.entries.length === 0) {
-        return
-      }
-
-      component.events.push({
-        name,
-        comments: comments ? comments.entries : []
-      })
-    })
-    .on('end', () => {
-      if (options.ignoreName) {
-        const item = component.header.find((item) =>
-          item.hasOwnProperty('entry') &&
-          item.entry.hasOwnProperty('name'))
-
-        if (item) {
-          item.entry = { name: null }
-        }
-      }
-
-      if (options.ignoreDescription) {
-        const item = component.header.find((item) =>
-          item.hasOwnProperty('entry') &&
-          item.entry.hasOwnProperty('name'))
-
-        if (item && item.hasOwnProperty('comments')) {
-          item.comments = []
-        }
-      }
-
-      return resolve(component)
-    })
+    .on('event', (event) => component.events.push(event))
+    .on('end', () => resolve(component))
 })

@@ -29,48 +29,13 @@ describe('options', () => {
 
     parser.parse(_options)
       .then(() => done())
+      .catch(done)
   })
 
   it('should faild with missing options.filename', (done) => {
     parser.parse({})
       .catch((err) => {
         assert.ok(/required/.test(err.message))
-        done()
-      })
-  })
-
-  it('should do not have a title with options.ignoreName', (done) => {
-    const _options = {}
-
-    Object.assign(_options, options)
-
-    _options.ignoreName = true
-
-    parser.parse(_options)
-      .then((component) => {
-        const item = component.header.find((item) =>
-          item.hasOwnProperty('entry') &&
-          item.entry.hasOwnProperty('name'))
-
-        assert.equal(item.entry.name, null)
-        done()
-      })
-  })
-
-  it('should do not have a description with options.ignoreDescription', (done) => {
-    const _options = {}
-
-    Object.assign(_options, options)
-
-    _options.ignoreDescription = true
-
-    parser.parse(_options)
-      .then((component) => {
-        const item = component.header.find((item) =>
-          item.hasOwnProperty('entry') &&
-          item.entry.hasOwnProperty('name'))
-
-        assert.equal(item.comments.length, 0)
         done()
       })
   })
@@ -85,26 +50,14 @@ describe('component', () => {
         component = _component
         done()
       })
-      .catch((err) => done(err))
+      .catch(done)
   })
 
-  it('should contain an entry.name', () => {
-    const item = component.header.find((item) =>
-      item.hasOwnProperty('entry') &&
-      item.entry.hasOwnProperty('name'))
+  it('should have a name', () =>
+    assert.equal(component.name, 'checkbox'))
 
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.entry.name, 'checkbox')
-  })
-
-  it('should contain an entry.comments', () => {
-    const item = component.header.find(
-      (item) => item.hasOwnProperty('comments'))
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'A simple checkbox component')
-  })
+  it('should have a description', () =>
+    assert.equal(component.description, 'A simple checkbox component'))
 })
 
 describe('component.props', () => {
@@ -116,19 +69,16 @@ describe('component.props', () => {
       throw err
     })
 
-  it('should contain an entry.v-model with comments', () => {
+  it('should contain an entry.v-model with a description', () => {
     const item = component.props.find((item) =>
       item.hasOwnProperty('entry') &&
       item.entry.hasOwnProperty('v-model'))
 
     assert.notEqual(typeof item, 'undefined')
-    assert.deepStrictEqual(item.entry['v-model'], {
-      type: 'Array', required: true, twoWay: true
-    })
-
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'The checkbox model')
+    assert.equal(item.entry['v-model'].type, 'Array')
+    assert.equal(item.entry['v-model'].required, true)
+    assert.equal(item.entry['v-model'].twoWay, true)
+    assert.equal(item.description, 'The checkbox model')
   })
 
   it('should contain an entry.disabled with comments', () => {
@@ -138,10 +88,7 @@ describe('component.props', () => {
 
     assert.notEqual(typeof item, 'undefined')
     assert.equal(item.entry.disabled, 'Boolean')
-
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Initial checkbox state')
+    assert.equal(item.description, 'Initial checkbox state')
   })
 
   it('should contain an entry.checked with default value and comments', () => {
@@ -152,10 +99,7 @@ describe('component.props', () => {
     assert.notEqual(typeof item, 'undefined')
     assert.equal(item.entry.checked.type, 'Boolean')
     assert.equal(item.entry.checked.default, true)
-
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Initial checkbox value')
+    assert.equal(item.description, 'Initial checkbox value')
   })
 })
 
@@ -191,6 +135,14 @@ describe('component.slots', () => {
     assert.notEqual(typeof item, 'undefined')
     assert.equal(item.description, 'This\n    is multiline description')
   })
+
+  it('should contain a named slot without description', () => {
+    const item = component.slots.find(
+      (item) => item.name === 'undescribed')
+
+    assert.notEqual(typeof item, 'undefined')
+    assert.equal(item.description, null)
+  })
 })
 
 describe('component.events', () => {
@@ -198,19 +150,38 @@ describe('component.events', () => {
 
   parser.parse(options)
     .then((_component) => (component = _component))
-    .catch((err) => {
-      throw err
-    })
+    .catch((err) => { throw err })
 
   it('should contain event with literal name', () => {
     const item = component.events.find((item) =>
-      item.hasOwnProperty('name'))
+      item.name === 'loaded')
 
     assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.name, 'loaded')
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Emit when the component has been loaded')
+    assert.equal(item.description, 'Emit when the component has been loaded')
+  })
+
+  it('should contain event with identifier name', () => {
+    const item = component.events.find((item) =>
+      item.name === 'check')
+
+    assert.notEqual(typeof item, 'undefined')
+    assert.equal(item.description, 'Event with identifier name')
+  })
+
+  it('should contain event with renamed identifier name', () => {
+    const item = component.events.find((item) =>
+      item.name === 'renamed')
+
+    assert.notEqual(typeof item, 'undefined')
+    assert.equal(item.description, 'Event with renamed identifier name')
+  })
+
+  it('should contain event with recursive identifier name', () => {
+    const item = component.events.find((item) =>
+      item.name === 'recursive')
+
+    assert.notEqual(typeof item, 'undefined')
+    assert.equal(item.description, 'Event with recursive identifier name')
   })
 })
 
@@ -224,13 +195,17 @@ describe('component.methods', () => {
     })
 
   it('should contain a method', () => {
-    const item = component.methods.find((item) =>
-      item.hasOwnProperty('entry'))
+    const item = component.methods.find(
+      (item) => item.name === 'check')
 
     assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.entry.check.type, 'FunctionExpression')
-    assert.notEqual(typeof item.comments, 'undefined')
-    assert.equal(item.comments.length, 1)
-    assert.equal(item.comments[0], 'Check the checkbox')
+    assert.equal(item.description, 'Check the checkbox')
+  })
+
+  it('should contain a private method', () => {
+    const item = component.methods.find(
+      (item) => item.visibility === 'private')
+
+    assert.notEqual(typeof item, 'undefined')
   })
 })

@@ -10,6 +10,7 @@
       is multiline description
     -->
     <slot name="multiline">Unamed checkbox</slot>
+    <slot name="undescribed"></slot>
   </label>
 </template>
 
@@ -36,7 +37,7 @@ export default {
      * Initial checkbox state
      */
     disabled: Boolean,
-    
+
     /**
      * Initial checkbox value
      */
@@ -45,27 +46,81 @@ export default {
       default: true
     }
   },
-  
+
   data () {
     return {}
   },
-  
+
   created () {
     /**
      * Emit when the component has been loaded
      */
     this.$emit('loaded')
   },
-  
+
   methods: {
+    /**
+     * @private
+     */
+    privateMethod () {
+      console.log('check')
+
+      const name = 'check'
+      const value = 'event value'
+
+      if (name) {
+        console.log('>', name)
+      }
+
+      /**
+       * Event with identifier name
+       */
+      this.$emit(name, value)
+    },
+
     /**
      * Check the checkbox
      */
     check () {
       console.log('check')
+
+      let eventName = 'check'
+      const value = 'event value'
+
+      if (eventName) {
+        console.log('>', eventName)
+      }
+
+      eventName = 'renamed'
+
+      /**
+       * Event with renamed identifier name
+       */
+      this.$emit(eventName, value)
+    },
+
+    /**
+     * @protected
+     */
+    recursiveIdentifierValue () {
+      console.log('check')
+
+      let recursiveValue = 'recursive'
+      const value = 'event value'
+
+      if (eventName) {
+        console.log('>', eventName)
+      }
+
+      eventName = recursiveValue
+
+      /**
+       * Event with recursive identifier name
+       */
+      this.$emit(eventName, value)
     }
   }
-};
+}
 </script>
 
 <style lang="css" scoped>
