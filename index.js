@@ -6,6 +6,7 @@ const fs = require('fs')
 const Parser = require('./lib/parser')
 
 const DEFAULT_ENCODING = 'utf8'
+const DEFAULT_IGNORED_VISIBILITIES = ['protected', 'private']
 
 module.exports.parse = (options) => new Promise((resolve) => {
   if (!options || !options.filename) {
@@ -19,6 +20,11 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
   options.source = options.source || source.script.content
   options.template = options.template || source.template.content
+  options.ignoredVisibilities = options.ignoredVisibilities || DEFAULT_IGNORED_VISIBILITIES
+
+  const filterIgnoredVisibilities = (item) => {
+    return options.ignoredVisibilities.indexOf(item.visibility) === -1
+  }
 
   const component = {
     name: null,
@@ -36,5 +42,11 @@ module.exports.parse = (options) => new Promise((resolve) => {
     .on('methods', (method) => component.methods.push(method))
     .on('slot', (slot) => component.slots.push(slot))
     .on('event', (event) => component.events.push(event))
-    .on('end', () => resolve(component))
+    .on('end', () => {
+      component.props = component.props.filter(filterIgnoredVisibilities)
+      component.methods = component.methods.filter(filterIgnoredVisibilities)
+      component.events = component.events.filter(filterIgnoredVisibilities)
+
+      resolve(component)
+    })
 })

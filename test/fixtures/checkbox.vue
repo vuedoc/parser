@@ -44,6 +44,12 @@ export default {
     checked: {
       type: Boolean,
       default: true
+    },
+
+    // Prop with camel name
+    propWithCamel: {
+      type: Object,
+      default: () => ({ name: 'X'})
     }
   },
 
@@ -118,7 +124,9 @@ export default {
        * Event with recursive identifier name
        */
       this.$emit(eventName, value)
-    }
+    },
+
+    uncommentedMethod () {}
   }
 }
 </script>
