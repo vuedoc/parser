@@ -1,26 +1,34 @@
 'use strict'
 
-const compiler = require('vue-template-compiler')
 const fs = require('fs')
 
 const Parser = require('./lib/parser')
+const cheerio = require('cheerio')
 
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = ['protected', 'private']
 
-module.exports.parse = (options) => new Promise((resolve) => {
+const parseOptions = function (options) {
   if (!options || !options.filename) {
     throw new Error('options.filename is required')
   }
 
   options.encoding = options.encoding || DEFAULT_ENCODING
-
-  const source = compiler.parseComponent(
-    fs.readFileSync(options.filename, options.encoding))
-
-  options.source = options.source || source.script.content
-  options.template = options.template || source.template.content
   options.ignoredVisibilities = options.ignoredVisibilities || DEFAULT_IGNORED_VISIBILITIES
+}
+
+module.exports.parse = (options) => new Promise((resolve) => {
+  parseOptions(options)
+
+  if (!options.source) {
+    const source = fs.readFileSync(options.filename, options.encoding)
+    const $ = cheerio.load(source)
+
+    options.source = {
+      template: $('template').html(),
+      script: $('script').html()
+    }
+  }
 
   const filterIgnoredVisibilities = (item) => {
     return options.ignoredVisibilities.indexOf(item.visibility) === -1

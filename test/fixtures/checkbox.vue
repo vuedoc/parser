@@ -11,6 +11,7 @@
     -->
     <slot name="multiline">Unamed checkbox</slot>
     <slot name="undescribed"></slot>
+    <template></template>
   </label>
 </template>
 
@@ -132,4 +133,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+label {
+  font-size: .9em
+}
 </style>
