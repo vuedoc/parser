@@ -12,10 +12,16 @@ const options = {
   ignoredVisibilities: []
 }
 
+const optionsForModuleExports = {
+  filename: f('checkboxModuleExports.vue'),
+  encoding: 'utf8',
+  ignoredVisibilities: []
+}
+
 /* global describe it */
 
 describe('options', () => {
-  it('should faild to parse with missing options.filename', (done) => {
+  it('should fail to parse with missing options.filename', (done) => {
     parser.parse({})
       .catch((err) => {
         assert.ok(/required/.test(err.message))
@@ -35,7 +41,7 @@ describe('options', () => {
       .catch(done)
   })
 
-  it('should faild with missing options.filename', (done) => {
+  it('should fail with missing options.filename', (done) => {
     parser.parse({})
       .catch((err) => {
         assert.ok(/required/.test(err.message))
@@ -44,11 +50,15 @@ describe('options', () => {
   })
 })
 
-describe('component', () => {
+describe('component', () => testComponent(options))
+
+describe('component_module.exports', () => testComponent(optionsForModuleExports))
+
+function testComponent(optionsToParse) {
   let component = {}
 
   it('should parse without error', (done) => {
-    parser.parse(options)
+    parser.parse(optionsToParse)
       .then((_component) => {
         component = _component
         done()
@@ -70,12 +80,16 @@ describe('component', () => {
 
   it('should have a description', () =>
     assert.equal(component.description, 'A simple checkbox component'))
-})
+}
 
-describe('component.props', () => {
+describe('component.props', () => testComponentProps(options))
+
+describe('component.props_module.exports', () => testComponentProps(optionsForModuleExports))
+
+function testComponentProps(optionsToParse) {
   let component = {}
 
-  parser.parse(options)
+  parser.parse(optionsToParse)
     .then((_component) => (component = _component))
     .catch((err) => { throw err })
 
@@ -114,9 +128,13 @@ describe('component.props', () => {
     assert.equal(item.value.default.type, 'ArrowFunctionExpression')
     assert.equal(item.description, 'Prop with camel name')
   })
-})
+}
 
-describe('component.slots', () => {
+describe('component.slots', () => testComponentSlots(options))
+
+describe('component.slots_module.exports', () => testComponentSlots(optionsForModuleExports))
+
+function testComponentSlots(optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -154,9 +172,13 @@ describe('component.slots', () => {
     assert.notEqual(typeof item, 'undefined')
     assert.equal(item.description, null)
   })
-})
+}
 
-describe('component.events', () => {
+describe('component.events', () => testComponentEvents(options))
+
+describe('component.events_module.exports', () => testComponentEvents(optionsForModuleExports))
+
+function testComponentEvents(optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -190,9 +212,13 @@ describe('component.events', () => {
     assert.notEqual(typeof item, 'undefined')
     assert.equal(item.description, 'Event with recursive identifier name')
   })
-})
+}
 
-describe('component.methods', () => {
+describe('component.methods', () => testComponentMethods(options))
+
+describe('component.methods_module.exports', () => testComponentMethods(optionsForModuleExports))
+
+function testComponentMethods(optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -229,4 +255,4 @@ describe('component.methods', () => {
 
     assert.notEqual(typeof item, 'undefined')
   })
-})
+}
