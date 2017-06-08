@@ -3,6 +3,7 @@
 const parser = require('..')
 const assert = require('assert')
 const path = require('path')
+const fs = require('fs')
 
 const f = (filename) => path.join(__dirname, 'fixtures/' + filename)
 
@@ -15,6 +16,11 @@ const options = {
 const optionsForModuleExports = {
   filename: f('checkboxModuleExports.vue'),
   encoding: 'utf8',
+  ignoredVisibilities: []
+}
+
+const optionsWithFileSource = {
+  filecontent: fs.readFileSync(f('checkbox.vue'), 'utf8'),
   ignoredVisibilities: []
 }
 
@@ -54,6 +60,8 @@ describe('component', () => testComponent(options))
 
 describe('component_module.exports', () => testComponent(optionsForModuleExports))
 
+describe('component_filesource', () => testComponent(optionsWithFileSource))
+
 function testComponent(optionsToParse) {
   let component = {}
 
@@ -69,7 +77,7 @@ function testComponent(optionsToParse) {
   it('should have a name', () =>
     assert.equal(component.name, 'checkbox'))
 
-  it('should guest the component name using the filename', (done) => {
+  it('should guess the component name using the filename', (done) => {
     parser.parse({ filename: f('UnNamedInput.vue') })
       .then((component) => {
         assert.equal(component.name, 'un-named-input')
@@ -85,6 +93,8 @@ function testComponent(optionsToParse) {
 describe('component.props', () => testComponentProps(options))
 
 describe('component.props_module.exports', () => testComponentProps(optionsForModuleExports))
+
+describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
 
 function testComponentProps(optionsToParse) {
   let component = {}
@@ -134,6 +144,8 @@ describe('component.slots', () => testComponentSlots(options))
 
 describe('component.slots_module.exports', () => testComponentSlots(optionsForModuleExports))
 
+describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
+
 function testComponentSlots(optionsToParse) {
   let component = {}
 
@@ -178,6 +190,8 @@ describe('component.events', () => testComponentEvents(options))
 
 describe('component.events_module.exports', () => testComponentEvents(optionsForModuleExports))
 
+describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
+
 function testComponentEvents(optionsToParse) {
   let component = {}
 
@@ -217,6 +231,8 @@ function testComponentEvents(optionsToParse) {
 describe('component.methods', () => testComponentMethods(options))
 
 describe('component.methods_module.exports', () => testComponentMethods(optionsForModuleExports))
+
+describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
 
 function testComponentMethods(optionsToParse) {
   let component = {}
