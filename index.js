@@ -9,8 +9,8 @@ const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = ['protected', 'private']
 
 const parseOptions = function (options) {
-  if (!options || !options.filename) {
-    throw new Error('options.filename is required')
+  if (!options || (!options.filename && !options.filecontent)) {
+    throw new Error('One of options.filename or options.filecontent is required')
   }
 
   options.encoding = options.encoding || DEFAULT_ENCODING
@@ -21,12 +21,11 @@ module.exports.parse = (options) => new Promise((resolve) => {
   parseOptions(options)
 
   if (!options.source) {
-    const source = fs.readFileSync(options.filename, options.encoding)
-    const $ = cheerio.load(source)
-
-    options.source = {
-      template: $('template').html(),
-      script: $('script').html()
+    if (options.filename) {
+      options.source = loadSourceFromFileContent(
+        fs.readFileSync(options.filename, options.encoding))
+    } else {
+      options.source = loadSourceFromFileContent(options.filecontent)
     }
   }
 
@@ -58,3 +57,11 @@ module.exports.parse = (options) => new Promise((resolve) => {
       resolve(component)
     })
 })
+
+function loadSourceFromFileContent(filecontent) {
+  const $ = cheerio.load(filecontent)
+  return {
+        template: $('template').html(),
+        script: $('script').html()
+      }
+}
