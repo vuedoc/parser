@@ -19,6 +19,12 @@ const optionsForModuleExports = {
   ignoredVisibilities: []
 }
 
+const optionsNoTopLevelConstant = {
+  filename: f('checkboxNoTopLevelConstant.vue'),
+  encoding: 'utf8',
+  ignoredVisibilities: []
+}
+
 const optionsWithFileSource = {
   filecontent: fs.readFileSync(f('checkbox.vue'), 'utf8'),
   ignoredVisibilities: []
@@ -59,6 +65,8 @@ describe('options', () => {
 describe('component', () => testComponent(options))
 
 describe('component_module.exports', () => testComponent(optionsForModuleExports))
+
+describe('component_no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
 
 describe('component_filesource', () => testComponent(optionsWithFileSource))
 
