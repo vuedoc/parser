@@ -58,10 +58,10 @@ module.exports.parse = (options) => new Promise((resolve) => {
     })
 })
 
-function loadSourceFromFileContent(filecontent) {
+function loadSourceFromFileContent (filecontent) {
   const $ = cheerio.load(filecontent)
   return {
-        template: $('template').html(),
-        script: $('script').html()
-      }
+    template: $('template').html(),
+    script: $('script').html()
+  }
 }
