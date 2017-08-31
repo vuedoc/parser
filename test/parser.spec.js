@@ -280,3 +280,66 @@ function testComponentMethods (optionsToParse) {
     assert.notEqual(typeof item, 'undefined')
   })
 }
+
+describe('component.methods_visibility_default', () => {
+  let component = {}
+
+  parser.parse({
+    filename: f('checkboxMethods.vue'),
+    encoding: 'utf8'
+  })
+    .then((_component) => (component = _component))
+    .catch((err) => {
+      throw err
+    })
+
+  it('public method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'publicMethod')
+    assert.equal(item.visibility, 'public')
+  })
+
+  it('uncommented method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'uncommentedMethod')
+    assert.equal(item.visibility, 'public')
+  })
+
+  it('default method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'defaultMethod')
+    assert.equal(item.visibility, 'public')
+  })
+})
+
+describe('component.methods_visibility_private', () => {
+  let component = {}
+
+  parser.parse({
+    filename: f('checkboxMethods.vue'),
+    encoding: 'utf8',
+    methodsDefaultPrivate: true
+  })
+    .then((_component) => (component = _component))
+    .catch((err) => {
+      throw err
+    })
+
+  it('public method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'publicMethod')
+    assert.equal(item.visibility, 'public')
+  })
+
+  it('uncommented method should not exist', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'uncommentedMethod')
+    assert.equal(item, undefined)
+  })
+
+  it('default method should not exist', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'defaultMethod')
+    assert.equal(item, undefined)
+  })
+})
