@@ -70,7 +70,7 @@ describe('component_no-top-level-constant', () => testComponent(optionsNoTopLeve
 
 describe('component_filesource', () => testComponent(optionsWithFileSource))
 
-function testComponent(optionsToParse) {
+function testComponent (optionsToParse) {
   let component = {}
 
   it('should parse without error', (done) => {
@@ -104,7 +104,7 @@ describe('component.props_module.exports', () => testComponentProps(optionsForMo
 
 describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
 
-function testComponentProps(optionsToParse) {
+function testComponentProps (optionsToParse) {
   let component = {}
 
   parser.parse(optionsToParse)
@@ -154,7 +154,7 @@ describe('component.slots_module.exports', () => testComponentSlots(optionsForMo
 
 describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
 
-function testComponentSlots(optionsToParse) {
+function testComponentSlots (optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -200,7 +200,7 @@ describe('component.events_module.exports', () => testComponentEvents(optionsFor
 
 describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
 
-function testComponentEvents(optionsToParse) {
+function testComponentEvents (optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -242,7 +242,7 @@ describe('component.methods_module.exports', () => testComponentMethods(optionsF
 
 describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
 
-function testComponentMethods(optionsToParse) {
+function testComponentMethods (optionsToParse) {
   let component = {}
 
   parser.parse(options)
