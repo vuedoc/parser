@@ -70,7 +70,7 @@ describe('component_no-top-level-constant', () => testComponent(optionsNoTopLeve
 
 describe('component_filesource', () => testComponent(optionsWithFileSource))
 
-function testComponent(optionsToParse) {
+function testComponent (optionsToParse) {
   let component = {}
 
   it('should parse without error', (done) => {
@@ -104,7 +104,7 @@ describe('component.props_module.exports', () => testComponentProps(optionsForMo
 
 describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
 
-function testComponentProps(optionsToParse) {
+function testComponentProps (optionsToParse) {
   let component = {}
 
   parser.parse(optionsToParse)
@@ -154,7 +154,7 @@ describe('component.slots_module.exports', () => testComponentSlots(optionsForMo
 
 describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
 
-function testComponentSlots(optionsToParse) {
+function testComponentSlots (optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -200,7 +200,7 @@ describe('component.events_module.exports', () => testComponentEvents(optionsFor
 
 describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
 
-function testComponentEvents(optionsToParse) {
+function testComponentEvents (optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -242,7 +242,7 @@ describe('component.methods_module.exports', () => testComponentMethods(optionsF
 
 describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
 
-function testComponentMethods(optionsToParse) {
+function testComponentMethods (optionsToParse) {
   let component = {}
 
   parser.parse(options)
@@ -280,3 +280,66 @@ function testComponentMethods(optionsToParse) {
     assert.notEqual(typeof item, 'undefined')
   })
 }
+
+describe('component.methods_visibility_default', () => {
+  let component = {}
+
+  parser.parse({
+    filename: f('checkboxMethods.vue'),
+    encoding: 'utf8'
+  })
+    .then((_component) => (component = _component))
+    .catch((err) => {
+      throw err
+    })
+
+  it('public method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'publicMethod')
+    assert.equal(item.visibility, 'public')
+  })
+
+  it('uncommented method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'uncommentedMethod')
+    assert.equal(item.visibility, 'public')
+  })
+
+  it('default method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'defaultMethod')
+    assert.equal(item.visibility, 'public')
+  })
+})
+
+describe('component.methods_visibility_private', () => {
+  let component = {}
+
+  parser.parse({
+    filename: f('checkboxMethods.vue'),
+    encoding: 'utf8',
+    methodsDefaultPrivate: true
+  })
+    .then((_component) => (component = _component))
+    .catch((err) => {
+      throw err
+    })
+
+  it('public method should be public', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'publicMethod')
+    assert.equal(item.visibility, 'public')
+  })
+
+  it('uncommented method should not exist', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'uncommentedMethod')
+    assert.equal(item, undefined)
+  })
+
+  it('default method should not exist', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'defaultMethod')
+    assert.equal(item, undefined)
+  })
+})

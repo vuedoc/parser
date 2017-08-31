@@ -10,10 +10,12 @@ npm install --save @vuedoc/parser
 ```
 
 ## Options
-- `filename` (*required*) The filename to parse
+- `filename` (*required* unless `filecontent` is passed) The filename to parse
+- `filecontent` (*required* unless `filename` is passed) The string to parse
 - `encoding` (*optional*) `default: utf8`
 - `ignoreName` (*optional*) `default: false` Set `true` to ignore the component name in the result
 - `ignoreDescription` (*optional*) `default: false` Set `true` to ignore the component description in the result
+- `methodsDefaultPrivate` (*optional*) `default: false` Set `true` to treat methods as `@private` unless otherwise specified
 
 ## Usage
 ```js
