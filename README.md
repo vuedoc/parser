@@ -15,7 +15,7 @@ npm install --save @vuedoc/parser
 - `encoding` (*optional*) `default: utf8`
 - `ignoreName` (*optional*) `default: false` Set `true` to ignore the component name in the result
 - `ignoreDescription` (*optional*) `default: false` Set `true` to ignore the component description in the result
-- `methodsDefaultPrivate` (*optional*) `default: false` Set `true` to treat methods as `@private` unless otherwise specified
+- `defaultMethodVisibility` (*optional*) `default: DEFAULT_VISIBILITY`. Can be set to `private`, `public`, or `protected` to override global `DEFAULT_VISIBILITY` for component methods.
 
 ## Usage
 ```js
