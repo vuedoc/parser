@@ -318,7 +318,7 @@ describe('component.methods_visibility_private', () => {
   parser.parse({
     filename: f('checkboxMethods.vue'),
     encoding: 'utf8',
-    methodsDefaultPrivate: true
+    defaultMethodVisibility: 'private'
   })
     .then((_component) => (component = _component))
     .catch((err) => {
