@@ -3,7 +3,7 @@ node_js:
   - '4'
 script:
   - npm install
-  - npm test
+  - npm run coveralls
   - npm config set scope vuedoc --global
   - npm config set access public
 deploy:

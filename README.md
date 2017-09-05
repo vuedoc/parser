@@ -2,7 +2,7 @@
 Generate a JSON documentation for a Vue file component
 
 [![Build Status](https://travis-ci.org/vuedoc/parser.svg?branch=master)](https://travis-ci.org/vuedoc/parser)
-[![bitHound Dependencies](https://www.bithound.io/github/vuedoc/parser/badges/dependencies.svg)](https://www.bithound.io/github/vuedoc/parser/master/dependencies/npm)
+[![bitHound Dependencies](https://www.bithound.io/github/vuedoc/parser/badges/dependencies.svg)](https://www.bithound.io/github/vuedoc/parser/master/dependencies/npm) [![Coverage Status](https://coveralls.io/repos/github/vuedoc/parser/badge.svg?branch=master)](https://coveralls.io/github/vuedoc/parser?branch=master)
 
 ## Install
 ```sh
