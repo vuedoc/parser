@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
@@ -30,13 +30,13 @@
   "homepage": "https://github.com/vuedoc/parser#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "espree": "^3.5.0",
+    "espree": "^3.5.1",
     "htmlparser2": "^3.9.2"
   },
   "devDependencies": {
     "coveralls": "^2.13.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.5.0",
+    "mocha": "^3.5.3",
     "standard": "^10.0.3"
   },
   "engines": {
