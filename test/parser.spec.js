@@ -71,6 +71,91 @@ describe('component_no-top-level-constant', () => testComponent(optionsNoTopLeve
 
 describe('component_filesource', () => testComponent(optionsWithFileSource))
 
+describe('parseComment', () => {
+  const comment = `
+     /**
+      * The generic component
+      * Sub description
+      * 
+      * 
+      * @public
+      * @alpnum azert0 123456789
+      * @generic Keyword generic description
+      * @multiline Keyword multiline
+      *            description
+      * @special-char {$[ç(àë£€%µù!,|\`_\\<>/_ç^?;.:/!§)]}
+      * @punctuations !,?;.:!
+      * @operators -/+<>=*%
+      * 
+      * @slot inputs - Use this slot to define form inputs controls
+      * @slot actions - Use this slot to define form action buttons controls
+      * @slot footer - Use this slot to define form footer content.
+      */`
+  const result = libparser.parseComment(comment)
+  const keywords = result.keywords
+
+  it('should successfully extract the public visibility keyword', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'public')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, '')
+  })
+
+  it('should successfully extract keyword with alpnum chars in description', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'alpnum')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, 'azert0 123456789')
+  })
+
+  it('should successfully extract generic keyword with description', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'generic')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, 'Keyword generic description')
+  })
+
+  it('should successfully extract keyword with multiline description', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'multiline')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, 'Keyword multiline description')
+  })
+
+  it('should successfully extract keyword with special chars in description', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'special-char')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, '{$[ç(àë£€%µù!,|`_\\<>/_ç^?;.:/!§)]}')
+  })
+
+  it('should successfully extract keyword with punctuations chars in description', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'punctuations')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, '!,?;.:!')
+  })
+
+  it('should successfully extract keyword with operators chars in description', () => {
+    const keyword = keywords.find((keyword) => keyword.name === 'operators')
+
+    assert.ok(keyword)
+    assert.equal(keyword.description, '-/+<>=*%')
+  })
+
+  it('should successfully extract grouped keywords', () => {
+    const group = keywords.filter((keyword) => keyword.name === 'slot')
+
+    assert.equal(group.length, 3)
+  })
+
+  it('should successfully both description and keywords', () => {
+    console.log(result)
+    assert.equal(result.description, 'The generic component Sub description')
+    assert.equal(result.keywords.length, 10)
+  })
+})
+
 function testComponent (optionsToParse) {
   let component = {}
 
@@ -115,7 +200,7 @@ function testComponentProps (optionsToParse) {
   it('should contain a v-model prop with a description', () => {
     const item = component.props.find((item) => item.name === 'v-model')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.value.type, 'Array')
     assert.equal(item.value.required, true)
     assert.equal(item.value.twoWay, true)
@@ -125,7 +210,7 @@ function testComponentProps (optionsToParse) {
   it('should contain a disabled prop with comments', () => {
     const item = component.props.find((item) => item.name === 'disabled')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.value, 'Boolean')
     assert.equal(item.description, 'Initial checkbox state')
   })
@@ -133,7 +218,7 @@ function testComponentProps (optionsToParse) {
   it('should contain a checked prop with default value and comments', () => {
     const item = component.props.find((item) => item.name === 'checked')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.value.type, 'Boolean')
     assert.equal(item.value.default, true)
     assert.equal(item.description, 'Initial checkbox value')
@@ -142,7 +227,7 @@ function testComponentProps (optionsToParse) {
   it('should contain a checked prop with camel name', () => {
     const item = component.props.find((item) => item.name === 'prop-with-camel')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.value.type, 'Object')
     assert.equal(item.value.default.type, 'ArrowFunctionExpression')
     assert.equal(item.description, 'Prop with camel name')
@@ -166,7 +251,7 @@ function testComponentSlots (optionsToParse) {
     const item = component.slots.find((item) =>
       item.hasOwnProperty('name') && item.name === 'default')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Default slot')
   })
 
@@ -174,7 +259,7 @@ function testComponentSlots (optionsToParse) {
     const item = component.slots.find((item) =>
       item.hasOwnProperty('name') && item.name === 'label')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Use this slot to set the checkbox label')
   })
 
@@ -182,7 +267,7 @@ function testComponentSlots (optionsToParse) {
     const item = component.slots.find((item) =>
       item.hasOwnProperty('name') && item.name === 'multiline')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'This\n      is multiline description')
   })
 
@@ -190,7 +275,7 @@ function testComponentSlots (optionsToParse) {
     const item = component.slots.find(
       (item) => item.name === 'undescribed')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, null)
   })
 }
@@ -211,28 +296,28 @@ function testComponentEvents (optionsToParse) {
   it('should contain event with literal name', () => {
     const item = component.events.find((item) => item.name === 'loaded')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Emit when the component has been loaded')
   })
 
   it('should contain event with identifier name', () => {
     const item = component.events.find((item) => item.name === 'check')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Event with identifier name')
   })
 
   it('should contain event with renamed identifier name', () => {
     const item = component.events.find((item) => item.name === 'renamed')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Event with renamed identifier name')
   })
 
   it('should contain event with recursive identifier name', () => {
     const item = component.events.find((item) => item.name === 'recursive')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Event with recursive identifier name')
   })
 }
@@ -256,7 +341,7 @@ function testComponentMethods (optionsToParse) {
     const item = component.methods.find(
       (item) => item.name === 'check')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
     assert.equal(item.description, 'Check the checkbox')
   })
 
@@ -264,21 +349,21 @@ function testComponentMethods (optionsToParse) {
     const item = component.methods.find(
       (item) => item.visibility === 'protected')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
   })
 
   it('should contain a private method', () => {
     const item = component.methods.find(
       (item) => item.visibility === 'private')
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
   })
 
   it('should contain un uncommented method', () => {
     const item = component.methods.find(
       (item) => item.description === null)
 
-    assert.notEqual(typeof item, 'undefined')
+    assert.notEqual(item, void 0)
   })
 }
 
@@ -342,77 +427,5 @@ describe('component.methods_visibility_private', () => {
     const item = component.methods.find(
       (item) => item.name === 'defaultMethod')
     assert.equal(item, undefined)
-  })
-})
-
-describe('extract keywords', () => {
-  const comments = `
-     /**
-      * The ID props
-      * 
-      * @public
-      * @alpnum azert0 123456789
-      * @generic Keyword generic description
-      * @multiline Keyword multiline
-      *            description
-      * @special-char {$[ç(àë£€%µù!,|\`_\\<>/_ç^?;.:/!§)]}
-      * @punctuations !,?;.:!
-      * @operators -/+<>=*%
-      */`
-
-  it('should successfully extract the public visibility keyword', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'public')
-
-    assert.ok(item)
-    assert.equal(item.description, '')
-  })
-
-  it('should successfully extract keyword with alpnum chars in description', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'alpnum')
-
-    assert.ok(item)
-    assert.equal(item.description, 'azert0 123456789')
-  })
-
-  it('should successfully extract generic keyword with description', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'generic')
-
-    assert.ok(item)
-    assert.equal(item.description, 'Keyword generic description')
-  })
-
-  it('should successfully extract keyword with multiline description', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'multiline')
-
-    assert.ok(item)
-    assert.equal(item.description, 'Keyword multiline description')
-  })
-
-  it('should successfully extract keyword with special chars in description', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'special-char')
-
-    assert.ok(item)
-    assert.equal(item.description, '{$[ç(àë£€%µù!,|`_\\<>/_ç^?;.:/!§)]}')
-  })
-
-  it('should successfully extract keyword with punctuations chars in description', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'punctuations')
-
-    assert.ok(item)
-    assert.equal(item.description, '!,?;.:!')
-  })
-
-  it('should successfully extract keyword with operators chars in description', () => {
-    const keywords = libparser.extractKeywords(comments)
-    const item = keywords.find((item) => item.keyword === 'operators')
-
-    assert.ok(item)
-    assert.equal(item.description, '-/+<>=*%')
   })
 })
