@@ -1,5 +1,6 @@
 'use strict'
 
+const libparser = require('../lib/parser')
 const parser = require('..')
 const assert = require('assert')
 const path = require('path')
@@ -341,5 +342,77 @@ describe('component.methods_visibility_private', () => {
     const item = component.methods.find(
       (item) => item.name === 'defaultMethod')
     assert.equal(item, undefined)
+  })
+})
+
+describe('extract keywords', () => {
+  const comments = `
+     /**
+      * The ID props
+      * 
+      * @public
+      * @alpnum azert0 123456789
+      * @generic Keyword generic description
+      * @multiline Keyword multiline
+      *            description
+      * @special-char {$[ç(àë£€%µù!,|\`_\<>/_ç^?;.:/!§)]}
+      * @punctuations !,?;.:!
+      * @operators -/+<>=*%
+      */`
+
+  it('should successfully extract the public visibility keyword', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'public')
+
+    assert.ok(item)
+    assert.equal(item.description, '')
+  })
+
+  it('should successfully extract keyword with alpnum chars in description', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'alpnum')
+
+    assert.ok(item)
+    assert.equal(item.description, 'azert0 123456789')
+  })
+
+  it('should successfully extract generic keyword with description', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'generic')
+
+    assert.ok(item)
+    assert.equal(item.description, 'Keyword generic description')
+  })
+
+  it('should successfully extract keyword with multiline description', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'multiline')
+
+    assert.ok(item)
+    assert.equal(item.description, 'Keyword multiline description')
+  })
+
+  it('should successfully extract keyword with special chars in description', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'special-char')
+
+    assert.ok(item)
+    assert.equal(item.description, '{$[ç(àë£€%µù!,|`_\<>/_ç^?;.:/!§)]}')
+  })
+
+  it('should successfully extract keyword with punctuations chars in description', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'punctuations')
+
+    assert.ok(item)
+    assert.equal(item.description, '!,?;.:!')
+  })
+
+  it('should successfully extract keyword with operators chars in description', () => {
+    const keywords = libparser.extractKeywords(comments)
+    const item = keywords.find((item) => item.keyword === 'operators')
+
+    assert.ok(item)
+    assert.equal(item.description, '-/+<>=*%')
   })
 })
