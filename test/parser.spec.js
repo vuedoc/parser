@@ -355,7 +355,7 @@ describe('extract keywords', () => {
       * @generic Keyword generic description
       * @multiline Keyword multiline
       *            description
-      * @special-char {$[ç(àë£€%µù!,|\`_\<>/_ç^?;.:/!§)]}
+      * @special-char {$[ç(àë£€%µù!,|\`_\\<>/_ç^?;.:/!§)]}
       * @punctuations !,?;.:!
       * @operators -/+<>=*%
       */`
@@ -397,7 +397,7 @@ describe('extract keywords', () => {
     const item = keywords.find((item) => item.keyword === 'special-char')
 
     assert.ok(item)
-    assert.equal(item.description, '{$[ç(àë£€%µù!,|`_\<>/_ç^?;.:/!§)]}')
+    assert.equal(item.description, '{$[ç(àë£€%µù!,|`_\\<>/_ç^?;.:/!§)]}')
   })
 
   it('should successfully extract keyword with punctuations chars in description', () => {
