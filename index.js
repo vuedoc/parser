@@ -36,6 +36,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
   const component = {
     name: null,
     description: null,
+    keywords: [],
     props: [],
     methods: [],
     events: [],
@@ -45,6 +46,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
   new Parser(options).walk()
     .on('name', (name) => (component.name = name))
     .on('description', (desc) => (component.description = desc))
+    .on('keywords', (keywords) => (component.keywords = keywords))
     .on('props', (prop) => component.props.push(prop))
     .on('methods', (method) => component.methods.push(method))
     .on('slot', (slot) => component.slots.push(slot))

@@ -1,6 +1,5 @@
 'use strict'
 
-const libparser = require('../lib/parser')
 const parser = require('..')
 const assert = require('assert')
 const path = require('path')
@@ -70,91 +69,6 @@ describe('component_module.exports', () => testComponent(optionsForModuleExports
 describe('component_no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
 
 describe('component_filesource', () => testComponent(optionsWithFileSource))
-
-describe('parseComment', () => {
-  const comment = `
-     /**
-      * The generic component
-      * Sub description
-      * 
-      * 
-      * @public
-      * @alpnum azert0 123456789
-      * @generic Keyword generic description
-      * @multiline Keyword multiline
-      *            description
-      * @special-char {$[ç(àë£€%µù!,|\`_\\<>/_ç^?;.:/!§)]}
-      * @punctuations !,?;.:!
-      * @operators -/+<>=*%
-      * 
-      * @slot inputs - Use this slot to define form inputs controls
-      * @slot actions - Use this slot to define form action buttons controls
-      * @slot footer - Use this slot to define form footer content.
-      */`
-  const result = libparser.parseComment(comment)
-  const keywords = result.keywords
-
-  it('should successfully extract the public visibility keyword', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'public')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, '')
-  })
-
-  it('should successfully extract keyword with alpnum chars in description', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'alpnum')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, 'azert0 123456789')
-  })
-
-  it('should successfully extract generic keyword with description', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'generic')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, 'Keyword generic description')
-  })
-
-  it('should successfully extract keyword with multiline description', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'multiline')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, 'Keyword multiline description')
-  })
-
-  it('should successfully extract keyword with special chars in description', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'special-char')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, '{$[ç(àë£€%µù!,|`_\\<>/_ç^?;.:/!§)]}')
-  })
-
-  it('should successfully extract keyword with punctuations chars in description', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'punctuations')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, '!,?;.:!')
-  })
-
-  it('should successfully extract keyword with operators chars in description', () => {
-    const keyword = keywords.find((keyword) => keyword.name === 'operators')
-
-    assert.ok(keyword)
-    assert.equal(keyword.description, '-/+<>=*%')
-  })
-
-  it('should successfully extract grouped keywords', () => {
-    const group = keywords.filter((keyword) => keyword.name === 'slot')
-
-    assert.equal(group.length, 3)
-  })
-
-  it('should successfully both description and keywords', () => {
-    console.log(result)
-    assert.equal(result.description, 'The generic component Sub description')
-    assert.equal(result.keywords.length, 10)
-  })
-})
 
 function testComponent (optionsToParse) {
   let component = {}
