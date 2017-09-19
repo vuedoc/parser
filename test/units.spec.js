@@ -352,4 +352,21 @@ describe('UnitTests', () => {
       assert.deepEqual(results, expected)
     })
   })
+
+  describe('unCamelcase(text)', () => {
+    it('should succeed with CamelCase entry', () => {
+      const entry = 'InputCheckbox'
+      const result = lib.unCamelcase(entry)
+      const expected = 'input-checkbox'
+
+      assert.equal(result, expected)
+    })
+
+    it('should succeed with a non CamelCase entry', () => {
+      const entry = 'input-checkbox'
+      const result = lib.unCamelcase(entry)
+
+      assert.equal(result, entry)
+    })
+  })
 })
