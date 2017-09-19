@@ -369,4 +369,18 @@ describe('UnitTests', () => {
       assert.equal(result, entry)
     })
   })
+
+  describe('parseOptions(options)', () => {
+    it('should failed with missing options.source', () => {
+      const options = {}
+
+      assert.throws(() => lib.parseOptions(options), /options.source is required/)
+    })
+
+    it('should successfully parse options', () => {
+      const options = { source: {} }
+
+      assert.doesNotThrow(() => lib.parseOptions(options))
+    })
+  })
 })
