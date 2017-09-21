@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepublish": "npm test",
-    "pretestX": "npm run lint",
+    "pretest": "npm run lint",
     "test": "mocha --harmony test/index.js",
     "lint": "standard index.js lib/* test/*",
     "coverage": "istanbul --harmony cover _mocha test/index.js",
