@@ -27,7 +27,7 @@ const comment = `
    * @model
    */`
 
-describe('UnitTests', () => {
+describe('libutils', () => {
   describe('getVisibility(keywords, defaultVisibility)', () => {
     it('should successfully return keyword visibility', () => {
       const visibility = 'protected'
