@@ -1,6 +1,6 @@
 'use strict'
 
-const lib = require('../lib/parser')
+const utils = require('../lib/utils')
 const assert = require('assert')
 
 /* global describe it */
@@ -33,7 +33,7 @@ describe('UnitTests', () => {
       const visibility = 'protected'
       const keywords = [{ name: visibility }]
       const expected = visibility
-      const result = lib.getVisibility(keywords)
+      const result = utils.getVisibility(keywords)
 
       assert.equal(result, expected)
     })
@@ -42,14 +42,14 @@ describe('UnitTests', () => {
       const visibility = 'protected'
       const keywords = []
       const expected = visibility
-      const result = lib.getVisibility(keywords, visibility)
+      const result = utils.getVisibility(keywords, visibility)
 
       assert.equal(result, expected)
     })
   })
 
   describe('parseComment(text, defaultVisibility)', () => {
-    const result = lib.parseComment(comment)
+    const result = utils.parseComment(comment)
     const keywords = result.keywords
 
     it('should successfully extract the public visibility keyword', () => {
@@ -121,11 +121,11 @@ describe('UnitTests', () => {
     it('should succeed with an empty property', () => {
       const property = {}
       const expected = {
-        visibility: lib.DEFAULT_VISIBILITY,
+        visibility: utils.DEFAULT_VISIBILITY,
         description: null,
         keywords: []
       }
-      const result = lib.getComment(property)
+      const result = utils.getComment(property)
 
       assert.deepEqual(result, expected)
     })
@@ -147,7 +147,7 @@ describe('UnitTests', () => {
         keywords: [],
         describeModel: false
       }
-      const result = lib.getComment(property, visibility)
+      const result = utils.getComment(property, visibility)
 
       assert.deepEqual(result, expected)
     })
@@ -168,7 +168,7 @@ describe('UnitTests', () => {
         keywords: [{ name: 'private', description: '' }],
         describeModel: false
       }
-      const result = lib.getComment(property)
+      const result = utils.getComment(property)
 
       assert.deepEqual(result, expected)
     })
@@ -188,7 +188,7 @@ describe('UnitTests', () => {
           }
         }
         const expected = { [property.key.value]: property.value }
-        const result = lib.value(property)
+        const result = utils.value(property)
 
         assert.deepEqual(result, expected)
       })
@@ -205,7 +205,7 @@ describe('UnitTests', () => {
           }
         }
         const expected = { [property.key.name]: property.value.value }
-        const result = lib.value(property)
+        const result = utils.value(property)
 
         assert.deepEqual(result, expected)
       })
@@ -222,7 +222,7 @@ describe('UnitTests', () => {
           }
         }
         const expected = { [property.key.name]: property.value.name }
-        const result = lib.value(property)
+        const result = utils.value(property)
 
         assert.deepEqual(result, expected)
       })
@@ -239,8 +239,8 @@ describe('UnitTests', () => {
             properties: []
           }
         }
-        const expected = { [property.key.name]: lib.values(property) }
-        const result = lib.value(property)
+        const expected = { [property.key.name]: utils.values(property) }
+        const result = utils.value(property)
 
         assert.deepEqual(result, expected)
       })
@@ -256,8 +256,8 @@ describe('UnitTests', () => {
             value: 'val-value'
           }
         }
-        const expected = { [property.key.name]: new lib.NodeFunction(property.value) }
-        const result = lib.value(property)
+        const expected = { [property.key.name]: new utils.NodeFunction(property.value) }
+        const result = utils.value(property)
 
         assert.deepEqual(result, expected)
       })
@@ -273,8 +273,8 @@ describe('UnitTests', () => {
             value: 'val-value'
           }
         }
-        const expected = { [property.key.name]: new lib.NodeFunction(property.value) }
-        const result = lib.value(property)
+        const expected = { [property.key.name]: new utils.NodeFunction(property.value) }
+        const result = utils.value(property)
 
         assert.deepEqual(result, expected)
       })
@@ -284,7 +284,7 @@ describe('UnitTests', () => {
   describe('values(entry)', () => {
     it('should successfully return the entry values', () => {
       const entry = require('./fixtures/entry-value')
-      const values = lib.values(entry)
+      const values = utils.values(entry)
       const expected = { type: 'Array', required: true, twoWay: true }
 
       assert.deepEqual(values, expected)
@@ -292,7 +292,7 @@ describe('UnitTests', () => {
 
     it('should successfully return the entry values with ObjectExpression', () => {
       const entry = require('./fixtures/entry-value-object-expression')
-      const values = lib.values(entry)
+      const values = utils.values(entry)
       const expected = { twoWay: { twoWay: { required: true } } }
 
       assert.deepEqual(values, expected)
@@ -305,40 +305,40 @@ describe('UnitTests', () => {
 
     it('should successfully return tokens in range interval', () => {
       const range = [213, 230]
-      const results = lib.tokensInterval(tokens, range)
+      const results = utils.tokensInterval(tokens, range)
       const expected = [{
-        "type": "Property",
-        "start": 214,
-        "end": 228,
-        "range": [
+        'type': 'Property',
+        'start': 214,
+        'end': 228,
+        'range': [
           214,
           228
         ],
-        "method": false,
-        "shorthand": false,
-        "computed": false,
-        "key": {
-          "type": "Identifier",
-          "start": 214,
-          "end": 222,
-          "range": [
+        'method': false,
+        'shorthand': false,
+        'computed': false,
+        'key': {
+          'type': 'Identifier',
+          'start': 214,
+          'end': 222,
+          'range': [
             214,
             222
           ],
-          "name": "required"
+          'name': 'required'
         },
-        "value": {
-          "type": "Literal",
-          "start": 224,
-          "end": 228,
-          "range": [
+        'value': {
+          'type': 'Literal',
+          'start': 224,
+          'end': 228,
+          'range': [
             224,
             228
           ],
-          "value": true,
-          "raw": "true"
+          'value': true,
+          'raw': 'true'
         },
-        "kind": "init"
+        'kind': 'init'
       }]
 
       assert.deepEqual(results, expected)
@@ -346,17 +346,50 @@ describe('UnitTests', () => {
 
     it('should successfully found 0 tokens', () => {
       const range = [0, 100]
-      const results = lib.tokensInterval(tokens, range)
+      const results = utils.tokensInterval(tokens, range)
       const expected = []
 
       assert.deepEqual(results, expected)
     })
   })
 
+  describe('getIdentifierValue(tokens, identifierName, rangeLimit)', () => {
+    const tokens = require('./fixtures/getIdentifierValue-tokens')
+
+    it('should succeed to found identifier value', () => {
+      const identifierName = 'name'
+      const rangeLimit = 989
+      const result = utils.getIdentifierValue(tokens, identifierName, rangeLimit)
+      const expected = 'check'
+
+      assert.equal(result, expected)
+    })
+
+    it('should succeed to found recursive identifier value', () => {
+      const tokens = require('./fixtures/getIdentifierValue-tokens-recursive')
+      const identifierName = 'eventName'
+      const rangeLimit = 1719
+      const result = utils.getIdentifierValue(tokens, identifierName, rangeLimit)
+      const expected = 'recursive'
+
+      assert.equal(result, expected)
+    })
+
+    it('should failed to found recursive identifier value', () => {
+      const tokens = require('./fixtures/getIdentifierValue-tokens')
+      const identifierName = 'recursive'
+      const rangeLimit = 1719
+      const result = utils.getIdentifierValue(tokens, identifierName, rangeLimit)
+      const expected = null
+
+      assert.equal(result, expected)
+    })
+  })
+
   describe('unCamelcase(text)', () => {
     it('should succeed with CamelCase entry', () => {
       const entry = 'InputCheckbox'
-      const result = lib.unCamelcase(entry)
+      const result = utils.unCamelcase(entry)
       const expected = 'input-checkbox'
 
       assert.equal(result, expected)
@@ -364,7 +397,7 @@ describe('UnitTests', () => {
 
     it('should succeed with a non CamelCase entry', () => {
       const entry = 'input-checkbox'
-      const result = lib.unCamelcase(entry)
+      const result = utils.unCamelcase(entry)
 
       assert.equal(result, entry)
     })
@@ -374,13 +407,13 @@ describe('UnitTests', () => {
     it('should failed with missing options.source', () => {
       const options = {}
 
-      assert.throws(() => lib.parseOptions(options), /options.source is required/)
+      assert.throws(() => utils.parseOptions(options), /options.source is required/)
     })
 
     it('should successfully parse options', () => {
       const options = { source: {} }
 
-      assert.doesNotThrow(() => lib.parseOptions(options))
+      assert.doesNotThrow(() => utils.parseOptions(options))
     })
   })
 })
