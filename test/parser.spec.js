@@ -118,7 +118,9 @@ describe('Parser', () => {
           done()
         })
       })
+    })
 
+    describe('parseComponentName()', () => {
       it('should successfully emit component name with only template', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'private'
@@ -140,10 +142,8 @@ describe('Parser', () => {
           done()
         })
       })
-    })
 
-    describe('extractProperties(property)', () => {
-      it('should successfully emit component name', (done) => {
+      it('should successfully emit component name with explicit name', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'private'
         const script = `
@@ -163,7 +163,9 @@ describe('Parser', () => {
           done()
         })
       })
+    })
 
+    describe('extractProperties(property)', () => {
       it('should successfully emit generic prop', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
@@ -275,6 +277,105 @@ describe('Parser', () => {
             end: 79,
             range: [76,79]
           }])
+          done()
+        })
+      })
+
+      it('should emit nothing', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: 'desc-v'
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('end', () => done())
+      })
+    })
+
+    describe('subWalk(entry)', () => {
+      it('should emit event without description', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, null)
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should emit event with description', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              /**
+               * loading event
+               *
+               * @protected
+               */
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'protected')
+          assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+          done()
+        })
+      })
+
+      it('should emit event with description', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              const name = 'loading'
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'private')
+          assert.deepEqual(event.keywords, [])
           done()
         })
       })
