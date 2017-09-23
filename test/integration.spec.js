@@ -85,6 +85,10 @@ function testComponent (optionsToParse) {
   it('should have a name', () =>
     assert.equal(component.name, 'checkbox'))
 
+  it('should have keywords', () => {
+    assert.deepEqual(component.keywords, [ { name: 'author', description: 'Sébastien' } ])
+  })
+
   it('should guess the component name using the filename', (done) => {
     parser.parse({ filename: f('UnNamedInput.vue') })
       .then((component) => {
