@@ -18,6 +18,8 @@ npm install --save @vuedoc/parser
 - `defaultMethodVisibility` (*optional*) `default: 'public'`. Can be set to `'public'`, `'protected'`, or `'private'`.
 
 ## Usage
+See [test/fixtures/checkbox.vue](https://github.com/vuedoc/parser/blob/master/test/fixtures/checkbox.vue) for an Vue Component decoration example.
+
 ```js
 const vuedoc = require('@vuedoc/parser')
 const options = {
@@ -42,6 +44,11 @@ This will print this JSON output:
       // The component description
       "comments": [
         "A simple checkbox component"
+      ],
+      
+      // Attached keywords
+      keywords: [
+        { name: "author", "description": "Sébastien" }
       ]
     }
   ],
