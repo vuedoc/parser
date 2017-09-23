@@ -376,10 +376,48 @@ describe('libutils', () => {
     })
 
     it('should failed to found recursive identifier value', () => {
-      const tokens = require('./fixtures/getIdentifierValue-tokens')
+      const tokens = require('./fixtures/getIdentifierValue-tokens-notfound')
       const identifierName = 'recursive'
       const rangeLimit = 1719
       const result = utils.getIdentifierValue(tokens, identifierName, rangeLimit)
+      const expected = { notFoundIdentifier: 'recursive' }
+
+      assert.deepEqual(result, expected)
+    })
+  })
+
+  describe('getIdentifierValueFromStart(tokens, identifierName, rangeLimit)', () => {
+    const tokens = require('./fixtures/getIdentifierValueFromStart-tokens')
+
+    it('should succeed to found identifier value', () => {
+      const identifierName = 'ppname'
+      const result = utils.getIdentifierValueFromStart(tokens, identifierName)
+      const expected = 'loading'
+
+      assert.equal(result, expected)
+    })
+
+    it('should succeed to found identifier value with export default', () => {
+      const tokens = require('./fixtures/getIdentifierValueFromStart-tokens-export-default')
+      const identifierName = 'ppname'
+      const result = utils.getIdentifierValueFromStart(tokens, identifierName)
+      const expected = 'loading'
+
+      assert.equal(result, expected)
+    })
+
+    it('should succeed to found identifier value with recursive identifier', () => {
+      const tokens = require('./fixtures/getIdentifierValueFromStart-tokens-recursive')
+      const identifierName = 'ppname'
+      const result = utils.getIdentifierValueFromStart(tokens, identifierName)
+      const expected = 'loading'
+
+      assert.equal(result, expected)
+    })
+
+    it('should failed to found identifier value', () => {
+      const identifierName = 'notfound'
+      const result = utils.getIdentifierValueFromStart(tokens, identifierName)
       const expected = null
 
       assert.equal(result, expected)

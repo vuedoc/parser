@@ -436,10 +436,103 @@ describe('Parser', () => {
         parser.walk().on('event', (event) => {
           assert.equal(event.name, 'loading')
           assert.equal(event.description, 'loading event')
-          assert.equal(event.visibility, 'private')
+          assert.equal(event.visibility, 'public')
           assert.deepEqual(event.keywords, [])
           done()
         })
+      })
+
+      it('should failed to found identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              const pname = ppname
+              const name = pname
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, '****unhandled-event-name****')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should skip already sent event', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            loading: () => {
+              this.$emit('loading')
+            },
+            loading2: () => {
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+
+        const parser = new Parser(options)
+        let eventCount = 0
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'loading')
+            assert.equal(event.description, undefined)
+            assert.equal(event.visibility, 'public')
+            assert.deepEqual(event.keywords, [])
+
+            eventCount++
+          })
+          .on('end', () => {
+            assert.equal(eventCount, 1)
+
+            done()
+          })
+      })
+
+      it('should skip malformated event emission', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            loading2: () => {
+              this.$emit
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+
+        const parser = new Parser(options)
+        let eventCount = 0
+
+        parser.walk()
+          .on('event', () => {
+            eventCount++
+          })
+          .on('end', () => {
+            assert.equal(eventCount, 0)
+
+            done()
+          })
       })
     })
   })
