@@ -20,6 +20,8 @@ const dynamic2 = 'dynamicMode'
 
 /**
  * A simple checkbox component
+ * 
+ * @author Sébastien
  */
 module.exports = {
   name: 'checkbox',

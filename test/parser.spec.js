@@ -1,345 +1,665 @@
 'use strict'
 
-const parser = require('..')
+const Parser = require('../lib/parser')
 const assert = require('assert')
-const path = require('path')
-const fs = require('fs')
-
-const f = (filename) => path.join(__dirname, 'fixtures/' + filename)
-
-const options = {
-  filename: f('checkbox.vue'),
-  encoding: 'utf8',
-  ignoredVisibilities: []
-}
-
-const optionsForModuleExports = {
-  filename: f('checkboxModuleExports.vue'),
-  encoding: 'utf8',
-  ignoredVisibilities: []
-}
-
-const optionsNoTopLevelConstant = {
-  filename: f('checkboxNoTopLevelConstant.vue'),
-  encoding: 'utf8',
-  ignoredVisibilities: []
-}
-
-const optionsWithFileSource = {
-  filecontent: fs.readFileSync(f('checkbox.vue'), 'utf8'),
-  ignoredVisibilities: []
-}
 
 /* global describe it */
 
-describe('options', () => {
-  it('should fail to parse with missing options.filename', (done) => {
-    parser.parse({})
-      .catch((err) => {
-        assert.ok(/required/.test(err.message))
-        done()
-      })
-  })
+const template = `
+  <div>
+    <input />
+    <slot/>
+  </div>
+`
 
-  it('should parse with default options.encoding', (done) => {
-    const _options = {}
+const script = `
+  /**
+   * The generic component
+   * Sub description
+   * 
+   * 
+   * @public
+   * @alpnum azert0 123456789
+   * @generic Keyword generic description
+   * @multiline Keyword multiline
+   *            description
+   * @special-char {$[ç(àë£€%µù!,|\`_\\<>/_ç^?;.:/!§)]}
+   * @punctuations !,?;.:!
+   * @operators -/+<>=*%
+   * 
+   * @slot inputs - Use this slot to define form inputs ontrols
+   * @slot actions - Use this slot to define form action buttons controls
+   * @slot footer - Use this slot to define form footer content.
+   *
+   * @model
+   */
+  export default {}
+  `
 
-    Object.assign(_options, options)
+describe('Parser', () => {
+  describe('constructor(options)', () => {
+    it('should successfully create new object', () => {
+      const filename = './fixtures/checkbox.vue'
+      const defaultMethodVisibility = 'public'
+      const options = {
+        source: { script, template },
+        filename,
+        defaultMethodVisibility
+      }
+      const parser = new Parser(options)
 
-    delete _options.encoding
-
-    parser.parse(_options)
-      .then(() => done())
-      .catch(done)
-  })
-
-  it('should fail with missing options.filename', (done) => {
-    parser.parse({})
-      .catch((err) => {
-        assert.ok(/required/.test(err.message))
-        done()
-      })
-  })
-})
-
-describe('component', () => testComponent(options))
-
-describe('component_module.exports', () => testComponent(optionsForModuleExports))
-
-describe('component_no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
-
-describe('component_filesource', () => testComponent(optionsWithFileSource))
-
-function testComponent (optionsToParse) {
-  let component = {}
-
-  it('should parse without error', (done) => {
-    parser.parse(optionsToParse)
-      .then((_component) => {
-        component = _component
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should have a name', () =>
-    assert.equal(component.name, 'checkbox'))
-
-  it('should guess the component name using the filename', (done) => {
-    parser.parse({ filename: f('UnNamedInput.vue') })
-      .then((component) => {
-        assert.equal(component.name, 'un-named-input')
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should have a description', () =>
-    assert.equal(component.description, 'A simple checkbox component'))
-}
-
-describe('component.props', () => testComponentProps(options))
-
-describe('component.props_module.exports', () => testComponentProps(optionsForModuleExports))
-
-describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
-
-function testComponentProps (optionsToParse) {
-  let component = {}
-
-  parser.parse(optionsToParse)
-    .then((_component) => (component = _component))
-    .catch((err) => { throw err })
-
-  it('should contain a v-model prop with a description', () => {
-    const item = component.props.find((item) => item.name === 'v-model')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.value.type, 'Array')
-    assert.equal(item.value.required, true)
-    assert.equal(item.value.twoWay, true)
-    assert.equal(item.description, 'The checkbox model')
-  })
-
-  it('should contain a disabled prop with comments', () => {
-    const item = component.props.find((item) => item.name === 'disabled')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.value, 'Boolean')
-    assert.equal(item.description, 'Initial checkbox state')
-  })
-
-  it('should contain a checked prop with default value and comments', () => {
-    const item = component.props.find((item) => item.name === 'checked')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.value.type, 'Boolean')
-    assert.equal(item.value.default, true)
-    assert.equal(item.description, 'Initial checkbox value')
-  })
-
-  it('should contain a checked prop with camel name', () => {
-    const item = component.props.find((item) => item.name === 'prop-with-camel')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.value.type, 'Object')
-    assert.equal(item.value.default.type, 'ArrowFunctionExpression')
-    assert.equal(item.description, 'Prop with camel name')
-  })
-}
-
-describe('component.slots', () => testComponentSlots(options))
-
-describe('component.slots_module.exports', () => testComponentSlots(optionsForModuleExports))
-
-describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
-
-function testComponentSlots (optionsToParse) {
-  let component = {}
-
-  parser.parse(options)
-    .then((_component) => (component = _component))
-    .catch((err) => { throw err })
-
-  it('should contain a default slot', () => {
-    const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name === 'default')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Default slot')
-  })
-
-  it('should contain a named slot', () => {
-    const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name === 'label')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Use this slot to set the checkbox label')
-  })
-
-  it('should contain a named slot with multiline description', () => {
-    const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name === 'multiline')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'This\n      is multiline description')
-  })
-
-  it('should contain a named slot without description', () => {
-    const item = component.slots.find(
-      (item) => item.name === 'undescribed')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, null)
-  })
-}
-
-describe('component.events', () => testComponentEvents(options))
-
-describe('component.events_module.exports', () => testComponentEvents(optionsForModuleExports))
-
-describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
-
-function testComponentEvents (optionsToParse) {
-  let component = {}
-
-  parser.parse(options)
-    .then((_component) => (component = _component))
-    .catch((err) => { throw err })
-
-  it('should contain event with literal name', () => {
-    const item = component.events.find((item) => item.name === 'loaded')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Emit when the component has been loaded')
-  })
-
-  it('should contain event with identifier name', () => {
-    const item = component.events.find((item) => item.name === 'check')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Event with identifier name')
-  })
-
-  it('should contain event with renamed identifier name', () => {
-    const item = component.events.find((item) => item.name === 'renamed')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Event with renamed identifier name')
-  })
-
-  it('should contain event with recursive identifier name', () => {
-    const item = component.events.find((item) => item.name === 'recursive')
-
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Event with recursive identifier name')
-  })
-}
-
-describe('component.methods', () => testComponentMethods(options))
-
-describe('component.methods_module.exports', () => testComponentMethods(optionsForModuleExports))
-
-describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
-
-function testComponentMethods (optionsToParse) {
-  let component = {}
-
-  parser.parse(options)
-    .then((_component) => (component = _component))
-    .catch((err) => {
-      throw err
+      assert.notEqual(parser.ast, null)
+      assert.equal(parser.template, template)
+      assert.equal(parser.filename, filename)
+      assert.equal(parser.defaultMethodVisibility, defaultMethodVisibility)
     })
 
-  it('should contain a method', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'check')
+    it('should successfully create new object with missing script', () => {
+      const options = {
+        source: { template }
+      }
+      const parser = new Parser(options)
 
-    assert.notEqual(typeof item, 'undefined')
-    assert.equal(item.description, 'Check the checkbox')
-  })
-
-  it('should contain a protected method', () => {
-    const item = component.methods.find(
-      (item) => item.visibility === 'protected')
-
-    assert.notEqual(typeof item, 'undefined')
-  })
-
-  it('should contain a private method', () => {
-    const item = component.methods.find(
-      (item) => item.visibility === 'private')
-
-    assert.notEqual(typeof item, 'undefined')
-  })
-
-  it('should contain un uncommented method', () => {
-    const item = component.methods.find(
-      (item) => item.description === null)
-
-    assert.notEqual(typeof item, 'undefined')
-  })
-}
-
-describe('component.methods_visibility_default', () => {
-  let component = {}
-
-  parser.parse({
-    filename: f('checkboxMethods.vue'),
-    encoding: 'utf8'
-  })
-    .then((_component) => (component = _component))
-    .catch((err) => {
-      throw err
+      assert.equal(parser.ast, null)
+      assert.equal(parser.template, template)
     })
 
-  it('public method should be public', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'publicMethod')
-    assert.equal(item.visibility, 'public')
+    it('should successfully create new object with empty script', () => {
+      const options = {
+        source: { template, script: '' }
+      }
+      const parser = new Parser(options)
+
+      assert.equal(parser.ast, null)
+      assert.equal(parser.template, template)
+    })
   })
 
-  it('uncommented method should be public', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'uncommentedMethod')
-    assert.equal(item.visibility, 'public')
-  })
+  describe('walk()', () => {
+    describe('description', () => {
+      it('should successfully emit component description', (done) => {
+        const script = `
+          /**
+           * Component description
+           * on multiline
+           */
+          export default {}
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
 
-  it('default method should be public', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'defaultMethod')
-    assert.equal(item.visibility, 'public')
-  })
-})
+        parser.walk().on('description', (value) => {
+          assert.equal(value, 'Component description on multiline')
 
-describe('component.methods_visibility_private', () => {
-  let component = {}
-
-  parser.parse({
-    filename: f('checkboxMethods.vue'),
-    encoding: 'utf8',
-    defaultMethodVisibility: 'private'
-  })
-    .then((_component) => (component = _component))
-    .catch((err) => {
-      throw err
+          done()
+        })
+      })
     })
 
-  it('public method should be public', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'publicMethod')
-    assert.equal(item.visibility, 'public')
-  })
+    describe('keywords', () => {
+      it('should successfully emit component keywords', (done) => {
+        const script = `
+          /**
+           * @name my-checkbox
+           */
+          export default {}
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
 
-  it('uncommented method should not exist', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'uncommentedMethod')
-    assert.equal(item, undefined)
-  })
+        parser.walk().on('keywords', (value) => {
+          assert.deepEqual(value, [ { name: 'name', description: 'my-checkbox' } ])
 
-  it('default method should not exist', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'defaultMethod')
-    assert.equal(item, undefined)
+          done()
+        })
+      })
+    })
+
+    describe('export default expression', () => {
+      it('should successfully emit component name', (done) => {
+        const script = `
+          import child from 'child.vue'
+
+          const component = {
+            name: 'hello'
+          }
+
+          export default component
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('name', (value) => {
+          assert.equal(value, 'hello')
+
+          done()
+        })
+      })
+
+      it('should failed with missing exporting identifier', (done) => {
+        const script = `
+          export default component
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('end', () => done())
+      })
+    })
+
+    describe('parseTemplate()', () => {
+      it('should successfully emit default slot', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const options = {
+          source: { template },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('slot', (slot) => {
+          assert.equal(slot.name, 'default')
+          assert.equal(slot.description, null)
+          done()
+        })
+      })
+
+      it('should successfully emit default slot with description', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const template = `
+          <div>
+            <!-- a comment -->
+            <p>Hello</p>
+            <!-- default slot -->
+            <slot/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('slot', (slot) => {
+          assert.equal(slot.name, 'default')
+          assert.equal(slot.description, 'default slot')
+          done()
+        })
+      })
+    })
+
+    describe('parseComponentName()', () => {
+      it('should successfully emit component name with only template', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'private'
+        const template = `
+          <div>
+            <!-- a comment -->
+            <p>Hello</p>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('name', (name) => {
+          assert.equal(name, 'checkbox')
+          done()
+        })
+      })
+
+      it('should successfully emit component name with explicit name', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            name: 'myInput'
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('name', (name) => {
+          assert.equal(name, 'my-input')
+          done()
+        })
+      })
+    })
+
+    describe('extractProperties(property)', () => {
+      it('should successfully emit generic prop', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            props: {
+              id: { type: String, default: '$id' }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('props', (prop) => {
+          assert.equal(prop.visibility, 'public')
+          assert.equal(prop.name, 'id')
+          assert.equal(prop.description, null)
+          assert.deepEqual(prop.keywords, [])
+          assert.deepEqual(prop.value, { type: 'String', default: '$id' })
+          done()
+        })
+      })
+
+      it('should successfully emit v-model prop', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            props: {
+              /**
+               * @model v-model keyword
+               */
+              value: { type: String }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('props', (prop) => {
+          assert.equal(prop.visibility, 'public')
+          assert.equal(prop.name, 'v-model')
+          assert.equal(prop.description, '')
+          assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
+          assert.deepEqual(prop.value, { type: 'String' })
+          done()
+        })
+      })
+
+      it('should successfully emit an unknow item', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            unknow: {
+              /**
+               * @model v-model keyword
+               */
+              value: { type: String }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('unknow', (prop) => {
+          done()
+        })
+      })
+
+      it('should successfully emit methods', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            methods: {
+              getValue: (ctx) => {}
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('methods', (prop) => {
+          assert.equal(prop.visibility, 'private')
+          assert.equal(prop.name, 'getValue')
+          assert.equal(prop.description, null)
+          assert.deepEqual(prop.keywords, [])
+          assert.deepEqual(prop.params, [{
+            name: 'ctx',
+            type: 'Identifier',
+            start: 76,
+            end: 79,
+            range: [76, 79]
+          }])
+          done()
+        })
+      })
+
+      it('should emit nothing', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: 'desc-v'
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('end', () => done())
+      })
+    })
+
+    describe('subWalk(entry)', () => {
+      it('should emit event without description', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, null)
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should emit event with description', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              /**
+               * loading event
+               *
+               * @protected
+               */
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'protected')
+          assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+          done()
+        })
+      })
+
+      it('should emit event with @event keyword', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc () {
+              /**
+               * Event description
+               * 
+               * @event loading
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'Event description')
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [ { name: 'event', description: 'loading' } ])
+
+          done()
+        })
+      })
+
+      it('should emit event with missing @event value keyword', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc () {
+              /**
+               * @event
+               */
+              this.$emit(name)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('error', (err) => {
+          assert.ok(/Missing keyword value for @event/.test(err.message))
+
+          done()
+        })
+      })
+
+      it('should emit event with identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              const name = 'loading'
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should emit event with recursive identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              const pname = 'loading'
+              const value = true
+              const name = pname
+              /**
+               * loading event
+               * @protected
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'protected')
+          assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+          done()
+        })
+      })
+
+      it('should emit event with external identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          const ppname = 'loading'
+
+          export default {
+            desc: () => {
+              const pname = ppname
+              const name = pname
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should failed to found identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              const pname = ppname
+              const name = pname
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, '****unhandled-event-name****')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should skip already sent event', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            loading: () => {
+              this.$emit('loading')
+            },
+            loading2: () => {
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+
+        const parser = new Parser(options)
+        let eventCount = 0
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'loading')
+            assert.equal(event.description, undefined)
+            assert.equal(event.visibility, 'public')
+            assert.deepEqual(event.keywords, [])
+
+            eventCount++
+          })
+          .on('end', () => {
+            assert.equal(eventCount, 1)
+
+            done()
+          })
+      })
+
+      it('should skip malformated event emission', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            loading2: () => {
+              this.$emit
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+
+        const parser = new Parser(options)
+        let eventCount = 0
+
+        parser.walk()
+          .on('event', () => {
+            eventCount++
+          })
+          .on('end', () => {
+            assert.equal(eventCount, 0)
+
+            done()
+          })
+      })
+    })
   })
 })
