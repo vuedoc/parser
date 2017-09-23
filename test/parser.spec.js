@@ -76,6 +76,77 @@ describe('Parser', () => {
   })
 
   describe('walk()', () => {
+    describe('description', () => {
+      it('should successfully emit component description', (done) => {
+        const script = `
+          /**
+           * Component description
+           * on multiline
+           */
+          export default {}
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('description', (value) => {
+          assert.equal(value, 'Component description on multiline')
+
+          done()
+        })
+      })
+    })
+
+    describe('keywords', () => {
+      it('should successfully emit component keywords', (done) => {
+        const script = `
+          /**
+           * @name my-checkbox
+           */
+          export default {}
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('keywords', (value) => {
+          assert.deepEqual(value, [ { name: 'name', description: 'my-checkbox' } ])
+
+          done()
+        })
+      })
+    })
+
+    describe('export default expression', () => {
+      it('should successfully emit component name', (done) => {
+        const script = `
+          import child from 'child.vue'
+
+          const component = {
+            name: 'hello'
+          }
+
+          export default component
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('name', (value) => {
+          assert.equal(value, 'hello')
+
+          done()
+        })
+      })
+
+      it('should failed with missing exporting identifier', (done) => {
+        const script = `
+          export default component
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('end', () => done())
+      })
+    })
+
     describe('parseTemplate()', () => {
       it('should successfully emit default slot', (done) => {
         const filename = './fixtures/checkbox.vue'
@@ -348,6 +419,61 @@ describe('Parser', () => {
           assert.equal(event.description, 'loading event')
           assert.equal(event.visibility, 'protected')
           assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+          done()
+        })
+      })
+
+      it('should emit event with @event keyword', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc () {
+              /**
+               * Event description
+               * 
+               * @event loading
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'Event description')
+          assert.equal(event.visibility, 'public')
+          assert.deepEqual(event.keywords, [ { name: 'event', description: 'loading' } ])
+
+          done()
+        })
+      })
+
+      it('should emit event with missing @event value keyword', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc () {
+              /**
+               * @event
+               */
+              this.$emit(name)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('error', (err) => {
+          assert.ok(/Missing keyword value for @event/.test(err.message))
+
           done()
         })
       })
