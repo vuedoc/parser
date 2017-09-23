@@ -352,12 +352,73 @@ describe('Parser', () => {
         })
       })
 
-      it('should emit event with description', (done) => {
+      it('should emit event with identifier name', (done) => {
         const defaultMethodVisibility = 'private'
         const script = `
           export default {
             desc: () => {
               const name = 'loading'
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'private')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should emit event with recursive identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          export default {
+            desc: () => {
+              const pname = 'loading'
+              const value = true
+              const name = pname
+              /**
+               * loading event
+               */
+              this.$emit(name, true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'loading')
+          assert.equal(event.description, 'loading event')
+          assert.equal(event.visibility, 'private')
+          assert.deepEqual(event.keywords, [])
+          done()
+        })
+      })
+
+      it('should emit event with external identifier name', (done) => {
+        const defaultMethodVisibility = 'private'
+        const script = `
+          const ppname = 'loading'
+
+          export default {
+            desc: () => {
+              const pname = ppname
+              const name = pname
               /**
                * loading event
                */

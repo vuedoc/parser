@@ -2,4 +2,4 @@
 
 require('./units.spec')
 require('./parser.spec')
-require('./integration.spec')
+// require('./integration.spec')
