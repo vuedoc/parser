@@ -346,7 +346,7 @@ describe('Parser', () => {
             type: 'Identifier',
             start: 76,
             end: 79,
-            range: [76,79]
+            range: [76, 79]
           }])
           done()
         })
