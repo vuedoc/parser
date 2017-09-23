@@ -374,7 +374,7 @@ describe('Parser', () => {
         parser.walk().on('event', (event) => {
           assert.equal(event.name, 'loading')
           assert.equal(event.description, 'loading event')
-          assert.equal(event.visibility, 'private')
+          assert.equal(event.visibility, 'public')
           assert.deepEqual(event.keywords, [])
           done()
         })
@@ -390,6 +390,7 @@ describe('Parser', () => {
               const name = pname
               /**
                * loading event
+               * @protected
                */
               this.$emit(name, true)
             }
@@ -404,8 +405,8 @@ describe('Parser', () => {
         parser.walk().on('event', (event) => {
           assert.equal(event.name, 'loading')
           assert.equal(event.description, 'loading event')
-          assert.equal(event.visibility, 'private')
-          assert.deepEqual(event.keywords, [])
+          assert.equal(event.visibility, 'protected')
+          assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
           done()
         })
       })
