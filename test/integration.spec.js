@@ -152,6 +152,40 @@ function testComponentProps (optionsToParse) {
   })
 }
 
+describe('component.data', () => {
+  const options = {
+    filecontent: `
+      <script>
+        export default {
+          name: 'test',
+          data: {
+            /**
+             * ID data
+             */
+            id: 'Hello'
+          }
+        }
+      </script>
+    `
+  }
+
+  it('should successfully extract data', () => {
+    const expected = [
+      {
+        keywords: [],
+        visibility: 'public',
+        description: 'ID data',
+        value: 'Hello',
+        name: 'id'
+      }
+    ]
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component.data, expected)
+    })
+  })
+})
+
 describe('component.slots (es6)', () => testComponentSlots(options))
 
 describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports))
