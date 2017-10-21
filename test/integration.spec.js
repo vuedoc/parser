@@ -62,9 +62,9 @@ describe('options', () => {
   })
 })
 
-describe('component', () => testComponent(options))
+describe('component (es6)', () => testComponent(options))
 
-describe('component_module.exports', () => testComponent(optionsForModuleExports))
+describe('component (commonjs)', () => testComponent(optionsForModuleExports))
 
 describe('component_no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
 
@@ -102,9 +102,9 @@ function testComponent (optionsToParse) {
     assert.equal(component.description, 'A simple checkbox component'))
 }
 
-describe('component.props', () => testComponentProps(options))
+describe('component.props (es6)', () => testComponentProps(options))
 
-describe('component.props_module.exports', () => testComponentProps(optionsForModuleExports))
+describe('component.props (commonjs)', () => testComponentProps(optionsForModuleExports))
 
 describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
 
@@ -152,9 +152,9 @@ function testComponentProps (optionsToParse) {
   })
 }
 
-describe('component.slots', () => testComponentSlots(options))
+describe('component.slots (es6)', () => testComponentSlots(options))
 
-describe('component.slots_module.exports', () => testComponentSlots(optionsForModuleExports))
+describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports))
 
 describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
 
@@ -198,9 +198,9 @@ function testComponentSlots (optionsToParse) {
   })
 }
 
-describe('component.events', () => testComponentEvents(options))
+describe('component.events (es6)', () => testComponentEvents(options))
 
-describe('component.events_module.exports', () => testComponentEvents(optionsForModuleExports))
+describe('component.events (commonjs)', () => testComponentEvents(optionsForModuleExports))
 
 describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
 
@@ -240,9 +240,9 @@ function testComponentEvents (optionsToParse) {
   })
 }
 
-describe('component.methods', () => testComponentMethods(options))
+describe('component.methods (es6)', () => testComponentMethods(options))
 
-describe('component.methods_module.exports', () => testComponentMethods(optionsForModuleExports))
+describe('component.methods (commonjs)', () => testComponentMethods(optionsForModuleExports))
 
 describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
 
