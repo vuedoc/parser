@@ -294,6 +294,37 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit a data item', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data: {
+              /**
+               * ID data
+               */
+              id: 'Hello'
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
       it('should successfully emit an unknow item', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
