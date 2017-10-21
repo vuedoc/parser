@@ -1,5 +1,5 @@
 'use strict'
 
-require('./units.spec')
+require('./utils.spec')
 require('./parser.spec')
 require('./integration.spec')
