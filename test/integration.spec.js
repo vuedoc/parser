@@ -206,7 +206,9 @@ describe('component.computed', () => {
   }
 
   it('should successfully extract computed properties', () => {
-    return parser.parse(options).then(({ computed }) => {
+    return parser.parse(options).then((component) => {
+      const computed = component.computed
+
       assert.equal(computed.length, 2)
 
       assert.equal(computed[0].name, 'id')
