@@ -39,6 +39,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
     keywords: [],
     props: [],
     data: [],
+    computed: [],
     methods: [],
     events: [],
     slots: []
@@ -50,6 +51,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
     .on('keywords', (keywords) => (component.keywords = keywords))
     .on('props', (prop) => component.props.push(prop))
     .on('data', (data) => component.data.push(data))
+    .on('computed', (prop) => component.computed.push(prop))
     .on('methods', (method) => component.methods.push(method))
     .on('slot', (slot) => component.slots.push(slot))
     .on('event', (event) => component.events.push(event))

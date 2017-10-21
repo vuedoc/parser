@@ -186,6 +186,38 @@ describe('component.data', () => {
   })
 })
 
+describe('component.computed', () => {
+  const options = {
+    filecontent: `
+      <script>
+        export default {
+          computed: {
+            id () {
+              const value = this.value
+              return this.name + value
+            },
+            type () {
+              return 'text'
+            }
+          }
+        }
+      </script>
+    `
+  }
+
+  it('should successfully extract computed properties', () => {
+    return parser.parse(options).then(({ computed }) => {
+      assert.equal(computed.length, 2)
+
+      assert.equal(computed[0].name, 'id')
+      assert.deepEqual(computed[0].dependencies, [ 'value', 'name' ])
+
+      assert.equal(computed[1].name, 'type')
+      assert.deepEqual(computed[1].dependencies, [])
+    })
+  })
+})
+
 describe('component.slots (es6)', () => testComponentSlots(options))
 
 describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports))
