@@ -115,6 +115,20 @@ describe('libutils', () => {
       assert.equal(result.description, 'The generic component Sub description')
       assert.equal(result.keywords.length, 11)
     })
+
+    it('should success with malformated keyword syntax', () => {
+      const comment = `
+        /**
+         * The generic component
+         * Sub description
+         * 
+         * @keyword*
+         */`
+      const result = utils.parseComment(comment)
+
+      assert.equal(result.description, 'The generic component Sub description')
+      assert.equal(result.keywords.length, 1)
+    })
   })
 
   describe('getComment(property, defaultVisibility)', () => {
