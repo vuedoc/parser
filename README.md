@@ -8,6 +8,17 @@ Generate a JSON documentation for a Vue file component
 npm install --save @vuedoc/parser
 ```
 
+## Features
+- Extract the component name (from the name field of from the filename)
+- Extract the component description
+- Keywords Support: You can define your own keywords with the `@` symbol like `@author Sébastien`
+- Extract component props
+- Extract component data
+- Extract computed properties with dependencies
+- Extract component events
+- Extract component slots
+- Extract component methods
+
 ## Options
 - `filename` (*required* unless `filecontent` is passed) The filename to parse
 - `filecontent` (*required* unless `filename` is passed) The string to parse
@@ -81,6 +92,27 @@ This will print this JSON output:
       },
       "comments": [
         "Initial checbox value"
+      ]
+    }
+  ],
+  "data": [
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "value": null,
+      "name": "initialValue"
+    }
+  ],
+  "computed": [
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "value": [Object],
+      "name": "id",
+      "dependencies": [
+        "initialValue"
       ]
     }
   ],

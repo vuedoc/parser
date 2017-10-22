@@ -57,7 +57,15 @@ export default {
   },
 
   data () {
-    return {}
+    return {
+      initialValue: null
+    }
+  },
+
+  computed: {
+    id () {
+      return `checkbox-${this.initialValue}`
+    }
   },
 
   created () {
