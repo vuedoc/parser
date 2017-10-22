@@ -294,7 +294,7 @@ describe('Parser', () => {
         })
       })
 
-      it('should successfully emit a data item', (done) => {
+      it('should successfully emit a data item from an component.data object', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
           export default {
@@ -303,6 +303,103 @@ describe('Parser', () => {
                * ID data
                */
               id: 'Hello'
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a data item from an component.data arrow function', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data: () => ({
+              /**
+               * ID data
+               */
+              id: 'Hello'
+            })
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a data item from an component.data es5 function', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data: function () {
+              return {
+                /**
+                 * ID data
+                 */
+                id: 'Hello'
+              }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a data item from an component.data es6 function', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data () {
+              return {
+                /**
+                 * ID data
+                 */
+                id: 'Hello'
+              }
             }
           }
         `
