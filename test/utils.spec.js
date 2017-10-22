@@ -454,4 +454,55 @@ describe('libutils', () => {
       assert.doesNotThrow(() => utils.parseOptions(options))
     })
   })
+
+  describe('getDependencies(ast, source)', () => {
+    it('should successfully extract ThisExpession items', () => {
+      const ast = { start: 182, end: 272 }
+      const source = `
+          export default {
+            computed: {
+              /**
+               * ID computed prop
+               *
+               * @private
+               */
+              id () {
+                const value = this.value
+                return this.name + value
+              }
+            }
+          }
+        `
+      const expected = ['value', 'name']
+      const result = utils.getDependencies(ast, source)
+
+      assert.deepEqual(expected, result)
+    })
+
+    it('should return an empty dependencies array', () => {
+      const ast = { start: 0, end: 272 }
+      const source = `
+          export default {
+            computed: {
+              id () {
+                return 'Hello'
+              }
+            }
+          }
+        `
+      const expected = []
+      const result = utils.getDependencies(ast, source)
+
+      assert.deepEqual(expected, result)
+    })
+
+    it('should return an empty dependencies array with ast === null', () => {
+      const ast = null
+      const source = ``
+      const expected = []
+      const result = utils.getDependencies(ast, source)
+
+      assert.deepEqual(expected, result)
+    })
+  })
 })

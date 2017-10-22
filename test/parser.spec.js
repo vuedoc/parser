@@ -294,6 +294,175 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit a data item from an component.data object', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data: {
+              /**
+               * ID data
+               */
+              id: 'Hello'
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a data item from an component.data arrow function', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data: () => ({
+              /**
+               * ID data
+               */
+              id: 'Hello'
+            })
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a data item from an component.data es5 function', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data: function () {
+              return {
+                /**
+                 * ID data
+                 */
+                id: 'Hello'
+              }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a data item from an component.data es6 function', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            data () {
+              return {
+                /**
+                 * ID data
+                 */
+                id: 'Hello'
+              }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          keywords: [],
+          visibility: 'public',
+          description: 'ID data',
+          value: 'Hello',
+          name: 'id'
+        }
+
+        parser.walk().on('data', (prop) => {
+          assert.deepEqual(prop, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit a computed property item', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            computed: {
+              /**
+               * ID computed prop
+               *
+               * @private
+               */
+              id () {
+                const value = this.value
+                return this.name + value
+              }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+        const expected = {
+          name: 'id',
+          keywords: [{ name: 'private', description: '' }],
+          visibility: 'private',
+          description: 'ID computed prop',
+          dependencies: ['value', 'name']
+        }
+
+        parser.walk().on('computed', (prop) => {
+          assert.equal(prop.name, expected.name)
+          assert.deepEqual(prop.keywords, expected.keywords)
+          assert.equal(prop.visibility, expected.visibility)
+          assert.equal(prop.description, expected.description)
+          assert.equal(prop.value.type, 'FunctionExpression')
+          assert.deepEqual(prop.dependencies, expected.dependencies)
+          done()
+        })
+      })
+
       it('should successfully emit an unknow item', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'

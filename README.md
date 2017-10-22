@@ -1,13 +1,23 @@
 # The vuedoc parser
 Generate a JSON documentation for a Vue file component
 
-[![Build Status](https://travis-ci.org/vuedoc/parser.svg?branch=master)](https://travis-ci.org/vuedoc/parser)
-[![bitHound Dependencies](https://www.bithound.io/github/vuedoc/parser/badges/dependencies.svg)](https://www.bithound.io/github/vuedoc/parser/master/dependencies/npm) [![Coverage Status](https://coveralls.io/repos/github/vuedoc/parser/badge.svg?branch=master)](https://coveralls.io/github/vuedoc/parser?branch=master)
+[![Build Status](https://travis-ci.org/vuedoc/parser.svg?branch=master)](https://travis-ci.org/vuedoc/parser) [![Coverage Status](https://coveralls.io/repos/github/vuedoc/parser/badge.svg?branch=master)](https://coveralls.io/github/vuedoc/parser?branch=master)
 
 ## Install
 ```sh
 npm install --save @vuedoc/parser
 ```
+
+## Features
+- Extract the component name (from the name field of from the filename)
+- Extract the component description
+- Keywords Support: You can define your own keywords with the `@` symbol like `@author Sébastien`
+- Extract component props
+- Extract component data
+- Extract computed properties with dependencies
+- Extract component events
+- Extract component slots
+- Extract component methods
 
 ## Options
 - `filename` (*required* unless `filecontent` is passed) The filename to parse
@@ -82,6 +92,27 @@ This will print this JSON output:
       },
       "comments": [
         "Initial checbox value"
+      ]
+    }
+  ],
+  "data": [
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "value": null,
+      "name": "initialValue"
+    }
+  ],
+  "computed": [
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "value": [Object],
+      "name": "id",
+      "dependencies": [
+        "initialValue"
       ]
     }
   ],
