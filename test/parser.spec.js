@@ -532,7 +532,7 @@ describe('Parser', () => {
         const parser = new Parser(options)
 
         parser.walk().on('computed', (prop) => {
-          assert.ok(typeof prop.dependencies === 'undefined')
+          assert.deepEqual(prop.dependencies, [])
           done()
         })
       })
