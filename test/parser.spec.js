@@ -506,6 +506,38 @@ describe('Parser', () => {
         })
       })
 
+      it('should emit event with invalid computed property', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            computed: {
+              /**
+               * ID computed prop
+               *
+               * @private
+               */
+              idGetter: {
+                foo () {
+                  const value = this.value
+                  return this.name + value
+                }
+              }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('error', (err) => {
+          assert.ok(/Computed property must be a function or an object with a get\(\) function/.test(err.message))
+
+          done()
+        })
+      })
+
       it('should successfully emit an unknow item', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
