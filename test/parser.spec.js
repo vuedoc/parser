@@ -506,6 +506,37 @@ describe('Parser', () => {
         })
       })
 
+      it('should ignore functions other than get on computed property', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            computed: {
+              /**
+               * ID computed prop
+               *
+               * @private
+               */
+              idGetter: {
+                foo () {
+                  const value = this.value
+                  return this.name + value
+                }
+              }
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          filename
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('computed', (prop) => {
+          assert.ok(typeof prop.dependencies === 'undefined')
+          done()
+        })
+      })
+
       it('should successfully emit an unknow item', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
