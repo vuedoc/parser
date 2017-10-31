@@ -198,6 +198,12 @@ describe('component.computed', () => {
             },
             type () {
               return 'text'
+            },
+            getter: {
+              get () {
+                const value = this.value
+                return this.name + value
+              }
             }
           }
         }
@@ -209,13 +215,16 @@ describe('component.computed', () => {
     return parser.parse(options).then((component) => {
       const computed = component.computed
 
-      assert.equal(computed.length, 2)
+      assert.equal(computed.length, 3)
 
       assert.equal(computed[0].name, 'id')
       assert.deepEqual(computed[0].dependencies, [ 'value', 'name' ])
 
       assert.equal(computed[1].name, 'type')
       assert.deepEqual(computed[1].dependencies, [])
+
+      assert.equal(computed[2].name, 'getter')
+      assert.deepEqual(computed[2].dependencies, [ 'value', 'name' ])
     })
   })
 })
