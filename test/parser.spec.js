@@ -164,6 +164,22 @@ describe('Parser', () => {
           done()
         })
       })
+
+      it('should ignore the component keywords with missing `keywords` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const options = {
+          source: { script },
+          filename,
+          features: []
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('name', () => {
+            done(new Error('Should ignore the component keywords'))
+          })
+          .on('end', done)
+      })
     })
 
     describe('export default expression', () => {
