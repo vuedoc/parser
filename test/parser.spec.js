@@ -135,26 +135,27 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: []
+          features: ['name']
         }
         const parser = new Parser(options)
 
         parser.walk()
-          .on('name', () => {
-            done(new Error('Should ignore the component description'))
+          .on('description', () => {
+            throw new Error('Should ignore the component description')
           })
           .on('end', done)
       })
     })
 
     describe('keywords', () => {
+      const script = `
+        /**
+         * @name my-checkbox
+         */
+        export default {}
+      `
+
       it('should successfully emit component keywords', (done) => {
-        const script = `
-          /**
-           * @name my-checkbox
-           */
-          export default {}
-        `
         const options = { source: { script } }
         const parser = new Parser(options)
 
@@ -170,13 +171,13 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: []
+          features: ['name']
         }
         const parser = new Parser(options)
 
         parser.walk()
-          .on('name', () => {
-            done(new Error('Should ignore the component keywords'))
+          .on('keywords', () => {
+            throw new Error('Should ignore the component keywords')
           })
           .on('end', done)
       })
@@ -312,13 +313,13 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: []
+          features: ['description']
         }
         const parser = new Parser(options)
 
         parser.walk()
           .on('name', () => {
-            done(new Error('Should ignore the component name'))
+            throw new Error('Should ignore the component name')
           })
           .on('end', done)
       })
@@ -334,13 +335,13 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename,
-          features: []
+          features: ['description']
         }
         const parser = new Parser(options)
 
         parser.walk()
           .on('name', () => {
-            done(new Error('Should ignore the component name'))
+            throw new Error('Should ignore the component name')
           })
           .on('end', done)
       })
