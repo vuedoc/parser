@@ -280,6 +280,30 @@ describe('Parser', () => {
           done()
         })
       })
+
+      it('should ignore the component slots with missing `slots` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const template = `
+          <div>
+            <!-- a comment -->
+            <p>Hello</p>
+            <!-- default slot -->
+            <slot/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename,
+         features: ['name']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('slot', () => {
+            throw new Error('Should ignore the component slots')
+          })
+          .on('end', done)
+      })
     })
 
     describe('parseComponentName()', () => {
