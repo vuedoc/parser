@@ -148,6 +148,61 @@ This will print this JSON output:
 }
 ```
 
+## Keywords Extraction
+You can attach keywords to a comment and then extract them using the parser.
+
+**Usage**
+```js
+/**
+ * Component description
+ *
+ * @author Sébastien
+ * @license MIT
+ */
+export default {
+  name: 'my-checkbox',
+  created () {
+    /**
+     * Emit on Vue `created` hook
+     *
+     * @param boolean
+     */
+    this.$emit('created', true)
+  }
+}
+```
+
+Parsing result:
+```json
+{
+  "name": "my-checkbox",
+  "description": "Component description",
+  "keywords": [
+    {
+      "name": "author",
+      "description": "Sébastien"
+    },
+    {
+      "name": "license",
+      "description": "MIT"
+    }
+  ],
+  "events": [
+    {
+      "name": "created",
+      "description": "Emit on Vue `created` hook",
+      "visibility": "public",
+      "keywords": [
+        {
+          "name": "param",
+          "description": "boolean"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Parsing control with options.features
 `options.features` lets you select which Vue Features you want to parse and extract.
 The default value is define by `Parser.SUPPORTED_FEATURES` array.
