@@ -111,14 +111,15 @@ describe('Parser', () => {
 
   describe('walk()', () => {
     describe('description', () => {
+      const script = `
+        /**
+         * Component description
+         * on multiline
+         */
+        export default {}
+      `
+
       it('should successfully emit component description', (done) => {
-        const script = `
-          /**
-           * Component description
-           * on multiline
-           */
-          export default {}
-        `
         const options = { source: { script } }
         const parser = new Parser(options)
 
@@ -127,6 +128,22 @@ describe('Parser', () => {
 
           done()
         })
+      })
+
+      it('should ignore the component description with missing `description` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const options = {
+          source: { script },
+          filename,
+          features: []
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('name', () => {
+            done(new Error('Should ignore the component description'))
+          })
+          .on('end', done)
       })
     })
 
