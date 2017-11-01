@@ -30,15 +30,15 @@ module.exports.parse = (options) => new Promise((resolve) => {
     }
   }
 
-  utils.parseOptions(options, Parser.SUPPORTED_FEATURES)
-
   const filterIgnoredVisibilities = (item) => {
     return options.ignoredVisibilities.indexOf(item.visibility) === -1
   }
 
   const component = {}
 
-  options.features.forEach((feature) => {
+  const walker = new Parser(options).walk()
+
+  walker.features.forEach((feature) => {
     switch (feature) {
       case 'name':
       case 'description':
@@ -50,7 +50,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
     }
   })
 
-  new Parser(options).walk()
+  walker
     .on('name', (name) => (component.name = name))
     .on('description', (desc) => (component.description = desc))
     .on('keywords', (keywords) => (component.keywords = keywords))
