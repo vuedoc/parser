@@ -33,32 +33,21 @@ const optionsWithFileSource = {
 /* global describe it */
 
 describe('options', () => {
-  it('should fail to parse with missing options.filename', (done) => {
-    parser.parse({})
-      .catch((err) => {
-        assert.ok(/required/.test(err.message))
-        done()
-      })
+  it('should fail to parse with missing options.filename', () => {
+    assert.throws(() => parser.parseOptions({}),
+      /One of options.filename or options.filecontent is required/)
   })
 
-  it('should parse with default options.encoding', (done) => {
-    const _options = {}
+  it('should parse with default options.encoding', () => {
+    const _options = { filename: options.filename }
 
-    Object.assign(_options, options)
-
-    delete _options.encoding
-
-    parser.parse(_options)
-      .then(() => done())
-      .catch(done)
+    assert.doesNotThrow(() => parser.parseOptions(_options))
   })
 
-  it('should fail with missing options.filename', (done) => {
-    parser.parse({})
-      .catch((err) => {
-        assert.ok(/required/.test(err.message))
-        done()
-      })
+  it('should parse with filecontent', () => {
+    const _options = { filecontent: 'vue file contents' }
+
+    assert.doesNotThrow(() => parser.parseOptions(_options))
   })
 })
 
