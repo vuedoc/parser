@@ -23,6 +23,7 @@ npm install --save @vuedoc/parser
 - `filename` (*required* unless `filecontent` is passed) The filename to parse
 - `filecontent` (*required* unless `filename` is passed) The string to parse
 - `encoding` (*optional*) `default: utf8`
+- `features` (*optional*) `default: ['name', 'description', 'keywords', 'slots', 'data', 'props', 'computed', 'events', 'methods']` The component features to parse and extract
 - `defaultMethodVisibility` (*optional*) `default: 'public'`. Can be set to `'public'`, `'protected'`, or `'private'`.
 
 ## Usage

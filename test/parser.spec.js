@@ -37,6 +37,40 @@ const script = `
   `
 
 describe('Parser', () => {
+  describe('validateOptions(options)', () => {
+    it('should failed with missing options.source', () => {
+      const options = {}
+
+      assert.throws(() => Parser.validateOptions(options), /options.source is required/)
+    })
+
+    it('should successfully parse options', () => {
+      const options = { source: {} }
+
+      assert.doesNotThrow(() => Parser.validateOptions(options))
+    })
+
+    it('should parse with an invalid type of options.features', () => {
+      const options = { source: {}, features: 'events' }
+
+      assert.throws(() => Parser.validateOptions(options),
+        /options\.features must be an array/)
+    })
+
+    it('should parse with an invalid options.features', () => {
+      const options = { source: {}, features: ['invalid-feature'] }
+
+      assert.throws(() => Parser.validateOptions(options),
+        /Unknow 'invalid-feature' feature\. Supported features:/)
+    })
+
+    it('should parse with a valid options.features', () => {
+      const options = { source: {}, features: ['name', 'events'] }
+
+      assert.doesNotThrow(() => Parser.validateOptions(options))
+    })
+  })
+
   describe('constructor(options)', () => {
     it('should successfully create new object', () => {
       const filename = './fixtures/checkbox.vue'

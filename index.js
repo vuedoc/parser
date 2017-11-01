@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 
+const utils = require('./lib/utils')
 const Parser = require('./lib/parser')
 const cheerio = require('cheerio')
 
@@ -29,21 +30,25 @@ module.exports.parse = (options) => new Promise((resolve) => {
     }
   }
 
+  utils.parseOptions(options, Parser.SUPPORTED_FEATURES)
+
   const filterIgnoredVisibilities = (item) => {
     return options.ignoredVisibilities.indexOf(item.visibility) === -1
   }
 
-  const component = {
-    name: null,
-    description: null,
-    keywords: [],
-    props: [],
-    data: [],
-    computed: [],
-    methods: [],
-    events: [],
-    slots: []
-  }
+  const component = {}
+
+  options.features.forEach((feature) => {
+    switch (feature) {
+      case 'name':
+      case 'description':
+        component[feature] = null
+        break
+
+      default:
+        component[feature] = []
+    }
+  })
 
   new Parser(options).walk()
     .on('name', (name) => (component.name = name))
