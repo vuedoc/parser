@@ -268,6 +268,49 @@ describe('Parser', () => {
           done()
         })
       })
+
+      it('should ignore the component name with missing `name` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            name: 'myInput'
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          features: []
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('name', () => {
+            done(new Error('Should ignore the component name'))
+          })
+          .on('end', done)
+      })
+
+      it('should ignore the component name with missing `name` in options.features and options.source.script', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const template = `
+          <div>
+            <!-- a comment -->
+            <p>Hello</p>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename,
+          features: []
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('name', () => {
+            done(new Error('Should ignore the component name'))
+          })
+          .on('end', done)
+      })
     })
 
     describe('extractProperties(property)', () => {
