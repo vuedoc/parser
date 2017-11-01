@@ -152,7 +152,7 @@ This will print this JSON output:
 `options.features` lets you select which Vue Features you want to parse and extract.
 The default value is define by `Parser.SUPPORTED_FEATURES` array.
 
-### Usage
+**Usage**
 Only parse `name`, `props`, `computed properties` and `events`:
 ```js
 const vuedoc = require('@vuedoc/parser')
