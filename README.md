@@ -20,11 +20,13 @@ npm install --save @vuedoc/parser
 - Extract component methods
 
 ## Options
-- `filename` (*required* unless `filecontent` is passed) The filename to parse
-- `filecontent` (*required* unless `filename` is passed) The string to parse
-- `encoding` (*optional*) `default: utf8`
-- `features` (*optional*) `default: ['name', 'description', 'keywords', 'slots', 'data', 'props', 'computed', 'events', 'methods']` The component features to parse and extract
-- `defaultMethodVisibility` (*optional*) `default: 'public'`. Can be set to `'public'`, `'protected'`, or `'private'`.
+| name                    | description                                                       | default value |
+|-------------------------|-------------------------------------------------------------------|---------------|
+| filename                | The filename to parse. *Required* unless `filecontent` is passed  |               |
+| filecontent             | The file content to parse. *Required* unless `filename` is passed |               |
+| encoding                | The file encoding                                                 | `'utf8'`      |
+| features                | The component features to parse and extract                       | `['name', 'description', 'keywords', 'slots', 'data', 'props', 'computed', 'events', 'methods']` |
+| defaultMethodVisibility | Can be set to `'public'`, `'protected'`, or `'private'`           | `'public'`    |
 
 ## Usage
 See [test/fixtures/checkbox.vue](https://github.com/vuedoc/parser/blob/master/test/fixtures/checkbox.vue) for an Vue Component decoration example.
