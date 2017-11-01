@@ -294,7 +294,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename,
-         features: ['name']
+          features: ['name']
         }
         const parser = new Parser(options)
 
@@ -1065,7 +1065,6 @@ describe('Parser', () => {
       })
 
       it('should ignore the component events with missing `events` in options.features', (done) => {
-        const filename = './fixtures/checkbox.vue'
         const script = `
           export default {
             loading: () => {

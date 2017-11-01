@@ -1,10 +1,9 @@
 'use strict'
 
 const fs = require('fs')
-
-const utils = require('./lib/utils')
-const Parser = require('./lib/parser')
 const cheerio = require('cheerio')
+
+const Parser = require('./lib/parser')
 
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = ['protected', 'private']
