@@ -37,6 +37,40 @@ const script = `
   `
 
 describe('Parser', () => {
+  describe('validateOptions(options)', () => {
+    it('should failed with missing options.source', () => {
+      const options = {}
+
+      assert.throws(() => Parser.validateOptions(options), /options.source is required/)
+    })
+
+    it('should successfully parse options', () => {
+      const options = { source: {} }
+
+      assert.doesNotThrow(() => Parser.validateOptions(options))
+    })
+
+    it('should parse with an invalid type of options.features', () => {
+      const options = { source: {}, features: 'events' }
+
+      assert.throws(() => Parser.validateOptions(options),
+        /options\.features must be an array/)
+    })
+
+    it('should parse with an invalid options.features', () => {
+      const options = { source: {}, features: ['invalid-feature'] }
+
+      assert.throws(() => Parser.validateOptions(options),
+        /Unknow 'invalid-feature' feature\. Supported features:/)
+    })
+
+    it('should parse with a valid options.features', () => {
+      const options = { source: {}, features: ['name', 'events'] }
+
+      assert.doesNotThrow(() => Parser.validateOptions(options))
+    })
+  })
+
   describe('constructor(options)', () => {
     it('should successfully create new object', () => {
       const filename = './fixtures/checkbox.vue'
@@ -76,15 +110,39 @@ describe('Parser', () => {
   })
 
   describe('walk()', () => {
+    describe('features.length === 0', () => {
+      const script = `
+        /**
+         * Component description
+         * on multiline
+         */
+        export default {}
+      `
+
+      it('should ignore all features', (done) => {
+        const options = { source: { script }, features: [] }
+        const parser = new Parser(options)
+
+        const walker = parser.walk().on('end', done)
+
+        Parser.SUPPORTED_FEATURES.forEach((feature) => {
+          walker.on(feature, () => {
+            throw new Error(`Should ignore the component '${feature}' feature`)
+          })
+        })
+      })
+    })
+
     describe('description', () => {
+      const script = `
+        /**
+         * Component description
+         * on multiline
+         */
+        export default {}
+      `
+
       it('should successfully emit component description', (done) => {
-        const script = `
-          /**
-           * Component description
-           * on multiline
-           */
-          export default {}
-        `
         const options = { source: { script } }
         const parser = new Parser(options)
 
@@ -94,16 +152,33 @@ describe('Parser', () => {
           done()
         })
       })
+
+      it('should ignore the component description with missing `description` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const options = {
+          source: { script },
+          filename,
+          features: ['name']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('description', () => {
+            throw new Error('Should ignore the component description')
+          })
+          .on('end', done)
+      })
     })
 
     describe('keywords', () => {
+      const script = `
+        /**
+         * @name my-checkbox
+         */
+        export default {}
+      `
+
       it('should successfully emit component keywords', (done) => {
-        const script = `
-          /**
-           * @name my-checkbox
-           */
-          export default {}
-        `
         const options = { source: { script } }
         const parser = new Parser(options)
 
@@ -112,6 +187,22 @@ describe('Parser', () => {
 
           done()
         })
+      })
+
+      it('should ignore the component keywords with missing `keywords` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const options = {
+          source: { script },
+          filename,
+          features: ['name']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('keywords', () => {
+            throw new Error('Should ignore the component keywords')
+          })
+          .on('end', done)
       })
     })
 
@@ -189,6 +280,30 @@ describe('Parser', () => {
           done()
         })
       })
+
+      it('should ignore the component slots with missing `slots` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const template = `
+          <div>
+            <!-- a comment -->
+            <p>Hello</p>
+            <!-- default slot -->
+            <slot/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename,
+          features: ['name']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('slot', () => {
+            throw new Error('Should ignore the component slots')
+          })
+          .on('end', done)
+      })
     })
 
     describe('parseComponentName()', () => {
@@ -233,6 +348,49 @@ describe('Parser', () => {
           assert.equal(name, 'my-input')
           done()
         })
+      })
+
+      it('should ignore the component name with missing `name` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            name: 'myInput'
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          features: ['description']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('name', () => {
+            throw new Error('Should ignore the component name')
+          })
+          .on('end', done)
+      })
+
+      it('should ignore the component name with missing `name` in options.features and options.source.script', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const template = `
+          <div>
+            <!-- a comment -->
+            <p>Hello</p>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename,
+          features: ['description']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('name', () => {
+            throw new Error('Should ignore the component name')
+          })
+          .on('end', done)
       })
     })
 
@@ -537,7 +695,7 @@ describe('Parser', () => {
         })
       })
 
-      it('should successfully emit an unknow item', (done) => {
+      it('shouldn\'t emit an unknow item', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
         const script = `
@@ -557,9 +715,11 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('unknow', (prop) => {
-          done()
-        })
+        parser.walk()
+          .on('unknow', (prop) => {
+            throw new Error('Should ignore unknow entry')
+          })
+          .on('end', done)
       })
 
       it('should successfully emit methods', (done) => {
@@ -902,6 +1062,30 @@ describe('Parser', () => {
 
             done()
           })
+      })
+
+      it('should ignore the component events with missing `events` in options.features', (done) => {
+        const script = `
+          export default {
+            loading: () => {
+              this.$emit('loading')
+            },
+            loading2: () => {
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          features: ['name']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', () => {
+            throw new Error('Should ignore the component events')
+          })
+          .on('end', done)
       })
     })
   })

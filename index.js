@@ -1,14 +1,14 @@
 'use strict'
 
 const fs = require('fs')
+const cheerio = require('cheerio')
 
 const Parser = require('./lib/parser')
-const cheerio = require('cheerio')
 
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = ['protected', 'private']
 
-const parseOptions = function (options) {
+module.exports.parseOptions = (options) => {
   if (!options || (!options.filename && !options.filecontent)) {
     throw new Error('One of options.filename or options.filecontent is required')
   }
@@ -18,7 +18,7 @@ const parseOptions = function (options) {
 }
 
 module.exports.parse = (options) => new Promise((resolve) => {
-  parseOptions(options)
+  this.parseOptions(options)
 
   if (!options.source) {
     if (options.filename) {
@@ -33,19 +33,23 @@ module.exports.parse = (options) => new Promise((resolve) => {
     return options.ignoredVisibilities.indexOf(item.visibility) === -1
   }
 
-  const component = {
-    name: null,
-    description: null,
-    keywords: [],
-    props: [],
-    data: [],
-    computed: [],
-    methods: [],
-    events: [],
-    slots: []
-  }
+  const component = {}
 
-  new Parser(options).walk()
+  const walker = new Parser(options).walk()
+
+  walker.features.forEach((feature) => {
+    switch (feature) {
+      case 'name':
+      case 'description':
+        component[feature] = null
+        break
+
+      default:
+        component[feature] = []
+    }
+  })
+
+  walker
     .on('name', (name) => (component.name = name))
     .on('description', (desc) => (component.description = desc))
     .on('keywords', (keywords) => (component.keywords = keywords))
