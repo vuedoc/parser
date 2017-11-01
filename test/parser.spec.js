@@ -110,6 +110,29 @@ describe('Parser', () => {
   })
 
   describe('walk()', () => {
+    describe('features.length === 0', () => {
+      const script = `
+        /**
+         * Component description
+         * on multiline
+         */
+        export default {}
+      `
+
+      it('should ignore all features', (done) => {
+        const options = { source: { script }, features: [] }
+        const parser = new Parser(options)
+
+        const walker = parser.walk().on('end', done)
+
+        Parser.SUPPORTED_FEATURES.forEach((feature) => {
+          walker.on(feature, () => {
+            throw new Error(`Should ignore the component '${feature}' feature`)
+          })
+        })
+      })
+    })
+
     describe('description', () => {
       const script = `
         /**
