@@ -671,7 +671,7 @@ describe('Parser', () => {
         })
       })
 
-      it('should successfully emit an unknow item', (done) => {
+      it('shouldn\'t emit an unknow item', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
         const script = `
@@ -691,9 +691,11 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('unknow', (prop) => {
-          done()
-        })
+        parser.walk()
+          .on('unknow', (prop) => {
+            throw new Error('Should ignore unknow entry')
+          })
+          .on('end', done)
       })
 
       it('should successfully emit methods', (done) => {
@@ -1036,6 +1038,31 @@ describe('Parser', () => {
 
             done()
           })
+      })
+
+      it('should ignore the component events with missing `events` in options.features', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            loading: () => {
+              this.$emit('loading')
+            },
+            loading2: () => {
+              this.$emit('loading', true)
+            }
+          }
+        `
+        const options = {
+          source: { script },
+          features: ['name']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', () => {
+            throw new Error('Should ignore the component events')
+          })
+          .on('end', done)
       })
     })
   })
