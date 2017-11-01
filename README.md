@@ -148,6 +148,94 @@ This will print this JSON output:
 }
 ```
 
+## Keywords Extraction
+You can attach keywords to a comment and then extract them using the parser.
+
+**Usage**
+```js
+/**
+ * Component description
+ *
+ * @author Sébastien
+ * @license MIT
+ */
+export default {
+  name: 'my-checkbox',
+  created () {
+    /**
+     * Emit on Vue `created` hook
+     *
+     * @param boolean
+     */
+    this.$emit('created', true)
+  }
+}
+```
+
+Parsing result:
+```json
+{
+  "name": "my-checkbox",
+  "description": "Component description",
+  "keywords": [
+    {
+      "name": "author",
+      "description": "Sébastien"
+    },
+    {
+      "name": "license",
+      "description": "MIT"
+    }
+  ],
+  "events": [
+    {
+      "name": "created",
+      "description": "Emit on Vue `created` hook",
+      "visibility": "public",
+      "keywords": [
+        {
+          "name": "param",
+          "description": "boolean"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Parsing control with options.features
+`options.features` lets you select which Vue Features you want to parse and extract.
+The default value is define by `Parser.SUPPORTED_FEATURES` array.
+
+**Usage**
+Only parse `name`, `props`, `computed properties` and `events`:
+```js
+const vuedoc = require('@vuedoc/parser')
+const options = {
+  filename: 'test/fixtures/checkbox.vue',
+  features: [ 'name', 'props', 'computed', 'events' ]
+}
+
+vuedoc.parse(options)
+  .then((component) => console.log(component)) // => { name, props, computed, events }
+  .catch((err) => console.error(err))
+```
+
+Parse all features except `data`:
+```js
+const vuedoc = require('@vuedoc/parser')
+const Parser = require('@vuedoc/parser/lib/parser')
+
+const options = {
+  filename: 'test/fixtures/checkbox.vue',
+  features: Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data')
+}
+
+vuedoc.parse(options)
+  .then((component) => console.log(component)) // => { name, description, keywords, props, computed, events, methods }
+  .catch((err) => console.error(err))
+```
+
 ## Related projects
 - [@vuedoc/md](https://github.com/vuedoc/md) - A Markdown Documentation Generator for Vue File Components
 
