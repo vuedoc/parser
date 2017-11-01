@@ -8,7 +8,7 @@ const cheerio = require('cheerio')
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = ['protected', 'private']
 
-const parseOptions = function (options) {
+module.exports.parseOptions = (options) => {
   if (!options || (!options.filename && !options.filecontent)) {
     throw new Error('One of options.filename or options.filecontent is required')
   }
@@ -18,7 +18,7 @@ const parseOptions = function (options) {
 }
 
 module.exports.parse = (options) => new Promise((resolve) => {
-  parseOptions(options)
+  this.parseOptions(options)
 
   if (!options.source) {
     if (options.filename) {
