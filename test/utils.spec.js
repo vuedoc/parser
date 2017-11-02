@@ -48,7 +48,7 @@ describe('libutils', () => {
     })
   })
 
-  describe('parseComment(text, defaultVisibility)', () => {
+  describe('parseComment(text, defaultVisibility, features)', () => {
     const result = utils.parseComment(comment)
     const keywords = result.keywords
 
@@ -121,13 +121,31 @@ describe('libutils', () => {
         /**
          * The generic component
          * Sub description
-         * 
+         *
          * @keyword*
          */`
       const result = utils.parseComment(comment)
 
       assert.equal(result.description, 'The generic component Sub description')
       assert.equal(result.keywords.length, 1)
+    })
+
+    it('should parse with defaultVisibility', () => {
+      const comment = `
+        /**
+         * The generic component
+         */`
+      const visibility = 'protected'
+      const result = utils.parseComment(comment, visibility)
+
+      assert.equal(result.visibility, visibility)
+    })
+
+    it('should parse with features === []', () => {
+      const result = utils.parseComment(comment, 'public', [])
+
+      assert.equal(result.description, '')
+      assert.equal(result.keywords.length, 0)
     })
   })
 
@@ -452,20 +470,6 @@ describe('libutils', () => {
       const result = utils.unCamelcase(entry)
 
       assert.equal(result, entry)
-    })
-  })
-
-  describe('parseOptions(options)', () => {
-    it('should failed with missing options.source', () => {
-      const options = {}
-
-      assert.throws(() => utils.parseOptions(options), /options.source is required/)
-    })
-
-    it('should successfully parse options', () => {
-      const options = { source: {} }
-
-      assert.doesNotThrow(() => utils.parseOptions(options))
     })
   })
 
