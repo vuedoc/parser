@@ -236,6 +236,28 @@ describe('Parser', () => {
 
         parser.walk().on('end', () => done())
       })
+
+      it('should not fail when there is a top-level non-assignment expression', (done) => {
+        const script = `
+          import library from 'library'
+
+          library.init()
+
+          const component = {
+            name: 'hello'
+          }
+
+          export default component
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('name', (value) => {
+          assert.equal(value, 'hello')
+
+          done()
+        })
+      })
     })
 
     describe('parseTemplate()', () => {
