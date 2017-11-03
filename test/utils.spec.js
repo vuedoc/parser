@@ -471,6 +471,14 @@ describe('libutils', () => {
 
       assert.equal(result, entry)
     })
+
+    it('should succeed with entry that contains numbers', () => {
+      const entry = 'i18n'
+      const result = utils.unCamelcase(entry)
+      const expected = 'i18n'
+
+      assert.equal(result, expected)
+    })
   })
 
   describe('getDependencies(ast, source)', () => {
