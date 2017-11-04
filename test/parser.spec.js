@@ -434,7 +434,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('props', (prop) => {
+        parser.walk().on('prop', (prop) => {
           assert.equal(prop.visibility, 'public')
           assert.equal(prop.name, 'id')
           assert.equal(prop.description, null)
@@ -464,7 +464,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('props', (prop) => {
+        parser.walk().on('prop', (prop) => {
           assert.equal(prop.visibility, 'public')
           assert.equal(prop.name, 'v-model')
           assert.equal(prop.description, '')
@@ -761,7 +761,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('methods', (prop) => {
+        parser.walk().on('method', (prop) => {
           assert.equal(prop.visibility, 'private')
           assert.equal(prop.name, 'getValue')
           assert.equal(prop.description, null)

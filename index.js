@@ -30,42 +30,43 @@ module.exports.parse = (options) => new Promise((resolve) => {
   }
 
   const component = {}
+  const parser = new Parser(options)
 
-  const walker = new Parser(options).walk()
-
-  walker.features.forEach((feature) => {
+  parser.features.forEach((feature) => {
     switch (feature) {
       case 'name':
       case 'description':
         component[feature] = null
+        parser.on(feature, (value) => (component[feature] = value))
+        break
+
+      case 'keywords':
+        component[feature] = []
+        parser.on(feature, (value) => (component[feature] = value))
         break
 
       default:
         component[feature] = []
+
+        const eventName = Parser.getEventName(feature)
+
+        parser.on(eventName, (value) => (component[feature].push(value)))
     }
   })
 
-  walker
-    .on('name', (name) => (component.name = name))
-    .on('description', (desc) => (component.description = desc))
-    .on('keywords', (keywords) => (component.keywords = keywords))
-    .on('props', (prop) => component.props.push(prop))
-    .on('data', (data) => component.data.push(data))
-    .on('computed', (prop) => component.computed.push(prop))
-    .on('methods', (method) => component.methods.push(method))
-    .on('slot', (slot) => component.slots.push(slot))
-    .on('event', (event) => component.events.push(event))
-    .on('end', () => {
-      walker.features.forEach((feature) => {
-        if (component[feature] instanceof Array) {
-          component[feature] = component[feature].filter((item) => {
-            return !options.ignoredVisibilities.includes(item.visibility)
-          })
-        }
-      })
-
-      resolve(component)
+  parser.on('end', () => {
+    parser.features.forEach((feature) => {
+      if (component[feature] instanceof Array) {
+        component[feature] = component[feature].filter((item) => {
+          return !options.ignoredVisibilities.includes(item.visibility)
+        })
+      }
     })
+
+    resolve(component)
+  })
+
+  parser.walk()
 })
 
 function loadSourceFromFileContent (filecontent) {
