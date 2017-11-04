@@ -71,6 +71,22 @@ describe('Parser', () => {
     })
   })
 
+  describe('getEventName(feature)', () => {
+    it('should succed with a singular name', () => {
+      const feature = 'name'
+      const expected = feature
+
+      assert.equal(Parser.getEventName(feature), expected)
+    })
+
+    it('should succed with a plural name', () => {
+      const feature = 'methods'
+      const expected = 'method'
+
+      assert.equal(Parser.getEventName(feature), expected)
+    })
+  })
+
   describe('constructor(options)', () => {
     it('should successfully create new object', () => {
       const filename = './fixtures/checkbox.vue'
