@@ -44,10 +44,39 @@ describe('options', () => {
     assert.doesNotThrow(() => parser.parseOptions(_options))
   })
 
-  it('should parse with filecontent', () => {
+  it('should parse with options.filecontent', () => {
     const _options = { filecontent: 'vue file contents' }
 
     assert.doesNotThrow(() => parser.parseOptions(_options))
+  })
+
+  it('should parse with options.features === ["events"]', () => {
+    const options = {
+      features: ['events'],
+      filecontent: `
+        <script>
+          export default {
+            created () {
+              /**
+               * Fires when the card is changed.
+               */
+              this.$emit('change', true)
+            }
+          }
+        </script>
+      `
+    }
+
+    const event = {
+      name: 'change',
+      description: 'Fires when the card is changed.',
+      keywords: [],
+      visibility: 'public'
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component.events, [ event ])
+    })
   })
 })
 
