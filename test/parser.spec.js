@@ -71,6 +71,22 @@ describe('Parser', () => {
     })
   })
 
+  describe('getEventName(feature)', () => {
+    it('should succed with a singular name', () => {
+      const feature = 'name'
+      const expected = feature
+
+      assert.equal(Parser.getEventName(feature), expected)
+    })
+
+    it('should succed with a plural name', () => {
+      const feature = 'methods'
+      const expected = 'method'
+
+      assert.equal(Parser.getEventName(feature), expected)
+    })
+  })
+
   describe('constructor(options)', () => {
     it('should successfully create new object', () => {
       const filename = './fixtures/checkbox.vue'
@@ -235,6 +251,28 @@ describe('Parser', () => {
         const parser = new Parser(options)
 
         parser.walk().on('end', () => done())
+      })
+
+      it('should not fail when there is a top-level non-assignment expression', (done) => {
+        const script = `
+          import library from 'library'
+
+          library.init()
+
+          const component = {
+            name: 'hello'
+          }
+
+          export default component
+        `
+        const options = { source: { script } }
+        const parser = new Parser(options)
+
+        parser.walk().on('name', (value) => {
+          assert.equal(value, 'hello')
+
+          done()
+        })
       })
     })
 
@@ -412,7 +450,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('props', (prop) => {
+        parser.walk().on('prop', (prop) => {
           assert.equal(prop.visibility, 'public')
           assert.equal(prop.name, 'id')
           assert.equal(prop.description, null)
@@ -442,7 +480,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('props', (prop) => {
+        parser.walk().on('prop', (prop) => {
           assert.equal(prop.visibility, 'public')
           assert.equal(prop.name, 'v-model')
           assert.equal(prop.description, '')
@@ -739,7 +777,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
-        parser.walk().on('methods', (prop) => {
+        parser.walk().on('method', (prop) => {
           assert.equal(prop.visibility, 'private')
           assert.equal(prop.name, 'getValue')
           assert.equal(prop.description, null)

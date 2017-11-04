@@ -25,7 +25,7 @@ npm install --save @vuedoc/parser
 | filename                | The filename to parse. *Required* unless `filecontent` is passed  |               |
 | filecontent             | The file content to parse. *Required* unless `filename` is passed |               |
 | encoding                | The file encoding                                                 | `'utf8'`      |
-| features                | The component features to parse and extract                       | `['name', 'description', 'keywords', 'slots', 'data', 'props', 'computed', 'events', 'methods']` |
+| features                | The component features to parse and extract                       | `['name', 'description', 'keywords', 'slots', 'props', 'data', 'computed', 'events', 'methods']` |
 | defaultMethodVisibility | Can be set to `'public'`, `'protected'`, or `'private'`           | `'public'`    |
 
 ## Usage
@@ -152,6 +152,7 @@ This will print this JSON output:
 You can attach keywords to a comment and then extract them using the parser.
 
 **Usage**
+
 ```js
 /**
  * Component description
@@ -208,7 +209,9 @@ Parsing result:
 The default value is define by `Parser.SUPPORTED_FEATURES` array.
 
 **Usage**
+
 Only parse `name`, `props`, `computed properties` and `events`:
+
 ```js
 const vuedoc = require('@vuedoc/parser')
 const options = {
