@@ -333,6 +333,38 @@ function testComponentEvents (optionsToParse) {
     assert.notEqual(item, void 0)
     assert.equal(item.description, 'Event with recursive identifier name')
   })
+
+  it('should contain event with spread syntax', () => {
+    const options = {
+      features: ['events'],
+      filecontent: `
+        <script>
+          export default {
+            created () {
+              /**
+               * Fires when the card is changed.
+               */
+              this.$emit('change', {
+                bankAccount: { ...this.bankAccount },
+                valid: !this.$v.$invalid
+              })
+            }
+          }
+        </script>
+      `
+    }
+
+    const event = {
+      name: 'change',
+      description: 'Fires when the card is changed.',
+      keywords: [],
+      visibility: 'public'
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component.events, [ event ])
+    })
+  })
 }
 
 describe('component.methods (es6)', () => testComponentMethods(options))
