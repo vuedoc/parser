@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 const cheerio = require('cheerio')
 
 const Parser = require('./lib/parser')
@@ -22,8 +23,15 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
   if (!options.source) {
     if (options.filename) {
-      options.source = loadSourceFromFileContent(
-        fs.readFileSync(options.filename, options.encoding))
+      if (path.extname(options.filename) === '.js') {
+        options.source = {
+          template: '',
+          script: fs.readFileSync(options.filename, options.encoding)
+        }
+      } else {
+        options.source = loadSourceFromFileContent(
+          fs.readFileSync(options.filename, options.encoding))
+      }
     } else {
       options.source = loadSourceFromFileContent(options.filecontent)
     }
