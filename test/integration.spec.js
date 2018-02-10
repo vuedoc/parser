@@ -44,6 +44,17 @@ describe('options', () => {
     assert.doesNotThrow(() => parser.parseOptions(_options))
   })
 
+  it('should parse with options.filename', () => {
+    const options = {
+      filename: f('checkbox.js'),
+      features: ['description']
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, { description: 'A js component' })
+    })
+  })
+
   it('should parse with options.filecontent', () => {
     const _options = { filecontent: 'vue file contents' }
 

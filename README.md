@@ -9,7 +9,7 @@ npm install --save @vuedoc/parser
 ```
 
 ## Features
-- Extract the component name (from the name field of from the filename)
+- Extract the component name (from the name field or from the filename)
 - Extract the component description
 - Keywords Support: You can define your own keywords with the `@` symbol like `@author Sébastien`
 - Extract component props
