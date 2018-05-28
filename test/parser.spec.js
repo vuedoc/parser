@@ -490,6 +490,31 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit generic prop declared in array', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            props: ['id']
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('prop', (prop) => {
+          assert.equal(prop.visibility, 'public')
+          assert.equal(prop.name, 'id')
+          assert.equal(prop.description, null)
+          assert.deepEqual(prop.keywords, [])
+          assert.deepEqual(prop.value, null)
+          done()
+        })
+      })
+
       it('should successfully emit a data item from an component.data object', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
