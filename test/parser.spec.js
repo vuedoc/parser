@@ -758,7 +758,7 @@ describe('Parser', () => {
         })
       })
 
-      it('shouldn\'t emit an unknow item', (done) => {
+      it('shouldn\'t emit an unknow item (object)', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
         const script = `
@@ -769,6 +769,33 @@ describe('Parser', () => {
                */
               value: { type: String }
             }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('unknow', (prop) => {
+            throw new Error('Should ignore unknow entry')
+          })
+          .on('end', done)
+      })
+
+      it('shouldn\'t emit an unknow item (array)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            unknow: [
+              /**
+               * @id id keyword
+               */
+              'id'
+            ]
           }
         `
         const options = {
