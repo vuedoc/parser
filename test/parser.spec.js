@@ -342,6 +342,196 @@ describe('Parser', () => {
           })
           .on('end', done)
       })
+
+      it('should successfully emit defining template event with v-on: prefix', (done) => {
+        const template = `
+          <div>
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, '')
+            assert.equal(event.visibility, 'public')
+            assert.deepEqual(event.keywords, [])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with v-on: prefix and a description', (done) => {
+        const template = `
+          <div>
+            <!-- Emit the input event -->
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, 'Emit the input event')
+            assert.equal(event.visibility, 'public')
+            assert.deepEqual(event.keywords, [])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with v-on: prefix and a visibility', (done) => {
+        const template = `
+          <div>
+            <!-- @private -->
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, '')
+            assert.equal(event.visibility, 'private')
+            assert.deepEqual(event.keywords, [ { name: 'private', description: '' } ])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with v-on: prefix and meta info', (done) => {
+        const template = `
+          <div>
+            <!--
+              Emit the input event
+
+              @protected
+              @value A input value
+            -->
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, 'Emit the input event')
+            assert.equal(event.visibility, 'protected')
+            assert.deepEqual(event.keywords, [
+              { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' }
+            ])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with the @ prefix and meta info', (done) => {
+        const template = `
+          <div>
+            <!--
+              Emit the input event
+
+              @protected
+              @value A input value
+            -->
+            <input
+              type="text"
+              @input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, 'Emit the input event')
+            assert.equal(event.visibility, 'protected')
+            assert.deepEqual(event.keywords, [
+              { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' }
+            ])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template events with both v-on: and @ prefixes', (done) => {
+        const template = `
+          <div>
+            <!--
+              Emit the input event
+
+              @protected
+              @value A input value
+            -->
+            <input
+              type="text"
+              @input="$emit('input', $event)"
+              v-on:change="$emit('change', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        const expected = [
+          { name: 'input',
+            visibility: 'protected',
+            description: 'Emit the input event',
+            keywords:
+            [ { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' } ] },
+          { name: 'change',
+            visibility: 'public',
+            description: '',
+            keywords: [] }
+        ]
+
+        const result = []
+
+        parser.walk()
+          .on('event', (event) => result.push(event))
+          .on('end', () => {
+            assert.deepEqual(result, expected)
+            done()
+          })
+      })
     })
 
     describe('parseComponentName()', () => {
