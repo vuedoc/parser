@@ -202,12 +202,14 @@ describe('component.props (es6 Array)', () => {
   it('should contain a model prop with a description', () => {
     const item = component.props.find((item) => item.name === 'model')
 
+    assert.equal(item.type, 'Any')
     assert.equal(item.description, 'The checkbox model')
   })
 
   it('should contain a checked prop with a description', () => {
     const item = component.props.find((item) => item.name === 'checked')
 
+    assert.equal(item.type, 'Any')
     assert.equal(item.description, 'Initial checkbox value')
   })
 })
