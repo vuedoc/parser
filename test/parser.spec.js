@@ -342,6 +342,275 @@ describe('Parser', () => {
           })
           .on('end', done)
       })
+
+      it('should successfully emit defining template event with v-on: prefix', (done) => {
+        const template = `
+          <div>
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, '')
+            assert.equal(event.visibility, 'public')
+            assert.deepEqual(event.keywords, [])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with v-on: prefix and a description', (done) => {
+        const template = `
+          <div>
+            <!-- Emit the input event -->
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, 'Emit the input event')
+            assert.equal(event.visibility, 'public')
+            assert.deepEqual(event.keywords, [])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with v-on: prefix and a visibility', (done) => {
+        const template = `
+          <div>
+            <!-- @private -->
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, '')
+            assert.equal(event.visibility, 'private')
+            assert.deepEqual(event.keywords, [ { name: 'private', description: '' } ])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with v-on: prefix and meta info', (done) => {
+        const template = `
+          <div>
+            <!--
+              Emit the input event
+
+              @protected
+              @value A input value
+            -->
+            <input
+              type="text"
+              v-on:input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, 'Emit the input event')
+            assert.equal(event.visibility, 'protected')
+            assert.deepEqual(event.keywords, [
+              { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' }
+            ])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template event with the @ prefix and meta info', (done) => {
+        const template = `
+          <div>
+            <!--
+              Emit the input event
+
+              @protected
+              @value A input value
+            -->
+            <input
+              type="text"
+              @input="$emit('input', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('event', (event) => {
+            assert.equal(event.name, 'input')
+            assert.equal(event.description, 'Emit the input event')
+            assert.equal(event.visibility, 'protected')
+            assert.deepEqual(event.keywords, [
+              { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' }
+            ])
+            done()
+          })
+      })
+
+      it('should successfully emit defining template events with both v-on: and @ prefixes', (done) => {
+        const template = `
+          <div>
+            <!--
+              Emit the input event
+
+              @protected
+              @value A input value
+            -->
+            <input
+              type="text"
+              @input="$emit('input', $event)"
+              v-on:change="$emit('change', $event)"/>
+          </div>
+        `
+        const options = {
+          source: { template },
+          filename: './fixtures/checkbox.vue',
+          features: ['events']
+        }
+        const parser = new Parser(options)
+
+        const expected = [
+          { name: 'input',
+            visibility: 'protected',
+            description: 'Emit the input event',
+            keywords:
+            [ { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' } ] },
+          { name: 'change',
+            visibility: 'public',
+            description: '',
+            keywords: [] }
+        ]
+
+        const result = []
+
+        parser.walk()
+          .on('event', (event) => result.push(event))
+          .on('end', () => {
+            assert.deepEqual(result, expected)
+            done()
+          })
+      })
+    })
+
+    describe('parseKeywords()', () => {
+      it('should successfully emit param', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @param {number} x - The x value.
+               */
+              getX (x) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param in a event', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              getX (x) {
+                /**
+                 * Emit the x value.
+                 * @param {number} x - The x value.
+                 */
+                this.$emit('input', x)
+              }
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'input')
+          assert.equal(event.description, 'Emit the x value.')
+          assert.deepEqual(event.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit return', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @return {number} The x value.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: 'number', desc: 'The x value.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
     })
 
     describe('parseComponentName()', () => {
@@ -486,6 +755,31 @@ describe('Parser', () => {
           assert.equal(prop.description, '')
           assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
           assert.deepEqual(prop.value, { type: 'String' })
+          done()
+        })
+      })
+
+      it('should successfully emit generic prop declared in array', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            props: ['id']
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('prop', (prop) => {
+          assert.equal(prop.visibility, 'public')
+          assert.equal(prop.name, 'id')
+          assert.equal(prop.description, null)
+          assert.deepEqual(prop.keywords, [])
+          assert.deepEqual(prop.value, null)
           done()
         })
       })
@@ -653,7 +947,7 @@ describe('Parser', () => {
           assert.deepEqual(prop.keywords, expected.keywords)
           assert.equal(prop.visibility, expected.visibility)
           assert.equal(prop.description, expected.description)
-          assert.equal(prop.value.type, 'FunctionExpression')
+          assert.equal(prop.value, undefined)
           assert.deepEqual(prop.dependencies, expected.dependencies)
           done()
         })
@@ -696,7 +990,7 @@ describe('Parser', () => {
           assert.deepEqual(prop.keywords, expected.keywords)
           assert.equal(prop.visibility, expected.visibility)
           assert.equal(prop.description, expected.description)
-          assert.equal(prop.value.get.type, 'FunctionExpression')
+          assert.equal(prop.value, undefined)
           assert.deepEqual(prop.dependencies, expected.dependencies)
           done()
         })
@@ -733,7 +1027,7 @@ describe('Parser', () => {
         })
       })
 
-      it('shouldn\'t emit an unknow item', (done) => {
+      it('shouldn\'t emit an unknow item (object)', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
         const script = `
@@ -744,6 +1038,33 @@ describe('Parser', () => {
                */
               value: { type: String }
             }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('unknow', (prop) => {
+            throw new Error('Should ignore unknow entry')
+          })
+          .on('end', done)
+      })
+
+      it('shouldn\'t emit an unknow item (array)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            unknow: [
+              /**
+               * @id id keyword
+               */
+              'id'
+            ]
           }
         `
         const options = {
@@ -782,13 +1103,7 @@ describe('Parser', () => {
           assert.equal(prop.name, 'getValue')
           assert.equal(prop.description, null)
           assert.deepEqual(prop.keywords, [])
-          assert.deepEqual(prop.params, [{
-            name: 'ctx',
-            type: 'Identifier',
-            start: 76,
-            end: 79,
-            range: [76, 79]
-          }])
+          assert.deepEqual(prop.params, undefined)
           done()
         })
       })

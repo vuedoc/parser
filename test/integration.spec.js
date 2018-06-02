@@ -30,6 +30,12 @@ const optionsWithFileSource = {
   ignoredVisibilities: []
 }
 
+const optionsForPropsArray = {
+  filename: f('checkboxPropsArray.vue'),
+  encoding: 'utf8',
+  ignoredVisibilities: []
+}
+
 /* global describe it */
 
 describe('options', () => {
@@ -180,6 +186,33 @@ function testComponentProps (optionsToParse) {
     assert.equal(item.description, 'Prop with camel name')
   })
 }
+
+describe('component.props (es6 Array)', () => {
+  let component = {}
+
+  parser.parse(optionsForPropsArray)
+    .then((_component) => (component = _component))
+    .catch((err) => { throw err })
+
+  it('should list props from string array', () => {
+    const propsNames = component.props.map((item) => item.name)
+    assert.deepEqual(propsNames, ['model', 'disabled', 'checked', 'propWithCamel'])
+  })
+
+  it('should contain a model prop with a description', () => {
+    const item = component.props.find((item) => item.name === 'model')
+
+    assert.equal(item.type, 'Any')
+    assert.equal(item.description, 'The checkbox model')
+  })
+
+  it('should contain a checked prop with a description', () => {
+    const item = component.props.find((item) => item.name === 'checked')
+
+    assert.equal(item.type, 'Any')
+    assert.equal(item.description, 'Initial checkbox value')
+  })
+})
 
 describe('component.data', () => {
   const options = {
@@ -483,5 +516,191 @@ describe('component.methods_visibility_private', () => {
     const item = component.methods.find(
       (item) => item.name === 'defaultMethod')
     assert.equal(item, undefined)
+  })
+})
+
+describe('dynamic import() function', () => {
+  it('should successfully parse code with the reserved import keyword', () => {
+    const filecontent = `
+      <script>
+        export default {
+          components: {
+            Lazy: import('./components/Lazy.vue')
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: []
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+})
+
+describe('spread operators', () => {
+  it('should successfully parse', () => {
+    const filecontent = `
+      <script>
+        const importedComputed = {
+          value () {
+            return 0
+          }
+        }
+
+        export default {
+          computed: {
+            ...importedComputed
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [
+        {
+          visibility: 'public',
+          name: 'value',
+          description: null,
+          keywords: [],
+          dependencies: []
+        }
+      ],
+      events: [],
+      methods: []
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+
+  it('should successfully parse with missing identifier', () => {
+    const filecontent = `
+      <script>
+        export default {
+          computed: {
+            ...importedComputed
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: []
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+
+  it('should successfully parse with external identifier', () => {
+    const filecontent = `
+      <script>
+        const importedComputed = {
+          value () {
+            return 0
+          }
+        }
+
+        function id () {
+          const value = this.value
+          return this.name + value
+        }
+
+        export default {
+          computed: {
+            ...importedComputed, id
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [
+        {
+          visibility: 'public',
+          name: 'value',
+          description: null,
+          keywords: [],
+          dependencies: []
+        },
+        {
+          visibility: 'public',
+          name: 'id',
+          description: null,
+          keywords: [],
+          dependencies: []
+        }
+      ],
+      events: [],
+      methods: []
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+
+  it('should successfully parse with identifier function call', () => {
+    const filecontent = `
+      <script>
+        export default {
+          computed: {
+            ...mapGetters('map', [
+              'searchMapToolIsActive'
+            ])
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: []
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
   })
 })

@@ -531,4 +531,90 @@ describe('libutils', () => {
       assert.deepEqual(expected, result)
     })
   })
+
+  describe('parseParamKeyword(text)', () => {
+    it('should parse @param keyword', () => {
+      const comment = '{number} x - The x value.'
+      const expected = { type: 'number', name: 'x', desc: 'The x value.' }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @param keyword with missing dash separator', () => {
+      const comment = '{number} x  The x value.'
+      const expected = { type: 'number', name: 'x', desc: 'The x value.' }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @param keyword with an empty type', () => {
+      const comment = '{} x - The x value.'
+      const expected = { type: 'Any', name: 'x', desc: 'The x value.' }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @param keyword with missing type', () => {
+      const comment = 'x - The x value.'
+      const expected = { type: 'Any', name: 'x', desc: 'The x value.' }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @param keyword with malformated input', () => {
+      const comment = '{ !x=> The x value.'
+      const expected = { type: 'Any', name: null, desc: null }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+  })
+
+  describe('parseReturnKeyword(text)', () => {
+    it('should parse @return keyword', () => {
+      const comment = '{number} The x+y value.'
+      const expected = { type: 'number', desc: 'The x+y value.' }
+      const result = utils.parseReturnKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @return keyword with an empty retuning type', () => {
+      const comment = '{} The x+y value.'
+      const expected = { type: 'Any', desc: 'The x+y value.' }
+      const result = utils.parseReturnKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @return keyword with missing retuning type', () => {
+      const comment = 'The x+y value.'
+      const expected = { type: 'Any', desc: 'The x+y value.' }
+      const result = utils.parseReturnKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @return keyword with malformated input', () => {
+      const comment = ''
+      const expected = { type: 'Any', desc: '' }
+      const result = utils.parseReturnKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+  })
+
+  describe('escapeImportKeyword(code)', () => {
+    it('should escape the reserved import keyword', () => {
+      const code = 'import("x"); import("y")'
+      const expected = 'importX("x"); importX("y")'
+      const result = utils.escapeImportKeyword(code)
+
+      assert.deepEqual(result, expected)
+    })
+  })
 })
