@@ -759,6 +759,31 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit generic prop declared in array', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            props: ['id']
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk().on('prop', (prop) => {
+          assert.equal(prop.visibility, 'public')
+          assert.equal(prop.name, 'id')
+          assert.equal(prop.description, null)
+          assert.deepEqual(prop.keywords, [])
+          assert.deepEqual(prop.value, null)
+          done()
+        })
+      })
+
       it('should successfully emit a data item from an component.data object', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
@@ -1002,7 +1027,7 @@ describe('Parser', () => {
         })
       })
 
-      it('shouldn\'t emit an unknow item', (done) => {
+      it('shouldn\'t emit an unknow item (object)', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
         const script = `
@@ -1013,6 +1038,33 @@ describe('Parser', () => {
                */
               value: { type: String }
             }
+          }
+        `
+        const options = {
+          source: { script },
+          filename,
+          defaultMethodVisibility
+        }
+        const parser = new Parser(options)
+
+        parser.walk()
+          .on('unknow', (prop) => {
+            throw new Error('Should ignore unknow entry')
+          })
+          .on('end', done)
+      })
+
+      it('shouldn\'t emit an unknow item (array)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const defaultMethodVisibility = 'public'
+        const script = `
+          export default {
+            unknow: [
+              /**
+               * @id id keyword
+               */
+              'id'
+            ]
           }
         `
         const options = {

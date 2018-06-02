@@ -30,6 +30,12 @@ const optionsWithFileSource = {
   ignoredVisibilities: []
 }
 
+const optionsForPropsArray = {
+  filename: f('checkboxPropsArray.vue'),
+  encoding: 'utf8',
+  ignoredVisibilities: []
+}
+
 /* global describe it */
 
 describe('options', () => {
@@ -180,6 +186,31 @@ function testComponentProps (optionsToParse) {
     assert.equal(item.description, 'Prop with camel name')
   })
 }
+
+describe('component.props (es6 Array)', () => {
+  let component = {}
+
+  parser.parse(optionsForPropsArray)
+    .then((_component) => (component = _component))
+    .catch((err) => { throw err })
+
+  it('should list props from string array', () => {
+    const propsNames = component.props.map((item) => item.name)
+    assert.deepEqual(propsNames, ['model', 'disabled', 'checked', 'propWithCamel'])
+  })
+
+  it('should contain a model prop with a description', () => {
+    const item = component.props.find((item) => item.name === 'model')
+
+    assert.equal(item.description, 'The checkbox model')
+  })
+
+  it('should contain a checked prop with a description', () => {
+    const item = component.props.find((item) => item.name === 'checked')
+
+    assert.equal(item.description, 'Initial checkbox value')
+  })
+})
 
 describe('component.data', () => {
   const options = {
