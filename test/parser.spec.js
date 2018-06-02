@@ -534,6 +534,85 @@ describe('Parser', () => {
       })
     })
 
+    describe('parseKeywords()', () => {
+      it('should successfully emit param', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @param {number} x - The x value.
+               */
+              getX (x) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param in a event', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              getX (x) {
+                /**
+                 * Emit the x value.
+                 * @param {number} x - The x value.
+                 */
+                this.$emit('input', x)
+              }
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('event', (event) => {
+          assert.equal(event.name, 'input')
+          assert.equal(event.description, 'Emit the x value.')
+          assert.deepEqual(event.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit return', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @return {number} The x value.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: 'number', desc: 'The x value.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
+    })
+
     describe('parseComponentName()', () => {
       it('should successfully emit component name with only template', (done) => {
         const filename = './fixtures/checkbox.vue'
@@ -972,13 +1051,7 @@ describe('Parser', () => {
           assert.equal(prop.name, 'getValue')
           assert.equal(prop.description, null)
           assert.deepEqual(prop.keywords, [])
-          assert.deepEqual(prop.params, [{
-            name: 'ctx',
-            type: 'Identifier',
-            start: 76,
-            end: 79,
-            range: [76, 79]
-          }])
+          assert.deepEqual(prop.params, undefined)
           done()
         })
       })
