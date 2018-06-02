@@ -607,4 +607,14 @@ describe('libutils', () => {
       assert.deepEqual(result, expected)
     })
   })
+
+  describe('escapeImportKeyword(code)', () => {
+    it('should escape the reserved import keyword', () => {
+      const code = 'import("x"); import("y")'
+      const expected = 'importX("x"); importX("y")'
+      const result = utils.escapeImportKeyword(code)
+
+      assert.deepEqual(result, expected)
+    })
+  })
 })

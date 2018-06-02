@@ -485,3 +485,33 @@ describe('component.methods_visibility_private', () => {
     assert.equal(item, undefined)
   })
 })
+
+describe('dynamic import() function', () => {
+  it('should successfully parse code with the reserved import keyword', () => {
+    const filecontent = `
+      <script>
+        export default {
+          components: {
+            Lazy: import('./components/Lazy.vue')
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: []
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+})
