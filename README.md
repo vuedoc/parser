@@ -18,6 +18,7 @@ npm install --save @vuedoc/parser
 - Extract component events
 - Extract component slots
 - Extract component methods
+- JSDoc Support (`@param` and `@return` annotations)
 
 ## Options
 | name                    | description                                                       | default value |
@@ -110,7 +111,6 @@ This will print this JSON output:
       "visibility": "public",
       "description": null,
       "keywords": [],
-      "value": [Object],
       "name": "id",
       "dependencies": [
         "initialValue"
@@ -166,7 +166,7 @@ export default {
     /**
      * Emit on Vue `created` hook
      *
-     * @param boolean
+     * @param {boolean} status - A created status
      */
     this.$emit('created', true)
   }
@@ -196,7 +196,14 @@ Parsing result:
       "keywords": [
         {
           "name": "param",
-          "description": "boolean"
+          "description": "{boolean} status - A created status"
+        }
+      ],
+      "params": [
+        {
+          "name": "status",
+          "type": "boolean",
+          "description": "A created status"
         }
       ]
     }
