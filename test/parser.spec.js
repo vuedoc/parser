@@ -730,6 +730,69 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit optional parameter (using Google Closure Compiler syntax)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {string} [somebody=] - Somebody's name.
+              */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: 'string',
+            name: 'somebody',
+            desc: 'Somebody\'s name.',
+            optional: true
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit optional param and default value', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {string} [somebody=John Doe] - Somebody's name.
+              */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: 'string',
+            name: 'somebody',
+            desc: 'Somebody\'s name.',
+            optional: true,
+            default: 'John Doe'
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
       it('should successfully emit param in a event', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
