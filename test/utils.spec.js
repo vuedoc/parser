@@ -535,17 +535,28 @@ describe('libutils', () => {
   describe('parseJsdocType(type)', () => {
     it('should parse JSDoc type', () => {
       const type = 'string'
-      const expected = 'string'
-      const result = utils.parseJsdocType(type)
+      const expected = { type: 'string' }
+      const result = {}
 
+      utils.parseJsdocType(type, result)
       assert.deepEqual(result, expected)
     })
 
     it('should parse JSDoc type with pipe char', () => {
       const type = 'string|string[]'
-      const expected = ['string', 'string[]']
-      const result = utils.parseJsdocType(type)
+      const expected = { type: ['string', 'string[]'] }
+      const result = {}
 
+      utils.parseJsdocType(type, result)
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse with repeated parameter', () => {
+      const type = '...number'
+      const expected = { type: 'number', repeated: true }
+      const result = {}
+
+      utils.parseJsdocType(type, result)
       assert.deepEqual(result, expected)
     })
   })
@@ -586,6 +597,19 @@ describe('libutils', () => {
     it('should parse @param keyword with malformated input', () => {
       const comment = '{ !x=> The x value.'
       const expected = { type: 'Any', name: null, desc: null }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @param keyword with repeated parameter', () => {
+      const comment = '{...number} num - A positive or negative number.'
+      const expected = {
+        type: 'number',
+        name: 'num',
+        desc: 'A positive or negative number.',
+        repeated: true
+      }
       const result = utils.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
