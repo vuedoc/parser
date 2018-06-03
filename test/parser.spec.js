@@ -661,6 +661,31 @@ describe('Parser', () => {
           done()
         })
       })
+
+      it('should successfully emit alias @returns', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @returns {number} The x value.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: 'number', desc: 'The x value.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
     })
 
     describe('parseComponentName()', () => {
