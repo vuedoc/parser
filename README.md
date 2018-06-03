@@ -18,7 +18,7 @@ npm install --save @vuedoc/parser
 - Extract component events
 - Extract component slots
 - Extract component methods
-- JSDoc Support (`@param` and `@return` annotations)
+- JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
 ## Options
 | name                    | description                                                       | default value |
@@ -64,92 +64,194 @@ This will print this JSON output:
       ]
     }
   ],
-  "props": [
-    {
-      "entry": {
-        "v-model": {
-          "type": "Array",
-          "required": true,
-          "twoWay": true
-        }
-      },
-      "comments": [
-        "The checbox model"
-      ]
-    },
-    {
-      "entry": {
-        "disabled": "Boolean"
-      },
-      "comments": [
-        "Initial checbox state"
-      ]
-    },
-    {
-      "entry": {
-        "checked": {
-          "type": "Boolean",
-          "default": true
-        }
-      },
-      "comments": [
-        "Initial checbox value"
-      ]
+  "props": [ ... ],
+  "data": [ ... ],
+  "computed": [ ... ],
+  "slots": [ ... ],
+  "events": [ ... ],
+  "methods": [ ... ]
+}
+```
+
+See [test/fixtures/checkbox-result.json](https://github.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json) for the complete result.
+
+## Add component name
+
+By default, `vuedoc.parser` use the component's filename to generate the component name.
+To set a custom name, use the `name` field like:
+
+```js
+export default {
+  name: 'my-checkbox'
+}
+```
+
+## Add component description
+
+To add a component description, just add a comment before the `export` keyword like:
+
+```js
+/**
+ * Component description
+ */
+export default {
+  ...
+}
+```
+
+## Anotate props, data and computed properties
+
+To document props, data or computed properties, use comments like:
+
+```js
+export default {
+  props: {
+    /**
+     * Component ID
+     */
+    id: {
+      type: String,
+      required: true
     }
-  ],
-  "data": [
-    {
-      "visibility": "public",
-      "description": null,
-      "keywords": [],
-      "value": null,
-      "name": "initialValue"
+  },
+  data () {
+    return {
+      /**
+       * Indicates that the control is checked
+       */
+      isChecked: false
     }
-  ],
-  "computed": [
-    {
-      "visibility": "public",
-      "description": null,
-      "keywords": [],
-      "name": "id",
-      "dependencies": [
-        "initialValue"
-      ]
+  },
+  computed: {
+    /**
+     * Indicates that the control is selected
+     */
+    selected () {
+      return this.isChecked
     }
-  ],
-  "slots": [
-    {
-      "name": "label",
-      "comments": [
-        "Use this slot to set the checkbox label"
-      ]
+  }
+}
+```
+
+`vuedoc.parser` will automatically extract `required` and `default` values for properties and computed properties's dependencies.
+
+To document a `v-model` prop, use the `@model` keyword:
+
+```js
+export default {
+  props: {
+    /**
+     * The checkbox model
+     * @model
+     */
+    model: {
+      type: Array,
+      required: true
     }
-  ],
-  "events": [
-    {
-      "name": "loaded",
-      "comments": [
-        "Emited when the component has been loaded"
-      ]
-    }
-  ],
-  "methods": [
-    {
-      "entry": {
-        "check": {
-          "type": "FunctionExpression"
-        }
-      },
-      "comments": [
-        "Check the checbox"
-      ]
-    }
+  }
+}
+```
+
+You can also document array string props:
+
+```js
+export default {
+  props: [
+    /**
+     * Checkbox ID
+     */
+    'id',
+
+    /**
+     * The checkbox model
+     */
+    'value'
   ]
 }
 ```
 
+By default, all extracted things have the `public` visibility.
+To change this for one entry, add `@protected` or `@private` keywork.
+
+```js
+export default {
+  data: () => ({
+    /**
+     * Indicates that the control is checked
+     * @private
+     */
+    isChecked: false
+  })
+}
+```
+
+## Anotate methods and events
+
+To document methods or events, just add comments before:
+
+```js
+export default {
+  methods: {
+    /**
+     * Submit form
+     */
+    submit () {
+      /**
+       * Emit the `input` event on submit
+       */
+      this.$emit('input', true)
+    }
+  }
+}
+```
+
+`vuedoc.parser` automatically extracts events from component hook:
+
+```js
+export default {
+  created () {
+    /**
+     * Emit on Vue `created` hook
+     */
+    this.$emit('created', true)
+  }
+}
+```
+
+Use the JSDoc [@param](http://usejsdoc.org/tags-param.html) and [@return](http://usejsdoc.org/tags-returns.html) tags to define parameters and returning type:
+
+```js
+export default {
+  methods: {
+    /**
+     * Submit form
+     * @param {object} data - Data to submit
+     * @return {boolean} true on success; otherwise, false
+     */
+    submit (data) {
+      /**
+       * Emit the `loading` event on submit
+       * @param {boolean} status - The loading status
+       */
+      this.$emit('loading', true)
+
+      return true
+    }
+  }
+}
+```
+
+`vuedoc.parser` is also able to extract event event from template:
+
+```html
+<template>
+  <!-- Emit the `input` event on submit -->
+  <button @click="$emit('input', $event)">Submit</button>
+</template>
+```
+
 ## Keywords Extraction
-You can attach keywords to a comment and then extract them using the parser.
+You can attach keywords to any comment and then extract them using the parser.
 
 **Usage**
 
@@ -160,17 +262,7 @@ You can attach keywords to a comment and then extract them using the parser.
  * @author Sébastien
  * @license MIT
  */
-export default {
-  name: 'my-checkbox',
-  created () {
-    /**
-     * Emit on Vue `created` hook
-     *
-     * @param {boolean} status - A created status
-     */
-    this.$emit('created', true)
-  }
-}
+export default { ... }
 ```
 
 Parsing result:
@@ -186,26 +278,6 @@ Parsing result:
     {
       "name": "license",
       "description": "MIT"
-    }
-  ],
-  "events": [
-    {
-      "name": "created",
-      "description": "Emit on Vue `created` hook",
-      "visibility": "public",
-      "keywords": [
-        {
-          "name": "param",
-          "description": "{boolean} status - A created status"
-        }
-      ],
-      "params": [
-        {
-          "name": "status",
-          "type": "boolean",
-          "description": "A created status"
-        }
-      ]
     }
   ]
 }
@@ -227,7 +299,8 @@ const options = {
 }
 
 vuedoc.parse(options)
-  .then((component) => console.log(component)) // => { name, props, computed, events }
+  .then((component) => Object.keys(component))
+  .then((keys) => console.log(keys)) // => { name, props, computed, events }
   .catch((err) => console.error(err))
 ```
 
@@ -242,7 +315,8 @@ const options = {
 }
 
 vuedoc.parse(options)
-  .then((component) => console.log(component)) // => { name, description, keywords, props, computed, events, methods }
+  .then((component) => Object.keys(component))
+  .then((keys) => console.log(keys)) // => { name, description, keywords, props, computed, events, methods }
   .catch((err) => console.error(err))
 ```
 

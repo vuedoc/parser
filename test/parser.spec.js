@@ -560,6 +560,271 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit param with alias @arg', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @arg {number} x - The x value.
+               */
+              getX (x) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param with alias @argument', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @argument {number} x - The x value.
+               */
+              getX (x) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param with parameter\'s properties', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Assign the project to an employee.
+               * @param {Object} employee - The employee who is responsible for the project.
+               * @param {string} employee.name - The name of the employee.
+               * @param {string} employee.department - The employee's department.
+               */
+              assign (employee) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          { type: 'Object', name: 'employee', desc: 'The employee who is responsible for the project.' },
+          { type: 'string', name: 'employee.name', desc: 'The name of the employee.' },
+          { type: 'string', name: 'employee.department', desc: 'The employee\'s department.' }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'assign')
+          assert.equal(method.description, 'Assign the project to an employee.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param with array type', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Assign the project to a list of employees.
+               * @param {Object[]} employees - The employees who are responsible for the project.
+               */
+              assign (employee) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          { type: 'Object[]', name: 'employees', desc: 'The employees who are responsible for the project.' }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'assign')
+          assert.equal(method.description, 'Assign the project to a list of employees.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param with properties of values in an array', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Assign the project to a list of employees.
+               * @param {Object[]} employees - The employees who are responsible for the project.
+               * @param {string} employees[].name - The name of an employee.
+               * @param {string} employees[].department - The employee's department.
+               */
+              assign (employee) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          { type: 'Object[]', name: 'employees', desc: 'The employees who are responsible for the project.' },
+          { type: 'string', name: 'employees[].name', desc: 'The name of an employee.' },
+          { type: 'string', name: 'employees[].department', desc: 'The employee\'s department.' }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'assign')
+          assert.equal(method.description, 'Assign the project to a list of employees.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit optional param', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {string} [somebody] - Somebody's name.
+               */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: 'string',
+            name: 'somebody',
+            desc: 'Somebody\'s name.',
+            optional: true
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit optional parameter (using Google Closure Compiler syntax)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {string} [somebody=] - Somebody's name.
+               */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: 'string',
+            name: 'somebody',
+            desc: 'Somebody\'s name.',
+            optional: true
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit optional param and one type OR another type (type union)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {(string|string[])} [somebody=John Doe] - Somebody's name, or an array of names.
+               */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: ['string', 'string[]'],
+            name: 'somebody',
+            desc: 'Somebody\'s name, or an array of names.',
+            optional: true,
+            default: 'John Doe'
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit optional param and default value', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {string} [somebody=John Doe] - Somebody's name.
+              */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: 'string',
+            name: 'somebody',
+            desc: 'Somebody\'s name.',
+            optional: true,
+            default: 'John Doe'
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
       it('should successfully emit param in a event', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
@@ -607,6 +872,79 @@ describe('Parser', () => {
         parser.walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit alias @returns', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @returns {number} The x value.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: 'number', desc: 'The x value.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit return with array type', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x values.
+               * @return {number[]} The x values.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: 'number[]', desc: 'The x values.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x values.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit return with one type OR another returning type (type union)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @return {(string|string[])} The x values.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: ['string', 'string[]'], desc: 'The x values.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
           assert.deepEqual(method.return, expected)
           done()
         })
