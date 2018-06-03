@@ -610,6 +610,37 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit param with parameter\'s properties', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Assign the project to an employee.
+               * @param {Object} employee - The employee who is responsible for the project.
+               * @param {string} employee.name - The name of the employee.
+               * @param {string} employee.department - The employee's department.
+              */
+              assign (employee) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          { type: 'Object', name: 'employee', desc: 'The employee who is responsible for the project.' },
+          { type: 'string', name: 'employee.name', desc: 'The name of the employee.' },
+          { type: 'string', name: 'employee.department', desc: 'The employee\'s department.' }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'assign')
+          assert.equal(method.description, 'Assign the project to an employee.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
       it('should successfully emit param in a event', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
