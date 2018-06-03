@@ -532,6 +532,24 @@ describe('libutils', () => {
     })
   })
 
+  describe('parseJsdocType(type)', () => {
+    it('should parse JSDoc type', () => {
+      const type = 'string'
+      const expected = 'string'
+      const result = utils.parseJsdocType(type)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse JSDoc type with pipe char', () => {
+      const type = 'string|string[]'
+      const expected = ['string', 'string[]']
+      const result = utils.parseJsdocType(type)
+
+      assert.deepEqual(result, expected)
+    })
+  })
+
   describe('parseParamKeyword(text)', () => {
     it('should parse @param keyword', () => {
       const comment = '{number} x - The x value.'
