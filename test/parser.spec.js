@@ -641,6 +641,33 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit param with array type', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Assign the project to a list of employees.
+               * @param {Object[]} employees - The employees who are responsible for the project.
+              */
+              assign (employee) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          { type: 'Object[]', name: 'employees', desc: 'The employees who are responsible for the project.' },
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'assign')
+          assert.equal(method.description, 'Assign the project to a list of employees.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
       it('should successfully emit param in a event', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
@@ -713,6 +740,31 @@ describe('Parser', () => {
         parser.walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit return with array type', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x values.
+               * @return {number[]} The x values.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: 'number[]', desc: 'The x values.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x values.')
           assert.deepEqual(method.return, expected)
           done()
         })
