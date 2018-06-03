@@ -657,7 +657,38 @@ describe('Parser', () => {
         const options = { source: { script }, filename }
         const parser = new Parser(options)
         const expected = [
+          { type: 'Object[]', name: 'employees', desc: 'The employees who are responsible for the project.' }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'assign')
+          assert.equal(method.description, 'Assign the project to a list of employees.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param with properties of values in an array', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Assign the project to a list of employees.
+               * @param {Object[]} employees - The employees who are responsible for the project.
+               * @param {string} employees[].name - The name of an employee.
+               * @param {string} employees[].department - The employee's department.
+              */
+              assign (employee) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
           { type: 'Object[]', name: 'employees', desc: 'The employees who are responsible for the project.' },
+          { type: 'string', name: 'employees[].name', desc: 'The name of an employee.' },
+          { type: 'string', name: 'employees[].department', desc: 'The employee\'s department.' }
         ]
 
         parser.walk().on('method', (method) => {
