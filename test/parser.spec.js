@@ -620,7 +620,7 @@ describe('Parser', () => {
                * @param {Object} employee - The employee who is responsible for the project.
                * @param {string} employee.name - The name of the employee.
                * @param {string} employee.department - The employee's department.
-              */
+               */
               assign (employee) {}
             }
           }
@@ -649,7 +649,7 @@ describe('Parser', () => {
               /**
                * Assign the project to a list of employees.
                * @param {Object[]} employees - The employees who are responsible for the project.
-              */
+               */
               assign (employee) {}
             }
           }
@@ -678,7 +678,7 @@ describe('Parser', () => {
                * @param {Object[]} employees - The employees who are responsible for the project.
                * @param {string} employees[].name - The name of an employee.
                * @param {string} employees[].department - The employee's department.
-              */
+               */
               assign (employee) {}
             }
           }
@@ -706,7 +706,7 @@ describe('Parser', () => {
             methods: {
               /**
                * @param {string} [somebody] - Somebody's name.
-              */
+               */
               sayHello (somebody) {}
             }
           }
@@ -737,7 +737,7 @@ describe('Parser', () => {
             methods: {
               /**
                * @param {string} [somebody=] - Somebody's name.
-              */
+               */
               sayHello (somebody) {}
             }
           }
@@ -750,6 +750,38 @@ describe('Parser', () => {
             name: 'somebody',
             desc: 'Somebody\'s name.',
             optional: true
+          }
+        ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'sayHello')
+          assert.equal(method.description, '')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit optional param and one type OR another type (type union)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @param {(string|string[])} [somebody=John Doe] - Somebody's name, or an array of names.
+               */
+              sayHello (somebody) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [
+          {
+            type: ['string', 'string[]'],
+            name: 'somebody',
+            desc: 'Somebody\'s name, or an array of names.',
+            optional: true,
+            default: 'John Doe'
           }
         ]
 
@@ -890,6 +922,29 @@ describe('Parser', () => {
         parser.walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x values.')
+          assert.deepEqual(method.return, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit return with one type OR another returning type (type union)', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * @return {(string|string[])} The x values.
+               */
+              getX () {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = { type: ['string', 'string[]'], desc: 'The x values.' }
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
           assert.deepEqual(method.return, expected)
           done()
         })
