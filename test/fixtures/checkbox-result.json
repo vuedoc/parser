@@ -1,0 +1,622 @@
+{
+  "name": "checkbox",
+  "description": "A simple checkbox component",
+  "keywords": [
+    {
+      "name": "author",
+      "description": "Sébastien"
+    }
+  ],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Default slot"
+    },
+    {
+      "name": "label",
+      "description": "Use this slot to set the checkbox label"
+    },
+    {
+      "name": "multiline",
+      "description": "This\n      is multiline description"
+    },
+    {
+      "name": "undescribed",
+      "description": null
+    }
+  ],
+  "props": [
+    {
+      "keywords": [
+        {
+          "name": "model",
+          "description": ""
+        }
+      ],
+      "visibility": "public",
+      "description": "The checkbox model",
+      "value": {
+        "type": "Array",
+        "required": true,
+        "twoWay": true
+      },
+      "name": "v-model"
+    },
+    {
+      "keywords": [],
+      "visibility": "public",
+      "description": "Initial checkbox state",
+      "value": "Boolean",
+      "name": "disabled"
+    },
+    {
+      "keywords": [],
+      "visibility": "public",
+      "description": "Initial checkbox value",
+      "value": {
+        "type": "Boolean",
+        "default": true
+      },
+      "name": "checked"
+    },
+    {
+      "keywords": [],
+      "visibility": "public",
+      "description": "Prop with camel name",
+      "value": {
+        "type": "Object",
+        "default": {
+          "type": "ArrowFunctionExpression",
+          "start": 551,
+          "end": 571,
+          "range": [
+            551,
+            571
+          ],
+          "id": null,
+          "generator": false,
+          "expression": true,
+          "async": false,
+          "params": [],
+          "body": {
+            "type": "ObjectExpression",
+            "start": 558,
+            "end": 570,
+            "range": [
+              558,
+              570
+            ],
+            "properties": [
+              {
+                "type": "Property",
+                "start": 560,
+                "end": 569,
+                "range": [
+                  560,
+                  569
+                ],
+                "method": false,
+                "shorthand": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 560,
+                  "end": 564,
+                  "range": [
+                    560,
+                    564
+                  ],
+                  "name": "name"
+                },
+                "value": {
+                  "type": "Literal",
+                  "start": 566,
+                  "end": 569,
+                  "range": [
+                    566,
+                    569
+                  ],
+                  "value": "X",
+                  "raw": "'X'"
+                },
+                "kind": "init"
+              }
+            ]
+          }
+        }
+      },
+      "name": "prop-with-camel"
+    }
+  ],
+  "data": [
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "value": null,
+      "name": "initialValue"
+    }
+  ],
+  "computed": [
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "id",
+      "dependencies": [
+        "initialValue"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "loaded",
+      "description": "Emit when the component has been loaded",
+      "visibility": "public",
+      "keywords": []
+    },
+    {
+      "name": "check",
+      "description": "Event with identifier name",
+      "visibility": "public",
+      "keywords": []
+    },
+    {
+      "name": "renamed",
+      "description": "Event with renamed identifier name",
+      "visibility": "public",
+      "keywords": []
+    },
+    {
+      "name": "recursive",
+      "description": "Event with recursive identifier name",
+      "visibility": "public",
+      "keywords": []
+    }
+  ],
+  "methods": [
+    {
+      "keywords": [],
+      "visibility": "public",
+      "description": "Check the checkbox",
+      "value": {
+        "type": "FunctionExpression",
+        "start": 1200,
+        "end": 1499,
+        "range": [
+          1200,
+          1499
+        ],
+        "id": null,
+        "generator": false,
+        "expression": false,
+        "async": false,
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "start": 1203,
+          "end": 1499,
+          "range": [
+            1203,
+            1499
+          ],
+          "body": [
+            {
+              "type": "ExpressionStatement",
+              "start": 1211,
+              "end": 1231,
+              "range": [
+                1211,
+                1231
+              ],
+              "expression": {
+                "type": "CallExpression",
+                "start": 1211,
+                "end": 1231,
+                "range": [
+                  1211,
+                  1231
+                ],
+                "callee": {
+                  "type": "MemberExpression",
+                  "start": 1211,
+                  "end": 1222,
+                  "range": [
+                    1211,
+                    1222
+                  ],
+                  "object": {
+                    "type": "Identifier",
+                    "start": 1211,
+                    "end": 1218,
+                    "range": [
+                      1211,
+                      1218
+                    ],
+                    "name": "console"
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "start": 1219,
+                    "end": 1222,
+                    "range": [
+                      1219,
+                      1222
+                    ],
+                    "name": "log"
+                  },
+                  "computed": false
+                },
+                "arguments": [
+                  {
+                    "type": "Literal",
+                    "start": 1223,
+                    "end": 1230,
+                    "range": [
+                      1223,
+                      1230
+                    ],
+                    "value": "check",
+                    "raw": "'check'"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "VariableDeclaration",
+              "start": 1239,
+              "end": 1262,
+              "range": [
+                1239,
+                1262
+              ],
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "start": 1243,
+                  "end": 1262,
+                  "range": [
+                    1243,
+                    1262
+                  ],
+                  "id": {
+                    "type": "Identifier",
+                    "start": 1243,
+                    "end": 1252,
+                    "range": [
+                      1243,
+                      1252
+                    ],
+                    "name": "eventName"
+                  },
+                  "init": {
+                    "type": "Literal",
+                    "start": 1255,
+                    "end": 1262,
+                    "range": [
+                      1255,
+                      1262
+                    ],
+                    "value": "check",
+                    "raw": "'check'"
+                  }
+                }
+              ],
+              "kind": "let"
+            },
+            {
+              "type": "VariableDeclaration",
+              "start": 1269,
+              "end": 1296,
+              "range": [
+                1269,
+                1296
+              ],
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "start": 1275,
+                  "end": 1296,
+                  "range": [
+                    1275,
+                    1296
+                  ],
+                  "id": {
+                    "type": "Identifier",
+                    "start": 1275,
+                    "end": 1280,
+                    "range": [
+                      1275,
+                      1280
+                    ],
+                    "name": "value"
+                  },
+                  "init": {
+                    "type": "Literal",
+                    "start": 1283,
+                    "end": 1296,
+                    "range": [
+                      1283,
+                      1296
+                    ],
+                    "value": "event value",
+                    "raw": "'event value'"
+                  }
+                }
+              ],
+              "kind": "const"
+            },
+            {
+              "type": "IfStatement",
+              "start": 1304,
+              "end": 1364,
+              "range": [
+                1304,
+                1364
+              ],
+              "test": {
+                "type": "Identifier",
+                "start": 1308,
+                "end": 1317,
+                "range": [
+                  1308,
+                  1317
+                ],
+                "name": "eventName"
+              },
+              "consequent": {
+                "type": "BlockStatement",
+                "start": 1319,
+                "end": 1364,
+                "range": [
+                  1319,
+                  1364
+                ],
+                "body": [
+                  {
+                    "type": "ExpressionStatement",
+                    "start": 1329,
+                    "end": 1356,
+                    "range": [
+                      1329,
+                      1356
+                    ],
+                    "expression": {
+                      "type": "CallExpression",
+                      "start": 1329,
+                      "end": 1356,
+                      "range": [
+                        1329,
+                        1356
+                      ],
+                      "callee": {
+                        "type": "MemberExpression",
+                        "start": 1329,
+                        "end": 1340,
+                        "range": [
+                          1329,
+                          1340
+                        ],
+                        "object": {
+                          "type": "Identifier",
+                          "start": 1329,
+                          "end": 1336,
+                          "range": [
+                            1329,
+                            1336
+                          ],
+                          "name": "console"
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "start": 1337,
+                          "end": 1340,
+                          "range": [
+                            1337,
+                            1340
+                          ],
+                          "name": "log"
+                        },
+                        "computed": false
+                      },
+                      "arguments": [
+                        {
+                          "type": "Literal",
+                          "start": 1341,
+                          "end": 1344,
+                          "range": [
+                            1341,
+                            1344
+                          ],
+                          "value": ">",
+                          "raw": "'>'"
+                        },
+                        {
+                          "type": "Identifier",
+                          "start": 1346,
+                          "end": 1355,
+                          "range": [
+                            1346,
+                            1355
+                          ],
+                          "name": "eventName"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "alternate": null
+            },
+            {
+              "type": "ExpressionStatement",
+              "start": 1372,
+              "end": 1393,
+              "range": [
+                1372,
+                1393
+              ],
+              "expression": {
+                "type": "AssignmentExpression",
+                "start": 1372,
+                "end": 1393,
+                "range": [
+                  1372,
+                  1393
+                ],
+                "operator": "=",
+                "left": {
+                  "type": "Identifier",
+                  "start": 1372,
+                  "end": 1381,
+                  "range": [
+                    1372,
+                    1381
+                  ],
+                  "name": "eventName"
+                },
+                "right": {
+                  "type": "Literal",
+                  "start": 1384,
+                  "end": 1393,
+                  "range": [
+                    1384,
+                    1393
+                  ],
+                  "value": "renamed",
+                  "raw": "'renamed'"
+                }
+              },
+              "trailingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n       * Event with renamed identifier name\n       ",
+                  "start": 1401,
+                  "end": 1458,
+                  "range": [
+                    1401,
+                    1458
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "ExpressionStatement",
+              "start": 1465,
+              "end": 1493,
+              "range": [
+                1465,
+                1493
+              ],
+              "expression": {
+                "type": "CallExpression",
+                "start": 1465,
+                "end": 1493,
+                "range": [
+                  1465,
+                  1493
+                ],
+                "callee": {
+                  "type": "MemberExpression",
+                  "start": 1465,
+                  "end": 1475,
+                  "range": [
+                    1465,
+                    1475
+                  ],
+                  "object": {
+                    "type": "ThisExpression",
+                    "start": 1465,
+                    "end": 1469,
+                    "range": [
+                      1465,
+                      1469
+                    ]
+                  },
+                  "property": {
+                    "type": "Identifier",
+                    "start": 1470,
+                    "end": 1475,
+                    "range": [
+                      1470,
+                      1475
+                    ],
+                    "name": "$emit"
+                  },
+                  "computed": false
+                },
+                "arguments": [
+                  {
+                    "type": "Identifier",
+                    "start": 1476,
+                    "end": 1485,
+                    "range": [
+                      1476,
+                      1485
+                    ],
+                    "name": "eventName"
+                  },
+                  {
+                    "type": "Identifier",
+                    "start": 1487,
+                    "end": 1492,
+                    "range": [
+                      1487,
+                      1492
+                    ],
+                    "name": "value"
+                  }
+                ]
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n       * Event with renamed identifier name\n       ",
+                  "start": 1401,
+                  "end": 1458,
+                  "range": [
+                    1401,
+                    1458
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "name": "check",
+      "args": []
+    },
+    {
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "value": {
+        "type": "FunctionExpression",
+        "start": 1905,
+        "end": 1910,
+        "range": [
+          1905,
+          1910
+        ],
+        "id": null,
+        "generator": false,
+        "expression": false,
+        "async": false,
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "start": 1908,
+          "end": 1910,
+          "range": [
+            1908,
+            1910
+          ],
+          "body": []
+        }
+      },
+      "name": "uncommentedMethod",
+      "args": []
+    }
+  ]
+}
