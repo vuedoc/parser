@@ -560,6 +560,56 @@ describe('Parser', () => {
         })
       })
 
+      it('should successfully emit param with alias @arg', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @arg {number} x - The x value.
+               */
+              getX (x) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
+      it('should successfully emit param with alias @argument', (done) => {
+        const filename = './fixtures/checkbox.vue'
+        const script = `
+          export default {
+            methods: {
+              /**
+               * Get the x value.
+               * @argument {number} x - The x value.
+               */
+              getX (x) {}
+            }
+          }
+        `
+        const options = { source: { script }, filename }
+        const parser = new Parser(options)
+        const expected = [ { type: 'number', name: 'x', desc: 'The x value.' } ]
+
+        parser.walk().on('method', (method) => {
+          assert.equal(method.name, 'getX')
+          assert.equal(method.description, 'Get the x value.')
+          assert.deepEqual(method.params, expected)
+          done()
+        })
+      })
+
       it('should successfully emit param in a event', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
