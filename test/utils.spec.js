@@ -559,6 +559,15 @@ describe('libutils', () => {
       utils.parseJsdocType(type, result)
       assert.deepEqual(result, expected)
     })
+
+    it('should parse with * as type', () => {
+      const type = '*'
+      const expected = { type: 'Any' }
+      const result = {}
+
+      utils.parseJsdocType(type, result)
+      assert.deepEqual(result, expected)
+    })
   })
 
   describe('parseParamKeyword(text)', () => {
@@ -609,6 +618,18 @@ describe('libutils', () => {
         name: 'num',
         desc: 'A positive or negative number.',
         repeated: true
+      }
+      const result = utils.parseParamKeyword(comment)
+
+      assert.deepEqual(result, expected)
+    })
+
+    it('should parse @param keyword with Any type', () => {
+      const comment = '{*} somebody - Whatever you want.'
+      const expected = {
+        type: 'Any',
+        name: 'somebody',
+        desc: 'Whatever you want.'
       }
       const result = utils.parseParamKeyword(comment)
 
