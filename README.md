@@ -1,7 +1,7 @@
 # The vuedoc parser
 Generate a JSON documentation for a Vue file component
 
-[![Build Status](https://travis-ci.org/vuedoc/parser.svg?branch=master)](https://travis-ci.org/vuedoc/parser) [![Coverage Status](https://coveralls.io/repos/github/vuedoc/parser/badge.svg?branch=master)](https://coveralls.io/github/vuedoc/parser?branch=master)
+[![npm](https://img.shields.io/npm/v/parser.svg)](https://www.npmjs.com/package/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/build.svg)](https://gitlab.com/vuedoc/parser/commits/master) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/pipelines)
 
 ## Install
 ```sh
@@ -321,8 +321,8 @@ vuedoc.parse(options)
 ```
 
 ## Related projects
-- [@vuedoc/md](https://github.com/vuedoc/md) - A Markdown Documentation Generator for Vue File Components
+- [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation Generator for Vue File Components
 
 ## License
 
-Under the MIT license. See [LICENSE](https://github.com/vuedoc/parser/blob/master/LICENSE) file for more details.
+Under the MIT license. See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for more details.
