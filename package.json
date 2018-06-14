@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuedoc/parser.git"
+    "url": "git+https://gitlab.com/vuedoc/parser.git"
   },
   "keywords": [
     "vuedoc",
@@ -25,9 +25,9 @@
   "author": "Sébastien Demanou",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vuedoc/parser/issues"
+    "url": "https://gitlab.com/vuedoc/parser/issues"
   },
-  "homepage": "https://github.com/vuedoc/parser#readme",
+  "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "espree": "^3.5.4",

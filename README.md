@@ -321,8 +321,8 @@ vuedoc.parse(options)
 ```
 
 ## Related projects
-- [@vuedoc/md](https://github.com/vuedoc/md) - A Markdown Documentation Generator for Vue File Components
+- [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation Generator for Vue File Components
 
 ## License
 
-Under the MIT license. See [LICENSE](https://github.com/vuedoc/parser/blob/master/LICENSE) file for more details.
+Under the MIT license. See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for more details.
