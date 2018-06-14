@@ -1,7 +1,7 @@
 # The vuedoc parser
 Generate a JSON documentation for a Vue file component
 
-[![npm](https://img.shields.io/npm/v/parser.svg)](https://www.npmjs.com/package/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/build.svg)](https://gitlab.com/vuedoc/parser/commits/master) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/pipelines)
+[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/build.svg)](https://gitlab.com/vuedoc/parser/commits/master) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/pipelines)
 
 ## Install
 ```sh
