@@ -2,7 +2,7 @@ image: node:8.11.3
 
 cache:
   untracked: true
-  key: "$CI_BUILD_REF_NAME"
+  key: "$CI_COMMIT_REF_NAME"
   paths:
     - node_modules/
 
