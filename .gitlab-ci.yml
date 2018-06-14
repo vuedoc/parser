@@ -1,28 +1,34 @@
 image: node:8.11.3
 
-cache:
-  untracked: true
-  key: "$CI_COMMIT_REF_NAME"
-  paths:
-    - node_modules/
-
 stages:
-  - setup
   - test
   - publish
 
-setup:
-  stage: setup
+test on nodejs lts 6:
+  stage: test
+  image: node:6.14.3
   script:
     - npm install
-
-test:
-  stage: test
-  script:
     - npm test
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
 
-publish:
+test on nodejs lts 8:
+  stage: test
+  image: node:8.11.3
+  script:
+    - npm install
+    - npm test
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
+test on latest nodejs:
+  stage: test
+  image: node:latest
+  script:
+    - npm install
+    - npm test
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
+publish to npm:
   stage: publish
   only:
     - tags
