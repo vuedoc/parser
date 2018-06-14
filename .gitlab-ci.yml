@@ -12,15 +12,18 @@ stages:
   - publish
 
 setup:
+  stage: setup
   script:
     - npm install
 
 test:
+  stage: test
   script:
     - npm test
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
 
 publish:
+  stage: publish
   only:
     - tags
     - triggers
