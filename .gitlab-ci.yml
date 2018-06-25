@@ -29,7 +29,7 @@ npm outdated:
 security scan:
   stage: test
   script:
-    - npm audit
+    - npm audit --only=prod
   allow_failure: true
 
 test on nodejs 6:
