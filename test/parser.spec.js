@@ -34,7 +34,7 @@ const script = `
    * @model
    */
   export default {}
-  `
+`
 
 describe('Parser', () => {
   describe('validateOptions(options)', () => {
@@ -154,6 +154,11 @@ describe('Parser', () => {
         /**
          * Component description
          * on multiline
+         *
+         * with preserve
+         *
+         *
+         * whitespaces
          */
         export default {}
       `
@@ -163,7 +168,7 @@ describe('Parser', () => {
         const parser = new Parser(options)
 
         parser.walk().on('description', (value) => {
-          assert.equal(value, 'Component description on multiline')
+          assert.equal(value, 'Component description\non multiline\n\nwith preserve\n\n\nwhitespaces')
 
           done()
         })
@@ -1524,7 +1529,7 @@ describe('Parser', () => {
             desc () {
               /**
                * Event description
-               * 
+               *
                * @event loading
                */
               this.$emit(name, true)

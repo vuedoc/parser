@@ -77,7 +77,7 @@ describe('utils', () => {
       const keyword = keywords.find((keyword) => keyword.name === 'multiline')
 
       assert.ok(keyword)
-      assert.equal(keyword.description, 'Keyword multiline description')
+      assert.equal(keyword.description, 'Keyword multiline\ndescription')
     })
 
     it('should successfully extract keyword with special chars in description', () => {
@@ -112,7 +112,7 @@ describe('utils', () => {
     })
 
     it('should successfully extract both description and keywords', () => {
-      assert.equal(result.description, 'The generic component Sub description')
+      assert.equal(result.description, 'The generic component\nSub description')
       assert.equal(result.keywords.length, 11)
     })
 
@@ -126,7 +126,7 @@ describe('utils', () => {
          */`
       const result = utils.parseComment(comment)
 
-      assert.equal(result.description, 'The generic component Sub description')
+      assert.equal(result.description, 'The generic component\nSub description')
       assert.equal(result.keywords.length, 1)
     })
 
