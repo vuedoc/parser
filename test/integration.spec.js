@@ -1,11 +1,9 @@
-'use strict'
-
 const parser = require('..')
 const assert = require('assert')
 const path = require('path')
 const fs = require('fs')
 
-const f = (filename) => path.join(__dirname, 'fixtures/' + filename)
+const f = (filename) => path.join(__dirname, `fixtures/${filename}`)
 
 const options = {
   filename: f('checkbox.vue'),
@@ -53,7 +51,7 @@ describe('options', () => {
   it('should parse with options.filename', () => {
     const options = {
       filename: f('checkbox.js'),
-      features: ['description']
+      features: [ 'description' ]
     }
 
     return parser.parse(options).then((component) => {
@@ -69,7 +67,7 @@ describe('options', () => {
 
   it('should parse with options.features === ["events"]', () => {
     const options = {
-      features: ['events'],
+      features: [ 'events' ],
       filecontent: `
         <script>
           export default {
@@ -117,8 +115,7 @@ function testComponent (optionsToParse) {
       .catch(done)
   })
 
-  it('should have a name', () =>
-    assert.equal(component.name, 'checkbox'))
+  it('should have a name', () => assert.equal(component.name, 'checkbox'))
 
   it('should have keywords', () => {
     assert.deepEqual(component.keywords, [ { name: 'author', description: 'Sébastien' } ])
@@ -133,8 +130,7 @@ function testComponent (optionsToParse) {
       .catch(done)
   })
 
-  it('should have a description', () =>
-    assert.equal(component.description, 'A simple checkbox component'))
+  it('should have a description', () => assert.equal(component.description, 'A simple checkbox component'))
 }
 
 describe('component.props (es6)', () => testComponentProps(options))
@@ -196,7 +192,7 @@ describe('component.props (es6 Array)', () => {
 
   it('should list props from string array', () => {
     const propsNames = component.props.map((item) => item.name)
-    assert.deepEqual(propsNames, ['model', 'disabled', 'checked', 'propWithCamel'])
+    assert.deepEqual(propsNames, [ 'model', 'disabled', 'checked', 'propWithCamel' ])
   })
 
   it('should contain a model prop with a description', () => {
@@ -273,22 +269,20 @@ describe('component.computed', () => {
     `
   }
 
-  it('should successfully extract computed properties', () => {
-    return parser.parse(options).then((component) => {
-      const computed = component.computed
+  it('should successfully extract computed properties', () => parser.parse(options).then((component) => {
+    const computed = component.computed
 
-      assert.equal(computed.length, 3)
+    assert.equal(computed.length, 3)
 
-      assert.equal(computed[0].name, 'id')
-      assert.deepEqual(computed[0].dependencies, [ 'value', 'name' ])
+    assert.equal(computed[0].name, 'id')
+    assert.deepEqual(computed[0].dependencies, [ 'value', 'name' ])
 
-      assert.equal(computed[1].name, 'type')
-      assert.deepEqual(computed[1].dependencies, [])
+    assert.equal(computed[1].name, 'type')
+    assert.deepEqual(computed[1].dependencies, [])
 
-      assert.equal(computed[2].name, 'getter')
-      assert.deepEqual(computed[2].dependencies, [ 'value', 'name' ])
-    })
-  })
+    assert.equal(computed[2].name, 'getter')
+    assert.deepEqual(computed[2].dependencies, [ 'value', 'name' ])
+  }))
 })
 
 describe('component.slots (es6)', () => testComponentSlots(options))
@@ -305,24 +299,21 @@ function testComponentSlots (optionsToParse) {
     .catch((err) => { throw err })
 
   it('should contain a default slot', () => {
-    const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name === 'default')
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'default')
 
     assert.notEqual(item, void 0)
     assert.equal(item.description, 'Default slot')
   })
 
   it('should contain a named slot', () => {
-    const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name === 'label')
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'label')
 
     assert.notEqual(item, void 0)
     assert.equal(item.description, 'Use this slot to set the checkbox label')
   })
 
   it('should contain a named slot with multiline description', () => {
-    const item = component.slots.find((item) =>
-      item.hasOwnProperty('name') && item.name === 'multiline')
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline')
 
     assert.notEqual(item, void 0)
     assert.equal(item.description, 'This\n      is multiline description')
@@ -330,7 +321,8 @@ function testComponentSlots (optionsToParse) {
 
   it('should contain a named slot without description', () => {
     const item = component.slots.find(
-      (item) => item.name === 'undescribed')
+      (item) => item.name === 'undescribed'
+    )
 
     assert.notEqual(item, void 0)
     assert.equal(item.description, null)
@@ -380,7 +372,7 @@ function testComponentEvents (optionsToParse) {
 
   it('should contain event with spread syntax', () => {
     const options = {
-      features: ['events'],
+      features: [ 'events' ],
       filecontent: `
         <script>
           export default {
@@ -428,7 +420,8 @@ function testComponentMethods (optionsToParse) {
 
   it('should contain a method', () => {
     const item = component.methods.find(
-      (item) => item.name === 'check')
+      (item) => item.name === 'check'
+    )
 
     assert.notEqual(item, void 0)
     assert.equal(item.description, 'Check the checkbox')
@@ -436,21 +429,24 @@ function testComponentMethods (optionsToParse) {
 
   it('should contain a protected method', () => {
     const item = component.methods.find(
-      (item) => item.visibility === 'protected')
+      (item) => item.visibility === 'protected'
+    )
 
     assert.notEqual(item, void 0)
   })
 
   it('should contain a private method', () => {
     const item = component.methods.find(
-      (item) => item.visibility === 'private')
+      (item) => item.visibility === 'private'
+    )
 
     assert.notEqual(item, void 0)
   })
 
   it('should contain un uncommented method', () => {
     const item = component.methods.find(
-      (item) => item.description === null)
+      (item) => item.description === null
+    )
 
     assert.notEqual(item, void 0)
   })
@@ -470,19 +466,22 @@ describe('component.methods_visibility_default', () => {
 
   it('public method should be public', () => {
     const item = component.methods.find(
-      (item) => item.name === 'publicMethod')
+      (item) => item.name === 'publicMethod'
+    )
     assert.equal(item.visibility, 'public')
   })
 
   it('uncommented method should be public', () => {
     const item = component.methods.find(
-      (item) => item.name === 'uncommentedMethod')
+      (item) => item.name === 'uncommentedMethod'
+    )
     assert.equal(item.visibility, 'public')
   })
 
   it('default method should be public', () => {
     const item = component.methods.find(
-      (item) => item.name === 'defaultMethod')
+      (item) => item.name === 'defaultMethod'
+    )
     assert.equal(item.visibility, 'public')
   })
 })
@@ -502,19 +501,22 @@ describe('component.methods_visibility_private', () => {
 
   it('public method should be public', () => {
     const item = component.methods.find(
-      (item) => item.name === 'publicMethod')
+      (item) => item.name === 'publicMethod'
+    )
     assert.equal(item.visibility, 'public')
   })
 
   it('uncommented method should not exist', () => {
     const item = component.methods.find(
-      (item) => item.name === 'uncommentedMethod')
+      (item) => item.name === 'uncommentedMethod'
+    )
     assert.equal(item, undefined)
   })
 
   it('default method should not exist', () => {
     const item = component.methods.find(
-      (item) => item.name === 'defaultMethod')
+      (item) => item.name === 'defaultMethod'
+    )
     assert.equal(item, undefined)
   })
 })

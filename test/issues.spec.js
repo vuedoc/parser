@@ -1,5 +1,3 @@
-'use strict'
-
 const parser = require('..')
 
 /* global describe it expect */
@@ -8,7 +6,7 @@ describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
     it('should parse undefined default value as it', () => {
       const options = {
-        features: ['props'],
+        features: [ 'props' ],
         filecontent: `
           <script>
             export default {
@@ -43,7 +41,7 @@ describe('issues', () => {
 
     it('should parse boolean default value as it', () => {
       const options = {
-        features: ['props'],
+        features: [ 'props' ],
         filecontent: `
           <script>
             export default {
@@ -78,7 +76,7 @@ describe('issues', () => {
 
     it('should parse string default value as it', () => {
       const options = {
-        features: ['props'],
+        features: [ 'props' ],
         filecontent: `
           <script>
             export default {
@@ -113,7 +111,7 @@ describe('issues', () => {
 
     it('should parse number default value as it', () => {
       const options = {
-        features: ['props'],
+        features: [ 'props' ],
         filecontent: `
           <script>
             export default {
@@ -148,7 +146,7 @@ describe('issues', () => {
 
     it('should parse null default value as it', () => {
       const options = {
-        features: ['props'],
+        features: [ 'props' ],
         filecontent: `
           <script>
             export default {

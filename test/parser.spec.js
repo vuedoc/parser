@@ -1,7 +1,5 @@
-'use strict'
-
-const Parser = require('../lib/parser')
 const assert = require('assert')
+const Parser = require('../lib/parser')
 
 /* global describe it */
 
@@ -58,14 +56,14 @@ describe('Parser', () => {
     })
 
     it('should parse with an invalid options.features', () => {
-      const options = { source: {}, features: ['invalid-feature'] }
+      const options = { source: {}, features: [ 'invalid-feature' ] }
 
       assert.throws(() => Parser.validateOptions(options),
         /Unknow 'invalid-feature' feature\. Supported features:/)
     })
 
     it('should parse with a valid options.features', () => {
-      const options = { source: {}, features: ['name', 'events'] }
+      const options = { source: {}, features: [ 'name', 'events' ] }
 
       assert.doesNotThrow(() => Parser.validateOptions(options))
     })
@@ -179,7 +177,7 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: ['name']
+          features: [ 'name' ]
         }
         const parser = new Parser(options)
 
@@ -215,7 +213,7 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: ['name']
+          features: [ 'name' ]
         }
         const parser = new Parser(options)
 
@@ -337,7 +335,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename,
-          features: ['name']
+          features: [ 'name' ]
         }
         const parser = new Parser(options)
 
@@ -359,7 +357,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: ['events']
+          features: [ 'events' ]
         }
         const parser = new Parser(options)
 
@@ -385,7 +383,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: ['events']
+          features: [ 'events' ]
         }
         const parser = new Parser(options)
 
@@ -411,7 +409,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: ['events']
+          features: [ 'events' ]
         }
         const parser = new Parser(options)
 
@@ -442,7 +440,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: ['events']
+          features: [ 'events' ]
         }
         const parser = new Parser(options)
 
@@ -476,7 +474,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: ['events']
+          features: [ 'events' ]
         }
         const parser = new Parser(options)
 
@@ -511,7 +509,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: ['events']
+          features: [ 'events' ]
         }
         const parser = new Parser(options)
 
@@ -782,7 +780,7 @@ describe('Parser', () => {
         const parser = new Parser(options)
         const expected = [
           {
-            type: ['string', 'string[]'],
+            type: [ 'string', 'string[]' ],
             name: 'somebody',
             desc: 'Somebody\'s name, or an array of names.',
             optional: true,
@@ -946,7 +944,7 @@ describe('Parser', () => {
         `
         const options = { source: { script }, filename }
         const parser = new Parser(options)
-        const expected = { type: ['string', 'string[]'], desc: 'The x values.' }
+        const expected = { type: [ 'string', 'string[]' ], desc: 'The x values.' }
 
         parser.walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
@@ -1010,7 +1008,7 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: ['description']
+          features: [ 'description' ]
         }
         const parser = new Parser(options)
 
@@ -1032,7 +1030,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename,
-          features: ['description']
+          features: [ 'description' ]
         }
         const parser = new Parser(options)
 
@@ -1279,10 +1277,10 @@ describe('Parser', () => {
         const parser = new Parser(options)
         const expected = {
           name: 'id',
-          keywords: [{ name: 'private', description: '' }],
+          keywords: [ { name: 'private', description: '' } ],
           visibility: 'private',
           description: 'ID computed prop',
-          dependencies: ['value', 'name']
+          dependencies: [ 'value', 'name' ]
         }
 
         parser.walk().on('computed', (prop) => {
@@ -1322,10 +1320,10 @@ describe('Parser', () => {
         const parser = new Parser(options)
         const expected = {
           name: 'idGetter',
-          keywords: [{ name: 'private', description: '' }],
+          keywords: [ { name: 'private', description: '' } ],
           visibility: 'private',
           description: 'ID computed prop',
-          dependencies: ['value', 'name']
+          dependencies: [ 'value', 'name' ]
         }
 
         parser.walk().on('computed', (prop) => {
@@ -1773,7 +1771,7 @@ describe('Parser', () => {
         `
         const options = {
           source: { script },
-          features: ['name']
+          features: [ 'name' ]
         }
         const parser = new Parser(options)
 

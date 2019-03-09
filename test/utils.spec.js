@@ -1,7 +1,5 @@
-'use strict'
-
-const utils = require('../lib/utils')
 const assert = require('assert')
+const utils = require('../lib/utils')
 
 /* global describe it */
 
@@ -31,7 +29,7 @@ describe('utils', () => {
   describe('getVisibility(keywords, defaultVisibility)', () => {
     it('should successfully return keyword visibility', () => {
       const visibility = 'protected'
-      const keywords = [{ name: visibility }]
+      const keywords = [ { name: visibility } ]
       const expected = visibility
       const result = utils.getVisibility(keywords)
 
@@ -164,17 +162,17 @@ describe('utils', () => {
 
     it('should succeed with property.leadingComments', () => {
       const property = {
-        leadingComments: [{
+        leadingComments: [ {
           value: `
             /**
              * Hello
              */
           `
-        }]
+        } ]
       }
       const visibility = 'protected'
       const expected = {
-        visibility: visibility,
+        visibility,
         description: 'Hello',
         keywords: [],
         describeModel: false
@@ -186,18 +184,18 @@ describe('utils', () => {
 
     it('should succeed with property.trailingComments', () => {
       const property = {
-        trailingComments: [{
+        trailingComments: [ {
           value: `
             /**
              * @private
              */
           `
-        }]
+        } ]
       }
       const expected = {
         visibility: 'private',
         description: '',
-        keywords: [{ name: 'private', description: '' }],
+        keywords: [ { name: 'private', description: '' } ],
         describeModel: false
       }
       const result = utils.getComment(property)
@@ -336,48 +334,48 @@ describe('utils', () => {
     const tokens = entry.value.properties
 
     it('should successfully return tokens in range interval', () => {
-      const range = [213, 230]
+      const range = [ 213, 230 ]
       const results = utils.tokensInterval(tokens, range)
-      const expected = [{
-        'type': 'Property',
-        'start': 214,
-        'end': 228,
-        'range': [
+      const expected = [ {
+        type: 'Property',
+        start: 214,
+        end: 228,
+        range: [
           214,
           228
         ],
-        'method': false,
-        'shorthand': false,
-        'computed': false,
-        'key': {
-          'type': 'Identifier',
-          'start': 214,
-          'end': 222,
-          'range': [
+        method: false,
+        shorthand: false,
+        computed: false,
+        key: {
+          type: 'Identifier',
+          start: 214,
+          end: 222,
+          range: [
             214,
             222
           ],
-          'name': 'required'
+          name: 'required'
         },
-        'value': {
-          'type': 'Literal',
-          'start': 224,
-          'end': 228,
-          'range': [
+        value: {
+          type: 'Literal',
+          start: 224,
+          end: 228,
+          range: [
             224,
             228
           ],
-          'value': true,
-          'raw': 'true'
+          value: true,
+          raw: 'true'
         },
-        'kind': 'init'
-      }]
+        kind: 'init'
+      } ]
 
       assert.deepEqual(results, expected)
     })
 
     it('should successfully found 0 tokens', () => {
-      const range = [0, 100]
+      const range = [ 0, 100 ]
       const results = utils.tokensInterval(tokens, range)
       const expected = []
 
@@ -499,7 +497,7 @@ describe('utils', () => {
             }
           }
         `
-      const expected = ['value', 'name']
+      const expected = [ 'value', 'name' ]
       const result = utils.getDependencies(ast, source)
 
       assert.deepEqual(expected, result)
@@ -524,7 +522,7 @@ describe('utils', () => {
 
     it('should return an empty dependencies array with ast === null', () => {
       const ast = null
-      const source = ``
+      const source = ''
       const expected = []
       const result = utils.getDependencies(ast, source)
 

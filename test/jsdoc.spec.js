@@ -1,7 +1,5 @@
-'use strict'
-
-const jsdoc = require('../lib/jsdoc')
 const assert = require('assert')
+const jsdoc = require('../lib/jsdoc')
 
 /* global describe it */
 
@@ -18,7 +16,7 @@ describe('jsdoc', () => {
 
     it('should parse JSDoc type with pipe char', () => {
       const type = 'string|string[]'
-      const expected = { type: ['string', 'string[]'] }
+      const expected = { type: [ 'string', 'string[]' ] }
       const result = {}
 
       jsdoc.parseType(type, result)
