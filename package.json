@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "npm run lint",
-    "test": "jest --coverage --testURL='http://localhost'",
+    "test": "jest --coverage",
     "lint": "standard index.js lib/* test/*"
   },
   "repository": {
