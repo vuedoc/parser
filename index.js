@@ -78,7 +78,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
         component[feature] = []
 
-        parser.on(eventName, (value) => (component[feature].push(value)))
+        parser.on(eventName, (value) => component[feature].push(value))
       }
     }
   })
