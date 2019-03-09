@@ -35,6 +35,233 @@ const optionsForPropsArray = {
 }
 
 /* global describe it */
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-return-assign */
+
+/* eslint-disable no-unused-vars */
+function testComponentMethods (optionsToParse) {
+  let component = {}
+
+  parser.parse(options)
+    .then((_component) => (component = _component))
+    .catch((err) => {
+      throw err
+    })
+
+  it('should contain a method', () => {
+    const item = component.methods.find(
+      (item) => item.name === 'check'
+    )
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Check the checkbox')
+  })
+
+  it('should contain a protected method', () => {
+    const item = component.methods.find(
+      (item) => item.visibility === 'protected'
+    )
+
+    assert.notEqual(item, undefined)
+  })
+
+  it('should contain a private method', () => {
+    const item = component.methods.find(
+      (item) => item.visibility === 'private'
+    )
+
+    assert.notEqual(item, undefined)
+  })
+
+  it('should contain un uncommented method', () => {
+    const item = component.methods.find(
+      (item) => item.description === null
+    )
+
+    assert.notEqual(item, undefined)
+  })
+}
+
+function testComponent (optionsToParse) {
+  let component = {}
+
+  it('should parse without error', (done) => {
+    parser.parse(optionsToParse)
+      .then((_component) => {
+        component = _component
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should have a name', () => assert.equal(component.name, 'checkbox'))
+
+  it('should have keywords', () => {
+    assert.deepEqual(component.keywords, [ { name: 'author', description: 'Sébastien' } ])
+  })
+
+  it('should guess the component name using the filename', (done) => {
+    parser.parse({ filename: f('UnNamedInput.vue') })
+      .then((component) => {
+        assert.equal(component.name, 'un-named-input')
+        done()
+      })
+      .catch(done)
+  })
+
+  it('should have a description', () => assert.equal(component.description, 'A simple checkbox component'))
+}
+
+function testComponentProps (optionsToParse) {
+  let component = {}
+
+  parser.parse(optionsToParse)
+    .then((_component) => (component = _component))
+    .catch((err) => { throw err })
+
+  it('should contain a v-model prop with a description', () => {
+    const item = component.props.find((item) => item.name === 'v-model')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.value.type, 'Array')
+    assert.equal(item.value.required, true)
+    assert.equal(item.value.twoWay, true)
+    assert.equal(item.description, 'The checkbox model')
+  })
+
+  it('should contain a disabled prop with comments', () => {
+    const item = component.props.find((item) => item.name === 'disabled')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.value, 'Boolean')
+    assert.equal(item.description, 'Initial checkbox state')
+  })
+
+  it('should contain a checked prop with default value and comments', () => {
+    const item = component.props.find((item) => item.name === 'checked')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.value.type, 'Boolean')
+    assert.equal(item.value.default, true)
+    assert.equal(item.description, 'Initial checkbox value')
+  })
+
+  it('should contain a checked prop with camel name', () => {
+    const item = component.props.find((item) => item.name === 'prop-with-camel')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.value.type, 'Object')
+    assert.equal(item.value.default.type, 'ArrowFunctionExpression')
+    assert.equal(item.description, 'Prop with camel name')
+  })
+}
+
+function testComponentSlots (optionsToParse) {
+  let component = {}
+
+  parser.parse(options)
+    .then((_component) => (component = _component))
+    .catch((err) => { throw err })
+
+  it('should contain a default slot', () => {
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'default')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Default slot')
+  })
+
+  it('should contain a named slot', () => {
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'label')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Use this slot to set the checkbox label')
+  })
+
+  it('should contain a named slot with multiline description', () => {
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'This\n      is multiline description')
+  })
+
+  it('should contain a named slot without description', () => {
+    const item = component.slots.find(
+      (item) => item.name === 'undescribed'
+    )
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, null)
+  })
+}
+
+function testComponentEvents (optionsToParse) {
+  let component = {}
+
+  parser.parse(options)
+    .then((_component) => (component = _component))
+    .catch((err) => { throw err })
+
+  it('should contain event with literal name', () => {
+    const item = component.events.find((item) => item.name === 'loaded')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Emit when the component has been loaded')
+  })
+
+  it('should contain event with identifier name', () => {
+    const item = component.events.find((item) => item.name === 'check')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Event with identifier name')
+  })
+
+  it('should contain event with renamed identifier name', () => {
+    const item = component.events.find((item) => item.name === 'renamed')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Event with renamed identifier name')
+  })
+
+  it('should contain event with recursive identifier name', () => {
+    const item = component.events.find((item) => item.name === 'recursive')
+
+    assert.notEqual(item, undefined)
+    assert.equal(item.description, 'Event with recursive identifier name')
+  })
+
+  it('should contain event with spread syntax', () => {
+    const options = {
+      features: [ 'events' ],
+      filecontent: `
+        <script>
+          export default {
+            created () {
+              /**
+               * Fires when the card is changed.
+               */
+              this.$emit('change', {
+                bankAccount: { ...this.bankAccount },
+                valid: !this.$v.$invalid
+              })
+            }
+          }
+        </script>
+      `
+    }
+
+    const event = {
+      name: 'change',
+      description: 'Fires when the card is changed.',
+      keywords: [],
+      visibility: 'public'
+    }
+
+    return parser.parse(options).then((component) => {
+      assert.deepEqual(component.events, [ event ])
+    })
+  })
+}
 
 describe('options', () => {
   it('should fail to parse with missing options.filename', () => {
@@ -103,85 +330,11 @@ describe('component_no-top-level-constant', () => testComponent(optionsNoTopLeve
 
 describe('component_filesource', () => testComponent(optionsWithFileSource))
 
-function testComponent (optionsToParse) {
-  let component = {}
-
-  it('should parse without error', (done) => {
-    parser.parse(optionsToParse)
-      .then((_component) => {
-        component = _component
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should have a name', () => assert.equal(component.name, 'checkbox'))
-
-  it('should have keywords', () => {
-    assert.deepEqual(component.keywords, [ { name: 'author', description: 'Sébastien' } ])
-  })
-
-  it('should guess the component name using the filename', (done) => {
-    parser.parse({ filename: f('UnNamedInput.vue') })
-      .then((component) => {
-        assert.equal(component.name, 'un-named-input')
-        done()
-      })
-      .catch(done)
-  })
-
-  it('should have a description', () => assert.equal(component.description, 'A simple checkbox component'))
-}
-
 describe('component.props (es6)', () => testComponentProps(options))
 
 describe('component.props (commonjs)', () => testComponentProps(optionsForModuleExports))
 
 describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
-
-function testComponentProps (optionsToParse) {
-  let component = {}
-
-  parser.parse(optionsToParse)
-    .then((_component) => (component = _component))
-    .catch((err) => { throw err })
-
-  it('should contain a v-model prop with a description', () => {
-    const item = component.props.find((item) => item.name === 'v-model')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.value.type, 'Array')
-    assert.equal(item.value.required, true)
-    assert.equal(item.value.twoWay, true)
-    assert.equal(item.description, 'The checkbox model')
-  })
-
-  it('should contain a disabled prop with comments', () => {
-    const item = component.props.find((item) => item.name === 'disabled')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.value, 'Boolean')
-    assert.equal(item.description, 'Initial checkbox state')
-  })
-
-  it('should contain a checked prop with default value and comments', () => {
-    const item = component.props.find((item) => item.name === 'checked')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.value.type, 'Boolean')
-    assert.equal(item.value.default, true)
-    assert.equal(item.description, 'Initial checkbox value')
-  })
-
-  it('should contain a checked prop with camel name', () => {
-    const item = component.props.find((item) => item.name === 'prop-with-camel')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.value.type, 'Object')
-    assert.equal(item.value.default.type, 'ArrowFunctionExpression')
-    assert.equal(item.description, 'Prop with camel name')
-  })
-}
 
 describe('component.props (es6 Array)', () => {
   let component = {}
@@ -270,7 +423,7 @@ describe('component.computed', () => {
   }
 
   it('should successfully extract computed properties', () => parser.parse(options).then((component) => {
-    const computed = component.computed
+    const { computed } = component
 
     assert.equal(computed.length, 3)
 
@@ -291,166 +444,17 @@ describe('component.slots (commonjs)', () => testComponentSlots(optionsForModule
 
 describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
 
-function testComponentSlots (optionsToParse) {
-  let component = {}
-
-  parser.parse(options)
-    .then((_component) => (component = _component))
-    .catch((err) => { throw err })
-
-  it('should contain a default slot', () => {
-    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'default')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Default slot')
-  })
-
-  it('should contain a named slot', () => {
-    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'label')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Use this slot to set the checkbox label')
-  })
-
-  it('should contain a named slot with multiline description', () => {
-    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'This\n      is multiline description')
-  })
-
-  it('should contain a named slot without description', () => {
-    const item = component.slots.find(
-      (item) => item.name === 'undescribed'
-    )
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, null)
-  })
-}
-
 describe('component.events (es6)', () => testComponentEvents(options))
 
 describe('component.events (commonjs)', () => testComponentEvents(optionsForModuleExports))
 
 describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
 
-function testComponentEvents (optionsToParse) {
-  let component = {}
-
-  parser.parse(options)
-    .then((_component) => (component = _component))
-    .catch((err) => { throw err })
-
-  it('should contain event with literal name', () => {
-    const item = component.events.find((item) => item.name === 'loaded')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Emit when the component has been loaded')
-  })
-
-  it('should contain event with identifier name', () => {
-    const item = component.events.find((item) => item.name === 'check')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Event with identifier name')
-  })
-
-  it('should contain event with renamed identifier name', () => {
-    const item = component.events.find((item) => item.name === 'renamed')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Event with renamed identifier name')
-  })
-
-  it('should contain event with recursive identifier name', () => {
-    const item = component.events.find((item) => item.name === 'recursive')
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Event with recursive identifier name')
-  })
-
-  it('should contain event with spread syntax', () => {
-    const options = {
-      features: [ 'events' ],
-      filecontent: `
-        <script>
-          export default {
-            created () {
-              /**
-               * Fires when the card is changed.
-               */
-              this.$emit('change', {
-                bankAccount: { ...this.bankAccount },
-                valid: !this.$v.$invalid
-              })
-            }
-          }
-        </script>
-      `
-    }
-
-    const event = {
-      name: 'change',
-      description: 'Fires when the card is changed.',
-      keywords: [],
-      visibility: 'public'
-    }
-
-    return parser.parse(options).then((component) => {
-      assert.deepEqual(component.events, [ event ])
-    })
-  })
-}
-
 describe('component.methods (es6)', () => testComponentMethods(options))
 
 describe('component.methods (commonjs)', () => testComponentMethods(optionsForModuleExports))
 
 describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
-
-function testComponentMethods (optionsToParse) {
-  let component = {}
-
-  parser.parse(options)
-    .then((_component) => (component = _component))
-    .catch((err) => {
-      throw err
-    })
-
-  it('should contain a method', () => {
-    const item = component.methods.find(
-      (item) => item.name === 'check'
-    )
-
-    assert.notEqual(item, void 0)
-    assert.equal(item.description, 'Check the checkbox')
-  })
-
-  it('should contain a protected method', () => {
-    const item = component.methods.find(
-      (item) => item.visibility === 'protected'
-    )
-
-    assert.notEqual(item, void 0)
-  })
-
-  it('should contain a private method', () => {
-    const item = component.methods.find(
-      (item) => item.visibility === 'private'
-    )
-
-    assert.notEqual(item, void 0)
-  })
-
-  it('should contain un uncommented method', () => {
-    const item = component.methods.find(
-      (item) => item.description === null
-    )
-
-    assert.notEqual(item, void 0)
-  })
-}
 
 describe('component.methods_visibility_default', () => {
   let component = {}

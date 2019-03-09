@@ -2,6 +2,7 @@ const assert = require('assert')
 const Parser = require('../lib/parser')
 
 /* global describe it */
+/* eslint-disable max-len */
 
 const template = `
   <div>
@@ -1388,6 +1389,7 @@ describe('Parser', () => {
         }
         const parser = new Parser(options)
 
+        /* eslint-disable no-unused-vars */
         parser.walk()
           .on('unknow', (prop) => {
             throw new Error('Should ignore unknow entry')

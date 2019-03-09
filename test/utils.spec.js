@@ -2,6 +2,8 @@ const assert = require('assert')
 const utils = require('../lib/utils')
 
 /* global describe it */
+/* eslint-disable max-len */
+/* eslint-disable global-require */
 
 const comment = `
   /**
@@ -48,7 +50,7 @@ describe('utils', () => {
 
   describe('parseComment(text, defaultVisibility, features)', () => {
     const result = utils.parseComment(comment)
-    const keywords = result.keywords
+    const { keywords } = result
 
     it('should successfully extract the public visibility keyword', () => {
       const keyword = keywords.find((keyword) => keyword.name === 'public')

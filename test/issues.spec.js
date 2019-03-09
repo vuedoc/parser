@@ -1,6 +1,7 @@
 const parser = require('..')
 
 /* global describe it expect */
+/* eslint-disable max-len */
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
