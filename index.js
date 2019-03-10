@@ -1,8 +1,9 @@
-const fs = require('fs')
-const path = require('path')
 const cheerio = require('cheerio')
 
-const Parser = require('./lib/parser')
+const { extname } = require('path')
+const { readFileSync } = require('fs')
+
+const { Parser } = require('./lib/parser/Parser')
 
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
@@ -36,14 +37,14 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
   if (!options.source) {
     if (options.filename) {
-      if (path.extname(options.filename) === '.js') {
+      if (extname(options.filename) === '.js') {
         options.source = {
           template: '',
-          script: fs.readFileSync(options.filename, options.encoding)
+          script: readFileSync(options.filename, options.encoding)
         }
       } else {
         options.source = loadSourceFromFileContent(
-          fs.readFileSync(options.filename, options.encoding)
+          readFileSync(options.filename, options.encoding)
         )
       }
     } else {
@@ -78,7 +79,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
         component[feature] = []
 
-        parser.on(eventName, (value) => component[feature].push(value))
+        parser.on(eventName, (entry) => component[feature].push(entry))
       }
     }
   })

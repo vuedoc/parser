@@ -3,6 +3,11 @@ const assert = require('assert')
 const path = require('path')
 const fs = require('fs')
 
+/* global describe it */
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-return-assign */
+
 const f = (filename) => path.join(__dirname, `fixtures/${filename}`)
 
 const options = {
@@ -13,6 +18,12 @@ const options = {
 
 const optionsForModuleExports = {
   filename: f('checkboxModuleExports.vue'),
+  encoding: 'utf8',
+  ignoredVisibilities: []
+}
+
+const optionsForVueExtend = {
+  filename: f('checkboxVueExtend.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
@@ -33,11 +44,6 @@ const optionsForPropsArray = {
   encoding: 'utf8',
   ignoredVisibilities: []
 }
-
-/* global describe it */
-/* eslint-disable max-len */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-return-assign */
 
 /* eslint-disable no-unused-vars */
 function testComponentMethods (optionsToParse) {
@@ -83,16 +89,14 @@ function testComponentMethods (optionsToParse) {
   })
 }
 
-function testComponent (optionsToParse) {
+function testComponent (optionsToParse, x) {
   let component = {}
 
-  it('should parse without error', (done) => {
-    parser.parse(optionsToParse)
-      .then((_component) => {
-        component = _component
-        done()
-      })
-      .catch(done)
+  /* eslint-disable arrow-body-style */
+  it('should parse without error', () => {
+    return parser.parse(optionsToParse).then((_component) => {
+      component = _component
+    })
   })
 
   it('should have a name', () => assert.equal(component.name, 'checkbox'))
@@ -326,15 +330,17 @@ describe('component (es6)', () => testComponent(options))
 
 describe('component (commonjs)', () => testComponent(optionsForModuleExports))
 
-describe('component_no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
+describe('component no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
 
-describe('component_filesource', () => testComponent(optionsWithFileSource))
+describe('component filesource', () => testComponent(optionsWithFileSource))
+
+describe('component with Vue.extend', () => testComponent(optionsForVueExtend, true))
 
 describe('component.props (es6)', () => testComponentProps(options))
 
 describe('component.props (commonjs)', () => testComponentProps(optionsForModuleExports))
 
-describe('component.props_filesource', () => testComponentProps(optionsWithFileSource))
+describe('component.props filesource', () => testComponentProps(optionsWithFileSource))
 
 describe('component.props (es6 Array)', () => {
   let component = {}
@@ -442,21 +448,21 @@ describe('component.slots (es6)', () => testComponentSlots(options))
 
 describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports))
 
-describe('component.slots_filesource', () => testComponentSlots(optionsWithFileSource))
+describe('component.slots filesource', () => testComponentSlots(optionsWithFileSource))
 
 describe('component.events (es6)', () => testComponentEvents(options))
 
 describe('component.events (commonjs)', () => testComponentEvents(optionsForModuleExports))
 
-describe('component.events_filesource', () => testComponentEvents(optionsWithFileSource))
+describe('component.events filesource', () => testComponentEvents(optionsWithFileSource))
 
 describe('component.methods (es6)', () => testComponentMethods(options))
 
 describe('component.methods (commonjs)', () => testComponentMethods(optionsForModuleExports))
 
-describe('component.methods_filesource', () => testComponentMethods(optionsWithFileSource))
+describe('component.methods filesource', () => testComponentMethods(optionsWithFileSource))
 
-describe('component.methods_visibility_default', () => {
+describe('component.methods visibility_default', () => {
   let component = {}
 
   parser.parse({
@@ -490,7 +496,7 @@ describe('component.methods_visibility_default', () => {
   })
 })
 
-describe('component.methods_visibility_private', () => {
+describe('component.methods visibility_private', () => {
   let component = {}
 
   parser.parse({
