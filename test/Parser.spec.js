@@ -4,7 +4,6 @@ const { Parser } = require('../lib/parser/Parser')
 /* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable indent */
-/* eslint-disable no-console */
 
 const template = `
   <div>

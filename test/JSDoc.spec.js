@@ -45,7 +45,7 @@ describe('JSDoc', () => {
   describe('parseParamKeyword(text)', () => {
     it('should parse @param keyword', () => {
       const comment = '{number} x - The x value.'
-      const expected = { type: 'number', name: 'x', desc: 'The x value.' }
+      const expected = { type: 'number', name: 'x', description: 'The x value.' }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -53,7 +53,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with missing dash separator', () => {
       const comment = '{number} x  The x value.'
-      const expected = { type: 'number', name: 'x', desc: 'The x value.' }
+      const expected = { type: 'number', name: 'x', description: 'The x value.' }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -61,7 +61,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with an empty type', () => {
       const comment = '{} x - The x value.'
-      const expected = { type: 'Any', name: 'x', desc: 'The x value.' }
+      const expected = { type: 'Any', name: 'x', description: 'The x value.' }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -69,7 +69,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with missing type', () => {
       const comment = 'x - The x value.'
-      const expected = { type: 'Any', name: 'x', desc: 'The x value.' }
+      const expected = { type: 'Any', name: 'x', description: 'The x value.' }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -77,7 +77,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with malformated input', () => {
       const comment = '{ !x=> The x value.'
-      const expected = { type: 'Any', name: null, desc: null }
+      const expected = { type: 'Any', name: null, description: null }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -88,7 +88,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'number',
         name: 'num',
-        desc: 'A positive or negative number.',
+        description: 'A positive or negative number.',
         repeated: true
       }
       const result = JSDoc.parseParamKeyword(comment)
@@ -101,7 +101,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'Any',
         name: 'somebody',
-        desc: 'Whatever you want.'
+        description: 'Whatever you want.'
       }
       const result = JSDoc.parseParamKeyword(comment)
 
@@ -112,7 +112,7 @@ describe('JSDoc', () => {
   describe('parseReturnKeyword(text)', () => {
     it('should parse @return keyword', () => {
       const comment = '{number} The x+y value.'
-      const expected = { type: 'number', desc: 'The x+y value.' }
+      const expected = { type: 'number', description: 'The x+y value.' }
       const result = JSDoc.parseReturnKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -120,7 +120,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with an empty retuning type', () => {
       const comment = '{} The x+y value.'
-      const expected = { type: 'Any', desc: 'The x+y value.' }
+      const expected = { type: 'Any', description: 'The x+y value.' }
       const result = JSDoc.parseReturnKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -128,7 +128,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with missing retuning type', () => {
       const comment = 'The x+y value.'
-      const expected = { type: 'Any', desc: 'The x+y value.' }
+      const expected = { type: 'Any', description: 'The x+y value.' }
       const result = JSDoc.parseReturnKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -136,7 +136,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with malformated input', () => {
       const comment = ''
-      const expected = { type: 'Any', desc: '' }
+      const expected = { type: 'Any', description: '' }
       const result = JSDoc.parseReturnKeyword(comment)
 
       assert.deepEqual(result, expected)
