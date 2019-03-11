@@ -1,7 +1,7 @@
 const assert = require('assert')
 const { Parser } = require('../lib/parser/Parser')
 
-/* global describe it */
+/* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable indent */
 /* eslint-disable no-console */
@@ -612,7 +612,7 @@ describe('Parser', () => {
       it('should successfully emit default slot', (done) => {
         const filename = './fixtures/checkbox.vue'
         const defaultMethodVisibility = 'public'
-        const template = `<slot/>`
+        const template = '<slot/>'
         const options = {
           source: { template },
           filename,
