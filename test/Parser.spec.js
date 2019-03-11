@@ -420,13 +420,13 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
+
       const parser = new Parser(options)
 
       expect(parser.template).toBe(template)
       expect(parser.script).toBe(script)
       expect(parser.filename).toBe(filename)
       expect(parser.scope).toEqual({})
-      expect(parser.eventsEmmited).toEqual({})
       expect(parser.defaultMethodVisibility).toBe(defaultMethodVisibility)
     })
 
@@ -434,9 +434,10 @@ describe('Parser', () => {
       const options = {
         source: { template }
       }
+
       const parser = new Parser(options)
 
-      assert.equal(parser.ast, null)
+      assert.equal(parser.script, null)
       assert.equal(parser.template, template)
     })
 
@@ -444,9 +445,10 @@ describe('Parser', () => {
       const options = {
         source: { template, script: '' }
       }
+
       const parser = new Parser(options)
 
-      assert.equal(parser.ast, null)
+      assert.equal(parser.script, '')
       assert.equal(parser.template, template)
     })
   })
@@ -460,6 +462,7 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
+
       const parser = new Parser(options)
 
 //       events.forEach((event) => parser.on(event, console.warn))
@@ -533,11 +536,9 @@ describe('Parser', () => {
 
       it('should successfully emit component keywords', (done) => {
         const options = { source: { script } }
-        const parser = new Parser(options)
 
-        parser.walk().on('keywords', ({ value }) => {
+        new Parser(options).walk().on('keywords', ({ value }) => {
           assert.deepEqual(value, [ { name: 'name', description: 'my-checkbox' } ])
-
           done()
         })
       })
@@ -549,9 +550,8 @@ describe('Parser', () => {
           filename,
           features: [ 'name' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('keywords', () => {
             throw new Error('Should ignore the component keywords')
           })
@@ -571,11 +571,9 @@ describe('Parser', () => {
           export default component
         `
         const options = { source: { script } }
-        const parser = new Parser(options)
 
-        parser.walk().on('name', ({ value }) => {
+        new Parser(options).walk().on('name', ({ value }) => {
           assert.equal(value, 'hello')
-
           done()
         })
       })
@@ -585,9 +583,8 @@ describe('Parser', () => {
           export default component
         `
         const options = { source: { script } }
-        const parser = new Parser(options)
 
-        parser.walk().on('end', () => done())
+        new Parser(options).walk().on('end', () => done())
       })
 
       it('should not fail when there is a top-level non-assignment expression', (done) => {
@@ -603,11 +600,9 @@ describe('Parser', () => {
           export default component
         `
         const options = { source: { script } }
-        const parser = new Parser(options)
 
-        parser.walk().on('name', ({ value }) => {
+        new Parser(options).walk().on('name', ({ value }) => {
           assert.equal(value, 'hello')
-
           done()
         })
       })
@@ -647,9 +642,8 @@ describe('Parser', () => {
           filename,
           defaultMethodVisibility
         }
-        const parser = new Parser(options)
 
-        parser.walk().on('slot', (slot) => {
+        new Parser(options).walk().on('slot', (slot) => {
           assert.equal(slot.name, 'default')
           assert.equal(slot.description, 'default slot')
           done()
@@ -671,9 +665,8 @@ describe('Parser', () => {
           filename,
           features: [ 'name' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('slot', () => {
             throw new Error('Should ignore the component slots')
           })
@@ -693,9 +686,8 @@ describe('Parser', () => {
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, '')
@@ -719,9 +711,8 @@ describe('Parser', () => {
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, 'Emit the input event')
@@ -745,9 +736,8 @@ describe('Parser', () => {
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, '')
@@ -776,9 +766,8 @@ describe('Parser', () => {
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, 'Emit the input event')
@@ -810,9 +799,8 @@ describe('Parser', () => {
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, 'Emit the input event')
@@ -845,7 +833,6 @@ describe('Parser', () => {
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
         }
-        const parser = new Parser(options)
 
         const expected = [
           { kind: 'event',
@@ -866,7 +853,7 @@ describe('Parser', () => {
 
         const result = []
 
-        parser.walk()
+        new Parser(options).walk()
           .on('event', (event) => result.push(event))
           .on('end', () => {
             expect(result).toEqual(expected)
@@ -890,10 +877,11 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
-        const expected = [ { type: 'number', name: 'x', description: 'The x value.' } ]
+        const expected = [
+          { type: 'number', name: 'x', description: 'The x value.' }
+        ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
           assert.deepEqual(method.params, expected)
@@ -915,10 +903,11 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
-        const expected = [ { type: 'number', name: 'x', description: 'The x value.' } ]
+        const expected = [
+          { type: 'number', name: 'x', description: 'The x value.' }
+        ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
           assert.deepEqual(method.params, expected)
@@ -940,10 +929,11 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
-        const expected = [ { type: 'number', name: 'x', description: 'The x value.' } ]
+        const expected = [
+          { type: 'number', name: 'x', description: 'The x value.' }
+        ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
           assert.deepEqual(method.params, expected)
@@ -967,14 +957,13 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           { type: 'Object', name: 'employee', description: 'The employee who is responsible for the project.' },
           { type: 'string', name: 'employee.name', description: 'The name of the employee.' },
           { type: 'string', name: 'employee.department', description: 'The employee\'s department.' }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'assign')
           assert.equal(method.description, 'Assign the project to an employee.')
           assert.deepEqual(method.params, expected)
@@ -996,12 +985,11 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           { type: 'Object[]', name: 'employees', description: 'The employees who are responsible for the project.' }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'assign')
           assert.equal(method.description, 'Assign the project to a list of employees.')
           assert.deepEqual(method.params, expected)
@@ -1025,14 +1013,13 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           { type: 'Object[]', name: 'employees', description: 'The employees who are responsible for the project.' },
           { type: 'string', name: 'employees[].name', description: 'The name of an employee.' },
           { type: 'string', name: 'employees[].department', description: 'The employee\'s department.' }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'assign')
           assert.equal(method.description, 'Assign the project to a list of employees.')
           assert.deepEqual(method.params, expected)
@@ -1053,7 +1040,6 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           {
             type: 'string',
@@ -1063,7 +1049,7 @@ describe('Parser', () => {
           }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
           assert.equal(method.description, '')
           assert.deepEqual(method.params, expected)
@@ -1084,7 +1070,6 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           {
             type: 'string',
@@ -1094,7 +1079,7 @@ describe('Parser', () => {
           }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
           assert.equal(method.description, '')
           assert.deepEqual(method.params, expected)
@@ -1115,7 +1100,6 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           {
             type: [ 'string', 'string[]' ],
@@ -1126,7 +1110,7 @@ describe('Parser', () => {
           }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
           assert.equal(method.description, '')
           assert.deepEqual(method.params, expected)
@@ -1147,7 +1131,6 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           {
             type: 'string',
@@ -1158,7 +1141,7 @@ describe('Parser', () => {
           }
         ]
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
           assert.equal(method.description, '')
           assert.deepEqual(method.params, expected)
@@ -1182,14 +1165,13 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = [
           { type: 'number',
             name: 'x',
             description: 'The x value.' }
         ]
 
-        parser.walk().on('event', (event) => {
+        new Parser(options).walk().on('event', (event) => {
           assert.equal(event.name, 'input')
           assert.equal(event.description, 'Emit the x value.')
           assert.deepEqual(event.arguments, expected)
@@ -1211,10 +1193,9 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = { type: 'number', description: 'The x value.' }
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
           assert.deepEqual(method.return, expected)
@@ -1236,10 +1217,9 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = { type: 'number', description: 'The x value.' }
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
           assert.deepEqual(method.return, expected)
@@ -1261,10 +1241,9 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = { type: 'number[]', description: 'The x values.' }
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x values.')
           assert.deepEqual(method.return, expected)
@@ -1285,10 +1264,9 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const parser = new Parser(options)
         const expected = { type: [ 'string', 'string[]' ], description: 'The x values.' }
 
-        parser.walk().on('method', (method) => {
+        new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.deepEqual(method.return, expected)
           done()
@@ -1350,9 +1328,8 @@ describe('Parser', () => {
           filename,
           features: [ 'description' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('name', () => {
             throw new Error('Should ignore the component name')
           })
@@ -1372,9 +1349,8 @@ describe('Parser', () => {
           filename,
           features: [ 'description' ]
         }
-        const parser = new Parser(options)
 
-        parser.walk()
+        new Parser(options).walk()
           .on('name', () => {
             throw new Error('Should ignore the component name')
           })
@@ -1397,9 +1373,8 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('prop', (prop) => {
+      new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
         assert.equal(prop.default, '$id')
@@ -1429,9 +1404,8 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('prop', (prop) => {
+      new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'v-model')
         assert.equal(prop.description, '')
@@ -1454,9 +1428,8 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('prop', (prop) => {
+      new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
         assert.equal(prop.type, 'any')
@@ -1474,8 +1447,8 @@ describe('Parser', () => {
         export default {
           data: {
             /**
-              * ID data
-              */
+             * ID data
+             */
             id: 'Hello'
           }
         }
@@ -1484,7 +1457,7 @@ describe('Parser', () => {
         source: { script },
         filename
       }
-      const parser = new Parser(options)
+
       const expected = {
         kind: 'data',
         keywords: [],
@@ -1494,7 +1467,7 @@ describe('Parser', () => {
         name: 'id'
       }
 
-      parser.walk().on('data', (prop) => {
+      new Parser(options).walk().on('data', (prop) => {
         assert.deepEqual(prop, expected)
         done()
       })
@@ -1516,7 +1489,7 @@ describe('Parser', () => {
         source: { script },
         filename
       }
-      const parser = new Parser(options)
+
       const expected = {
         kind: 'data',
         keywords: [],
@@ -1526,7 +1499,7 @@ describe('Parser', () => {
         name: 'id'
       }
 
-      parser.walk().on('data', (prop) => {
+      new Parser(options).walk().on('data', (prop) => {
         assert.deepEqual(prop, expected)
         done()
       })
@@ -1550,7 +1523,7 @@ describe('Parser', () => {
         source: { script },
         filename
       }
-      const parser = new Parser(options)
+
       const expected = {
         kind: 'data',
         keywords: [],
@@ -1560,7 +1533,7 @@ describe('Parser', () => {
         name: 'id'
       }
 
-      parser.walk().on('data', (prop) => {
+      new Parser(options).walk().on('data', (prop) => {
         assert.deepEqual(prop, expected)
         done()
       })
@@ -1584,7 +1557,7 @@ describe('Parser', () => {
         source: { script },
         filename
       }
-      const parser = new Parser(options)
+
       const expected = {
         kind: 'data',
         keywords: [],
@@ -1594,7 +1567,7 @@ describe('Parser', () => {
         name: 'id'
       }
 
-      parser.walk().on('data', (prop) => {
+      new Parser(options).walk().on('data', (prop) => {
         assert.deepEqual(prop, expected)
         done()
       })
@@ -1621,7 +1594,7 @@ describe('Parser', () => {
         source: { script },
         filename
       }
-      const parser = new Parser(options)
+
       const expected = {
         name: 'id',
         keywords: [ { name: 'private', description: '' } ],
@@ -1630,7 +1603,7 @@ describe('Parser', () => {
         dependencies: [ 'value', 'name' ]
       }
 
-      parser.walk().on('computed', (prop) => {
+      new Parser(options).walk().on('computed', (prop) => {
         assert.equal(prop.name, expected.name)
         assert.deepEqual(prop.keywords, expected.keywords)
         assert.equal(prop.visibility, expected.visibility)
@@ -1731,10 +1704,9 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
       /* eslint-disable no-unused-vars */
-      parser.walk()
+      new Parser(options).walk()
         .on('unknow', (prop) => {
           throw new Error('Should ignore unknow entry')
         })
@@ -1759,9 +1731,8 @@ describe('Parser', () => {
         filename,
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk()
+      new Parser(options).walk()
         .on('unknow', (prop) => {
           throw new Error('Should ignore unknow entry')
         })
@@ -1805,6 +1776,7 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
+
       const parser = new Parser(options)
 
       events.forEach((event) => parser.on(event, () => {
@@ -1818,7 +1790,7 @@ describe('Parser', () => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          description: () => {
+          mounted: () => {
             this.$emit('loading', true)
           }
         }
@@ -1827,9 +1799,8 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('event', (event) => {
+      new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, null)
         assert.equal(event.visibility, 'public')
@@ -1842,12 +1813,12 @@ describe('Parser', () => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          description: () => {
+          created: () => {
             /**
-              * loading event
-              *
-              * @protected
-              */
+             * loading event
+             *
+             * @protected
+             */
             this.$emit('loading', true)
           }
         }
@@ -1856,9 +1827,8 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('event', (event) => {
+      new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'protected')
@@ -1871,12 +1841,12 @@ describe('Parser', () => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          desc () {
+          created () {
             /**
-              * Event description
-              *
-              * @event loading
-              */
+             * Event description
+             *
+             * @event loading
+             */
             this.$emit(name, true)
           }
         }
@@ -1896,39 +1866,39 @@ describe('Parser', () => {
       })
     })
 
-//       it('should emit event with missing @event value keyword', (done) => {
-//         const defaultMethodVisibility = 'private'
-//         const script = `
-//           export default {
-//             desc () {
-//               /**
-//                * @event
-//                */
-//               this.$emit(name)
-//             }
-//           }
-//         `
-//         const options = {
-//           source: { script },
-//           defaultMethodVisibility
-//         }
-//
-//         new Parser(options).walk().on('error', (err) => {
-//           assert.ok(/Missing keyword value for @event/.test(err.message))
-//
-//           done()
-//         })
-//       })
+    it('should emit event with missing @event value keyword', (done) => {
+      const defaultMethodVisibility = 'private'
+      const script = `
+        export default {
+          created () {
+            /**
+              * @event
+              */
+            this.$emit(name)
+          }
+        }
+      `
+      const options = {
+        source: { script },
+        defaultMethodVisibility
+      }
+
+      new Parser(options).walk().on('error', (err) => {
+        assert.ok(/Missing keyword value for @event/.test(err.message))
+
+        done()
+      })
+    })
 
     it('should emit event with identifier name', (done) => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          description: () => {
+          beforeRouteEnter: (to, from, next) => {
             const name = 'loading'
             /**
-              * loading event
-              */
+             * loading event
+             */
             this.$emit(name, true)
           }
         }
@@ -1937,9 +1907,8 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('event', (event) => {
+      new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'public')
@@ -1952,7 +1921,7 @@ describe('Parser', () => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          description: () => {
+          mounted: () => {
             const pname = 'loading'
             const value = true
             const name = pname
@@ -1968,13 +1937,14 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('event', (event) => {
+      new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+        assert.deepEqual(event.keywords, [
+          { name: 'protected', description: '' }
+        ])
         done()
       })
     })
@@ -1985,7 +1955,7 @@ describe('Parser', () => {
         const ppname = 'loading'
 
         export default {
-          description: () => {
+          created: () => {
             const pname = ppname
             const name = pname
             /**
@@ -1999,9 +1969,8 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('event', (event) => {
+      new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'public')
@@ -2014,7 +1983,7 @@ describe('Parser', () => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          description: () => {
+          created: () => {
             const pname = ppname
             const name = pname
             /**
@@ -2028,9 +1997,8 @@ describe('Parser', () => {
         source: { script },
         defaultMethodVisibility
       }
-      const parser = new Parser(options)
 
-      parser.walk().on('event', (event) => {
+      new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, '***unhandled***')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'public')
@@ -2043,10 +2011,10 @@ describe('Parser', () => {
       const defaultMethodVisibility = 'private'
       const script = `
         export default {
-          loading () {
+          created () {
             this.$emit('loading')
           },
-          loading2: () => {
+          mounted: () => {
             this.$emit('loading', true)
           }
         }
@@ -2085,13 +2053,10 @@ describe('Parser', () => {
         defaultMethodVisibility
       }
 
-      const parser = new Parser(options)
       let eventCount = 0
 
-      parser.walk()
-        .on('event', () => {
-          eventCount++
-        })
+      new Parser(options).walk()
+        .on('event', () => eventCount++)
         .on('end', () => {
           assert.equal(eventCount, 0)
 
@@ -2102,10 +2067,10 @@ describe('Parser', () => {
     it('should ignore the component events with missing `events` in options.features', (done) => {
       const script = `
         export default {
-          loading: () => {
+          created: () => {
             this.$emit('loading')
           },
-          loading2: () => {
+          mounted: () => {
             this.$emit('loading', true)
           }
         }
@@ -2114,10 +2079,9 @@ describe('Parser', () => {
         source: { script },
         features: [ 'name' ]
       }
-      const parser = new Parser(options)
 
-      parser.walk()
-        .on('event', () => {
+      new Parser(options).walk()
+        .on('event', (e) => {
           throw new Error('Should ignore the component events')
         })
         .on('end', done)
