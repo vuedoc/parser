@@ -5,6 +5,12 @@ const { readFileSync } = require('fs')
 
 const { Parser } = require('./lib/parser/Parser')
 
+const {
+  FEATURE_NAME,
+  FEATURE_DESCRIPTION,
+  FEATURE_KEYWORDS,
+} = require('./lib/Enum')
+
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
 
@@ -57,19 +63,19 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
   parser.features.forEach((feature) => {
     switch (feature) {
-      case 'name':
-      case 'description':
+      case FEATURE_NAME:
+      case FEATURE_DESCRIPTION:
         component[feature] = null
 
-        parser.on(feature, (value) => {
+        parser.on(feature, ({ value }) => {
           component[feature] = value
         })
         break
 
-      case 'keywords':
+      case FEATURE_KEYWORDS:
         component[feature] = []
 
-        parser.on(feature, (value) => {
+        parser.on(feature, ({ value }) => {
           component[feature] = value
         })
         break

@@ -422,11 +422,10 @@ describe('Parser', () => {
 
       const parser = new Parser(options)
 
-      expect(parser.template).toBe(template)
-      expect(parser.script).toBe(script)
-      expect(parser.filename).toBe(filename)
+      expect(parser.options.source.template).toBe(template)
+      expect(parser.options.source.script).toBe(script)
+      expect(parser.options.defaultMethodVisibility).toBe(defaultMethodVisibility)
       expect(parser.scope).toEqual({})
-      expect(parser.defaultMethodVisibility).toBe(defaultMethodVisibility)
     })
 
     it('should successfully create new object with missing script', () => {
@@ -436,8 +435,8 @@ describe('Parser', () => {
 
       const parser = new Parser(options)
 
-      assert.equal(parser.script, null)
-      assert.equal(parser.template, template)
+      assert.equal(parser.options.source.script, null)
+      assert.equal(parser.options.source.template, template)
     })
 
     it('should successfully create new object with empty script', () => {
@@ -447,8 +446,8 @@ describe('Parser', () => {
 
       const parser = new Parser(options)
 
-      assert.equal(parser.script, '')
-      assert.equal(parser.template, template)
+      assert.equal(parser.options.source.script, '')
+      assert.equal(parser.options.source.template, template)
     })
   })
 
@@ -1431,7 +1430,7 @@ describe('Parser', () => {
       new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
-        assert.equal(prop.type, 'any')
+        assert.equal(prop.type, 'Any')
         assert.equal(prop.description, null)
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.value, null)

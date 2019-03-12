@@ -27,10 +27,8 @@ describe('issues', () => {
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Boolean',
-            default: undefined
-          },
+          type: 'Boolean',
+          default: undefined,
           name: 'value'
         }
       ]
