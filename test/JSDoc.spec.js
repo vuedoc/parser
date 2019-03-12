@@ -45,7 +45,11 @@ describe('JSDoc', () => {
   describe('parseParamKeyword(text)', () => {
     it('should parse @param keyword', () => {
       const comment = '{number} x - The x value.'
-      const expected = { type: 'number', name: 'x', description: 'The x value.' }
+      const expected = {
+        type: 'number',
+        name: 'x',
+        description: 'The x value.'
+      }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
@@ -53,7 +57,11 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with missing dash separator', () => {
       const comment = '{number} x  The x value.'
-      const expected = { type: 'number', name: 'x', description: 'The x value.' }
+      const expected = {
+        type: 'number',
+        name: 'x',
+        description: 'The x value.'
+      }
       const result = JSDoc.parseParamKeyword(comment)
 
       assert.deepEqual(result, expected)
