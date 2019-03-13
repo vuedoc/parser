@@ -184,5 +184,45 @@ describe('issues', () => {
         expect(props).toEqual(expected)
       })
     })
+
+    it('should parse bigint default value as it', () => {
+      const options = {
+        features: [ 'props' ],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                bigint: {
+                  type: BigInt,
+                  default: 100n
+                }
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          type: 'BigInt',
+          default: {
+            raw: '100n',
+            value: {},
+            bigint: '100n'
+          },
+          name: 'bigint',
+          describeModel: false,
+          required: false
+        }
+      ]
+
+      return parser.parse(options).then(({ props }) => {
+        expect(props).toEqual(expected)
+      })
+    })
   })
 })
