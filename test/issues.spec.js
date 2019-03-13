@@ -24,12 +24,15 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
           type: 'Boolean',
           default: undefined,
-          name: 'value'
+          name: 'value',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -57,14 +60,15 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Boolean',
-            default: false
-          },
-          name: 'bool'
+          type: 'Boolean',
+          default: false,
+          name: 'bool',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -92,14 +96,15 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'String',
-            default: 'hello'
-          },
-          name: 'str'
+          type: 'String',
+          default: 'hello',
+          name: 'str',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -127,14 +132,15 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Number',
-            default: 123
-          },
-          name: 'int'
+          type: 'Number',
+          default: 123,
+          name: 'int',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -162,14 +168,15 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Object',
-            default: null
-          },
-          name: 'null'
+          type: 'Object',
+          default: null,
+          name: 'null',
+          describeModel: false,
+          required: false
         }
       ]
 
