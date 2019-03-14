@@ -1447,7 +1447,7 @@ describe('Parser', () => {
             /**
              * ID data
              */
-            id: 'Hello'
+            id: 12
           }
         }
       `
@@ -1461,7 +1461,8 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'public',
         description: 'ID data',
-        default: 'Hello',
+        initial: 12,
+        type: 'number',
         name: 'id'
       }
 
@@ -1477,9 +1478,9 @@ describe('Parser', () => {
         export default {
           data: () => ({
             /**
-              * ID data
+              * Enabled data
               */
-            id: 'Hello'
+            enabled: false
           })
         }
       `
@@ -1492,9 +1493,10 @@ describe('Parser', () => {
         kind: 'data',
         keywords: [],
         visibility: 'public',
-        description: 'ID data',
-        default: 'Hello',
-        name: 'id'
+        description: 'Enabled data',
+        initial: false,
+        type: 'boolean',
+        name: 'enabled'
       }
 
       new Parser(options).walk().on('data', (prop) => {
@@ -1527,7 +1529,8 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'public',
         description: 'ID data',
-        default: 'Hello',
+        initial: 'Hello',
+        type: 'string',
         name: 'id'
       }
 
@@ -1561,7 +1564,8 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'public',
         description: 'ID data',
-        default: 'Hello',
+        initial: 'Hello',
+        type: 'string',
         name: 'id'
       }
 

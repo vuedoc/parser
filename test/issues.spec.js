@@ -29,7 +29,44 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'Boolean',
+          nativeType: 'undefined',
           default: undefined,
+          name: 'value',
+          describeModel: false,
+          required: false
+        }
+      ]
+
+      return parser.parse(options).then(({ props }) => {
+        expect(props).toEqual(expected)
+      })
+    })
+
+    it('should parse missing default value', () => {
+      const options = {
+        features: [ 'props' ],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                value: {
+                  type: Boolean
+                }
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          type: 'Boolean',
+          nativeType: '__undefined__',
+          default: '__undefined__',
           name: 'value',
           describeModel: false,
           required: false
@@ -65,6 +102,7 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'Boolean',
+          nativeType: 'boolean',
           default: false,
           name: 'bool',
           describeModel: false,
@@ -101,6 +139,7 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'String',
+          nativeType: 'string',
           default: 'hello',
           name: 'str',
           describeModel: false,
@@ -137,6 +176,7 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'Number',
+          nativeType: 'number',
           default: 123,
           name: 'int',
           describeModel: false,
@@ -173,6 +213,7 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'Object',
+          nativeType: 'null',
           default: null,
           name: 'null',
           describeModel: false,
@@ -209,11 +250,8 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'BigInt',
-          default: {
-            raw: '100n',
-            value: {},
-            bigint: '100n'
-          },
+          nativeType: 'bigint',
+          default: '100n',
           name: 'bigint',
           describeModel: false,
           required: false

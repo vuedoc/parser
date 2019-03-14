@@ -140,7 +140,7 @@ function testComponentProps (optionsToParse) {
     assert.notEqual(item, undefined)
     assert.equal(item.type, 'Array')
     assert.equal(item.required, true)
-    assert.equal(item.twoWay, true)
+    assert.equal(item.twoWay, undefined)
     assert.equal(item.description, 'The checkbox model')
   })
 
@@ -416,7 +416,8 @@ describe('component.data', () => {
         keywords: [],
         visibility: 'public',
         description: 'ID data',
-        default: 'Hello',
+        initial: 'Hello',
+        type: 'string',
         name: 'id'
       }
     ]
@@ -615,7 +616,6 @@ describe('spread operators', () => {
       computed: [
         {
           kind: 'computed',
-          default: '__undefined__',
           visibility: 'public',
           name: 'value',
           description: null,
@@ -692,7 +692,6 @@ describe('spread operators', () => {
       computed: [
         {
           kind: 'computed',
-          default: '__undefined__',
           visibility: 'public',
           name: 'value',
           description: null,
@@ -701,7 +700,6 @@ describe('spread operators', () => {
         },
         {
           kind: 'computed',
-          default: '__undefined__',
           visibility: 'public',
           name: 'id',
           description: null,
