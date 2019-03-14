@@ -3,20 +3,20 @@
 </template>
 
 <script>
-export default {
-  name: 'checkbox',
-  props: [
+  export default {
+    name: 'checkbox',
+    props: [
       /**
-     * The checkbox model
-     * @model
-     */
-      'model', 
+       * The checkbox model
+       * @model
+       */
+      'model',
       'disabled',
       /**
-     * Initial checkbox value
-     */
-      'checked', 
+       * Initial checkbox value
+       */
+      'checked',
       'propWithCamel'
-      ],
-}
+    ],
+  }
 </script>

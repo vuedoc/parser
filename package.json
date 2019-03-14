@@ -6,8 +6,8 @@
   "scripts": {
     "pretest": "npm run lint",
     "test": "jest --coverage",
-    "lint": "eslint index.js lib/* test/*",
-    "lint:fix": "eslint --fix index.js lib/* test/*"
+    "lint": "eslint index.js lib test",
+    "lint:fix": "eslint --fix index.js lib test"
   },
   "repository": {
     "type": "git",
@@ -27,8 +27,9 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
+    "acorn": "^6.1.1",
+    "acorn-stage3": "^2.0.0",
     "cheerio": "^1.0.0-rc.2",
-    "espree": "^3.5.4",
     "htmlparser2": "^3.10.1"
   },
   "devDependencies": {
@@ -36,7 +37,7 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "jest": "^24.3.1"
+    "jest": "^24.5.0"
   },
   "engines": {
     "node": ">=6.11.2"

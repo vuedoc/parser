@@ -24,14 +24,52 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Boolean',
-            default: undefined
-          },
-          name: 'value'
+          type: 'Boolean',
+          nativeType: 'undefined',
+          default: undefined,
+          name: 'value',
+          describeModel: false,
+          required: false
+        }
+      ]
+
+      return parser.parse(options).then(({ props }) => {
+        expect(props).toEqual(expected)
+      })
+    })
+
+    it('should parse missing default value', () => {
+      const options = {
+        features: [ 'props' ],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                value: {
+                  type: Boolean
+                }
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          type: 'Boolean',
+          nativeType: '__undefined__',
+          default: '__undefined__',
+          name: 'value',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -59,14 +97,16 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Boolean',
-            default: false
-          },
-          name: 'bool'
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          name: 'bool',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -94,14 +134,16 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'String',
-            default: 'hello'
-          },
-          name: 'str'
+          type: 'String',
+          nativeType: 'string',
+          default: 'hello',
+          name: 'str',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -129,14 +171,16 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Number',
-            default: 123
-          },
-          name: 'int'
+          type: 'Number',
+          nativeType: 'number',
+          default: 123,
+          name: 'int',
+          describeModel: false,
+          required: false
         }
       ]
 
@@ -164,14 +208,53 @@ describe('issues', () => {
 
       const expected = [
         {
+          kind: 'prop',
           visibility: 'public',
           description: null,
           keywords: [],
-          value: {
-            type: 'Object',
-            default: null
-          },
-          name: 'null'
+          type: 'Object',
+          nativeType: 'null',
+          default: null,
+          name: 'null',
+          describeModel: false,
+          required: false
+        }
+      ]
+
+      return parser.parse(options).then(({ props }) => {
+        expect(props).toEqual(expected)
+      })
+    })
+
+    it('should parse bigint default value as it', () => {
+      const options = {
+        features: [ 'props' ],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                bigint: {
+                  type: BigInt,
+                  default: 100n
+                }
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          type: 'BigInt',
+          nativeType: 'bigint',
+          default: '100n',
+          name: 'bigint',
+          describeModel: false,
+          required: false
         }
       ]
 

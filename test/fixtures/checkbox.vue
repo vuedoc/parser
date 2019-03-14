@@ -35,8 +35,8 @@ export default {
       required: true,
       twoWay: true
     },
-    
-    /** 
+
+    /**
      * Initial checkbox state
      */
     disabled: Boolean,
