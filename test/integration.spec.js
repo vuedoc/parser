@@ -4,7 +4,7 @@ const assert = require('assert')
 const { join } = require('path')
 const { readFileSync } = require('fs')
 
-/* global describe it */
+/* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
@@ -474,6 +474,175 @@ describe('component.slots (es6)', () => testComponentSlots(options))
 describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports))
 
 describe('component.slots filesource', () => testComponentSlots(optionsWithFileSource))
+
+describe('component.slots scoped', () => {
+  it('should successfully parse scoped slot', () => {
+    const filecontent = `
+      <template>
+        <span>
+          <slot v-bind:user="user">
+            {{ user.lastName }}
+          </slot>
+        </span>
+      </template>
+    `
+    const features = [ 'slots' ]
+    const options = { filecontent, features }
+    const expected = [
+      { kind: 'slot',
+        visibility: 'public',
+        name: 'default',
+        description: '',
+        props: [
+          { name: 'user',
+            type: 'Any',
+            description: '' }
+        ],
+        keywords: []
+      }
+    ]
+
+    return vuedoc.parse(options).then(({ slots }) => {
+      expect(slots).toEqual(expected)
+    })
+  })
+
+  it('should successfully parse scoped slot with description', () => {
+    const filecontent = `
+      <template>
+        <ul>
+          <li
+            v-for="todo in filteredTodos"
+            v-bind:key="todo.id"
+          >
+            <!--
+              We have a slot for each todo, passing it the
+              \`todo\` object as a slot prop.
+            -->
+            <slot name="todo" v-bind:todo="todo">
+              <!-- Fallback content -->
+              {{ todo.text }}
+            </slot>
+          </li>
+        </ul>
+      </template>
+    `
+    const features = [ 'slots' ]
+    const options = { filecontent, features }
+    const expected = [
+      { kind: 'slot',
+        visibility: 'public',
+        name: 'todo',
+        description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
+        props: [
+          { name: 'todo',
+            type: 'Any',
+            description: '' }
+        ],
+        keywords: []
+      }
+    ]
+
+    return vuedoc.parse(options).then(({ slots }) => {
+      expect(slots).toEqual(expected)
+    })
+  })
+
+  it('should successfully parse scoped slot with description and props', () => {
+    const filecontent = `
+      <template>
+        <ul>
+          <li
+            v-for="todo in filteredTodos"
+            v-bind:key="todo.id"
+          >
+            <!--
+            We have a slot for each todo, passing it the
+            \`todo\` object as a slot prop.
+
+            @prop {TodoItem} todo - Todo item
+            -->
+            <slot name="todo" v-bind:todo="todo">
+              <!-- Fallback content -->
+              {{ todo.text }}
+            </slot>
+          </li>
+        </ul>
+      </template>
+    `
+    const features = [ 'slots' ]
+    const options = { filecontent, features }
+    const expected = [
+      { kind: 'slot',
+        visibility: 'public',
+        name: 'todo',
+        description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
+        props: [
+          { name: 'todo',
+            type: 'TodoItem',
+            description: 'Todo item' }
+        ],
+        keywords: [
+          { name: 'prop',
+            description: '{TodoItem} todo - Todo item' }
+        ]
+      }
+    ]
+
+    return vuedoc.parse(options).then(({ slots }) => {
+      expect(slots).toEqual(expected)
+    })
+  })
+
+  it('should successfully parse scoped slot with @prop and undescribed prop', () => {
+    const filecontent = `
+      <template>
+        <ul>
+          <li
+            v-for="todo in filteredTodos"
+            v-bind:key="todo.id"
+          >
+            <!--
+            We have a slot for each todo, passing it the
+            \`todo\` object as a slot prop.
+
+            @prop {TodoItem} todo - Todo item
+            -->
+            <slot name="todo" v-bind:todo="todo" v-bind:actions="actions">
+              <!-- Fallback content -->
+              {{ todo.text }}
+            </slot>
+          </li>
+        </ul>
+      </template>
+    `
+    const features = [ 'slots' ]
+    const options = { filecontent, features }
+    const expected = [
+      { kind: 'slot',
+        visibility: 'public',
+        name: 'todo',
+        description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
+        props: [
+          { name: 'todo',
+            type: 'TodoItem',
+            description: 'Todo item' },
+          { name: 'actions',
+            type: 'Any',
+            description: '' }
+        ],
+        keywords: [
+          { name: 'prop',
+            description: '{TodoItem} todo - Todo item' }
+        ]
+      }
+    ]
+
+    return vuedoc.parse(options).then(({ slots }) => {
+      expect(slots).toEqual(expected)
+    })
+  })
+})
 
 describe('component.events (es6)', () => testComponentEvents(options))
 
