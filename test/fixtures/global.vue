@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- Template event with @ -->
-    <input @input="$emit('template-@-event', $event)">
+    <input @input="$emit('template-@-event', $event)"/>
 
     <!-- Template event with v-on -->
     <input v-on:input="$emit('template-v-on-event', $event)" />
 
     <label>
-      <input :disabled="disabled" type="text" v-model="checkbox">
+      <input :disabled="disabled" type="text" v-model="checkbox"/>
       <!-- Default slot -->
       <slot></slot>
       <!-- Use this slot to set the checkbox label -->

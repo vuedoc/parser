@@ -1,6 +1,6 @@
 <template>
   <label>
-    <input :disabled="disabled" type="text" v-model="checkbox">
+    <input :disabled="disabled" type="text" v-model="checkbox"/>
     <!-- Default slot -->
     <slot></slot>
     <!-- Use this slot to set the checkbox label -->
