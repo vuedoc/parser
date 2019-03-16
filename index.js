@@ -1,4 +1,4 @@
-const cheerio = require('cheerio')
+const { parseComponent } = require('vue-template-compiler')
 
 const { extname } = require('path')
 const { readFileSync } = require('fs')
@@ -10,11 +10,12 @@ const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
 
 function loadSourceFromFileContent (filecontent) {
-  const $ = cheerio.load(filecontent)
+  const { template, script, errors } = parseComponent(filecontent)
 
   return {
-    template: $('template').html(),
-    script: $('script').html()
+    template: template ? template.content : '',
+    script: script ? script.content : '',
+    errors: errors
   }
 }
 
@@ -38,15 +39,25 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
   if (!options.source) {
     if (options.filename) {
-      if (extname(options.filename) === '.js') {
-        options.source = {
-          template: '',
-          script: readFileSync(options.filename, options.encoding)
+      const ext = extname(options.filename)
+
+      switch (ext) {
+        case '.js':
+          options.source = {
+            script: readFileSync(options.filename, options.encoding)
+          }
+          break
+
+        case '.vue': {
+          const filecontent = readFileSync(options.filename, options.encoding)
+
+          options.source = loadSourceFromFileContent(filecontent)
+
+          break
         }
-      } else {
-        options.source = loadSourceFromFileContent(
-          readFileSync(options.filename, options.encoding)
-        )
+
+        default:
+          throw new Error('Only .js and .vue files are supported')
       }
     } else {
       options.source = loadSourceFromFileContent(options.filecontent)
