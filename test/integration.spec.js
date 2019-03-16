@@ -475,6 +475,54 @@ describe('component.slots (commonjs)', () => testComponentSlots(optionsForModule
 
 describe('component.slots filesource', () => testComponentSlots(optionsWithFileSource))
 
+describe('component.slots scoped', () => {
+  it('should successfully parse scoped slot', () => {
+    const filecontent = `
+      <template>
+        <ul>
+          <li
+            v-for="todo in filteredTodos"
+            v-bind:key="todo.id"
+          >
+            <!--
+            We have a slot for each todo, passing it the
+            \`todo\` object as a slot prop.
+
+            @prop {TodoItem} todo - Todo item
+            -->
+            <slot name="todo" v-bind:todo="todo">
+              <!-- Fallback content -->
+              {{ todo.text }}
+            </slot>
+          </li>
+        </ul>
+      </template>
+    `
+    const features = [ 'slots' ]
+    const options = { filecontent, features }
+    const expected = [
+      { kind: 'slot',
+        visibility: 'public',
+        name: 'todo',
+        description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
+        props: [
+          { name: 'todo',
+            type: 'TodoItem',
+            description: 'Todo item' }
+        ],
+        keywords: [
+          { name: 'prop',
+            description: '{TodoItem} todo - Todo item' }
+        ]
+      }
+    ]
+
+    return vuedoc.parse(options).then(({ slots }) => {
+      assert.deepEqual(slots, expected)
+    })
+  })
+})
+
 describe('component.events (es6)', () => testComponentEvents(options))
 
 describe('component.events (commonjs)', () => testComponentEvents(optionsForModuleExports))
