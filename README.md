@@ -86,7 +86,8 @@ export default {
 
 ## Add component description
 
-To add a component description, just add a comment before the `export default` statement like:
+To add a component description, just add a comment before the `export default`
+statement like:
 
 ```js
 /**
@@ -261,9 +262,10 @@ export default {
       Slot with keywords and
       mutiline description
 
-      @props { name, address, email }
+      @prop {User} user - The current user
+      @prop {UserProfile} profile - The current user's profile
     -->
-    <slot name="multiline" v-bind="user"/>
+    <slot name="header" v-bind:user="user" v-bind:profile="profile"/>
   </div>
 </template>
 ```
@@ -309,6 +311,7 @@ Parsing result:
 
 `options.features` lets you select which Vue Features you want to parse and
 extract.
+
 The default value is define by `Parser.SUPPORTED_FEATURES` array.
 
 **Usage**
