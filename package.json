@@ -29,17 +29,16 @@
   "dependencies": {
     "acorn": "^6.1.1",
     "acorn-stage3": "^2.0.0",
-    "cheerio": "^1.0.0-rc.2",
-    "htmlparser2": "^3.10.1"
+    "vue-template-compiler": "^2.6.9"
   },
   "devDependencies": {
-    "eslint": "^5.15.1",
+    "eslint": "^5.15.2",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "jest": "^24.5.0"
   },
   "engines": {
-    "node": ">=6.11.2"
+    "node": ">=8"
   }
 }

@@ -1,25 +1,21 @@
-const cheerio = require('cheerio')
+const { parseComponent } = require('vue-template-compiler')
 
 const { extname } = require('path')
 const { readFileSync } = require('fs')
 
 const { Parser } = require('./lib/parser/Parser')
-
-const {
-  FEATURE_NAME,
-  FEATURE_DESCRIPTION,
-  FEATURE_KEYWORDS,
-} = require('./lib/Enum')
+const { Features } = require('./lib/Enum')
 
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
 
 function loadSourceFromFileContent (filecontent) {
-  const $ = cheerio.load(filecontent)
+  const { template, script, errors } = parseComponent(filecontent)
 
   return {
-    template: $('template').html(),
-    script: $('script').html()
+    template: template ? template.content : '',
+    script: script ? script.content : '',
+    errors: errors || []
   }
 }
 
@@ -43,15 +39,25 @@ module.exports.parse = (options) => new Promise((resolve) => {
 
   if (!options.source) {
     if (options.filename) {
-      if (extname(options.filename) === '.js') {
-        options.source = {
-          template: '',
-          script: readFileSync(options.filename, options.encoding)
+      const ext = extname(options.filename)
+
+      switch (ext) {
+        case '.js':
+          options.source = {
+            script: readFileSync(options.filename, options.encoding)
+          }
+          break
+
+        case '.vue': {
+          const filecontent = readFileSync(options.filename, options.encoding)
+
+          options.source = loadSourceFromFileContent(filecontent)
+
+          break
         }
-      } else {
-        options.source = loadSourceFromFileContent(
-          readFileSync(options.filename, options.encoding)
-        )
+
+        default:
+          throw new Error('Only .js and .vue files are supported')
       }
     } else {
       options.source = loadSourceFromFileContent(options.filecontent)
@@ -61,10 +67,14 @@ module.exports.parse = (options) => new Promise((resolve) => {
   const component = {}
   const parser = new Parser(options)
 
+  if (options.source.errors instanceof Array && options.source.errors.length) {
+    component.errors = options.source.errors
+  }
+
   parser.features.forEach((feature) => {
     switch (feature) {
-      case FEATURE_NAME:
-      case FEATURE_DESCRIPTION:
+      case Features.name:
+      case Features.description:
         component[feature] = null
 
         parser.on(feature, ({ value }) => {
@@ -72,7 +82,7 @@ module.exports.parse = (options) => new Promise((resolve) => {
         })
         break
 
-      case FEATURE_KEYWORDS:
+      case Features.keywords:
         component[feature] = []
 
         parser.on(feature, ({ value }) => {

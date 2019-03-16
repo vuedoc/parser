@@ -198,7 +198,7 @@ function testComponentSlots (optionsToParse) {
     const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline')
 
     assert.notEqual(item, undefined)
-    assert.equal(item.description, 'This\n      is multiline description')
+    assert.equal(item.description, 'This\nis multiline description')
   })
 
   it('should contain a named slot without description', () => {
@@ -207,7 +207,7 @@ function testComponentSlots (optionsToParse) {
     )
 
     assert.notEqual(item, undefined)
-    assert.equal(item.description, null)
+    assert.equal(item.description, '')
   })
 }
 

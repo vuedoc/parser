@@ -1,0 +1,724 @@
+{
+  "name": "checkboxPointer",
+  "description": "The generic component\nSub description",
+  "keywords": [
+    {
+      "name": "public",
+      "description": ""
+    },
+    {
+      "name": "alpnum",
+      "description": "azert0 123456789"
+    },
+    {
+      "name": "generic",
+      "description": "Keyword generic description"
+    },
+    {
+      "name": "multiline",
+      "description": "Keyword multiline\ndescription"
+    },
+    {
+      "name": "special-char",
+      "description": "{$[ç(àë£€%µù!,|`_\\\\<>/_ç^?;.:/!§)]}"
+    },
+    {
+      "name": "punctuations",
+      "description": "!,?;.:!"
+    },
+    {
+      "name": "operators",
+      "description": "-/+<>=*%"
+    },
+    {
+      "name": "slot",
+      "description": "inputs - Use this slot to define form inputs ontrols"
+    },
+    {
+      "name": "slot",
+      "description": "actions - Use this slot to define form action buttons controls"
+    },
+    {
+      "name": "slot",
+      "description": "footer - Use this slot to define form footer content."
+    },
+    {
+      "name": "model",
+      "description": ""
+    }
+  ],
+  "slots": [
+    {
+      "kind": "slot",
+      "visibility": "public",
+      "description": "Default slot",
+      "keywords": [],
+      "name": "default"
+    },
+    {
+      "kind": "slot",
+      "visibility": "public",
+      "description": "Use this slot to set the checkbox label",
+      "keywords": [],
+      "name": "label"
+    },
+    {
+      "kind": "slot",
+      "visibility": "public",
+      "description": "This\nis multiline description",
+      "keywords": [],
+      "name": "multiline"
+    },
+    {
+      "kind": "slot",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "undescribed"
+    },
+    {
+      "kind": "slot",
+      "visibility": "public",
+      "description": "Slot with defined keywords",
+      "keywords": [
+        {
+          "name": "protected",
+          "description": ""
+        },
+        {
+          "name": "props",
+          "description": "{ name, address, email }"
+        }
+      ],
+      "name": "multiline"
+    }
+  ],
+  "props": [
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "The checkbox model",
+      "keywords": [
+        {
+          "name": "model",
+          "description": ""
+        }
+      ],
+      "name": "v-model",
+      "type": "Array",
+      "nativeType": "__undefined__",
+      "default": "__undefined__",
+      "required": true,
+      "describeModel": true
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Initial checkbox state",
+      "keywords": [],
+      "name": "disabled",
+      "type": "Boolean",
+      "nativeType": "__undefined__",
+      "default": "__undefined__",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Initial checkbox value",
+      "keywords": [],
+      "name": "checked",
+      "type": "Boolean",
+      "nativeType": "boolean",
+      "default": true,
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Prop with arrow function",
+      "keywords": [],
+      "name": "prop-with-arrow",
+      "type": "Object",
+      "nativeType": "FunctionExpression",
+      "default": "() => ({ name: 'X'})",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Prop with object function",
+      "keywords": [],
+      "name": "prop-with-function",
+      "type": "Object",
+      "nativeType": "FunctionExpression",
+      "default": "function() {\n          return { name: 'X' }\n        }",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Prop with anonymous function",
+      "keywords": [],
+      "name": "prop-with-anonymous-function",
+      "type": "Object",
+      "nativeType": "FunctionExpression",
+      "default": "function() {\n          return { name: 'X' }\n        }",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Prop with named function",
+      "keywords": [],
+      "name": "prop-with-named-function",
+      "type": "Object",
+      "nativeType": "FunctionExpression",
+      "default": "function propWithNamedFunction() {\n          return { name: 'X' }\n        }",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "visibility": "public",
+      "description": "Prop with protected visibility",
+      "keywords": [
+        {
+          "name": "private",
+          "description": ""
+        }
+      ],
+      "name": "prop-with-private-visibility",
+      "type": "Object",
+      "nativeType": "FunctionExpression",
+      "default": "function propWithNamedFunction() {\n          return { name: 'X' }\n        }",
+      "required": false,
+      "describeModel": false
+    }
+  ],
+  "data": [
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "int",
+      "type": "number",
+      "initial": 12
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "float",
+      "type": "number",
+      "initial": 12.2
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "booleanTrue",
+      "type": "boolean",
+      "initial": true
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "booleanFalse",
+      "type": "boolean",
+      "initial": false
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "string",
+      "type": "string",
+      "initial": "Hello"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "string",
+      "type": "string",
+      "initial": "Hello"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "null",
+      "type": "null",
+      "initial": null
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "undefined",
+      "type": "undefined"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "function",
+      "type": "NewExpression",
+      "initial": "new Function()"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "arrowFunction",
+      "type": "ArrowFunctionExpression"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "date",
+      "type": "CallExpression",
+      "initial": "Date.now()"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "pointer",
+      "type": "string",
+      "initial": "pointed value"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "componentName",
+      "type": "string",
+      "initial": "checkboxPointer"
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "value",
+      "type": "null",
+      "initial": null
+    },
+    {
+      "kind": "data",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "int",
+      "type": "number",
+      "initial": 13
+    }
+  ],
+  "computed": [
+    {
+      "kind": "computed",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "id",
+      "dependencies": [
+        "componentName",
+        "pointer"
+      ]
+    },
+    {
+      "kind": "computed",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "name",
+      "dependencies": [
+        "componentName"
+      ]
+    },
+    {
+      "kind": "computed",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "withoutDependency",
+      "dependencies": []
+    }
+  ],
+  "events": [
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "Event with identifier name",
+      "keywords": [],
+      "name": "check",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "Event with renamed identifier name",
+      "keywords": [],
+      "name": "renamed",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "consequent-var-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "if-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "for-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "for-of-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "for-in-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "do-while-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "while-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "switch-case-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "switch-case-default-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "try-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "try-catch-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "try-finally-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "Event with recursive identifier name",
+      "keywords": [],
+      "name": "recursive",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeRouteEnter event description",
+      "keywords": [],
+      "name": "beforeRouteEnter-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeRouteUpdate event description",
+      "keywords": [],
+      "name": "beforeRouteUpdate-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeRouteLeave event description",
+      "keywords": [],
+      "name": "beforeRouteLeave-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeCreate event description",
+      "keywords": [],
+      "name": "beforeCreate-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "Created event description",
+      "keywords": [],
+      "name": "created-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeMount event description",
+      "keywords": [],
+      "name": "beforeMount-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "mounted event description",
+      "keywords": [],
+      "name": "mounted-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeUpdate event description",
+      "keywords": [],
+      "name": "beforeUpdate-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "updated event description",
+      "keywords": [],
+      "name": "updated-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "beforeDestroy event description",
+      "keywords": [],
+      "name": "beforeDestroy-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "destroyed event description",
+      "keywords": [],
+      "name": "destroyed-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "render event description",
+      "keywords": [],
+      "name": "render-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "Template event with @",
+      "keywords": [],
+      "name": "template-@-event",
+      "arguments": []
+    },
+    {
+      "kind": "event",
+      "visibility": "public",
+      "description": "Template event with v-on",
+      "keywords": [],
+      "name": "template-v-on-event",
+      "arguments": []
+    }
+  ],
+  "methods": [
+    {
+      "kind": "method",
+      "visibility": "private",
+      "description": "",
+      "keywords": [
+        {
+          "name": "private",
+          "description": ""
+        }
+      ],
+      "name": "privateMethod",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": "Check the checkbox",
+      "keywords": [],
+      "name": "check",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "protected",
+      "description": "",
+      "keywords": [
+        {
+          "name": "protected",
+          "description": ""
+        }
+      ],
+      "name": "recursiveIdentifierValue",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "uncommentedMethod",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "withDefault",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "withAlias",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "withSpread",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "withDefaultObject",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    },
+    {
+      "kind": "method",
+      "visibility": "public",
+      "description": null,
+      "keywords": [],
+      "name": "withDestructuring",
+      "params": [],
+      "return": {
+        "type": "void",
+        "description": null
+      }
+    }
+  ]
+}
