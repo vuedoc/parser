@@ -263,4 +263,52 @@ describe('issues', () => {
       })
     })
   })
+
+  describe('#32 - dynamic (lazy) import() function alongside a regular import', () => {
+    it('should successfully parse component with regular import', () => {
+      const options = {
+        filecontent: `
+          <template>
+            <div>
+              <Lazy />
+            </div>
+          </template>
+          <script>
+            import Regular from './components/Regular.vue'
+            export default {
+              components: {
+                Lazy: import('./components/Lazy.vue')
+              }
+            }
+          </script>
+        `
+      }
+
+      return parser.parse(options)
+    })
+
+    it('should successfully parse component with lazy import', () => {
+      const options = {
+        filecontent: `
+          <template>
+            <div>
+              <Lazy />
+            </div>
+          </template>
+          <script>
+            import Regular from './components/Regular.vue'
+            export default {
+              computed: {
+                loading() {
+                  return () => import('input.vue')
+                }
+              }
+            }
+          </script>
+        `
+      }
+
+      return parser.parse(options)
+    })
+  })
 })
