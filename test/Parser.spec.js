@@ -619,7 +619,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('slot', (slot) => {
           assert.equal(slot.name, 'default')
-          assert.equal(slot.description, null)
+          assert.equal(slot.description, '')
           done()
         })
       })
@@ -631,6 +631,7 @@ describe('Parser', () => {
           <div>
             <!-- a comment -->
             <p>Hello</p>
+            <!-- this comment will be ignored -->
             <!-- default slot -->
             <slot/>
           </div>
@@ -844,9 +845,11 @@ describe('Parser', () => {
           { kind: 'event',
             name: 'change',
             arguments: [],
-            visibility: 'public',
-            description: '',
-            keywords: [] }
+            visibility: 'protected',
+            description: 'Emit the input event',
+            keywords:
+            [ { name: 'protected', description: '' },
+              { name: 'value', description: 'A input value' } ] }
         ]
 
         const result = []
