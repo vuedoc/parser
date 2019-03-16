@@ -15,7 +15,7 @@ function loadSourceFromFileContent (filecontent) {
   return {
     template: template ? template.content : '',
     script: script ? script.content : '',
-    errors: errors
+    errors: errors || []
   }
 }
 
