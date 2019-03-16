@@ -67,6 +67,10 @@ module.exports.parse = (options) => new Promise((resolve) => {
   const component = {}
   const parser = new Parser(options)
 
+  if (options.source.errors instanceof Array && options.source.errors.length) {
+    component.errors = options.source.errors
+  }
+
   parser.features.forEach((feature) => {
     switch (feature) {
       case Features.name:
