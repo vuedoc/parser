@@ -369,9 +369,30 @@ const Features = {
 }
 
 describe('ECMAScript Features', () => {
-  describe('should parse ECMAScript features without errors', () => {
+  describe('should parse without errors', () => {
     Object.keys(Features).forEach((feature) => it(feature, (done) => {
       const script = Features[feature]
+      const source = { script }
+      const options = { source }
+
+      const parser = new Parser(options)
+
+      parser.on('end', done)
+      parser.walk()
+    }))
+  })
+
+  describe('should parse data without errors', () => {
+    Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      const script = `
+        export default {
+          data () {
+            ${Features[feature]}
+
+            return {}
+          }
+        }
+      `
       const source = { script }
       const options = { source }
 
