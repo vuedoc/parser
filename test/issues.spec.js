@@ -2,6 +2,7 @@ const parser = require('..')
 
 /* global describe it expect */
 /* eslint-disable max-len */
+/* eslint-disable indent */
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
@@ -341,6 +342,72 @@ describe('issues', () => {
     })
 
     it('should successfully preserve spaces on keywords', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * Description
+             *
+             * @note Node one
+             * - Line 1
+             *   Line 2
+             * @note Node two
+             * - Line 3
+             * @note Node three
+             */
+            export default {
+              // ...
+            }
+
+          </script>
+        `
+      }
+      const expectedDescription = 'Description'
+      const expectedKeywords = [
+        {
+          name: 'note',
+          description: 'Node one\n- Line 1\n  Line 2' },
+        {
+          name: 'note',
+          description: 'Node two\n- Line 3' },
+        {
+          name: 'note',
+          description: 'Node three' }
+      ]
+
+      return parser.parse(options).then(({ description, keywords }) => {
+        expect(description).toEqual(expectedDescription)
+        expect(keywords).toEqual(expectedKeywords)
+      })
+    })
+  })
+
+  describe('#30 - Block of comment is broken when using @ in comment in replacement of v-on', () => {
+    it('should successfully parse comment with block comment', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * Usage:
+             * \`\`\`
+             * <my-component @input='doSomething' />
+             * \`\`\`
+             */
+            export default {
+              // ...
+            }
+
+          </script>
+        `
+      }
+      const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```'
+
+      return parser.parse(options).then(({ description }) => {
+        expect(description).toEqual(expected)
+      })
+    })
+
+    it('should successfully parse with keywords', () => {
       const options = {
         filecontent: `
           <script>
