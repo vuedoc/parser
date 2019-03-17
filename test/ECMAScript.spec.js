@@ -342,6 +342,21 @@ const Features = {
     0b111110111 === 503 // true
     0o767 === 503 // true
   `,
+  'BigInt': `
+    const theBiggestInt = 9007199254740991n;
+
+    const alsoHuge = BigInt(9007199254740991);
+    // ↪ 9007199254740991n
+
+    const hugeString = BigInt("9007199254740991");
+    // ↪ 9007199254740991n
+
+    const hugeHex = BigInt("0x1fffffffffffff");
+    // ↪ 9007199254740991n
+
+    const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111");
+    // ↪ 9007199254740991n
+  `,
   'Promises': `
     function timeout(duration = 0) {
       return new Promise((resolve, reject) => {
@@ -688,6 +703,53 @@ describe('ECMAScript Features Parsing', () => {
           description: null,
           type: 'number',
           initial: 0o767,
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
+
+  describe('BigInt', () => {
+    it('should successfully extract BigInt vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              const a = 9007199254740991n;
+              const b = BigInt(9007199254740991);
+              const c = BigInt("9007199254740991");
+
+              return { a, b, c }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: null,
+          type: 'bigint',
+          initial: '9007199254740991n',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: null,
+          type: 'CallExpression',
+          initial: 'BigInt(9007199254740991)',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: null,
+          type: 'CallExpression',
+          initial: 'BigInt("9007199254740991")',
           keywords: [] }
       ]
 
