@@ -10,12 +10,18 @@ const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
 
 function loadSourceFromFileContent (filecontent) {
-  const { template, script, errors } = parseComponent(filecontent)
+  const result = parseComponent(filecontent)
+
+  if (result.script) {
+    if (result.script.attrs.type && result.script.attrs.type !== 'js') {
+      throw new Error('Only JavaScript script are supported')
+    }
+  }
 
   return {
-    template: template ? template.content : '',
-    script: script ? script.content : '',
-    errors: errors || []
+    template: result.template ? result.template.content : '',
+    script: result.script ? result.script.content : '',
+    errors: result.errors
   }
 }
 
@@ -71,6 +77,27 @@ module.exports.parse = (options) => new Promise((resolve) => {
     component.errors = options.source.errors
   }
 
+  parser.on('error', ({ message }) => {
+    if (!component.errors) {
+      component.errors = []
+    }
+
+    component.errors.push(message)
+  })
+
+  parser.on('end', () => {
+    parser.features.forEach((feature) => {
+      if (component[feature] instanceof Array) {
+        /* eslint-disable-next-line arrow-body-style */
+        component[feature] = component[feature].filter((item) => {
+          return !options.ignoredVisibilities.includes(item.visibility)
+        })
+      }
+    })
+
+    resolve(component)
+  })
+
   parser.features.forEach((feature) => {
     switch (feature) {
       case Features.name:
@@ -98,19 +125,6 @@ module.exports.parse = (options) => new Promise((resolve) => {
         parser.on(eventName, (entry) => component[feature].push(entry))
       }
     }
-  })
-
-  parser.on('end', () => {
-    parser.features.forEach((feature) => {
-      if (component[feature] instanceof Array) {
-        /* eslint-disable arrow-body-style */
-        component[feature] = component[feature].filter((item) => {
-          return !options.ignoredVisibilities.includes(item.visibility)
-        })
-      }
-    })
-
-    resolve(component)
   })
 
   parser.walk()

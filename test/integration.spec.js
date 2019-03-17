@@ -915,3 +915,98 @@ describe('spread operators', () => {
     })
   })
 })
+
+describe('errors', () => {
+  it('should throw error for lang !== js', (done) => {
+    const filecontent = `
+      <script type="ts">
+        export default {
+          computed: {
+            ...mapGetters('map', [
+              'searchMapToolIsActive'
+            ])
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+
+    vuedoc.parse(options)
+      .then(() => {
+        done(new Error('should throw an error for non js script'))
+      })
+      .catch(() => done())
+  })
+
+  it('should throw error for non js files', (done) => {
+    const filename = resolve('checkbox.ts')
+    const options = { filename }
+
+    vuedoc.parse(options)
+      .then(() => {
+        done(new Error('should throw an error for non js file'))
+      })
+      .catch(() => done())
+  })
+
+  it('should return component syntax error', () => {
+    const filecontent = `
+      <template>
+        <input>
+      </template>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: [],
+      errors: [
+        'tag <input> has no matching end tag.'
+      ]
+    }
+
+    return vuedoc.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+
+  it('should throw error for lang !== js', () => {
+    const filecontent = `
+      <script type="js">
+        export default {
+          created () {
+            /**
+             * @event
+             */
+            this.$emit('input')
+          }
+        }
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: null,
+      keywords: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: [],
+      errors: [
+        'Missing keyword value for @event: this.$emit(\'input\')'
+      ]
+    }
+
+    return vuedoc.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+})
