@@ -626,4 +626,35 @@ describe('ECMAScript Features Parsing', () => {
       })
     })
   })
+
+  describe('Symbols', () => {
+    it('should successfully extract Symbols vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              var a = Symbol("key");
+
+              return { a }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: null,
+          type: 'CallExpression',
+          initial: 'Symbol("key")',
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 })
