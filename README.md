@@ -31,10 +31,11 @@ npm install --save @vuedoc/parser
 | filecontent             | The file content to parse. *Required* unless `filename` is passed   |
 | encoding                | The file encoding. Default is `'utf8'`                              |
 | features                | The component features to parse and extract.                        |
-|                         | Default features: `['name', 'description', 'keywords', 'slots', 'props', 'data', 'computed', 'events', 'methods']` |
+|                         | Default features: `['name', 'description', 'keywords', 'slots',`    |
+|                         | `'props', 'data', 'computed', 'events', 'methods']`                 |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
 | ignoredVisibilities     | List of ignored visibilities.                                       |
-|                         | Default features: `['protected', 'private`]`                        |
+|                         | Default ignored visibilities: `['protected', 'private']`            |
 
 ## Usage
 
@@ -347,6 +348,128 @@ vuedoc.parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'description', 'keywords', 'props', 'computed', 'events', 'methods', 'slots' ]
+```
+
+## Interfaces
+
+```js
+type ParsingOutput = {
+  name: string,               // Component name
+  description: string,        // Component description
+  keywords: Keyword[],        // Attached component keywords
+  slots: SlotEntry[],         // Component slots
+  props: PropEntry[],         // Component props
+  data: DataEntry[],          // Component data
+  computed: ComputedEntry[],  // Computed properties
+  events: EventEntry[],       // Events
+  methods: MethodEntry[],     // Component methods
+  errors: string[]            // Syntax and parsing errors
+}
+
+enum VisibilityEnum = {
+  public,
+  protected,
+  private
+}
+
+enum NativeTypeEnum = {
+  string,
+  number,
+  bigint,
+  boolean,
+  object,
+  null,
+  undefined
+}
+
+type Keyword = {
+  name: string,
+  description: string
+}
+
+type SlotEntry = {
+  readonly kind: string = 'slot',
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[],
+  name: string,
+  props: SlotProp[]
+}
+
+type SlotProp = {
+  name: string,
+  type: string,
+  description: string
+}
+
+type PropEntry = {
+  readonly kind: string = 'slot',
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[],
+  name: string,                  // v-model when the @model keyword is attached
+  type: Identifier,              // defined prop type. ex Array, Object, String, ...
+  nativeType: NativeTypeEnum,
+  default: any,                  // '__undefined__' value uncatchable value
+  required: boolean = false,
+  describeModel: boolean = false // true when the @model keyword is attached
+}
+
+type DataEntry = {
+  readonly kind: string = 'data',
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[],
+  name: string,
+  type: NativeTypeEnum,
+  initial: any                   // '__undefined__' value uncatchable value
+}
+
+type ComputedEntry = {
+  readonly kind: string = 'computed',
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[],
+  name: string,
+  dependencies: string[]         // list of internal dependencies properties
+}
+
+type EventEntry = {
+  readonly kind: string = 'event',
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[],
+  name: string,
+  arguments: EventArgument[]
+}
+
+type EventArgument = {
+  name: string,
+  description: string,
+  type: string
+}
+
+type MethodEntry = {
+  readonly kind: string = 'method',
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[],
+  name: string,
+  params: MethodParam[],
+  return: MethodReturn
+}
+
+type MethodParam = {
+  name: string,
+  description: string,
+  type: string,
+  defaultValue: any
+}
+
+type MethodReturn = {
+  type: string = 'void',
+  description: string
+}
 ```
 
 ## Related projects
