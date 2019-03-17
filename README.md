@@ -31,10 +31,11 @@ npm install --save @vuedoc/parser
 | filecontent             | The file content to parse. *Required* unless `filename` is passed   |
 | encoding                | The file encoding. Default is `'utf8'`                              |
 | features                | The component features to parse and extract.                        |
-|                         | Default features: `['name', 'description', 'keywords', 'slots', 'props', 'data', 'computed', 'events', 'methods']` |
+|                         | Default features: `['name', 'description', 'keywords', 'slots',`    |
+|                         | `'props', 'data', 'computed', 'events', 'methods']`                 |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
 | ignoredVisibilities     | List of ignored visibilities.                                       |
-|                         | Default features: `['protected', 'private`]`                        |
+|                         | Default ignored visibilities: `['protected', 'private']`            |
 
 ## Usage
 
