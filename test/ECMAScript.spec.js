@@ -657,4 +657,43 @@ describe('ECMAScript Features Parsing', () => {
       })
     })
   })
+
+  describe('Binary and Octal Literals', () => {
+    it('should successfully extract Binary and Octal Literals vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              var a = 0b111110111
+              var b = 0o767
+
+              return { a, b }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: null,
+          type: 'number',
+          initial: 0b111110111,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: null,
+          type: 'number',
+          initial: 0o767,
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 })
