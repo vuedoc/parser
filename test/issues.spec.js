@@ -311,4 +311,73 @@ describe('issues', () => {
       return parser.parse(options)
     })
   })
+
+  describe('#29 - Bad format when using code block in comment', () => {
+    it('should successfully parse comment with block comment', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * My beautifull component. Usage:
+             *
+             * \`\`\`
+             * <my-component
+             *     v-model='foo'
+             * />
+             * \`\`\`
+             */
+            export default {
+              // ...
+            }
+
+          </script>
+        `
+      }
+      const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```'
+
+      return parser.parse(options).then(({ description }) => {
+        expect(description).toEqual(expected)
+      })
+    })
+
+    it('should successfully preserve spaces on keywords', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * Description
+             *
+             * @note Node one
+             * - Line 1
+             *   Line 2
+             * @note Node two
+             * - Line 3
+             * @note Node three
+             */
+            export default {
+              // ...
+            }
+
+          </script>
+        `
+      }
+      const expectedDescription = 'Description'
+      const expectedKeywords = [
+        {
+          name: 'note',
+          description: 'Node one\n- Line 1\n  Line 2' },
+        {
+          name: 'note',
+          description: 'Node two\n- Line 3' },
+        {
+          name: 'note',
+          description: 'Node three' }
+      ]
+
+      return parser.parse(options).then(({ description, keywords }) => {
+        expect(description).toEqual(expectedDescription)
+        expect(keywords).toEqual(expectedKeywords)
+      })
+    })
+  })
 })
