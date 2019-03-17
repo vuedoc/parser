@@ -1,6 +1,8 @@
+const vuedoc = require('..')
+
 const { Parser } = require('../lib/parser/Parser')
 
-/* global describe it */
+/* global describe it expect */
 /* eslint-disable quote-props */
 /* eslint-disable indent */
 
@@ -530,4 +532,98 @@ describe('ECMAScript Features Parsing', () => {
   testPropertyObject('props')
   testPropertyObject('methods')
   testPropertyObject('computed')
+
+  describe('Destructuring', () => {
+    it('should successfully extract destructuring vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              var [ a, , b ] = [1,2,3];
+              var [ c ] = [];
+              var [ d = 4 ] = [];
+              var { e } = { e: 5 };
+              var { f } = {};
+              var { g = 6 } = {};
+              var [ h ] = getValue();
+              var { i } = getValue();
+
+              return { a, b, c, d, e, f, g, h, i }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: null,
+          type: 'number',
+          initial: 1,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: null,
+          type: 'number',
+          initial: 3,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: null,
+          type: 'undefined',
+          initial: undefined,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: null,
+          type: 'number',
+          initial: 4,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: null,
+          type: 'number',
+          initial: 5,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: null,
+          type: 'undefined',
+          initial: undefined,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'g',
+          description: null,
+          type: 'number',
+          initial: 6,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'h',
+          description: null,
+          type: '__undefined__',
+          initial: '__undefined__',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'i',
+          description: null,
+          type: '__undefined__',
+          initial: '__undefined__',
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 })
