@@ -4,7 +4,6 @@
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
-    "pretest": "npm run lint",
     "test": "jest --coverage",
     "lint": "eslint index.js lib test",
     "lint:fix": "eslint --fix index.js lib test"
