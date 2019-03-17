@@ -1,9 +1,8 @@
 const { Parser } = require('../lib/parser/Parser')
 
 /* global describe it */
-/* eslint-disable max-len */
-/* eslint-disable indent */
 /* eslint-disable quote-props */
+/* eslint-disable indent */
 
 /**
  * Code samples from lukehoban/es6features
@@ -368,13 +367,146 @@ const Features = {
   `
 }
 
-describe('ECMAScript Features', () => {
+function testPropertyFunction (property) {
+  describe(`should parse ${property} without errors`, () => {
+    describe('es2015', () => {
+      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+        const script = `
+          export default {
+            ${property}: function () {
+              ${Features[feature]}
+
+              return {}
+            }
+          }
+        `
+        const source = { script }
+        const options = { source }
+        const parser = new Parser(options)
+
+        parser.on('end', done)
+        parser.walk()
+      }))
+    })
+
+    describe('es6', () => {
+      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+        const script = `
+          export default {
+            ${property} () {
+              ${Features[feature]}
+
+              return {}
+            }
+          }
+        `
+        const source = { script }
+        const options = { source }
+        const parser = new Parser(options)
+
+        parser.on('end', done)
+        parser.walk()
+      }))
+    })
+
+    describe('arrow', () => {
+      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+        const script = `
+          export default {
+            ${property}: () => {
+              ${Features[feature]}
+
+              return {}
+            }
+          }
+        `
+        const source = { script }
+        const options = { source }
+        const parser = new Parser(options)
+
+        parser.on('end', done)
+        parser.walk()
+      }))
+    })
+  })
+}
+
+function testPropertyObject (property) {
+  describe(`should parse ${property} without errors`, () => {
+    describe('es2015', () => {
+      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+        const script = `
+          export default {
+            ${property}: {
+              x: function () {
+                ${Features[feature]}
+
+                return {}
+              }
+            }
+          }
+        `
+        const source = { script }
+        const options = { source }
+        const parser = new Parser(options)
+
+        parser.on('end', done)
+        parser.walk()
+      }))
+    })
+
+    describe('es6', () => {
+      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+        const script = `
+          export default {
+            ${property}: {
+              x () {
+                ${Features[feature]}
+
+                return {}
+              }
+            }
+          }
+        `
+        const source = { script }
+        const options = { source }
+        const parser = new Parser(options)
+
+        parser.on('end', done)
+        parser.walk()
+      }))
+    })
+
+    describe('arrow', () => {
+      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+        const script = `
+          export default {
+            ${property}: {
+              x: () => {
+                ${Features[feature]}
+
+                return {}
+              }
+            }
+          }
+        `
+        const source = { script }
+        const options = { source }
+        const parser = new Parser(options)
+
+        parser.on('end', done)
+        parser.walk()
+      }))
+    })
+  })
+}
+
+describe('ECMAScript Features Parsing', () => {
   describe('should parse without errors', () => {
     Object.keys(Features).forEach((feature) => it(feature, (done) => {
       const script = Features[feature]
       const source = { script }
       const options = { source }
-
       const parser = new Parser(options)
 
       parser.on('end', done)
@@ -382,24 +514,20 @@ describe('ECMAScript Features', () => {
     }))
   })
 
-  describe('should parse data without errors', () => {
-    Object.keys(Features).forEach((feature) => it(feature, (done) => {
-      const script = `
-        export default {
-          data () {
-            ${Features[feature]}
-
-            return {}
-          }
-        }
-      `
-      const source = { script }
-      const options = { source }
-
-      const parser = new Parser(options)
-
-      parser.on('end', done)
-      parser.walk()
-    }))
-  })
+  testPropertyFunction('name')
+  testPropertyFunction('beforeRouteEnter')
+  testPropertyFunction('beforeRouteUpdate')
+  testPropertyFunction('beforeRouteLeave')
+  testPropertyFunction('beforeCreate')
+  testPropertyFunction('created')
+  testPropertyFunction('beforeMount')
+  testPropertyFunction('mounted')
+  testPropertyFunction('beforeUpdate')
+  testPropertyFunction('updated')
+  testPropertyFunction('beforeDestroy')
+  testPropertyFunction('destroyed')
+  testPropertyFunction('render')
+  testPropertyObject('props')
+  testPropertyObject('methods')
+  testPropertyObject('computed')
 })
