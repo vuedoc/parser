@@ -1,8 +1,26 @@
-# The vuedoc parser
+# The Vuedoc Parser
 
 Generate a JSON documentation for a Vue file component
 
 [![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/build.svg)](https://gitlab.com/vuedoc/parser/pipelines) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+
+## Table of Contents
+
+- [Install](#install)
+- [Features](#features)
+- [Options](#options)
+- [Usage](#usage)
+- [Add component name](#add-component-name)
+- [Add component description](#add-component-description)
+- [Anotate props, data and computed properties](#anotate-props-data-and-computed-properties)
+- [Anotate methods and events](#anotate-methods-and-events)
+- [Keywords Extraction](#keywords-extraction)
+- [Parsing control with options.features](#parsing-control-with-optionsfeatures)
+- [Interfaces](#interfaces)
+- [Related projects](#related-projects)
+- [Contribute](#contribute)
+- [Versioning](#versioning)
+- [License](#license)
 
 ## Install
 

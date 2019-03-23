@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --coverage",
     "lint": "eslint index.js lib test",
-    "lint:fix": "eslint --fix index.js lib test"
+    "lint:fix": "eslint --fix index.js lib test",
+    "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
+    "gimtoc": "^1.1.0",
     "jest": "^24.5.0"
   },
   "engines": {
