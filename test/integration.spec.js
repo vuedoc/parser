@@ -817,6 +817,98 @@ describe('dynamic import() function', () => {
   })
 })
 
+describe('Syntax: exports["default"]', () => {
+  it('should successfully parse code with the reserved import keyword', () => {
+    const filecontent = `
+      <script>
+        exports.__esModule = true;
+        var vue_1 = require("vue");
+        var Site_1 = require("@/designer/models/Site");
+
+        /**
+         * description
+         */
+        exports["default"] = vue_1["default"].extend({
+            props: {
+                links: {
+                    type: Object,
+                    required: true
+                },
+                site: {
+                    type: Site_1.Site,
+                    required: true
+                }
+            },
+            data: function () { return ({
+                currentYear: new Date().getFullYear()
+            }); },
+            computed: {
+                pages: function () {
+                    var _this = this;
+                    return this.links.map(function (pageId) {
+                        return _this.site.getPage(pageId);
+                    });
+                }
+            }
+        });
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: 'description',
+      events: [],
+      keywords: [],
+      methods: [],
+      computed: [ {
+        kind: 'computed',
+        name: 'pages',
+        dependencies: [ 'links', 'site' ],
+        description: null,
+        keywords: [],
+        visibility: 'public'
+      } ],
+      data: [ {
+        kind: 'data',
+        name: 'currentYear',
+        type: 'CallExpression',
+        description: null,
+        initial: 'new Date().getFullYear()',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      props: [ {
+        kind: 'prop',
+        name: 'links',
+        type: 'Object',
+        nativeType: '__undefined__',
+        required: true,
+        default: '__undefined__',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        visibility: 'public'
+      }, {
+        kind: 'prop',
+        name: 'site',
+        type: 'Site_1.Site',
+        nativeType: '__undefined__',
+        required: true,
+        default: '__undefined__',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        visibility: 'public'
+      } ],
+      slots: []
+    }
+
+    return vuedoc.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+})
+
 describe('spread operators', () => {
   it('should successfully parse', () => {
     const filecontent = `
