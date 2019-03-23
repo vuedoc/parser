@@ -4,14 +4,29 @@ const assert = require('assert')
 const { join } = require('path')
 const { readFileSync } = require('fs')
 
+const { Loader } = require('../lib/loader/Loader')
+const { VueLoader } = require('../lib/loader/VueLoader')
+const { HtmlLoader } = require('../lib/loader/HtmlLoader')
+const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
+
 /* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
 /* eslint-disable arrow-body-style */
 
+const DefaultLoaders = [
+  Loader.extend('js', JavaScriptLoader),
+  Loader.extend('html', HtmlLoader),
+  Loader.extend('vue', VueLoader)
+]
+
 function resolve (filename) {
   return join(__dirname, `fixtures/${filename}`)
+}
+
+function getFileContent (filename) {
+  return readFileSync(resolve(filename), 'utf8').toString()
 }
 
 const options = {
@@ -39,7 +54,7 @@ const optionsNoTopLevelConstant = {
 }
 
 const optionsWithFileSource = {
-  filecontent: readFileSync(resolve('checkbox.vue'), 'utf8'),
+  filecontent: getFileContent('checkbox.vue'),
   ignoredVisibilities: []
 }
 
@@ -284,62 +299,111 @@ function testComponentEvents (optionsToParse) {
 }
 
 describe('options', () => {
-  it('should fail to parse with missing options.filename', () => {
+  it('should fail to parse with missing options', () => {
+    assert.throws(() => vuedoc.parseOptions(),
+      /Missing options argument/)
+  })
+
+  it('should fail to parse with missing minimum required options', () => {
     assert.throws(() => vuedoc.parseOptions({}),
       /One of options.filename or options.filecontent is required/)
   })
 
-  it('should parse with default options.encoding', () => {
-    const _options = { filename: options.filename }
+  it('should parse with minimum required options', () => {
+    const filecontent = ' '
+    const options = { filecontent }
+    const expected = {
+      filecontent,
+      encoding: 'utf8',
+      ignoredVisibilities: [ 'protected', 'private' ],
+      source: {
+        template: '',
+        script: '',
+        errors: []
+      },
+      loaders: [ ...DefaultLoaders ]
+    }
 
-    assert.doesNotThrow(() => vuedoc.parseOptions(_options))
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
+    })
+  })
+
+  it('should parse with user options', () => {
+    const options = {
+      encoding: 'utf8',
+      filecontent: ' ',
+      ignoredVisibilities: [ 'private' ],
+      loaders: [
+        Loader.extend('ts', JavaScriptLoader)
+      ]
+    }
+
+    const expected = {
+      encoding: options.encoding,
+      filecontent: options.filecontent,
+      ignoredVisibilities: [ ...options.ignoredVisibilities ],
+      source: {
+        template: '',
+        script: '',
+        errors: []
+      },
+      loaders: [
+        Loader.extend('ts', JavaScriptLoader),
+        ...DefaultLoaders
+      ]
+    }
+
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
+    })
   })
 
   it('should parse with options.filename', () => {
     const options = {
       filename: resolve('checkbox.js'),
-      features: [ 'description' ]
+      ignoredVisibilities: [ 'private' ],
+      loaders: []
     }
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component, { description: 'A js component' })
+    const expected = {
+      encoding: 'utf8',
+      filename: options.filename,
+      ignoredVisibilities: [ ...options.ignoredVisibilities ],
+      source: {
+        template: '',
+        script: getFileContent('checkbox.js'),
+        errors: []
+      },
+      loaders: [ ...DefaultLoaders ]
+    }
+
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
     })
   })
 
   it('should parse with options.filecontent', () => {
-    const _options = { filecontent: 'vue file contents' }
-
-    assert.doesNotThrow(() => vuedoc.parseOptions(_options))
-  })
-
-  it('should parse with options.features === ["events"]', () => {
     const options = {
-      features: [ 'events' ],
-      filecontent: `
-        <script>
-          export default {
-            created () {
-              /**
-               * Fires when the card is changed.
-               */
-              this.$emit('change', true)
-            }
-          }
-        </script>
-      `
+      filecontent: ' ',
+      ignoredVisibilities: [ 'private' ],
+      loaders: []
     }
 
-    const event = {
-      kind: 'event',
-      name: 'change',
-      arguments: [],
-      description: 'Fires when the card is changed.',
-      keywords: [],
-      visibility: 'public'
+    const expected = {
+      encoding: 'utf8',
+      filecontent: options.filecontent,
+      ignoredVisibilities: [ ...options.ignoredVisibilities ],
+      source: {
+        template: '',
+        script: '',
+        errors: []
+      },
+      loaders: [ ...DefaultLoaders ]
     }
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component.events, [ event ])
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
     })
   })
 })
@@ -757,6 +821,98 @@ describe('dynamic import() function', () => {
   })
 })
 
+describe('Syntax: exports["default"]', () => {
+  it('should successfully parse code with the reserved import keyword', () => {
+    const filecontent = `
+      <script>
+        exports.__esModule = true;
+        var vue_1 = require("vue");
+        var Site_1 = require("@/designer/models/Site");
+
+        /**
+         * description
+         */
+        exports["default"] = vue_1["default"].extend({
+            props: {
+                links: {
+                    type: Object,
+                    required: true
+                },
+                site: {
+                    type: Site_1.Site,
+                    required: true
+                }
+            },
+            data: function () { return ({
+                currentYear: new Date().getFullYear()
+            }); },
+            computed: {
+                pages: function () {
+                    var _this = this;
+                    return this.links.map(function (pageId) {
+                        return _this.site.getPage(pageId);
+                    });
+                }
+            }
+        });
+      </script>
+    `
+    const options = { filecontent }
+    const expected = {
+      name: null,
+      description: 'description',
+      events: [],
+      keywords: [],
+      methods: [],
+      computed: [ {
+        kind: 'computed',
+        name: 'pages',
+        dependencies: [ 'links', 'site' ],
+        description: null,
+        keywords: [],
+        visibility: 'public'
+      } ],
+      data: [ {
+        kind: 'data',
+        name: 'currentYear',
+        type: 'CallExpression',
+        description: null,
+        initial: 'new Date().getFullYear()',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      props: [ {
+        kind: 'prop',
+        name: 'links',
+        type: 'Object',
+        nativeType: '__undefined__',
+        required: true,
+        default: '__undefined__',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        visibility: 'public'
+      }, {
+        kind: 'prop',
+        name: 'site',
+        type: 'Site_1.Site',
+        nativeType: '__undefined__',
+        required: true,
+        default: '__undefined__',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        visibility: 'public'
+      } ],
+      slots: []
+    }
+
+    return vuedoc.parse(options).then((component) => {
+      assert.deepEqual(component, expected)
+    })
+  })
+})
+
 describe('spread operators', () => {
   it('should successfully parse', () => {
     const filecontent = `
@@ -917,9 +1073,25 @@ describe('spread operators', () => {
 })
 
 describe('errors', () => {
-  it('should throw error for lang !== js', (done) => {
+  it('should throw error for non html template', (done) => {
     const filecontent = `
-      <script type="ts">
+      <template lang="pug">
+        div
+          p {{ gretting }} World!
+      </template>
+    `
+    const options = { filecontent }
+
+    vuedoc.parse(options)
+      .then(() => {
+        done(new Error('should throw an error for non html script'))
+      })
+      .catch(() => done())
+  })
+
+  it('should throw error for non javascript script', (done) => {
+    const filecontent = `
+      <script lang="ts">
         export default {
           computed: {
             ...mapGetters('map', [
@@ -951,10 +1123,10 @@ describe('errors', () => {
 
   it('should return component syntax error', () => {
     const filecontent = `
-      <template>
-        <input>
-      </template>
-    `
+        <template>
+          <input>
+        </template>
+      `
     const options = { filecontent }
     const expected = {
       name: null,
@@ -978,17 +1150,17 @@ describe('errors', () => {
 
   it('should throw error for lang !== js', () => {
     const filecontent = `
-      <script type="js">
-        export default {
-          created () {
-            /**
-             * @event
-             */
-            this.$emit('input')
+        <script type="js">
+          export default {
+            created () {
+              /**
+              * @event
+              */
+              this.$emit('input')
+            }
           }
-        }
-      </script>
-    `
+        </script>
+      `
     const options = { filecontent }
     const expected = {
       name: null,
