@@ -17,6 +17,8 @@ const DEFAULT_LOADERS = [
   Loader.extend('vue', VueLoader)
 ]
 
+module.exports.Loader = Loader
+
 module.exports.parseOptions = (options) => {
   if (!options) {
     /* eslint-disable max-len */
