@@ -324,8 +324,9 @@ describe('options', () => {
       loaders: [ ...DefaultLoaders ]
     }
 
-    expect(() => vuedoc.parseOptions(options)).not.toThrow()
-    expect(options).toEqual(expected)
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
+    })
   })
 
   it('should parse with user options', () => {
@@ -353,8 +354,9 @@ describe('options', () => {
       ]
     }
 
-    expect(() => vuedoc.parseOptions(options)).not.toThrow()
-    expect(options).toEqual(expected)
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
+    })
   })
 
   it('should parse with options.filename', () => {
@@ -376,8 +378,9 @@ describe('options', () => {
       loaders: [ ...DefaultLoaders ]
     }
 
-    expect(() => vuedoc.parseOptions(options)).not.toThrow()
-    expect(options).toEqual(expected)
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
+    })
   })
 
   it('should parse with options.filecontent', () => {
@@ -399,8 +402,9 @@ describe('options', () => {
       loaders: [ ...DefaultLoaders ]
     }
 
-    expect(() => vuedoc.parseOptions(options)).not.toThrow()
-    expect(options).toEqual(expected)
+    return vuedoc.parseOptions(options).then(() => {
+      expect(options).toEqual(expected)
+    })
   })
 })
 
