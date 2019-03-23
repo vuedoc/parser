@@ -1,8 +1,30 @@
-# The vuedoc parser
+# The Vuedoc Parser
 
 Generate a JSON documentation for a Vue file component
 
 [![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/build.svg)](https://gitlab.com/vuedoc/parser/pipelines) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+
+## Table of Contents
+
+- [Install](#install)
+- [Features](#features)
+- [Options](#options)
+- [Usage](#usage)
+- [Syntax](#syntax)
+  * [Add component name](#add-component-name)
+  * [Add component description](#add-component-description)
+  * [Anotate props, data and computed properties](#anotate-props-data-and-computed-properties)
+  * [Anotate methods, events and slots](#anotate-methods-events-and-slots)
+- [Keywords Extraction](#keywords-extraction)
+- [Parsing control with options.features](#parsing-control-with-optionsfeatures)
+- [Custom Language Processing](#custom-language-processing)
+  * [Loader API](#loader-api)
+  * [TypeScript Usage](#typescript-usage)
+- [Interfaces](#interfaces)
+- [Related projects](#related-projects)
+- [Contribute](#contribute)
+- [Versioning](#versioning)
+- [License](#license)
 
 ## Install
 
@@ -33,13 +55,15 @@ npm install --save @vuedoc/parser
 | features                | The component features to parse and extract.                        |
 |                         | Default features: `['name', 'description', 'keywords', 'slots',`    |
 |                         | `'props', 'data', 'computed', 'events', 'methods']`                 |
+| loaders                 | Use this option to define [custom loaders](#custom-language-processing) for specific languages |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
 | ignoredVisibilities     | List of ignored visibilities.                                       |
 |                         | Default ignored visibilities: `['protected', 'private']`            |
 
 ## Usage
 
-See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox.vue) for an Vue Component decoration example.
+See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox.vue)
+for an Vue Component decoration example.
 
 ```js
 const vuedoc = require('@vuedoc/parser')
@@ -73,7 +97,9 @@ This will print this JSON output:
 
 See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json) for the complete result.
 
-## Add component name
+## Syntax
+
+### Add component name
 
 By default, `vuedoc.parser` use the component's filename to generate the
 component name.
@@ -85,7 +111,7 @@ export default {
 }
 ```
 
-## Add component description
+### Add component description
 
 To add a component description, just add a comment before the `export default`
 statement like:
@@ -99,7 +125,7 @@ export default {
 }
 ```
 
-## Anotate props, data and computed properties
+### Anotate props, data and computed properties
 
 To document props, data or computed properties, use comments like:
 
@@ -187,7 +213,7 @@ export default {
 }
 ```
 
-## Anotate methods and events
+### Anotate methods, events and slots
 
 To document methods or events, just add comments before:
 
@@ -350,6 +376,57 @@ vuedoc.parse(options)
   // => [ 'name', 'description', 'keywords', 'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
+## Custom Language Processing
+
+### Loader API
+
+```js
+abstract class Loader {
+  public static extend(loaderName: string, loaderClass: Loader);
+  public abstract load(source: string): Promise<void>;
+  public pipe(loaderName: string, source: string): Promise<void>;
+  public emitTemplate(source: string): Promise<void>;
+  public emitScript(source: string): Promise<void>;
+  public emitErrors(errors: Array<string>): Promise<void>;
+}
+```
+
+### TypeScript Usage
+
+To use Vuedoc Parser with TypeScript, you need to install `typescript` and
+`@types/node` dependencies according the [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+
+```js
+const ts = require('typescript')
+const vuedoc, { Loader } = require('@vuedoc/parser')
+
+class TypeScriptLoader extends Loader {
+  load (source) {
+    const { outputText } = ts.transpileModule(source, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS }
+    })
+
+    return this.emitScript(outputText)
+  }
+}
+
+const options = {
+  filename: 'DatePicker.ts',
+  loaders: [
+    /**
+     * Register TypeScriptLoader
+     * Note that the name of the loader is either
+     * the extension of the file or the value of the attribute `lang`
+     */
+    Loader.extend('ts', TypeScriptLoader)
+  ]
+}
+
+vuedoc.parse(options).then((component) => {
+  // console.log(component)
+})
+```
+
 ## Interfaces
 
 ```js
@@ -377,9 +454,10 @@ enum NativeTypeEnum = {
   number,
   bigint,
   boolean,
-  object,
-  null,
-  undefined
+  object,         // for an array or an object
+  null,           // for an explicit `null` value
+  undefined,      // for an explicit `undefined` value
+  CallExpression  // for a value like `new Date()`
 }
 
 type Keyword = {

@@ -1,7 +1,9 @@
-const { parseComponent } = require('vue-template-compiler')
-
 const { extname } = require('path')
-const { readFileSync } = require('fs')
+
+const { Loader } = require('./lib/loader/Loader')
+const { VueLoader } = require('./lib/loader/VueLoader')
+const { HtmlLoader } = require('./lib/loader/HtmlLoader')
+const { JavaScriptLoader } = require('./lib/loader/JavaScriptLoader')
 
 const { Parser } = require('./lib/parser/Parser')
 const { Features } = require('./lib/Enum')
@@ -9,24 +11,21 @@ const { Features } = require('./lib/Enum')
 const DEFAULT_ENCODING = 'utf8'
 const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
 
-function loadSourceFromFileContent (filecontent) {
-  const result = parseComponent(filecontent)
+const DEFAULT_LOADERS = [
+  Loader.extend('js', JavaScriptLoader),
+  Loader.extend('html', HtmlLoader),
+  Loader.extend('vue', VueLoader)
+]
 
-  if (result.script) {
-    if (result.script.attrs.type && result.script.attrs.type !== 'js') {
-      throw new Error('Only JavaScript script are supported')
-    }
-  }
-
-  return {
-    template: result.template ? result.template.content : '',
-    script: result.script ? result.script.content : '',
-    errors: result.errors
-  }
-}
+module.exports.Loader = Loader
 
 module.exports.parseOptions = (options) => {
-  if (!options || (!options.filename && !options.filecontent)) {
+  if (!options) {
+    /* eslint-disable max-len */
+    throw new Error('Missing options argument')
+  }
+
+  if (!options.filename && !options.filecontent) {
     /* eslint-disable max-len */
     throw new Error('One of options.filename or options.filecontent is required')
   }
@@ -38,94 +37,93 @@ module.exports.parseOptions = (options) => {
   if (!options.ignoredVisibilities) {
     options.ignoredVisibilities = DEFAULT_IGNORED_VISIBILITIES
   }
-}
 
-module.exports.parse = (options) => new Promise((resolve) => {
-  this.parseOptions(options)
+  if (!Array.isArray(options.loaders)) {
+    options.loaders = [ ...DEFAULT_LOADERS ]
+  } else {
+    options.loaders.push(...DEFAULT_LOADERS)
+  }
 
-  if (!options.source) {
+  options.source = {
+    template: '',
+    script: '',
+    errors: []
+  }
+
+  try {
     if (options.filename) {
       const ext = extname(options.filename)
+      const loaderName = ext.substring(1)
+      const LoaderClass = Loader.get(loaderName, options)
+      const source = Loader.getFileContent(options.filename, options)
 
-      switch (ext) {
-        case '.js':
-          options.source = {
-            script: readFileSync(options.filename, options.encoding)
-          }
-          break
+      return new LoaderClass(options).load(source)
+    }
 
-        case '.vue': {
-          const filecontent = readFileSync(options.filename, options.encoding)
+    return new VueLoader(options).load(options.filecontent)
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
 
-          options.source = loadSourceFromFileContent(filecontent)
+module.exports.parse = (options) => this.parseOptions(options)
+  .then(() => new Promise((resolve) => {
+    const component = {}
+    const parser = new Parser(options)
 
-          break
-        }
+    if (options.source.errors.length) {
+      component.errors = options.source.errors
+    }
 
-        default:
-          throw new Error('Only .js and .vue files are supported')
+    parser.on('error', ({ message }) => {
+      if (!component.errors) {
+        component.errors = []
       }
-    } else {
-      options.source = loadSourceFromFileContent(options.filecontent)
-    }
-  }
 
-  const component = {}
-  const parser = new Parser(options)
+      component.errors.push(message)
+    })
 
-  if (options.source.errors instanceof Array && options.source.errors.length) {
-    component.errors = options.source.errors
-  }
+    parser.on('end', () => {
+      parser.features.forEach((feature) => {
+        if (component[feature] instanceof Array) {
+          /* eslint-disable-next-line arrow-body-style */
+          component[feature] = component[feature].filter((item) => {
+            return !options.ignoredVisibilities.includes(item.visibility)
+          })
+        }
+      })
 
-  parser.on('error', ({ message }) => {
-    if (!component.errors) {
-      component.errors = []
-    }
+      resolve(component)
+    })
 
-    component.errors.push(message)
-  })
-
-  parser.on('end', () => {
     parser.features.forEach((feature) => {
-      if (component[feature] instanceof Array) {
-        /* eslint-disable-next-line arrow-body-style */
-        component[feature] = component[feature].filter((item) => {
-          return !options.ignoredVisibilities.includes(item.visibility)
-        })
+      switch (feature) {
+        case Features.name:
+        case Features.description:
+          component[feature] = null
+
+          parser.on(feature, ({ value }) => {
+            component[feature] = value
+          })
+          break
+
+        case Features.keywords:
+          component[feature] = []
+
+          parser.on(feature, ({ value }) => {
+            component[feature] = value
+          })
+          break
+
+        default: {
+          const eventName = Parser.getEventName(feature)
+
+          component[feature] = []
+
+          parser.on(eventName, (entry) => component[feature].push(entry))
+        }
       }
     })
 
-    resolve(component)
-  })
-
-  parser.features.forEach((feature) => {
-    switch (feature) {
-      case Features.name:
-      case Features.description:
-        component[feature] = null
-
-        parser.on(feature, ({ value }) => {
-          component[feature] = value
-        })
-        break
-
-      case Features.keywords:
-        component[feature] = []
-
-        parser.on(feature, ({ value }) => {
-          component[feature] = value
-        })
-        break
-
-      default: {
-        const eventName = Parser.getEventName(feature)
-
-        component[feature] = []
-
-        parser.on(eventName, (entry) => component[feature].push(entry))
-      }
-    }
-  })
-
-  parser.walk()
-})
+    parser.walk()
+  }))
