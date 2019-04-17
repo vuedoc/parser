@@ -523,4 +523,76 @@ describe('issues', () => {
       })
     })
   })
+
+  describe('#39 - Events parsing on nextTick() all', () => {
+    it('should successfully parse events on this.$nextTick()', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                this.$nextTick(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+
+              }
+            }
+
+          </script>
+        `
+      }
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ events }) => {
+        expect(events).toEqual(expected)
+      })
+    })
+
+    it('should successfully parse events on Vue.nextTick()', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                Vue.nextTick(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+
+              }
+            }
+
+          </script>
+        `
+      }
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ events }) => {
+        expect(events).toEqual(expected)
+      })
+    })
+  })
 })
