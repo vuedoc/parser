@@ -524,7 +524,7 @@ describe('issues', () => {
     })
   })
 
-  describe('#39 - Events parsing on nextTick() all', () => {
+  describe('#39 - Events parsing on function calls', () => {
     it('should successfully parse events on this.$nextTick()', () => {
       const options = {
         filecontent: `
@@ -537,13 +537,12 @@ describe('issues', () => {
                    */
                   this.$emit('close');
                 });
-
               }
             }
-
           </script>
         `
       }
+
       const expected = [
         {
           kind: 'event',
@@ -572,13 +571,148 @@ describe('issues', () => {
                    */
                   this.$emit('close');
                 });
-
               }
             }
-
           </script>
         `
       }
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ events }) => {
+        expect(events).toEqual(expected)
+      })
+    })
+
+    it('should successfully parse events on callee function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ events }) => {
+        expect(events).toEqual(expected)
+      })
+    })
+
+    it('should successfully parse events on Promise.resolve function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load().then(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ events }) => {
+        expect(events).toEqual(expected)
+      })
+    })
+
+    it('should successfully parse events on Promise.reject function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load().catch(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ events }) => {
+        expect(events).toEqual(expected)
+      })
+    })
+
+    it('should successfully parse events on Promise.finally function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load().finally(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `
+      }
+
       const expected = [
         {
           kind: 'event',
