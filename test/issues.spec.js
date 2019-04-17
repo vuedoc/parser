@@ -729,4 +729,39 @@ describe('issues', () => {
       })
     })
   })
+
+  describe('#41 - Duplicate computed properties dependencies', () => {
+    it('should successfully parse dependencies without duplicates', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              computed: {
+                bidule () {
+                  const doc = this.docs.find(({ name }) => name === this.name)
+
+                  return this.name && doc.published
+                }
+              }
+            }
+          </script>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'computed',
+          name: 'bidule',
+          description: null,
+          dependencies: [ 'docs', 'name' ],
+          keywords: [],
+          visibility: 'public'
+        }
+      ]
+
+      return parser.parse(options).then(({ computed }) => {
+        expect(computed).toEqual(expected)
+      })
+    })
+  })
 })
