@@ -13,7 +13,6 @@ const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
-/* eslint-disable arrow-body-style */
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
@@ -111,7 +110,6 @@ function testComponentMethods (optionsToParse) {
 function testComponent (optionsToParse) {
   let component = {}
 
-  /* eslint-disable arrow-body-style */
   it('should parse without error', () => {
     return vuedoc.parse(optionsToParse).then((_component) => {
       component = _component
