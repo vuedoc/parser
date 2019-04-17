@@ -327,9 +327,7 @@ describe('issues', () => {
              * />
              * \`\`\`
              */
-            export default {
-              // ...
-            }
+            export default {}
 
           </script>
         `
@@ -355,9 +353,7 @@ describe('issues', () => {
              * - Line 3
              * @note Node three
              */
-            export default {
-              // ...
-            }
+            export default {}
 
           </script>
         `
@@ -393,9 +389,7 @@ describe('issues', () => {
              * <my-component @input='doSomething' />
              * \`\`\`
              */
-            export default {
-              // ...
-            }
+            export default {}
 
           </script>
         `
@@ -421,9 +415,7 @@ describe('issues', () => {
              * - Line 3
              * @note Node three
              */
-            export default {
-              // ...
-            }
+            export default {}
 
           </script>
         `
@@ -444,6 +436,90 @@ describe('issues', () => {
       return parser.parse(options).then(({ description, keywords }) => {
         expect(description).toEqual(expectedDescription)
         expect(keywords).toEqual(expectedKeywords)
+      })
+    })
+  })
+
+  describe('#40 - Nested slot documentation', () => {
+    it('should successfully parse nested slots', () => {
+      const options = {
+        filecontent: `
+          <template>
+            <!-- Overrides entire dialog contents -->
+            <slot name="content">
+              <n-module ref="module" :type="type">
+                <!-- Overrides dialog header -->
+                <slot name="header" slot="header">
+                  <n-tile>
+                    <div>
+                      <div :class="config.children.title">{{ title }}</div>
+                    </div>
+
+                    <!-- Overrides dialog header actions, i.e. default close button -->
+                    <slot name="actions" slot="actions">
+                      <n-button @click.native="close" circle ghost color="black">
+                        <n-icon :icon="config.icons.close"></n-icon>
+                      </n-button>
+                    </slot>
+                  </n-tile>
+                </slot>
+
+                <!-- Dialog body -->
+                <slot></slot>
+
+                <!-- Dialog footer -->
+                <slot name="footer" slot="footer"></slot>
+              </n-module>
+            </slot>
+          </template>
+        `
+      }
+
+      const expected = [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Overrides entire dialog contents',
+          keywords: [],
+          name: 'content',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Overrides dialog header',
+          keywords: [],
+          name: 'header',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Overrides dialog header actions, i.e. default close button',
+          keywords: [],
+          name: 'actions',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Dialog body',
+          keywords: [],
+          name: 'default',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Dialog footer',
+          keywords: [],
+          name: 'footer',
+          props: []
+        }
+      ]
+
+      return parser.parse(options).then(({ slots }) => {
+        expect(slots).toEqual(expected)
       })
     })
   })
