@@ -86,7 +86,6 @@ module.exports.parse = (options) => this.parseOptions(options)
     parser.on('end', () => {
       parser.features.forEach((feature) => {
         if (component[feature] instanceof Array) {
-          /* eslint-disable-next-line arrow-body-style */
           component[feature] = component[feature].filter((item) => {
             return !options.ignoredVisibilities.includes(item.visibility)
           })
