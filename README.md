@@ -433,6 +433,7 @@ vuedoc.parse(options).then((component) => {
 type ParsingOutput = {
   name: string,               // Component name
   description: string,        // Component description
+  inheritAttrs: boolean,
   keywords: Keyword[],        // Attached component keywords
   slots: SlotEntry[],         // Component slots
   props: PropEntry[],         // Component props
