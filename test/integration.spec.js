@@ -804,6 +804,7 @@ describe('dynamic import() function', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
@@ -859,6 +860,7 @@ describe('Syntax: exports["default"]', () => {
     const expected = {
       name: null,
       description: 'description',
+      inheritAttrs: false,
       events: [],
       keywords: [],
       methods: [],
@@ -932,6 +934,7 @@ describe('spread operators', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
@@ -969,6 +972,7 @@ describe('spread operators', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
@@ -1008,6 +1012,7 @@ describe('spread operators', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
@@ -1055,6 +1060,7 @@ describe('spread operators', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
@@ -1129,6 +1135,7 @@ describe('errors', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
@@ -1163,6 +1170,7 @@ describe('errors', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: false,
       keywords: [],
       slots: [],
       props: [],
