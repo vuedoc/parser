@@ -21,6 +21,14 @@
     "parser"
   ],
   "author": "Sébastien Demanou",
+  "contributors": [
+    "Sébastien Demanou (https://gitlab.com/demsking)",
+    "Patrick Schmiedel (https://github.com/pschmiedel)",
+    "Devon Rueckner (https://github.com/indirectlylit)",
+    "Hello Deadline (https://github.com/HelloDeadline)",
+    "Magali Boizot-Roche (https://github.com/magali-br)",
+    "Rmaiy (https://github.com/ljwrer)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/vuedoc/parser/issues"
