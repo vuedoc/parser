@@ -68,7 +68,10 @@ module.exports.parseOptions = (options) => {
 
 module.exports.parse = (options) => this.parseOptions(options)
   .then(() => new Promise((resolve) => {
-    const component = {}
+    const component = {
+      inheritAttrs: false
+    }
+
     const parser = new Parser(options)
 
     if (options.source.errors.length) {
@@ -93,6 +96,10 @@ module.exports.parse = (options) => this.parseOptions(options)
       })
 
       resolve(component)
+    })
+
+    parser.on('inheritAttrs', ({ value }) => {
+      component.inheritAttrs = value
     })
 
     parser.features.forEach((feature) => {

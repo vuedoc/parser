@@ -18,6 +18,7 @@ describe('#44 - Inline Template', () => {
 
     const expected = {
       name: null,
+      inheritAttrs: false,
       description: null,
       keywords: [],
       slots:
@@ -59,6 +60,7 @@ describe('#44 - Inline Template', () => {
 
     const expected = {
       name: null,
+      inheritAttrs: false,
       description: null,
       keywords: [],
       slots:
