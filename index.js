@@ -114,8 +114,6 @@ module.exports.parse = (options) => this.parseOptions(options)
           break
 
         case Features.model:
-          component[feature] = null
-
           parser.on(feature, (model) => {
             component[feature] = model
           })
