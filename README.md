@@ -418,9 +418,14 @@ const vuedoc, { Loader } = require('@vuedoc/parser')
 
 class TypeScriptLoader extends Loader {
   load (source) {
-    const { outputText } = ts.transpileModule(source, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS }
-    })
+    const options = {
+      compilerOptions: {
+        target: ts.ModuleKind.ESNext,
+        module: ts.ModuleKind.ESNext
+      }
+    }
+
+    const { outputText } = ts.transpileModule(source, options)
 
     return this.emitScript(outputText)
   }
@@ -431,8 +436,8 @@ const options = {
   loaders: [
     /**
      * Register TypeScriptLoader
-     * Note that the name of the loader is either
-     * the extension of the file or the value of the attribute `lang`
+     * Note that the name of the loader is either the extension
+     * of the file or the value of the attribute `lang`
      */
     Loader.extend('ts', TypeScriptLoader)
   ]
