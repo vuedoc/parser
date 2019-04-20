@@ -388,8 +388,7 @@ const options = {
 vuedoc.parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
-  // => [
-  //      'name', 'description', 'keywords', 'model',
+  // => [ 'name', 'description', 'keywords', 'model',
   //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
@@ -462,12 +461,6 @@ type ParsingOutput = {
   errors: string[]            // Syntax and parsing errors
 }
 
-enum VisibilityEnum = {
-  public,
-  protected,
-  private
-}
-
 enum NativeTypeEnum = {
   string,
   number,
@@ -484,20 +477,21 @@ type Keyword = {
   description: string
 }
 
-type ModelEntry {
-  readonly kind: string = 'model',
-  prop: string,
-  event: string,
-  visibility: VisibilityEnum,
+interface Entry {
+  readonly kind: string,
+  visibility: 'public' | 'protected' | 'private',
   description: string,
   keywords: Keyword[]
 }
 
-type SlotEntry = {
+interface ModelEntry extend Entry {
+  readonly kind: string = 'model',
+  prop: string,
+  event: string
+}
+
+interface SlotEntry extend Entry {
   readonly kind: string = 'slot',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   props: SlotProp[]
 }
@@ -508,11 +502,8 @@ type SlotProp = {
   description: string
 }
 
-type PropEntry = {
-  readonly kind: string = 'slot',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
+interface PropEntry extend Entry {
+  readonly kind: string = 'prop',
   name: string,                  // v-model when the @model keyword is attached
   type: Identifier,              // defined prop type. ex Array, Object, String, ...
   nativeType: NativeTypeEnum,
@@ -521,30 +512,21 @@ type PropEntry = {
   describeModel: boolean = false // true when the @model keyword is attached
 }
 
-type DataEntry = {
+interface DataEntry extend Entry {
   readonly kind: string = 'data',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   type: NativeTypeEnum,
   initial: any                   // '__undefined__' value uncatchable value
 }
 
-type ComputedEntry = {
+interface ComputedEntry extend Entry {
   readonly kind: string = 'computed',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
-  dependencies: string[]         // list of internal dependencies properties
+  dependencies: string[]         // list of dependencies properties of the computed property
 }
 
-type EventEntry = {
+interface EventEntry extend Entry {
   readonly kind: string = 'event',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   arguments: EventArgument[]
 }
@@ -555,11 +537,8 @@ type EventArgument = {
   type: string
 }
 
-type MethodEntry = {
+interface MethodEntry extend Entry {
   readonly kind: string = 'method',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   params: MethodParam[],
   return: MethodReturn
