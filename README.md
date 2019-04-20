@@ -427,6 +427,7 @@ class TypeScriptLoader extends Loader {
 
     const { outputText } = ts.transpileModule(source, options)
 
+    // don't forget the return here
     return this.emitScript(outputText)
   }
 }
