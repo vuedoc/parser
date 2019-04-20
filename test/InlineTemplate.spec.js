@@ -16,28 +16,18 @@ describe('#44 - Inline Template', () => {
       `
     }
 
-    const expected = {
-      name: null,
-      inheritAttrs: false,
-      description: null,
-      keywords: [],
-      slots:
-        [ {
-            kind: 'slot',
-            visibility: 'public',
-            description: '',
-            keywords: [],
-            name: 'default',
-            props: [] } ],
-      props: [],
-      data: [],
-      computed: [],
-      events: [],
-      methods: []
-    }
+    const expected = [
+      {
+        kind: 'slot',
+        visibility: 'public',
+        description: '',
+        keywords: [],
+        name: 'default',
+        props: [] }
+    ]
 
-    return parser.parse(options).then((component) => {
-      expect(component).toEqual(expected)
+    return parser.parse(options).then(({ slots }) => {
+      expect(slots).toEqual(expected)
     })
   })
 

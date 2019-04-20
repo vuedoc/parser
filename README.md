@@ -36,7 +36,8 @@ npm install --save @vuedoc/parser
 
 - Extract the component name (from the name field or from the filename)
 - Extract the component description
-- Keywords Support: You can define your own keywords with the `@` symbol like `@author Sébastien`
+- Keywords Support: You can define your own keywords with the `@` symbol like `@author Jon Snow`
+- Extract component model
 - Extract component props
 - Extract component data
 - Extract computed properties with dependencies
@@ -53,8 +54,7 @@ npm install --save @vuedoc/parser
 | filecontent             | The file content to parse. *Required* unless `filename` is passed   |
 | encoding                | The file encoding. Default is `'utf8'`                              |
 | features                | The component features to parse and extract.                        |
-|                         | Default features: `['name', 'description', 'keywords', 'slots',`    |
-|                         | `'props', 'data', 'computed', 'events', 'methods']`                 |
+|                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
 | loaders                 | Use this option to define [custom loaders](#custom-language-processing) for specific languages |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
 | ignoredVisibilities     | List of ignored visibilities.                                       |
@@ -125,7 +125,7 @@ export default {
 }
 ```
 
-### Anotate props, data and computed properties
+### Anotate model, props, data and computed properties
 
 To document props, data or computed properties, use comments like:
 
@@ -163,7 +163,22 @@ export default {
 properties and computed properties's dependencies. It will also detect type for
 each defined data field.
 
-To document a `v-model` prop, use the `@model` keyword:
+To document a `v-model` prop, a proper way is to use the Vue's [model field](https://vuejs.org/v2/api/#model)
+if you use Vue +2.2.0.
+
+```js
+export default {
+  /**
+   * Use `v-model` to define a reactive value of the checkbox
+   */
+  model: {
+    prop: 'checked',
+    event: 'change'
+  }
+}
+```
+
+You can also use use the `@model` keyword on a prop if you use a old version:
 
 ```js
 export default {
@@ -373,7 +388,9 @@ const options = {
 vuedoc.parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
-  // => [ 'name', 'description', 'keywords', 'props', 'computed', 'events', 'methods', 'slots' ]
+  // => [
+  //      'name', 'description', 'keywords', 'model',
+  //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
 ## Custom Language Processing
@@ -435,6 +452,7 @@ type ParsingOutput = {
   description: string,        // Component description
   inheritAttrs: boolean,
   keywords: Keyword[],        // Attached component keywords
+  model?: ModelEntry,         // Component model
   slots: SlotEntry[],         // Component slots
   props: PropEntry[],         // Component props
   data: DataEntry[],          // Component data
@@ -464,6 +482,15 @@ enum NativeTypeEnum = {
 type Keyword = {
   name: string,
   description: string
+}
+
+type ModelEntry {
+  readonly kind: string = 'model',
+  prop: string,
+  event: string,
+  visibility: VisibilityEnum,
+  description: string,
+  keywords: Keyword[]
 }
 
 type SlotEntry = {
