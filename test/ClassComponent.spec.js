@@ -62,6 +62,11 @@ const filecontent = `
       }
 
       /**
+       * computed [Symbol.species] description
+       */
+      get [Symbol.species]() { return Array; }
+
+      /**
        * method description
        */
       greet() {
@@ -70,6 +75,7 @@ const filecontent = `
 
       static ignoredMethod() {}
     };
+    App.staticVar = 123;
     App = __decorate([
       Component({
         props: {
@@ -123,6 +129,12 @@ const expected = {
       name: 'computedMsg',
       dependencies: [ 'msg' ],
       description: 'computed computedMsg description',
+      keywords: [],
+      visibility: 'public' },
+    { kind: 'computed',
+      name: '[Symbol.species]',
+      dependencies: [],
+      description: 'computed [Symbol.species] description',
       keywords: [],
       visibility: 'public' }
   ],
