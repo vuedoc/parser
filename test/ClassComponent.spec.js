@@ -107,6 +107,7 @@ ComponentTestCase({
     ignoredVisibilities: [ 'private' ]
   },
   expected: {
+    name: 'App',
     description: 'A class component element',
     inheritAttrs: false,
     keywords: [
