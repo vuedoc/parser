@@ -37,6 +37,11 @@ const filecontent = `
          * data helloMsg with expression
          */
         this.helloMsg = 'Hello, ' + this.name;
+
+        /**
+         * event constructor description
+         */
+        this.$emit('created')
       }
 
       // lifecycle hook
@@ -44,7 +49,7 @@ const filecontent = `
         this.greet();
 
         /**
-         * event description
+         * event mounted description
          */
         this.$emit('mounted')
       }
@@ -80,6 +85,14 @@ const filecontent = `
 `
 
 const expected = {
+  events: [
+    { kind: 'event',
+      name: 'created',
+      arguments: [],
+      description: 'event constructor description',
+      keywords: [],
+      visibility: 'public' }
+  ],
   data: [
     {
       kind: 'data',
