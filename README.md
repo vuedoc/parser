@@ -44,6 +44,7 @@ npm install --save @vuedoc/parser
 - Extract component events
 - Extract component slots
 - Extract component methods
+- Class Component Support
 - JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
 ## Options
