@@ -66,7 +66,7 @@ describe('issues', () => {
           description: null,
           keywords: [],
           type: 'Boolean',
-          nativeType: '__undefined__',
+          nativeType: 'boolean',
           default: '__undefined__',
           name: 'value',
           describeModel: false,
