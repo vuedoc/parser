@@ -804,7 +804,7 @@ describe('dynamic import() function', () => {
     const expected = {
       name: null,
       description: null,
-      inheritAttrs: false,
+      inheritAttrs: true,
       keywords: [],
       slots: [],
       props: [],
@@ -860,7 +860,7 @@ describe('Syntax: exports["default"]', () => {
     const expected = {
       name: null,
       description: 'description',
-      inheritAttrs: false,
+      inheritAttrs: true,
       events: [],
       keywords: [],
       methods: [],
@@ -1027,7 +1027,7 @@ describe('spread operators', () => {
     const expected = {
       name: null,
       description: null,
-      inheritAttrs: false,
+      inheritAttrs: true,
       keywords: [],
       slots: [],
       props: [],

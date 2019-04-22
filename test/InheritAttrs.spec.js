@@ -50,7 +50,7 @@ describe('#43 - InheritAttrs Field', () => {
       `
     }
 
-    const expected = false
+    const expected = true
 
     return parser.parse(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected)

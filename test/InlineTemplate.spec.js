@@ -50,7 +50,7 @@ describe('#44 - Inline Template', () => {
 
     const expected = {
       name: null,
-      inheritAttrs: false,
+      inheritAttrs: true,
       description: null,
       keywords: [],
       slots:

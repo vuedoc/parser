@@ -69,7 +69,7 @@ module.exports.parseOptions = (options) => {
 module.exports.parse = (options) => this.parseOptions(options)
   .then(() => new Promise((resolve) => {
     const component = {
-      inheritAttrs: false
+      inheritAttrs: true
     }
 
     const parser = new Parser(options)
