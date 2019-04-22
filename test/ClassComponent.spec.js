@@ -91,6 +91,12 @@ const expected = {
       arguments: [],
       description: 'event constructor description',
       keywords: [],
+      visibility: 'public' },
+    { kind: 'event',
+      name: 'mounted',
+      arguments: [],
+      description: 'event mounted description',
+      keywords: [],
       visibility: 'public' }
   ],
   data: [
