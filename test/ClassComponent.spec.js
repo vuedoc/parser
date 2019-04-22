@@ -67,11 +67,23 @@ const filecontent = `
       get [Symbol.species]() { return Array; }
 
       /**
-       * method description
+       * method greet description
        */
       greet() {
         alert('greeting: ' + this.msg);
       }
+
+      /**
+       * method _protectedMethod description
+       * @protected
+       */
+      _protectedMethod() {}
+
+      /**
+       * method _ignoredMethod description
+       * @private
+       */
+      _ignoredMethod() {}
 
       static ignoredMethod() {}
     };
@@ -117,9 +129,23 @@ const expected = {
     { kind: 'method',
       name: 'greet',
       params: [],
-      description: 'method description',
+      description: 'method greet description',
       keywords: [],
       visibility: 'public',
+      return: {
+        description: null,
+        type: 'void'
+      } },
+    { kind: 'method',
+      name: '_protectedMethod',
+      params: [],
+      description: 'method _protectedMethod description',
+      keywords: [
+        {
+          name: 'protected',
+          description: '' }
+      ],
+      visibility: 'protected',
       return: {
         description: null,
         type: 'void'
@@ -176,7 +202,8 @@ describe('#37 - Class Component', () => {
   let component = null
 
   beforeAll(() => {
-    const options = { filecontent }
+    const ignoredVisibilities = [ 'private' ]
+    const options = { filecontent, ignoredVisibilities }
 
     return parser.parse(options).then((definition) => {
       component = definition
