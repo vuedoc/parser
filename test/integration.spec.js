@@ -885,7 +885,7 @@ describe('Syntax: exports["default"]', () => {
         kind: 'prop',
         name: 'links',
         type: 'Object',
-        nativeType: '__undefined__',
+        nativeType: 'object',
         required: true,
         default: '__undefined__',
         describeModel: false,
