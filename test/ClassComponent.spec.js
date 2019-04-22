@@ -99,6 +99,18 @@ const expected = {
       keywords: [],
       visibility: 'public' }
   ],
+  methods: [
+    { kind: 'method',
+      name: 'greet',
+      params: [],
+      description: 'method description',
+      keywords: [],
+      visibility: 'public',
+      return: {
+        description: null,
+        type: 'void'
+      } }
+  ],
   data: [
     {
       kind: 'data',
