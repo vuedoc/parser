@@ -13,7 +13,6 @@ const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
-/* eslint-disable arrow-body-style */
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
@@ -111,7 +110,6 @@ function testComponentMethods (optionsToParse) {
 function testComponent (optionsToParse) {
   let component = {}
 
-  /* eslint-disable arrow-body-style */
   it('should parse without error', () => {
     return vuedoc.parse(optionsToParse).then((_component) => {
       component = _component
@@ -806,6 +804,7 @@ describe('dynamic import() function', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: true,
       keywords: [],
       slots: [],
       props: [],
@@ -861,6 +860,7 @@ describe('Syntax: exports["default"]', () => {
     const expected = {
       name: null,
       description: 'description',
+      inheritAttrs: true,
       events: [],
       keywords: [],
       methods: [],
@@ -885,7 +885,7 @@ describe('Syntax: exports["default"]', () => {
         kind: 'prop',
         name: 'links',
         type: 'Object',
-        nativeType: '__undefined__',
+        nativeType: 'object',
         required: true,
         default: '__undefined__',
         describeModel: false,
@@ -931,29 +931,19 @@ describe('spread operators', () => {
       </script>
     `
     const options = { filecontent }
-    const expected = {
-      name: null,
-      description: null,
-      keywords: [],
-      slots: [],
-      props: [],
-      data: [],
-      computed: [
-        {
-          kind: 'computed',
-          visibility: 'public',
-          name: 'value',
-          description: null,
-          keywords: [],
-          dependencies: []
-        }
-      ],
-      events: [],
-      methods: []
-    }
+    const expected = [
+      {
+        kind: 'computed',
+        visibility: 'public',
+        name: 'value',
+        description: null,
+        keywords: [],
+        dependencies: []
+      }
+    ]
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component, expected)
+    return vuedoc.parse(options).then(({ computed }) => {
+      assert.deepEqual(computed, expected)
     })
   })
 
@@ -968,20 +958,10 @@ describe('spread operators', () => {
       </script>
     `
     const options = { filecontent }
-    const expected = {
-      name: null,
-      description: null,
-      keywords: [],
-      slots: [],
-      props: [],
-      data: [],
-      computed: [],
-      events: [],
-      methods: []
-    }
+    const expected = []
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component, expected)
+    return vuedoc.parse(options).then(({ computed }) => {
+      assert.deepEqual(computed, expected)
     })
   })
 
@@ -1007,37 +987,27 @@ describe('spread operators', () => {
       </script>
     `
     const options = { filecontent }
-    const expected = {
-      name: null,
-      description: null,
-      keywords: [],
-      slots: [],
-      props: [],
-      data: [],
-      computed: [
-        {
-          kind: 'computed',
-          visibility: 'public',
-          name: 'value',
-          description: null,
-          keywords: [],
-          dependencies: []
-        },
-        {
-          kind: 'computed',
-          visibility: 'public',
-          name: 'id',
-          description: null,
-          keywords: [],
-          dependencies: []
-        }
-      ],
-      events: [],
-      methods: []
-    }
+    const expected = [
+      {
+        kind: 'computed',
+        visibility: 'public',
+        name: 'value',
+        description: null,
+        keywords: [],
+        dependencies: []
+      },
+      {
+        kind: 'computed',
+        visibility: 'public',
+        name: 'id',
+        description: null,
+        keywords: [],
+        dependencies: []
+      }
+    ]
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component, expected)
+    return vuedoc.parse(options).then(({ computed }) => {
+      assert.deepEqual(computed, expected)
     })
   })
 
@@ -1057,6 +1027,7 @@ describe('spread operators', () => {
     const expected = {
       name: null,
       description: null,
+      inheritAttrs: true,
       keywords: [],
       slots: [],
       props: [],
@@ -1128,23 +1099,12 @@ describe('errors', () => {
         </template>
       `
     const options = { filecontent }
-    const expected = {
-      name: null,
-      description: null,
-      keywords: [],
-      slots: [],
-      props: [],
-      data: [],
-      computed: [],
-      events: [],
-      methods: [],
-      errors: [
-        'tag <input> has no matching end tag.'
-      ]
-    }
+    const expected = [
+      'tag <input> has no matching end tag.'
+    ]
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component, expected)
+    return vuedoc.parse(options).then(({ errors }) => {
+      assert.deepEqual(errors, expected)
     })
   })
 
@@ -1162,23 +1122,12 @@ describe('errors', () => {
         </script>
       `
     const options = { filecontent }
-    const expected = {
-      name: null,
-      description: null,
-      keywords: [],
-      slots: [],
-      props: [],
-      data: [],
-      computed: [],
-      events: [],
-      methods: [],
-      errors: [
-        'Missing keyword value for @event: this.$emit(\'input\')'
-      ]
-    }
+    const expected = [
+      'Missing keyword value for @event: this.$emit(\'input\')'
+    ]
 
-    return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component, expected)
+    return vuedoc.parse(options).then(({ errors }) => {
+      assert.deepEqual(errors, expected)
     })
   })
 })

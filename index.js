@@ -68,7 +68,10 @@ module.exports.parseOptions = (options) => {
 
 module.exports.parse = (options) => this.parseOptions(options)
   .then(() => new Promise((resolve) => {
-    const component = {}
+    const component = {
+      inheritAttrs: true
+    }
+
     const parser = new Parser(options)
 
     if (options.source.errors.length) {
@@ -86,7 +89,6 @@ module.exports.parse = (options) => this.parseOptions(options)
     parser.on('end', () => {
       parser.features.forEach((feature) => {
         if (component[feature] instanceof Array) {
-          /* eslint-disable-next-line arrow-body-style */
           component[feature] = component[feature].filter((item) => {
             return !options.ignoredVisibilities.includes(item.visibility)
           })
@@ -94,6 +96,10 @@ module.exports.parse = (options) => this.parseOptions(options)
       })
 
       resolve(component)
+    })
+
+    parser.on('inheritAttrs', ({ value }) => {
+      component.inheritAttrs = value
     })
 
     parser.features.forEach((feature) => {
@@ -104,6 +110,12 @@ module.exports.parse = (options) => this.parseOptions(options)
 
           parser.on(feature, ({ value }) => {
             component[feature] = value
+          })
+          break
+
+        case Features.model:
+          parser.on(feature, (model) => {
+            component[feature] = model
           })
           break
 

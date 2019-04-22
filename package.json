@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,14 @@
     "parser"
   ],
   "author": "Sébastien Demanou",
+  "contributors": [
+    "Sébastien Demanou (https://gitlab.com/demsking)",
+    "Patrick Schmiedel (https://github.com/pschmiedel)",
+    "Devon Rueckner (https://github.com/indirectlylit)",
+    "Hello Deadline (https://github.com/HelloDeadline)",
+    "Magali Boizot-Roche (https://github.com/magali-br)",
+    "Rmaiy (https://github.com/ljwrer)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/vuedoc/parser/issues"
@@ -32,12 +40,12 @@
     "vue-template-compiler": "^2.6.10"
   },
   "devDependencies": {
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "gimtoc": "^1.1.0",
-    "jest": "^24.5.0"
+    "eslint-plugin-import": "^2.17.2",
+    "gimtoc": "^1.2.0",
+    "jest": "^24.7.1"
   },
   "engines": {
     "node": ">=8"

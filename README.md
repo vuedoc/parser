@@ -13,7 +13,7 @@ Generate a JSON documentation for a Vue file component
 - [Syntax](#syntax)
   * [Add component name](#add-component-name)
   * [Add component description](#add-component-description)
-  * [Anotate props, data and computed properties](#anotate-props-data-and-computed-properties)
+  * [Anotate model, props, data and computed properties](#anotate-model-props-data-and-computed-properties)
   * [Anotate methods, events and slots](#anotate-methods-events-and-slots)
 - [Keywords Extraction](#keywords-extraction)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
@@ -36,13 +36,15 @@ npm install --save @vuedoc/parser
 
 - Extract the component name (from the name field or from the filename)
 - Extract the component description
-- Keywords Support: You can define your own keywords with the `@` symbol like `@author Sébastien`
+- Keywords Support: You can define your own keywords with the `@` symbol like `@author Jon Snow`
+- Extract component model
 - Extract component props
 - Extract component data
 - Extract computed properties with dependencies
 - Extract component events
 - Extract component slots
 - Extract component methods
+- Class Component Support
 - JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
 ## Options
@@ -53,8 +55,7 @@ npm install --save @vuedoc/parser
 | filecontent             | The file content to parse. *Required* unless `filename` is passed   |
 | encoding                | The file encoding. Default is `'utf8'`                              |
 | features                | The component features to parse and extract.                        |
-|                         | Default features: `['name', 'description', 'keywords', 'slots',`    |
-|                         | `'props', 'data', 'computed', 'events', 'methods']`                 |
+|                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
 | loaders                 | Use this option to define [custom loaders](#custom-language-processing) for specific languages |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
 | ignoredVisibilities     | List of ignored visibilities.                                       |
@@ -125,7 +126,7 @@ export default {
 }
 ```
 
-### Anotate props, data and computed properties
+### Anotate model, props, data and computed properties
 
 To document props, data or computed properties, use comments like:
 
@@ -163,7 +164,22 @@ export default {
 properties and computed properties's dependencies. It will also detect type for
 each defined data field.
 
-To document a `v-model` prop, use the `@model` keyword:
+To document a `v-model` prop, a proper way is to use the Vue's [model field](https://vuejs.org/v2/api/#model)
+if you use Vue +2.2.0.
+
+```js
+export default {
+  /**
+   * Use `v-model` to define a reactive value of the checkbox
+   */
+  model: {
+    prop: 'checked',
+    event: 'change'
+  }
+}
+```
+
+You can also use use the `@model` keyword on a prop if you use a old version:
 
 ```js
 export default {
@@ -373,7 +389,8 @@ const options = {
 vuedoc.parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
-  // => [ 'name', 'description', 'keywords', 'props', 'computed', 'events', 'methods', 'slots' ]
+  // => [ 'name', 'description', 'keywords', 'model',
+  //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
 ## Custom Language Processing
@@ -402,10 +419,16 @@ const vuedoc, { Loader } = require('@vuedoc/parser')
 
 class TypeScriptLoader extends Loader {
   load (source) {
-    const { outputText } = ts.transpileModule(source, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS }
-    })
+    const options = {
+      compilerOptions: {
+        target: ts.ModuleKind.ESNext,
+        module: ts.ModuleKind.ESNext
+      }
+    }
 
+    const { outputText } = ts.transpileModule(source, options)
+
+    // don't forget the return here
     return this.emitScript(outputText)
   }
 }
@@ -415,8 +438,8 @@ const options = {
   loaders: [
     /**
      * Register TypeScriptLoader
-     * Note that the name of the loader is either
-     * the extension of the file or the value of the attribute `lang`
+     * Note that the name of the loader is either the extension
+     * of the file or the value of the attribute `lang`
      */
     Loader.extend('ts', TypeScriptLoader)
   ]
@@ -433,7 +456,9 @@ vuedoc.parse(options).then((component) => {
 type ParsingOutput = {
   name: string,               // Component name
   description: string,        // Component description
+  inheritAttrs: boolean,
   keywords: Keyword[],        // Attached component keywords
+  model?: ModelEntry,         // Component model
   slots: SlotEntry[],         // Component slots
   props: PropEntry[],         // Component props
   data: DataEntry[],          // Component data
@@ -441,12 +466,6 @@ type ParsingOutput = {
   events: EventEntry[],       // Events
   methods: MethodEntry[],     // Component methods
   errors: string[]            // Syntax and parsing errors
-}
-
-enum VisibilityEnum = {
-  public,
-  protected,
-  private
 }
 
 enum NativeTypeEnum = {
@@ -465,11 +484,21 @@ type Keyword = {
   description: string
 }
 
-type SlotEntry = {
-  readonly kind: string = 'slot',
-  visibility: VisibilityEnum,
+interface Entry {
+  readonly kind: string,
+  visibility: 'public' | 'protected' | 'private',
   description: string,
-  keywords: Keyword[],
+  keywords: Keyword[]
+}
+
+interface ModelEntry extends Entry {
+  readonly kind: string = 'model',
+  prop: string,
+  event: string
+}
+
+interface SlotEntry extends Entry {
+  readonly kind: string = 'slot',
   name: string,
   props: SlotProp[]
 }
@@ -480,11 +509,8 @@ type SlotProp = {
   description: string
 }
 
-type PropEntry = {
-  readonly kind: string = 'slot',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
+interface PropEntry extends Entry {
+  readonly kind: string = 'prop',
   name: string,                  // v-model when the @model keyword is attached
   type: Identifier,              // defined prop type. ex Array, Object, String, ...
   nativeType: NativeTypeEnum,
@@ -493,30 +519,21 @@ type PropEntry = {
   describeModel: boolean = false // true when the @model keyword is attached
 }
 
-type DataEntry = {
+interface DataEntry extends Entry {
   readonly kind: string = 'data',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   type: NativeTypeEnum,
   initial: any                   // '__undefined__' value uncatchable value
 }
 
-type ComputedEntry = {
+interface ComputedEntry extends Entry {
   readonly kind: string = 'computed',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
-  dependencies: string[]         // list of internal dependencies properties
+  dependencies: string[]         // list of dependencies properties of the computed property
 }
 
-type EventEntry = {
+interface EventEntry extends Entry {
   readonly kind: string = 'event',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   arguments: EventArgument[]
 }
@@ -527,11 +544,8 @@ type EventArgument = {
   type: string
 }
 
-type MethodEntry = {
+interface MethodEntry extends Entry {
   readonly kind: string = 'method',
-  visibility: VisibilityEnum,
-  description: string,
-  keywords: Keyword[],
   name: string,
   params: MethodParam[],
   return: MethodReturn
