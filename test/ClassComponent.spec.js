@@ -78,6 +78,7 @@ const filecontent = `
     App.staticVar = 123;
     App = __decorate([
       Component({
+        inheritAttrs: false,
         props: {
           /**
            * prop name description
