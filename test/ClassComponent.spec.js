@@ -85,6 +85,13 @@ const filecontent = `
 `
 
 const expected = {
+  description: 'A class component element',
+  inheritAttrs: false,
+  keywords: [
+    {
+      name: 'author',
+      description: 'Jon Snow' }
+  ],
   events: [
     { kind: 'event',
       name: 'created',
@@ -148,7 +155,8 @@ const expected = {
       description: 'prop name description',
       keywords: [],
       visibility: 'public' }
-  ]
+  ],
+  slots: []
 }
 
 describe('#37 - Class Component', () => {
