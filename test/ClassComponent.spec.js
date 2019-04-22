@@ -97,6 +97,18 @@ const expected = {
       initial: '\'Hello, \' + this.name',
       keywords: [],
       visibility: 'public' }
+  ],
+  props: [
+    { kind: 'prop',
+      name: 'name',
+      type: 'String',
+      nativeType: 'string',
+      required: false,
+      default: '__undefined__',
+      describeModel: false,
+      description: 'prop name description',
+      keywords: [],
+      visibility: 'public' }
   ]
 }
 
