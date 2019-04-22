@@ -111,6 +111,14 @@ const expected = {
         type: 'void'
       } }
   ],
+  computed: [
+    { kind: 'computed',
+      name: 'computedMsg',
+      dependencies: [ 'msg' ],
+      description: 'computed computedMsg description',
+      keywords: [],
+      visibility: 'public' }
+  ],
   data: [
     {
       kind: 'data',
