@@ -35,17 +35,17 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
-    "acorn": "^6.1.1",
+    "acorn": "^6.2.1",
     "acorn-stage3": "^2.0.0",
     "vue-template-compiler": "^2.6.10"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.2",
     "gimtoc": "^1.2.0",
-    "jest": "^24.7.1"
+    "jest": "^24.8.0"
   },
   "engines": {
     "node": ">=8"

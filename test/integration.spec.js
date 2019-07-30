@@ -1,18 +1,19 @@
-const vuedoc = require('..')
+/* global describe it expect */
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-return-assign */
+
 const assert = require('assert')
 
 const { join } = require('path')
 const { readFileSync } = require('fs')
 
+const vuedoc = require('..')
+
 const { Loader } = require('../lib/loader/Loader')
 const { VueLoader } = require('../lib/loader/VueLoader')
 const { HtmlLoader } = require('../lib/loader/HtmlLoader')
 const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
-
-/* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-return-assign */
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
