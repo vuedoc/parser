@@ -10,6 +10,7 @@ const { readFileSync } = require('fs')
 
 const vuedoc = require('..')
 
+const { ComponentTestCase } = require('./lib/TestUtils')
 const { Loader } = require('../lib/loader/Loader')
 const { VueLoader } = require('../lib/loader/VueLoader')
 const { HtmlLoader } = require('../lib/loader/HtmlLoader')
@@ -1131,4 +1132,44 @@ describe('errors', () => {
       assert.deepEqual(errors, expected)
     })
   })
+})
+
+ComponentTestCase({
+  name: '#50 - @default keyword in props',
+  options: {
+    filecontent: `
+      <script>
+        export default {
+          props: {
+            /**
+             * Custom default value with @default keyword
+             * @default { key: 'value' }
+             */
+            complex: {
+              type: Object,
+              default: () => {
+                // complex operations
+                return complexOperationsResultObject
+              }
+            }
+          }
+        }
+      </script>
+    `
+  },
+  expected: {
+    props: [
+      {
+        default: '{ key: \'value\' }',
+        describeModel: false,
+        description: 'Custom default value with @default keyword',
+        keywords: [],
+        kind: 'prop',
+        name: 'complex',
+        nativeType: 'FunctionExpression',
+        required: false,
+        type: 'Object',
+        visibility: 'public' }
+    ]
+  }
 })
