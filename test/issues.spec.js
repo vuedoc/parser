@@ -1,8 +1,9 @@
-const parser = require('..')
-
 /* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable indent */
+
+const parser = require('..')
+const { ComponentTestCase } = require('./lib/TestUtils')
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
@@ -763,5 +764,38 @@ describe('issues', () => {
         expect(computed).toEqual(expected)
       })
     })
+  })
+
+  ComponentTestCase({
+    name: '#52 - Prop as array type declaration',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              /**
+               * Badge value
+               */
+              value: [String, Number]
+            },
+          }
+        </script>
+      `
+    },
+    expected: {
+      props: [
+        {
+          default: '__undefined__',
+          describeModel: false,
+          description: 'Badge value',
+          keywords: [],
+          kind: 'prop',
+          name: 'value',
+          nativeType: '__undefined__',
+          required: false,
+          type: '[String, Number]',
+          visibility: 'public' }
+      ]
+    }
   })
 })
