@@ -13,8 +13,8 @@ Generate a JSON documentation for a Vue file component
 - [Syntax](#syntax)
   * [Add component name](#add-component-name)
   * [Add component description](#add-component-description)
-  * [Anotate model, props, data and computed properties](#anotate-model-props-data-and-computed-properties)
-  * [Anotate methods, events and slots](#anotate-methods-events-and-slots)
+  * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
+  * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
 - [Keywords Extraction](#keywords-extraction)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
 - [Custom Language Processing](#custom-language-processing)
@@ -126,7 +126,7 @@ export default {
 }
 ```
 
-### Anotate model, props, data and computed properties
+### Annotate model, props, data and computed properties
 
 To document props, data or computed properties, use comments like:
 
@@ -161,8 +161,28 @@ export default {
 ```
 
 `vuedoc.parser` will automatically extract `required` and `default` values for
-properties and computed properties's dependencies. It will also detect type for
+properties and computed properties dependencies. It will also detect type for
 each defined data field.
+
+You can set a custom default value of an prop by using the keyword `@default`.
+
+```js
+export default {
+  props: {
+    /**
+     * Custom default value
+     * @default { anything: 'custom default value' }
+     */
+    custom: {
+      type: String,
+      default: () => {
+        // complex code
+        return anythingExpression()
+      }
+    }
+  }
+}
+```
 
 To document a `v-model` prop, a proper way is to use the Vue's [model field](https://vuejs.org/v2/api/#model)
 if you use Vue +2.2.0.
@@ -179,7 +199,7 @@ export default {
 }
 ```
 
-You can also use use the `@model` keyword on a prop if you use a old version:
+You can also use the `@model` keyword on a prop if you use an old Vue version:
 
 ```js
 export default {
@@ -196,7 +216,7 @@ export default {
 }
 ```
 
-You can also document array string props:
+To document Vue array string props, just attach a vuedoc comment to each prop:
 
 ```js
 export default {
@@ -229,7 +249,7 @@ export default {
 }
 ```
 
-### Anotate methods, events and slots
+### Annotate methods, events and slots
 
 To document methods or events, just add comments before:
 
