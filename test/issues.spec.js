@@ -844,4 +844,43 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#53 - Documenting dynamic slots with @slot on template',
+    options: {
+      filecontent: `
+        <template>
+          <div>
+            <template v-for="name in ['title', 'default']">
+              <!--
+                @slot title - A title slot
+                @slot default - A default slot
+              -->
+              <slot :name="name" :slot="name"></slot>
+            </template>
+          </div>
+        </template>
+      `
+    },
+    expected: {
+      slots: [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A title slot',
+          keywords: [],
+          name: 'title',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A default slot',
+          keywords: [],
+          name: 'default',
+          props: []
+        }
+      ]
+    }
+  })
 })
