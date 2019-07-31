@@ -16,6 +16,7 @@ Generate a JSON documentation for a Vue file component
   * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
   * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
   * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
+  * [Working with Mixins](#working-with-mixins)
 - [Keywords Extraction](#keywords-extraction)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
 - [Custom Language Processing](#custom-language-processing)
@@ -370,6 +371,28 @@ You can also use the keyword `@slot` to define dynamic slots on template:
     </template>
   </div>
 </template>
+```
+
+### Working with Mixins
+
+Since Vuedoc Parser don't perform I/O operations, it cannot completely ignore
+the `mixins` property.
+
+To parse, you need to parse the mixin file as a standalone component and then
+merge the parsing result with the result of the initial component:
+
+```js
+const _ = require('lodash')
+const vuedoc = require('@vuedoc/parser')
+
+const parsers = [
+  vuedoc.parse({ filename: 'mixinFile.js' })
+  vuedoc.parse({ filename: 'componentUsingMixin.vue' })
+]
+
+Promise.all(parsers)
+  .then(([ mixinResult, componentResult ]) => _.merge(mixinResult, componentResult))
+  .catch((err) => console.error(err))
 ```
 
 ## Keywords Extraction
