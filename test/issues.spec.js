@@ -798,4 +798,50 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#53 - Documenting dynamic slots with @slot',
+    options: {
+      filecontent: `
+        <script>
+          /**
+           * A functional component with a default slot using render function
+           * @slot title - A title slot
+           * @slot default - A default slot
+           */
+          export default {
+            functional: true,
+            render(h, { slots }) {
+              return h('div', [
+                h('h1', slots().title),
+                h('p', slots().default)
+              ])
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      description: 'A functional component with a default slot using render function',
+      keywords: [],
+      slots: [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A title slot',
+          keywords: [],
+          name: 'title',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A default slot',
+          keywords: [],
+          name: 'default',
+          props: []
+        }
+      ]
+    }
+  })
 })
