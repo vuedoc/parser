@@ -1,18 +1,20 @@
-const vuedoc = require('..')
+/* global describe it expect */
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-return-assign */
+
 const assert = require('assert')
 
 const { join } = require('path')
 const { readFileSync } = require('fs')
 
+const vuedoc = require('..')
+
+const { ComponentTestCase } = require('./lib/TestUtils')
 const { Loader } = require('../lib/loader/Loader')
 const { VueLoader } = require('../lib/loader/VueLoader')
 const { HtmlLoader } = require('../lib/loader/HtmlLoader')
 const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
-
-/* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-return-assign */
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
@@ -1130,4 +1132,46 @@ describe('errors', () => {
       assert.deepEqual(errors, expected)
     })
   })
+})
+
+ComponentTestCase({
+  name: '#50 - @default keyword in props',
+  options: {
+    filecontent: `
+      <script>
+        export default {
+          props: {
+            /**
+             * Custom default value with @default keyword.
+             * Only the last defined keyword will be used
+             * @default { key: 'value' }
+             * @default { last: 'keyword' }
+             */
+            complex: {
+              type: Object,
+              default: () => {
+                // complex operations
+                return complexOperationsResultObject
+              }
+            }
+          }
+        }
+      </script>
+    `
+  },
+  expected: {
+    props: [
+      {
+        default: '{ last: \'keyword\' }',
+        describeModel: false,
+        description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
+        keywords: [],
+        kind: 'prop',
+        name: 'complex',
+        nativeType: 'FunctionExpression',
+        required: false,
+        type: 'Object',
+        visibility: 'public' }
+    ]
+  }
 })

@@ -1,8 +1,9 @@
-const parser = require('..')
-
 /* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable indent */
+
+const parser = require('..')
+const { ComponentTestCase } = require('./lib/TestUtils')
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
@@ -763,5 +764,123 @@ describe('issues', () => {
         expect(computed).toEqual(expected)
       })
     })
+  })
+
+  ComponentTestCase({
+    name: '#52 - Prop as array type declaration',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              /**
+               * Badge value
+               */
+              value: [String, Number]
+            },
+          }
+        </script>
+      `
+    },
+    expected: {
+      props: [
+        {
+          default: '__undefined__',
+          describeModel: false,
+          description: 'Badge value',
+          keywords: [],
+          kind: 'prop',
+          name: 'value',
+          nativeType: '__undefined__',
+          required: false,
+          type: '[String, Number]',
+          visibility: 'public' }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#53 - Documenting dynamic slots with @slot',
+    options: {
+      filecontent: `
+        <script>
+          /**
+           * A functional component with a default slot using render function
+           * @slot title - A title slot
+           * @slot default - A default slot
+           */
+          export default {
+            functional: true,
+            render(h, { slots }) {
+              return h('div', [
+                h('h1', slots().title),
+                h('p', slots().default)
+              ])
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      description: 'A functional component with a default slot using render function',
+      keywords: [],
+      slots: [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A title slot',
+          keywords: [],
+          name: 'title',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A default slot',
+          keywords: [],
+          name: 'default',
+          props: []
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#53 - Documenting dynamic slots with @slot on template',
+    options: {
+      filecontent: `
+        <template>
+          <div>
+            <template v-for="name in ['title', 'default']">
+              <!--
+                @slot title - A title slot
+                @slot default - A default slot
+              -->
+              <slot :name="name" :slot="name"></slot>
+            </template>
+          </div>
+        </template>
+      `
+    },
+    expected: {
+      slots: [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A title slot',
+          keywords: [],
+          name: 'title',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'A default slot',
+          keywords: [],
+          name: 'default',
+          props: []
+        }
+      ]
+    }
   })
 })

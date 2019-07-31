@@ -13,9 +13,11 @@ Generate a JSON documentation for a Vue file component
 - [Syntax](#syntax)
   * [Add component name](#add-component-name)
   * [Add component description](#add-component-description)
-  * [Anotate model, props, data and computed properties](#anotate-model-props-data-and-computed-properties)
-  * [Anotate methods, events and slots](#anotate-methods-events-and-slots)
+  * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
+  * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
+  * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
 - [Keywords Extraction](#keywords-extraction)
+- [Working with Mixins](#working-with-mixins)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
 - [Custom Language Processing](#custom-language-processing)
   * [Loader API](#loader-api)
@@ -126,7 +128,7 @@ export default {
 }
 ```
 
-### Anotate model, props, data and computed properties
+### Annotate model, props, data and computed properties
 
 To document props, data or computed properties, use comments like:
 
@@ -161,8 +163,28 @@ export default {
 ```
 
 `vuedoc.parser` will automatically extract `required` and `default` values for
-properties and computed properties's dependencies. It will also detect type for
+properties and computed properties dependencies. It will also detect type for
 each defined data field.
+
+You can set a custom default value of an prop by using the keyword `@default`.
+
+```js
+export default {
+  props: {
+    /**
+     * Custom default value
+     * @default { anything: 'custom default value' }
+     */
+    custom: {
+      type: String,
+      default: () => {
+        // complex code
+        return anythingExpression()
+      }
+    }
+  }
+}
+```
 
 To document a `v-model` prop, a proper way is to use the Vue's [model field](https://vuejs.org/v2/api/#model)
 if you use Vue +2.2.0.
@@ -179,7 +201,7 @@ export default {
 }
 ```
 
-You can also use use the `@model` keyword on a prop if you use a old version:
+You can also use the `@model` keyword on a prop if you use an old Vue version:
 
 ```js
 export default {
@@ -196,7 +218,7 @@ export default {
 }
 ```
 
-You can also document array string props:
+To document Vue array string props, just attach a vuedoc comment to each prop:
 
 ```js
 export default {
@@ -229,7 +251,7 @@ export default {
 }
 ```
 
-### Anotate methods, events and slots
+### Annotate methods, events and slots
 
 To document methods or events, just add comments before:
 
@@ -290,7 +312,7 @@ export default {
 
 > Note: `@arg` is an alias of `@param`
 
-`vuedoc.parser` is also able to extract events and slots from template:
+The parser is also able to extract events and slots from template:
 
 ```html
 <template>
@@ -300,15 +322,53 @@ export default {
     <!-- Default slot -->
     <slot></slot>
     <!-- Use this slot to set the checkbox label -->
-    <slot name="label">Unamed checkbox</slot>
+    <slot name="label">Unnamed checkbox</slot>
     <!--
       Slot with keywords and
-      mutiline description
+      multiline description
 
       @prop {User} user - The current user
       @prop {UserProfile} profile - The current user's profile
     -->
     <slot name="header" v-bind:user="user" v-bind:profile="profile"/>
+  </div>
+</template>
+```
+
+### Annotate slots defined in Render Functions
+
+To annotate slots defined in Render Functions, just attach the keyword `@slot`
+to the component definition:
+
+```js
+/**
+ * A functional component with slots defined in render function
+ * @slot title - A title slot
+ * @slot default - A default slot
+ */
+export default {
+  functional: true,
+  render(h, { slots }) {
+    return h('div', [
+      h('h1', slots().title),
+      h('p', slots().default)
+    ])
+  }
+}
+```
+
+You can also use the keyword `@slot` to define dynamic slots on template:
+
+```html
+<template>
+  <div>
+    <template v-for="name in ['title', 'default']">
+      <!--
+        @slot title - A title slot
+        @slot default - A default slot
+      -->
+      <slot :name="name" :slot="name"></slot>
+    </template>
   </div>
 </template>
 ```
@@ -348,6 +408,28 @@ Parsing result:
     }
   ]
 }
+```
+
+## Working with Mixins
+
+Since Vuedoc Parser don't perform I/O operations, it cannot completely ignore
+the `mixins` property.
+
+To parse, you need to parse the mixin file as a standalone component and then
+merge the parsing result with the result of the initial component:
+
+```js
+const _ = require('lodash')
+const vuedoc = require('@vuedoc/parser')
+
+const parsers = [
+  vuedoc.parse({ filename: 'mixinFile.js' })
+  vuedoc.parse({ filename: 'componentUsingMixin.vue' })
+]
+
+Promise.all(parsers)
+  .then(([ mixinResult, componentResult ]) => _.merge(mixinResult, componentResult))
+  .catch((err) => console.error(err))
 ```
 
 ## Parsing control with options.features
