@@ -1142,8 +1142,10 @@ ComponentTestCase({
         export default {
           props: {
             /**
-             * Custom default value with @default keyword
+             * Custom default value with @default keyword.
+             * Only the last defined keyword will be used
              * @default { key: 'value' }
+             * @default { last: 'keyword' }
              */
             complex: {
               type: Object,
@@ -1160,9 +1162,9 @@ ComponentTestCase({
   expected: {
     props: [
       {
-        default: '{ key: \'value\' }',
+        default: '{ last: \'keyword\' }',
         describeModel: false,
-        description: 'Custom default value with @default keyword',
+        description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
         keywords: [],
         kind: 'prop',
         name: 'complex',

@@ -15,6 +15,7 @@ Generate a JSON documentation for a Vue file component
   * [Add component description](#add-component-description)
   * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
   * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
+  * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
 - [Keywords Extraction](#keywords-extraction)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
 - [Custom Language Processing](#custom-language-processing)
@@ -310,7 +311,7 @@ export default {
 
 > Note: `@arg` is an alias of `@param`
 
-`vuedoc.parser` is also able to extract events and slots from template:
+The parser is also able to extract events and slots from template:
 
 ```html
 <template>
@@ -320,15 +321,53 @@ export default {
     <!-- Default slot -->
     <slot></slot>
     <!-- Use this slot to set the checkbox label -->
-    <slot name="label">Unamed checkbox</slot>
+    <slot name="label">Unnamed checkbox</slot>
     <!--
       Slot with keywords and
-      mutiline description
+      multiline description
 
       @prop {User} user - The current user
       @prop {UserProfile} profile - The current user's profile
     -->
     <slot name="header" v-bind:user="user" v-bind:profile="profile"/>
+  </div>
+</template>
+```
+
+### Annotate slots defined in Render Functions
+
+To annotate slots defined in Render Functions, just attach the keyword `@slot`
+to the component definition:
+
+```js
+/**
+ * A functional component with a default slot using render function
+ * @slot title - A title slot
+ * @slot default - A default slot
+ */
+export default {
+  functional: true,
+  render(h, { slots }) {
+    return h('div', [
+      h('h1', slots().title),
+      h('p', slots().default)
+    ])
+  }
+}
+```
+
+You can also use the keyword `@slot` to define dynamic slots on template:
+
+```html
+<template>
+  <div>
+    <template v-for="name in ['title', 'default']">
+      <!--
+        @slot title - A title slot
+        @slot default - A default slot
+      -->
+      <slot :name="name" :slot="name"></slot>
+    </template>
   </div>
 </template>
 ```
