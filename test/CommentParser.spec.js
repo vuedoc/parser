@@ -140,21 +140,29 @@ describe('CommentParser', () => {
     })
   })
 
-  describe('trim(comment)', () => {
+  describe('format(comment)', () => {
     it('should return the trimmed comment', () => {
       const comment = `
         <!-- Hello, World -->
       `
-      const result = CommentParser.trim(comment)
+      const result = CommentParser.format(comment)
       const expected = 'Hello, World'
 
       expect(result).toBe(expected)
     })
 
-    it('should return null for not found visibility', () => {
+    it('should return null for an invalid comment', () => {
+      const comment = ' <!--Hello, World  '
+      const result = CommentParser.format(comment)
+      const expected = null
+
+      expect(result).toBe(expected)
+    })
+
+    it('should return null for a non comment', () => {
       const comment = ' Hello, \nWorld  '
-      const result = CommentParser.trim(comment)
-      const expected = 'Hello, \nWorld'
+      const result = CommentParser.format(comment)
+      const expected = null
 
       expect(result).toBe(expected)
     })
