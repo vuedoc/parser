@@ -3,7 +3,9 @@
 /* eslint-disable indent */
 
 const parser = require('..')
+
 const { ComponentTestCase } = require('./lib/TestUtils')
+const { Fixture } = require('./lib/Fixture')
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
@@ -879,6 +881,810 @@ describe('issues', () => {
           keywords: [],
           name: 'default',
           props: []
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#56 - Cannot read property \'type\' of null (UiAutocomplete.vue)',
+    options: {
+      filecontent: Fixture.get('UiAutocomplete.vue')
+    },
+    expected: {
+      inheritAttrs: true,
+      errors: [
+        'tag <input> has no matching end tag.'
+      ],
+      name: 'ui-autocomplete',
+      description: null,
+      keywords: [],
+      slots: [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'icon',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'default',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'suggestion',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'error',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'help',
+          props: []
+        }
+      ],
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'name',
+          type: 'String',
+          nativeType: 'string',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'placeholder',
+          type: 'String',
+          nativeType: 'string',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'value',
+          type: '[String, Number]',
+          nativeType: 'string',
+          default: '',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'icon',
+          type: 'String',
+          nativeType: 'string',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'icon-position',
+          type: 'String',
+          nativeType: 'string',
+          default: 'left',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'label',
+          type: 'String',
+          nativeType: 'string',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'floating-label',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'help',
+          type: 'String',
+          nativeType: 'string',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'error',
+          type: 'String',
+          nativeType: 'string',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'readonly',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'disabled',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'type',
+          type: 'String',
+          nativeType: 'string',
+          default: 'simple',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'suggestions',
+          type: 'Array',
+          nativeType: 'FunctionExpression',
+          default: 'function() {\n                return [];\n            }',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'limit',
+          type: 'Number',
+          nativeType: 'number',
+          default: 8,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'append',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'append-delimiter',
+          type: 'String',
+          nativeType: 'string',
+          default: ', ',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'min-chars',
+          type: 'Number',
+          nativeType: 'number',
+          default: 2,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'show-on-up-down',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: true,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'autofocus',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'filter',
+          type: 'Function',
+          nativeType: '__undefined__',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'highlight-on-first-match',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: true,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'cycle-highlight',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: true,
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'keys',
+          type: 'Object',
+          nativeType: 'FunctionExpression',
+          default: "function() {\n                return {\n                    label: 'label',\n                    value: 'value',\n                    image: 'image'\n                };\n            }",
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'invalid',
+          type: 'Boolean',
+          nativeType: 'boolean',
+          default: false,
+          required: false,
+          describeModel: false
+        }
+      ],
+      data: [
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'initialValue',
+          type: 'MemberExpression',
+          initial: 'this.value'
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'isActive',
+          type: 'boolean',
+          initial: false
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'isTouched',
+          type: 'boolean',
+          initial: false
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'showDropdown',
+          type: 'boolean',
+          initial: false
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'highlightedIndex',
+          type: 'UnaryExpression',
+          initial: '-1'
+        }
+      ],
+      computed: [
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'classes',
+          dependencies: [
+            'type',
+            'iconPosition',
+            'isActive',
+            'invalid',
+            'isTouched',
+            'disabled',
+            'hasLabel',
+            'hasFloatingLabel'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'labelClasses',
+          dependencies: [
+            'hasFloatingLabel',
+            'isLabelInline'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'hasLabel',
+          dependencies: [
+            'label',
+            '$slots'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'hasFloatingLabel',
+          dependencies: [
+            'hasLabel',
+            'floatingLabel'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'isLabelInline',
+          dependencies: [
+            'valueLength',
+            'isActive'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'valueLength',
+          dependencies: [
+            'value'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'hasFeedback',
+          dependencies: [
+            'help',
+            'error',
+            '$slots'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'showError',
+          dependencies: [
+            'invalid',
+            'error',
+            '$slots'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'showHelp',
+          dependencies: [
+            'showError',
+            'help',
+            '$slots'
+          ]
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'matchingSuggestions',
+          dependencies: [
+            'suggestions',
+            'filter',
+            'value',
+            'defaultFilter',
+            'limit'
+          ]
+        }
+      ],
+      events: [
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'select',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'highlight-overflow',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'dropdown-open',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'dropdown-close',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'input',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'focus',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'change',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'blur',
+          arguments: []
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'touch',
+          arguments: []
+        }
+      ],
+      methods: [
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'defaultFilter',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'selectSuggestion',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'highlightSuggestion',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'selectHighlighted',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'openDropdown',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'closeDropdown',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'updateValue',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'onFocus',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'onChange',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'onBlur',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'onExternalClick',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'reset',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#56 - (2) Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
+    options: {
+      filecontent: Fixture.get('UiAutocompleteMinimal.vue')
+    },
+    expected: {
+      name: 'ui-autocomplete',
+      methods: [
+        {
+          description: null,
+          keywords: [],
+          kind: 'method',
+          name: 'selectSuggestion',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          },
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          name: 'select',
+          description: null,
+          keywords: [],
+          arguments: [],
+          kind: 'event',
+          visibility: 'public'
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#56 - (3) Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
+    options: {
+      filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
+    },
+    expected: {
+      name: 'ui-autocomplete',
+      methods: [
+        {
+          description: null,
+          keywords: [],
+          kind: 'method',
+          name: 'selectSuggestion',
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          },
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          name: 'select',
+          description: null,
+          keywords: [],
+          arguments: [],
+          kind: 'event',
+          visibility: 'public'
         }
       ]
     }

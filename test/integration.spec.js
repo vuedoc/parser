@@ -5,12 +5,11 @@
 
 const assert = require('assert')
 
-const { join } = require('path')
-const { readFileSync } = require('fs')
-
 const vuedoc = require('..')
 
 const { ComponentTestCase } = require('./lib/TestUtils')
+const { Fixture } = require('./lib/Fixture')
+
 const { Loader } = require('../lib/loader/Loader')
 const { VueLoader } = require('../lib/loader/VueLoader')
 const { HtmlLoader } = require('../lib/loader/HtmlLoader')
@@ -22,45 +21,37 @@ const DefaultLoaders = [
   Loader.extend('vue', VueLoader)
 ]
 
-function resolve (filename) {
-  return join(__dirname, `fixtures/${filename}`)
-}
-
-function getFileContent (filename) {
-  return readFileSync(resolve(filename), 'utf8').toString()
-}
-
 const options = {
-  filename: resolve('checkbox.vue'),
+  filename: Fixture.resolve('checkbox.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsForModuleExports = {
-  filename: resolve('checkboxModuleExports.vue'),
+  filename: Fixture.resolve('checkboxModuleExports.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsForVueExtend = {
-  filename: resolve('checkboxVueExtend.vue'),
+  filename: Fixture.resolve('checkboxVueExtend.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsNoTopLevelConstant = {
-  filename: resolve('checkboxNoTopLevelConstant.vue'),
+  filename: Fixture.resolve('checkboxNoTopLevelConstant.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsWithFileSource = {
-  filecontent: getFileContent('checkbox.vue'),
+  filecontent: Fixture.get('checkbox.vue'),
   ignoredVisibilities: []
 }
 
 const optionsForPropsArray = {
-  filename: resolve('checkboxPropsArray.vue'),
+  filename: Fixture.resolve('checkboxPropsArray.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
@@ -129,7 +120,7 @@ function testComponent (optionsToParse) {
   })
 
   it('should guess the component name using the filename', () => {
-    return vuedoc.parse({ filename: resolve('UnNamedInput.vue') })
+    return vuedoc.parse({ filename: Fixture.resolve('UnNamedInput.vue') })
       .then((component) => {
         assert.equal(component.name, 'UnNamedInput')
       })
@@ -361,7 +352,7 @@ describe('options', () => {
 
   it('should parse with options.filename', () => {
     const options = {
-      filename: resolve('checkbox.js'),
+      filename: Fixture.resolve('checkbox.js'),
       ignoredVisibilities: [ 'private' ],
       loaders: []
     }
@@ -372,7 +363,7 @@ describe('options', () => {
       ignoredVisibilities: [ ...options.ignoredVisibilities ],
       source: {
         template: '',
-        script: getFileContent('checkbox.js'),
+        script: Fixture.get('checkbox.js'),
         errors: []
       },
       loaders: [ ...DefaultLoaders ]
@@ -723,7 +714,7 @@ describe('component.methods filesource', () => testComponentMethods(optionsWithF
 describe('component.methods visibility_default', () => {
   let component = {}
   const options = {
-    filename: resolve('checkboxMethods.vue'),
+    filename: Fixture.resolve('checkboxMethods.vue'),
     encoding: 'utf8'
   }
 
@@ -758,7 +749,7 @@ describe('component.methods visibility_default', () => {
 describe('component.methods visibility_private', () => {
   let component = {}
   const options = {
-    filename: resolve('checkboxMethods.vue'),
+    filename: Fixture.resolve('checkboxMethods.vue'),
     encoding: 'utf8',
     defaultMethodVisibility: 'private'
   }
@@ -1084,7 +1075,7 @@ describe('errors', () => {
   })
 
   it('should throw error for non js files', (done) => {
-    const filename = resolve('checkbox.ts')
+    const filename = Fixture.resolve('checkbox.ts')
     const options = { filename }
 
     vuedoc.parse(options)
