@@ -1159,9 +1159,102 @@ ComponentTestCase({
         keywords: [],
         kind: 'prop',
         name: 'complex',
-        nativeType: 'FunctionExpression',
+        nativeType: 'ArrowFunctionExpression',
         required: false,
         type: 'Object',
+        visibility: 'public' }
+    ]
+  }
+})
+
+ComponentTestCase({
+  name: 'Dynamic object key',
+  options: {
+    filecontent: `
+      <script>
+        const name = 'blabla'
+        const complex = 'complexValue'
+        const dynamic2 = 'dynamic2Value'
+        const computedProp2 = 'computedProp2Value'
+        export default {
+          name,
+          props: {
+            [complex]: {
+              type: Object
+            }
+          },
+          computed: {
+            ['computedProp1']() { return 1 },
+            [computedProp2]() { return 2 }
+          },
+          methods: {
+            // Make component dynamic
+            ['dynamic']: () => {
+              console.log('dynamic')
+            },
+
+            // Enter to dynamic mode
+            [dynamic2]: () => {
+              console.log(dynamic2)
+            }
+          }
+        }
+      </script>
+    `
+  },
+  expected: {
+    name: 'blabla',
+    props: [
+      {
+        default: '__undefined__',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        kind: 'prop',
+        name: 'complex-value',
+        nativeType: 'object',
+        required: false,
+        type: 'Object',
+        visibility: 'public' }
+    ],
+    computed: [
+      {
+        kind: 'computed',
+        name: 'computedProp1',
+        description: null,
+        keywords: [],
+        dependencies: [],
+        visibility: 'public' },
+      {
+        kind: 'computed',
+        name: 'computedProp2Value',
+        description: null,
+        keywords: [],
+        dependencies: [],
+        visibility: 'public' }
+    ],
+    methods: [
+      {
+        kind: 'method',
+        name: 'dynamic',
+        keywords: [],
+        description: 'Make component dynamic',
+        params: [],
+        return: {
+          type: 'void',
+          description: null
+        },
+        visibility: 'public' },
+      {
+        kind: 'method',
+        name: 'dynamic2Value',
+        keywords: [],
+        description: 'Enter to dynamic mode',
+        params: [],
+        return: {
+          type: 'void',
+          description: null
+        },
         visibility: 'public' }
     ]
   }
