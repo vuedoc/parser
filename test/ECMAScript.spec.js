@@ -722,7 +722,7 @@ describe('ECMAScript Features Parsing', () => {
               const b = BigInt(9007199254740991);
               const c = BigInt("9007199254740991");
 
-              return { a, b, c }
+              return { a, [b]: b, ['c']: c, d: BigInt("9007199254740992") }
             }
           }
         </script>
@@ -750,6 +750,13 @@ describe('ECMAScript Features Parsing', () => {
           description: null,
           type: 'CallExpression',
           initial: 'BigInt("9007199254740991")',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: null,
+          type: 'CallExpression',
+          initial: 'BigInt("9007199254740992")',
           keywords: [] }
       ]
 

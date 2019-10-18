@@ -1,8 +1,6 @@
 const parser = require('..')
 
 /* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable indent */
 
 const filecontent = `
   <script>
@@ -16,7 +14,7 @@ const filecontent = `
         event: 'change'
       },
       props: {
-        value: String,
+        // value: String,
         checked: {
           type: Number,
           default: 0
