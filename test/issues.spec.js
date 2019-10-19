@@ -1408,7 +1408,14 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'select',
-          arguments: []
+          arguments: [
+            {
+              name: 'suggestion',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ]
         },
         {
           kind: 'event',
@@ -1416,7 +1423,14 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'highlight-overflow',
-          arguments: []
+          arguments: [
+            {
+              name: 'index',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ]
         },
         {
           kind: 'event',
@@ -1440,7 +1454,14 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'input',
-          arguments: []
+          arguments: [
+            {
+              name: 'value',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ]
         },
         {
           kind: 'event',
@@ -1448,7 +1469,14 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'focus',
-          arguments: []
+          arguments: [
+            {
+              name: 'e',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ]
         },
         {
           kind: 'event',
@@ -1456,7 +1484,20 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'change',
-          arguments: []
+          arguments: [
+            {
+              name: 'value',
+              type: null,
+              description: null,
+              declaration: 'this.value'
+            },
+            {
+              name: 'e',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ]
         },
         {
           kind: 'event',
@@ -1464,7 +1505,14 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'blur',
-          arguments: []
+          arguments: [
+            {
+              name: 'e',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ]
         },
         {
           kind: 'event',
@@ -1482,7 +1530,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'defaultFilter',
-          params: [],
+          params: [
+            {
+              name: 'suggestion',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1494,7 +1550,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'selectSuggestion',
-          params: [],
+          params: [
+            {
+              name: 'suggestion',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1506,7 +1570,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'highlightSuggestion',
-          params: [],
+          params: [
+            {
+              name: 'index',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1518,7 +1590,22 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'selectHighlighted',
-          params: [],
+          params: [
+            {
+              name: 'index',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            },
+            {
+              name: 'e',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1554,7 +1641,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'updateValue',
-          params: [],
+          params: [
+            {
+              name: 'value',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1566,7 +1661,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'onFocus',
-          params: [],
+          params: [
+            {
+              name: 'e',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1578,7 +1681,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'onChange',
-          params: [],
+          params: [
+            {
+              name: 'e',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1590,7 +1701,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'onBlur',
-          params: [],
+          params: [
+            {
+              name: 'e',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1602,7 +1721,15 @@ describe('issues', () => {
           description: null,
           keywords: [],
           name: 'onExternalClick',
-          params: [],
+          params: [
+            {
+              name: 'e',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1625,7 +1752,7 @@ describe('issues', () => {
   })
 
   ComponentTestCase({
-    name: '#56 - (2) Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
+    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
     options: {
       filecontent: Fixture.get('UiAutocompleteMinimal.vue')
     },
@@ -1637,7 +1764,15 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           name: 'selectSuggestion',
-          params: [],
+          params: [
+            {
+              name: 'suggestion',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1649,7 +1784,14 @@ describe('issues', () => {
           name: 'select',
           description: null,
           keywords: [],
-          arguments: [],
+          arguments: [
+            {
+              name: 'suggestion',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ],
           kind: 'event',
           visibility: 'public'
         }
@@ -1658,7 +1800,7 @@ describe('issues', () => {
   })
 
   ComponentTestCase({
-    name: '#56 - (3) Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
+    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
     options: {
       filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
     },
@@ -1670,7 +1812,15 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           name: 'selectSuggestion',
-          params: [],
+          params: [
+            {
+              name: 'suggestion',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+          ],
           return: {
             type: 'void',
             description: null
@@ -1682,7 +1832,14 @@ describe('issues', () => {
           name: 'select',
           description: null,
           keywords: [],
-          arguments: [],
+          arguments: [
+            {
+              name: 'suggestion',
+              type: null,
+              description: null,
+              declaration: null
+            }
+          ],
           kind: 'event',
           visibility: 'public'
         }

@@ -277,9 +277,16 @@ function testComponentEvents (optionsToParse) {
     const event = {
       kind: 'event',
       name: 'change',
-      arguments: [],
       description: 'Fires when the card is changed.',
       keywords: [],
+      arguments: [
+        {
+          name: 'object',
+          type: 'object',
+          description: null,
+          declaration: '{\n      bankAccount: { ...this.bankAccount },\n      valid: !this.$v.$invalid\n    }'
+        }
+      ],
       visibility: 'public'
     }
 
@@ -799,6 +806,7 @@ describe('dynamic import() function', () => {
       description: null,
       inheritAttrs: true,
       keywords: [],
+      errors: [],
       slots: [],
       props: [],
       data: [],
@@ -855,6 +863,7 @@ describe('Syntax: exports["default"]', () => {
       description: 'description',
       inheritAttrs: true,
       events: [],
+      errors: [],
       keywords: [],
       methods: [],
       computed: [ {
@@ -1022,6 +1031,7 @@ describe('spread operators', () => {
       description: null,
       inheritAttrs: true,
       keywords: [],
+      errors: [],
       slots: [],
       props: [],
       data: [],
@@ -1176,11 +1186,16 @@ ComponentTestCase({
         const complex = 'complexValue'
         const dynamic2 = 'dynamic2Value'
         const computedProp2 = 'computedProp2Value'
+        const boolFalse = false
         export default {
           name,
           props: {
             [complex]: {
               type: Object
+            },
+            boolFalse: {
+              type: Boolean,
+              default: true
             }
           },
           computed: {
@@ -1215,6 +1230,17 @@ ComponentTestCase({
         nativeType: 'object',
         required: false,
         type: 'Object',
+        visibility: 'public' },
+      {
+        default: true,
+        describeModel: false,
+        description: null,
+        keywords: [],
+        kind: 'prop',
+        name: 'bool-false',
+        nativeType: 'boolean',
+        required: false,
+        type: 'Boolean',
         visibility: 'public' }
     ],
     computed: [

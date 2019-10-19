@@ -69,7 +69,8 @@ module.exports.parseOptions = (options) => {
 module.exports.parse = (options) => this.parseOptions(options)
   .then(() => new Promise((resolve) => {
     const component = {
-      inheritAttrs: true
+      inheritAttrs: true,
+      errors: []
     }
 
     const parser = new Parser(options)
@@ -79,10 +80,6 @@ module.exports.parse = (options) => this.parseOptions(options)
     }
 
     parser.on('error', ({ message }) => {
-      if (!component.errors) {
-        component.errors = []
-      }
-
       component.errors.push(message)
     })
 
