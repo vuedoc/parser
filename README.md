@@ -483,10 +483,10 @@ vuedoc.parse(options)
 abstract class Loader {
   public static extend(loaderName: string, loaderClass: Loader);
   public abstract load(source: string): Promise<void>;
-  public pipe(loaderName: string, source: string): Promise<void>;
   public emitTemplate(source: string): Promise<void>;
   public emitScript(source: string): Promise<void>;
   public emitErrors(errors: Array<string>): Promise<void>;
+  public pipe(loaderName: string, source: string): Promise<void>;
 }
 ```
 
@@ -531,6 +531,12 @@ vuedoc.parse(options).then((component) => {
   // console.log(component)
 })
 ```
+
+**Loader examples**
+
+- HTML Loader: [lib/loader/HtmlLoader.js](lib/loader/HtmlLoader.js)
+- JavaScript Loader: [lib/loader/JavaScriptLoader.js](lib/loader/JavaScriptLoader.js)
+- Vue Loader: [lib/loader/VueLoader.js](lib/loader/VueLoader.js)
 
 ## Interfaces
 
@@ -654,10 +660,14 @@ type MethodReturn = {
 
 Contributions to Vuedoc Parser are welcome. Here is how you can contribute:
 
-1. [Submit bugs or a feature request](https://gitlab.com/vuedoc/parser/issues) and help us verify fixes as they are checked in
-2. Write code for a bug fix or for your new awesome feature
-3. Write test cases for your changes
-4. [Submit merge requests](https://gitlab.com/vuedoc/parser/merge_requests) for bug fixes and features and discuss existing proposals
+1. [Submit bugs or a feature request](https://gitlab.com/vuedoc/md/issues) and
+   help us verify fixes as they are checked in
+2. Create your working branch from the `dev` branch:
+   `git checkout dev -b feature/my-awesome-feature`
+3. Write code for a bug fix or for your new awesome feature
+4. Write test cases for your changes
+5. [Submit merge requests](https://gitlab.com/vuedoc/md/merge_requests) for bug
+   fixes and features and discuss existing proposals
 
 ## Versioning
 
