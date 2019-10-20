@@ -17,32 +17,32 @@ ComponentTestCase({
         import Vue from 'vue';
         import Component from 'vue-class-component';
         /**
-        * A class component element
-        *
-        * @author Jon Snow
-        */
+         * A class component element
+         *
+         * @author Jon Snow
+         */
         let App = class App extends Vue {
           /**
-          * A class component element
-          *
-          * @author Jon Snow
-          */
+           * A class component element
+           *
+           * @author Jon Snow
+           */
           constructor() {
             super(...arguments);
 
             /**
-            * data msg description
-            */
+             * data msg description
+             */
             this.msg = 'Hello';
 
             /**
-            * data helloMsg with expression
-            */
+             * data helloMsg with expression
+             */
             this.helloMsg = 'Hello, ' + this.name;
 
             /**
-            * event constructor description
-            */
+             * event constructor description
+             */
             this.$emit('created')
           }
 
@@ -51,40 +51,40 @@ ComponentTestCase({
             this.greet();
 
             /**
-            * event mounted description
-            */
+             * event mounted description
+             */
             this.$emit('mounted')
           }
 
           /**
-          * computed computedMsg description
-          */
+           * computed computedMsg description
+           */
           get computedMsg() {
             return 'computed ' + this.msg;
           }
 
           /**
-          * computed [Symbol.species] description
-          */
+           * computed [Symbol.species] description
+           */
           get [Symbol.species]() { return Array; }
 
           /**
-          * method greet description
-          */
+           * method greet description
+           */
           greet() {
             alert('greeting: ' + this.msg);
           }
 
           /**
-          * method _protectedMethod description
-          * @protected
-          */
+           * method _protectedMethod description
+           * @protected
+           */
           _protectedMethod() {}
 
           /**
-          * method _ignoredMethod description
-          * @private
-          */
+           * method _ignoredMethod description
+           * @private
+           */
           _ignoredMethod() {}
 
           static ignoredMethod() {}
@@ -95,8 +95,8 @@ ComponentTestCase({
             inheritAttrs: false,
             props: {
               /**
-              * prop name description
-              */
+               * prop name description
+               */
               name: String
             }
           })
