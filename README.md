@@ -48,6 +48,7 @@ npm install --save @vuedoc/parser
 - Extract component slots
 - Extract component methods
 - Class Component Support
+- Vue Property Decorator Support
 - JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and
   [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
@@ -501,9 +502,9 @@ To use Vuedoc Parser with TypeScript, you need to install `typescript` and
 
 ```js
 const ts = require('typescript')
-const vuedoc, { Loader } = require('@vuedoc/parser')
+const Vuedoc = require('@vuedoc/parser')
 
-class TypeScriptLoader extends Loader {
+class TypeScriptLoader extends Vuedoc.Loader {
   load (source) {
     const options = {
       compilerOptions: {
@@ -531,8 +532,8 @@ const options = {
   ]
 }
 
-vuedoc.parse(options).then((component) => {
-  // console.log(component)
+Vuedoc.parse(options).then((component) => {
+  console.log(component)
 })
 ```
 
