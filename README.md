@@ -501,9 +501,9 @@ To use Vuedoc Parser with TypeScript, you need to install `typescript` and
 
 ```js
 const ts = require('typescript')
-const vuedoc, { Loader } = require('@vuedoc/parser')
+const Vuedoc = require('@vuedoc/parser')
 
-class TypeScriptLoader extends Loader {
+class TypeScriptLoader extends Vuedoc.Loader {
   load (source) {
     const options = {
       compilerOptions: {
@@ -531,7 +531,7 @@ const options = {
   ]
 }
 
-vuedoc.parse(options).then((component) => {
+Vuedoc.parse(options).then((component) => {
   // console.log(component)
 })
 ```
