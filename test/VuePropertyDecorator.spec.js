@@ -14,12 +14,39 @@ ComponentTestCase({
             else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
             return c > 3 && r && Object.defineProperty(target, key, r), r;
         };
+        import 'reflect-metadata';
         import { Vue, Component, Prop, Model, Watch, Emit } from 'vue-property-decorator';
+        /**
+         * Component defined with Vue Property Decorator
+         */
         let YourComponent = class YourComponent extends Vue {
+            /**
+             * Component defined with Vue Property Decorator
+             */
+            constructor() {
+                super(...arguments);
+                this.count = 0;
+            }
             onChildChanged(val, oldVal) { }
             onPersonChanged1(val, oldVal) { }
             addToCount(n) {
                 this.count += n;
+            }
+            resetCount() {
+                this.count = 0;
+            }
+            returnValue() {
+                return 10;
+            }
+            onInputChange(e) {
+                return e.target.value;
+            }
+            promise() {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(20);
+                    }, 0);
+                });
             }
         };
         __decorate([
@@ -32,6 +59,9 @@ ComponentTestCase({
             Prop([String, Boolean])
         ], YourComponent.prototype, "propC", void 0);
         __decorate([
+            PropSync('name', { type: String })
+        ], YourComponent.prototype, "syncedName", void 0);
+        __decorate([
             Model('change', { type: Boolean })
         ], YourComponent.prototype, "checked", void 0);
         __decorate([
@@ -43,15 +73,29 @@ ComponentTestCase({
         __decorate([
             Emit()
         ], YourComponent.prototype, "addToCount", null);
+        __decorate([
+            Emit('reset')
+        ], YourComponent.prototype, "resetCount", null);
+        __decorate([
+            Emit()
+        ], YourComponent.prototype, "returnValue", null);
+        __decorate([
+            Emit()
+        ], YourComponent.prototype, "onInputChange", null);
+        __decorate([
+            Emit()
+        ], YourComponent.prototype, "promise", null);
         YourComponent = __decorate([
             Component
         ], YourComponent);
         export default YourComponent;
+
       </script>
     `
   },
   expected: {
     name: 'YourComponent',
+    description: 'Component defined with Vue Property Decorator',
     errors: [],
     props: [
       {
@@ -89,6 +133,17 @@ ComponentTestCase({
         visibility: 'public' },
       {
         kind: 'prop',
+        name: 'name',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        default: '__undefined__',
+        nativeType: 'string',
+        required: false,
+        type: 'String',
+        visibility: 'public' },
+      {
+        kind: 'prop',
         name: 'checked',
         describeModel: false,
         description: null,
@@ -106,6 +161,28 @@ ComponentTestCase({
       description: null,
       keywords: [],
       visibility: 'public'
-    }
+    },
+    computed: [
+      {
+        kind: 'computed',
+        name: 'syncedName',
+        description: null,
+        keywords: [],
+        dependencies: [
+          'name'
+        ],
+        visibility: 'public' }
+    ],
+    events: [
+      {
+        kind: 'event',
+        name: 'update:name',
+        description: null,
+        arguments: [
+          'name'
+        ],
+        keywords: [],
+        visibility: 'public' }
+    ]
   }
 })

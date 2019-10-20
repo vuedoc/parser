@@ -110,6 +110,7 @@ ComponentTestCase({
     name: 'App',
     description: 'A class component element',
     inheritAttrs: false,
+    errors: [],
     keywords: [
       {
         name: 'author',
@@ -243,6 +244,7 @@ ComponentTestCase({
     name: 'MyComponent',
     description: null,
     inheritAttrs: true,
+    errors: [],
     keywords: [],
     events: [],
     methods: [],
