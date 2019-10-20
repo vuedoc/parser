@@ -38,7 +38,8 @@ npm install --save @vuedoc/parser
 
 - Extract the component name (from the name field or from the filename)
 - Extract the component description
-- Keywords Support: You can define your own keywords with the `@` symbol like `@author Jon Snow`
+- Keywords Support: You can define your own keywords with the `@` symbol like
+  `@author Jon Snow`
 - Extract component model
 - Extract component props
 - Extract component data
@@ -47,7 +48,8 @@ npm install --save @vuedoc/parser
 - Extract component slots
 - Extract component methods
 - Class Component Support
-- JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
+- JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and
+  [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
 ## Options
 
@@ -104,8 +106,8 @@ See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/m
 
 ### Add component name
 
-By default, `vuedoc.parser` use the component's filename to generate the
-component name.
+By default, Vuedoc Parser use the component's filename to generate the
+component name.<br>
 To set a custom name, use the `name` field like:
 
 ```js
@@ -162,7 +164,7 @@ export default {
 }
 ```
 
-`vuedoc.parser` will automatically extract `required` and `default` values for
+Vuedoc Parser will automatically extract `required` and `default` values for
 properties and computed properties dependencies. It will also detect type for
 each defined data field.
 
@@ -186,8 +188,8 @@ export default {
 }
 ```
 
-To document a `v-model` prop, a proper way is to use the Vue's [model field](https://vuejs.org/v2/api/#model)
-if you use Vue +2.2.0.
+To document a `v-model` prop, a proper way is to use the Vue's
+[model field](https://vuejs.org/v2/api/#model) if you use Vue +2.2.0.
 
 ```js
 export default {
@@ -271,7 +273,7 @@ export default {
 }
 ```
 
-`vuedoc.parser` automatically extracts events from component hook:
+Vuedoc Parser automatically extracts events from component hook:
 
 ```js
 export default {
@@ -284,8 +286,9 @@ export default {
 }
 ```
 
-Use the JSDoc [@param](http://usejsdoc.org/tags-param.html) and [@return](http://usejsdoc.org/tags-returns.html)
-tags to define parameters and returning type:
+Use the JSDoc [@param](http://usejsdoc.org/tags-param.html) and
+[@return](http://usejsdoc.org/tags-returns.html) tags to define parameters and
+returning type:
 
 ```js
 export default {
@@ -383,7 +386,7 @@ You can attach keywords to any comment and then extract them using the parser.
 /**
  * Component description
  *
- * @author Sébastien
+ * @author Arya Stark
  * @license MIT
  */
 export default { ... }
@@ -400,7 +403,7 @@ Parsing result:
   "keywords": [
     {
       "name": "author",
-      "description": "Sébastien"
+      "description": "Arya Stark"
     },
     {
       "name": "license",
@@ -419,8 +422,8 @@ To parse, you need to parse the mixin file as a standalone component and then
 merge the parsing result with the result of the initial component:
 
 ```js
-const _ = require('lodash')
 const vuedoc = require('@vuedoc/parser')
+const merge = require('deepmerge')
 
 const parsers = [
   vuedoc.parse({ filename: 'mixinFile.js' })
@@ -428,7 +431,8 @@ const parsers = [
 ]
 
 Promise.all(parsers)
-  .then(([ mixinResult, componentResult ]) => _.merge(mixinResult, componentResult))
+  .then(merge.all)
+  .then((mergedParsingResult) => console.log(mergedParsingResult))
   .catch((err) => console.error(err))
 ```
 
@@ -617,7 +621,7 @@ interface DataEntry extends Entry {
 interface ComputedEntry extends Entry {
   readonly kind: string = 'computed',
   name: string,
-  dependencies: string[]         // list of dependencies properties of the computed property
+  dependencies: string[]         // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
@@ -654,7 +658,8 @@ type MethodReturn = {
 
 ## Related projects
 
-- [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation Generator for Vue Components
+- [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation
+  Generator for Vue Components
 
 ## Contribute
 
@@ -674,13 +679,17 @@ Contributions to Vuedoc Parser are welcome. Here is how you can contribute:
 Given a version number `MAJOR.MINOR.PATCH`, increment the:
 
 - `MAJOR` version when you make incompatible API changes,
-- `MINOR` version when you add functionality in a backwards-compatible manner, and
+- `MINOR` version when you add functionality in a backwards-compatible manner,
+  and
 - `PATCH` version when you make backwards-compatible bug fixes.
 
-Additional labels for pre-release and build metadata are available as extensions to the `MAJOR.MINOR.PATCH` format.
+Additional labels for pre-release and build metadata are available as extensions
+to the `MAJOR.MINOR.PATCH` format.
 
 See [SemVer.org](https://semver.org/) for more details.
 
 ## License
 
-Under the MIT license. See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for more details.
+Under the MIT license.
+See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for
+more details.
