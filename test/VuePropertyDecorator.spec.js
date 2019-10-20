@@ -182,7 +182,57 @@ ComponentTestCase({
           'name'
         ],
         keywords: [],
+        visibility: 'public' },
+      {
+        kind: 'event',
+        name: 'add-to-count',
+        description: null,
+        arguments: [
+          {
+            name: 'n',
+            declaration: null,
+            description: null,
+            type: null
+          }
+        ],
+        keywords: [],
+        visibility: 'public' },
+      {
+        kind: 'event',
+        name: 'reset',
+        description: null,
+        arguments: [],
+        keywords: [],
+        visibility: 'public' },
+      {
+        kind: 'event',
+        name: 'return-value',
+        description: null,
+        arguments: [],
+        keywords: [],
+        visibility: 'public' },
+      {
+        kind: 'event',
+        name: 'on-input-change',
+        description: null,
+        arguments: [
+          {
+            name: 'e',
+            declaration: null,
+            description: null,
+            type: null
+          }
+        ],
+        keywords: [],
+        visibility: 'public' },
+      {
+        kind: 'event',
+        name: 'promise',
+        description: null,
+        arguments: [],
+        keywords: [],
         visibility: 'public' }
-    ]
+    ],
+    methods: []
   }
 })
