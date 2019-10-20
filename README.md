@@ -48,6 +48,7 @@ npm install --save @vuedoc/parser
 - Extract component slots
 - Extract component methods
 - Class Component Support
+- Vue Property Descriptor Support
 - JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and
   [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
@@ -532,7 +533,7 @@ const options = {
 }
 
 Vuedoc.parse(options).then((component) => {
-  // console.log(component)
+  console.log(component)
 })
 ```
 
