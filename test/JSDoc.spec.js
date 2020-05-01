@@ -1,7 +1,6 @@
-const assert = require('assert')
 const { JSDoc } = require('../lib/JSDoc')
 
-/* global describe it */
+/* global describe it expect */
 
 describe('JSDoc', () => {
   describe('parseType(type)', () => {
@@ -11,7 +10,7 @@ describe('JSDoc', () => {
       const result = {}
 
       JSDoc.parseType(type, result)
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse JSDoc type with pipe char', () => {
@@ -20,7 +19,7 @@ describe('JSDoc', () => {
       const result = {}
 
       JSDoc.parseType(type, result)
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse with repeated parameter', () => {
@@ -29,7 +28,7 @@ describe('JSDoc', () => {
       const result = {}
 
       JSDoc.parseType(type, result)
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse with * as type', () => {
@@ -38,7 +37,7 @@ describe('JSDoc', () => {
       const result = {}
 
       JSDoc.parseType(type, result)
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
   })
 
@@ -52,7 +51,7 @@ describe('JSDoc', () => {
       }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @param keyword with missing dash separator', () => {
@@ -64,7 +63,7 @@ describe('JSDoc', () => {
       }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @param keyword with an empty type', () => {
@@ -72,7 +71,7 @@ describe('JSDoc', () => {
       const expected = { type: 'Any', name: 'x', description: 'The x value.' }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @param keyword with missing type', () => {
@@ -80,7 +79,7 @@ describe('JSDoc', () => {
       const expected = { type: 'Any', name: 'x', description: 'The x value.' }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @param keyword with malformated input', () => {
@@ -88,7 +87,7 @@ describe('JSDoc', () => {
       const expected = { type: 'Any', name: null, description: null }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @param keyword with repeated parameter', () => {
@@ -101,7 +100,7 @@ describe('JSDoc', () => {
       }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @param keyword with Any type', () => {
@@ -113,7 +112,19 @@ describe('JSDoc', () => {
       }
       const result = JSDoc.parseParamKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse @param with no descriptions', () => {
+      const comment = '{any} somebody'
+      const expected = {
+        type: 'any',
+        name: 'somebody',
+        description: undefined
+      }
+      const result = JSDoc.parseParamKeyword(comment)
+
+      expect(result).toEqual(expected)
     })
   })
 
@@ -123,7 +134,7 @@ describe('JSDoc', () => {
       const expected = { type: 'number', description: 'The x+y value.' }
       const result = JSDoc.parseReturnKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @return keyword with an empty retuning type', () => {
@@ -131,7 +142,7 @@ describe('JSDoc', () => {
       const expected = { type: 'Any', description: 'The x+y value.' }
       const result = JSDoc.parseReturnKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @return keyword with missing retuning type', () => {
@@ -139,7 +150,7 @@ describe('JSDoc', () => {
       const expected = { type: 'Any', description: 'The x+y value.' }
       const result = JSDoc.parseReturnKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
 
     it('should parse @return keyword with malformated input', () => {
@@ -147,7 +158,7 @@ describe('JSDoc', () => {
       const expected = { type: 'Any', description: '' }
       const result = JSDoc.parseReturnKeyword(comment)
 
-      assert.deepEqual(result, expected)
+      expect(result).toEqual(expected)
     })
   })
 })
