@@ -221,7 +221,7 @@ export default {
 }
 ```
 
-To document Vue array string props, just attach a vuedoc comment to each prop:
+To document Vue array string props, just attach a Vuedoc comment to each prop:
 
 ```js
 export default {
@@ -274,7 +274,7 @@ export default {
 }
 ```
 
-Vuedoc Parser automatically extracts events from component hook:
+Vuedoc Parser automatically extracts events from component hooks:
 
 ```js
 export default {
@@ -337,6 +337,38 @@ The parser is also able to extract events and slots from template:
     <slot name="header" v-bind:user="user" v-bind:profile="profile"/>
   </div>
 </template>
+```
+
+**Usage with non primitive name**
+
+You can use special keywords `@method` and `@event` for non primitive name:
+
+```html
+<script>
+  const METHODS = {
+    CLOSE: 'closeModal'
+  }
+
+  const EVENTS = {
+    CLOSE: 'close'
+  }
+
+  export default {
+    methods: {
+      /**
+        * Close modal
+        * @method closeModal
+        */
+      [METHODS.CLOSE] () {
+        /**
+          * Emit the `close` event on click
+          * @event close
+          */
+        this.$emit(EVENTS.CLOSE, true)
+      }
+    }
+  }
+</script>
 ```
 
 ### Annotate slots defined in Render Functions

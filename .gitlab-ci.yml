@@ -38,7 +38,7 @@ test & coverage:
     paths:
       - coverage/
 
-coverage report:
+pages:
   stage: publish
   dependencies:
     - test & coverage
