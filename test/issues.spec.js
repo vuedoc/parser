@@ -1846,4 +1846,21 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#62 - @ symbol breaks comment parsing',
+    options: {
+      filecontent: `
+        <script>
+          /**
+           * Defines if \`bleed@small\` class should be added to component for mobile view
+           */
+          export default {}
+        </script>
+      `
+    },
+    expected: {
+      description: 'Defines if `bleed@small` class should be added to component for mobile view'
+    }
+  })
 })
