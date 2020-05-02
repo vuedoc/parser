@@ -660,21 +660,21 @@ Vuedoc.parse(options).then((component) => {
 
 ```js
 type ParsingOutput = {
-  name: string,               // Component name
-  description: string,        // Component description
-  inheritAttrs: boolean,
-  keywords: Keyword[],        // Attached component keywords
-  model?: ModelEntry,         // Component model
-  slots: SlotEntry[],         // Component slots
-  props: PropEntry[],         // Component props
-  data: DataEntry[],          // Component data
-  computed: ComputedEntry[],  // Computed properties
-  events: EventEntry[],       // Events
-  methods: MethodEntry[],     // Component methods
-  errors: string[]            // Syntax and parsing errors
-}
+  name: string;               // Component name
+  description: string;        // Component description
+  inheritAttrs: boolean;
+  keywords: Keyword[];        // Attached component keywords
+  model?: ModelEntry;         // Component model
+  slots: SlotEntry[];         // Component slots
+  props: PropEntry[];         // Component props
+  data: DataEntry[];          // Component data
+  computed: ComputedEntry[];  // Computed properties
+  events: EventEntry[];       // Events
+  methods: MethodEntry[];     // Component methods
+  errors: string[];           // Syntax and parsing errors
+};
 
-enum NativeTypeEnum = {
+enum NativeTypeEnum {
   string,
   number,
   bigint,
@@ -683,91 +683,91 @@ enum NativeTypeEnum = {
   null,           // for an explicit `null` value
   undefined,      // for an explicit `undefined` value
   CallExpression  // for a value like `new Date()`
-}
+};
 
 type Keyword = {
-  name: string,
-  description: string
+  name: string;
+  description: string;
 }
 
 interface Entry {
-  readonly kind: string,
-  visibility: 'public' | 'protected' | 'private',
-  description: string,
-  keywords: Keyword[]
+  readonly kind: string;
+  visibility: 'public' | 'protected' | 'private';
+  description: string;
+  keywords: Keyword[];
 }
 
 interface ModelEntry extends Entry {
-  readonly kind: string = 'model',
-  prop: string,
-  event: string
+  readonly kind: string = 'model';
+  prop: string;
+  event: string;
 }
 
 interface SlotEntry extends Entry {
-  readonly kind: string = 'slot',
-  name: string,
-  props: SlotProp[]
+  readonly kind: string = 'slot';
+  name: string;
+  props: SlotProp[];
 }
 
 type SlotProp = {
-  name: string,
-  type: string,
-  description: string
-}
+  name: string;
+  type: string;
+  description: string;
+};
 
 interface PropEntry extends Entry {
-  readonly kind: string = 'prop',
-  name: string,                  // v-model when the @model keyword is attached
-  type: Identifier,              // defined prop type. ex Array, Object, String, ...
-  nativeType: NativeTypeEnum,
-  default: any,                  // '__undefined__' value uncatchable value
-  required: boolean = false,
-  describeModel: boolean = false // true when the @model keyword is attached
+  readonly kind: string = 'prop';
+  name: string;                   // v-model when the @model keyword is attached
+  type: Identifier;               // defined prop type. ex Array, Object, String, ...
+  nativeType: NativeTypeEnum;
+  default: any;                   // '__undefined__' value uncatchable value
+  required: boolean = false;
+  describeModel: boolean = false; // true when the @model keyword is attached
 }
 
 interface DataEntry extends Entry {
-  readonly kind: string = 'data',
-  name: string,
-  type: NativeTypeEnum,
-  initial: any                   // '__undefined__' value uncatchable value
+  readonly kind: string = 'data';
+  name: string;
+  type: NativeTypeEnum;
+  initial: any;                   // '__undefined__' value uncatchable value
 }
 
 interface ComputedEntry extends Entry {
-  readonly kind: string = 'computed',
-  name: string,
-  dependencies: string[]         // list of dependencies of the computed property
+  readonly kind: string = 'computed';
+  name: string;
+  dependencies: string[];         // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
-  readonly kind: string = 'event',
-  name: string,
-  arguments: EventArgument[]
+  readonly kind: string = 'event';
+  name: string;
+  arguments: EventArgument[];
 }
 
 type EventArgument = {
-  name: string,
-  description: string,
-  type: string
-}
+  name: string;
+  description: string;
+  type: string;
+};
 
 interface MethodEntry extends Entry {
-  readonly kind: string = 'method',
-  name: string,
-  params: MethodParam[],
-  return: MethodReturn
+  readonly kind: string = 'method';
+  name: string;
+  params: MethodParam[];
+  return: MethodReturn;
 }
 
 type MethodParam = {
-  name: string,
-  description: string,
-  type: string,
-  defaultValue: any
+  name: string;
+  description: string;
+  type: string;
+  defaultValue: any;
 }
 
 type MethodReturn = {
-  type: string = 'void',
-  description: string
-}
+  type: string = 'void';
+  description: string;
+};
 ```
 
 ## Related projects
