@@ -58,4 +58,80 @@ describe('ScriptParser', () => {
       errors: []
     }
   })
+
+  ComponentTestCase({
+    name: 'with undefined references',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            name: MethodThatIsHandledAsUndefined(),
+            props: {
+              somePropCall: MethodThanReturnAString(),
+              somePropRef: CallsSomeOtherMethod,
+            },
+            methods: {
+              someMethodCall: MethodThatReturnAFunction(),
+              someMethodRef: CallsSomeOtherMethod
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: '__undefined__',
+      props: [
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: '__undefined__',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          default: '__undefined__',
+          nativeType: '__undefined__',
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          name: 'some-prop-ref',
+          type: 'CallsSomeOtherMethod',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          default: '__undefined__',
+          nativeType: '__undefined__',
+          required: false,
+          describeModel: false
+        }
+      ],
+      methods: [
+        {
+          kind: 'method',
+          name: 'someMethodCall',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        },
+        {
+          kind: 'method',
+          name: 'someMethodRef',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        }
+      ]
+    }
+  })
 })
