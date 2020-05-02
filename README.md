@@ -19,9 +19,11 @@ Generate a JSON documentation for a Vue file component
 - [Keywords Extraction](#keywords-extraction)
 - [Working with Mixins](#working-with-mixins)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
-- [Custom Language Processing](#custom-language-processing)
+- [Language Processing](#language-processing)
   * [Loader API](#loader-api)
-  * [TypeScript Usage](#typescript-usage)
+  * [Build-in loaders](#build-in-loaders)
+  * [TypeScript usage](#typescript-usage)
+  * [Create a custom loader](#create-a-custom-loader)
 - [Interfaces](#interfaces)
 - [Related projects](#related-projects)
 - [Contribute](#contribute)
@@ -524,7 +526,7 @@ vuedoc.parse(options)
   //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
-## Custom Language Processing
+## Language Processing
 
 ### Loader API
 
@@ -539,30 +541,28 @@ abstract class Loader {
 }
 ```
 
-### TypeScript Usage
+### Build-in loaders
 
-To use Vuedoc Parser with TypeScript, you need to install `typescript` and
-`@types/node` dependencies according the [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+| Language    | Load by default?  | Package                                                   |
+|-------------|-------------------|-----------------------------------------------------------|
+| HTML        | Yes               | [@vuedoc/parser/loader/html](loader/html.js)              |
+| JavaScript  | Yes               | [@vuedoc/parser/loader/javascript](loader/javascript.js)  |
+| Pug         | No                | [@vuedoc/parser/loader/pug](loader/pug.js)                |
+| TypeScript  | No                | [@vuedoc/parser/loader/typescript](loader/typescript.js)  |
+| Vue         | Yes               | [@vuedoc/parser/loader/vue](loader/vue.js)                |
+
+### TypeScript usage
+
+The Vuedoc Parser package contains a loader for TypeScript. To use it, you need
+to:
+
+  - install `typescript` and `@types/node` dependencies according the
+    [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+  - import and load the loader `@vuedoc/parser/loader/typescript`
 
 ```js
-const ts = require('typescript')
 const Vuedoc = require('@vuedoc/parser')
-
-class TypeScriptLoader extends Vuedoc.Loader {
-  load (source) {
-    const options = {
-      compilerOptions: {
-        target: ts.ModuleKind.ESNext,
-        module: ts.ModuleKind.ESNext
-      }
-    }
-
-    const { outputText } = ts.transpileModule(source, options)
-
-    // don't forget the return here
-    return this.emitScript(outputText)
-  }
-}
+const TypeScriptLoader = require('@vuedoc/parser/loader/typescript')
 
 const options = {
   filename: 'DatePicker.ts',
@@ -572,7 +572,7 @@ const options = {
      * Note that the name of the loader is either the extension
      * of the file or the value of the attribute `lang`
      */
-    Loader.extend('ts', TypeScriptLoader)
+    Vuedoc.Loader.extend('ts', TypeScriptLoader)
   ]
 }
 
@@ -581,31 +581,100 @@ Vuedoc.parse(options).then((component) => {
 })
 ```
 
-**Loader examples**
+### Create a custom loader
 
-- HTML Loader: [lib/loader/HtmlLoader.js](lib/loader/HtmlLoader.js)
-- JavaScript Loader: [lib/loader/JavaScriptLoader.js](lib/loader/JavaScriptLoader.js)
-- Vue Loader: [lib/loader/VueLoader.js](lib/loader/VueLoader.js)
+The example below uses the abstract `Vuedoc.Loader` class to create a
+specialized class to handle a template with the [CoffeeScript](https://www.npmjs.com/package/coffeescript)
+language. It uses the Pug language for templating:
+
+```js
+const Vuedoc = require('@vuedoc/parser')
+const PugLoader = require('@vuedoc/parser/loader/pug')
+const CoffeeScript = require('coffeescript')
+
+class CoffeeScriptLoader extends Vuedoc.Loader {
+  load (source) {
+    const outputText = CoffeeScript.compile(source);
+
+    // don't forget the return here
+    return this.emitScript(outputText);
+  }
+}
+
+const options = {
+  filecontent: `
+    <template lang="pug">
+      div.page
+        h1 Vuedoc Parser with Pug
+        // Use this slot to define a subtitle
+        slot(name='subtitle')
+    </template>
+
+    <script lang="coffee">
+      ###
+      # Description of MyInput component
+      ###
+      export default
+        name: 'MyInput'
+    </script>
+  `,
+  loaders: [
+    /**
+     * Register CoffeeScriptLoader
+     * Note that the name of the loader is either the extension
+     * of the file or the value of the attribute `lang`
+     */
+    Vuedoc.Loader.extend('coffee', CoffeeScriptLoader),
+
+    // Register the Pug loader
+    Vuedoc.Loader.extend('pug', PugLoader)
+  ]
+}
+
+Vuedoc.parse(options).then((component) => {
+  console.log(component.slots)
+})
+```
+
+**Output**
+
+```js
+{
+  name: 'MyInput',
+  description: 'Description of MyInput component',
+  slots: [
+    {
+      kind: 'slot',
+      visibility: 'public',
+      description: 'Use this slot to define a subtitle',
+      keywords: [],
+      name: 'subtitle',
+      props: []
+    }
+  ],
+  // ...
+}
+```
 
 ## Interfaces
 
 ```js
 type ParsingOutput = {
-  name: string,               // Component name
-  description: string,        // Component description
-  inheritAttrs: boolean,
-  keywords: Keyword[],        // Attached component keywords
-  model?: ModelEntry,         // Component model
-  slots: SlotEntry[],         // Component slots
-  props: PropEntry[],         // Component props
-  data: DataEntry[],          // Component data
-  computed: ComputedEntry[],  // Computed properties
-  events: EventEntry[],       // Events
-  methods: MethodEntry[],     // Component methods
-  errors: string[]            // Syntax and parsing errors
-}
+  name: string;               // Component name
+  description: string;        // Component description
+  inheritAttrs: boolean;
+  keywords: Keyword[];        // Attached component keywords
+  model?: ModelEntry;         // Component model
+  slots: SlotEntry[];         // Component slots
+  props: PropEntry[];         // Component props
+  data: DataEntry[];          // Component data
+  computed: ComputedEntry[];  // Computed properties
+  events: EventEntry[];       // Events
+  methods: MethodEntry[];     // Component methods
+  errors: string[];           // Syntax and parsing errors
+};
 
-enum NativeTypeEnum = {
+enum NativeTypeEnum {
   string,
   number,
   bigint,
@@ -614,91 +683,91 @@ enum NativeTypeEnum = {
   null,           // for an explicit `null` value
   undefined,      // for an explicit `undefined` value
   CallExpression  // for a value like `new Date()`
-}
+};
 
 type Keyword = {
-  name: string,
-  description: string
+  name: string;
+  description: string;
 }
 
 interface Entry {
-  readonly kind: string,
-  visibility: 'public' | 'protected' | 'private',
-  description: string,
-  keywords: Keyword[]
+  readonly kind: string;
+  visibility: 'public' | 'protected' | 'private';
+  description: string;
+  keywords: Keyword[];
 }
 
 interface ModelEntry extends Entry {
-  readonly kind: string = 'model',
-  prop: string,
-  event: string
+  readonly kind: string = 'model';
+  prop: string;
+  event: string;
 }
 
 interface SlotEntry extends Entry {
-  readonly kind: string = 'slot',
-  name: string,
-  props: SlotProp[]
+  readonly kind: string = 'slot';
+  name: string;
+  props: SlotProp[];
 }
 
 type SlotProp = {
-  name: string,
-  type: string,
-  description: string
-}
+  name: string;
+  type: string;
+  description: string;
+};
 
 interface PropEntry extends Entry {
-  readonly kind: string = 'prop',
-  name: string,                  // v-model when the @model keyword is attached
-  type: Identifier,              // defined prop type. ex Array, Object, String, ...
-  nativeType: NativeTypeEnum,
-  default: any,                  // '__undefined__' value uncatchable value
-  required: boolean = false,
-  describeModel: boolean = false // true when the @model keyword is attached
+  readonly kind: string = 'prop';
+  name: string;                   // v-model when the @model keyword is attached
+  type: Identifier;               // defined prop type. ex Array, Object, String, ...
+  nativeType: NativeTypeEnum;
+  default: any;                   // '__undefined__' value uncatchable value
+  required: boolean = false;
+  describeModel: boolean = false; // true when the @model keyword is attached
 }
 
 interface DataEntry extends Entry {
-  readonly kind: string = 'data',
-  name: string,
-  type: NativeTypeEnum,
-  initial: any                   // '__undefined__' value uncatchable value
+  readonly kind: string = 'data';
+  name: string;
+  type: NativeTypeEnum;
+  initial: any;                   // '__undefined__' value uncatchable value
 }
 
 interface ComputedEntry extends Entry {
-  readonly kind: string = 'computed',
-  name: string,
-  dependencies: string[]         // list of dependencies of the computed property
+  readonly kind: string = 'computed';
+  name: string;
+  dependencies: string[];         // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
-  readonly kind: string = 'event',
-  name: string,
-  arguments: EventArgument[]
+  readonly kind: string = 'event';
+  name: string;
+  arguments: EventArgument[];
 }
 
 type EventArgument = {
-  name: string,
-  description: string,
-  type: string
-}
+  name: string;
+  description: string;
+  type: string;
+};
 
 interface MethodEntry extends Entry {
-  readonly kind: string = 'method',
-  name: string,
-  params: MethodParam[],
-  return: MethodReturn
+  readonly kind: string = 'method';
+  name: string;
+  params: MethodParam[];
+  return: MethodReturn;
 }
 
 type MethodParam = {
-  name: string,
-  description: string,
-  type: string,
-  defaultValue: any
+  name: string;
+  description: string;
+  type: string;
+  defaultValue: any;
 }
 
 type MethodReturn = {
-  type: string = 'void',
-  description: string
-}
+  type: string = 'void';
+  description: string;
+};
 ```
 
 ## Related projects

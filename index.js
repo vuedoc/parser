@@ -1,9 +1,9 @@
-const { extname } = require('path')
+const path = require('path')
 
-const { Loader } = require('./lib/loader/Loader')
-const { VueLoader } = require('./lib/loader/VueLoader')
-const { HtmlLoader } = require('./lib/loader/HtmlLoader')
-const { JavaScriptLoader } = require('./lib/loader/JavaScriptLoader')
+const Loader = require('./lib/Loader')
+const VueLoader = require('./loader/vue')
+const HtmlLoader = require('./loader/html')
+const JavaScriptLoader = require('./loader/javascript')
 
 const { Parser } = require('./lib/parser/Parser')
 const { Features } = require('./lib/Enum')
@@ -52,7 +52,7 @@ module.exports.parseOptions = (options) => {
 
   try {
     if (options.filename) {
-      const ext = extname(options.filename)
+      const ext = path.extname(options.filename)
       const loaderName = ext.substring(1)
       const LoaderClass = Loader.get(loaderName, options)
       const source = Loader.getFileContent(options.filename, options)

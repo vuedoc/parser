@@ -1,4 +1,4 @@
-const { Loader } = require('./Loader')
+const Loader = require('../lib/Loader')
 
 class JavaScriptLoader extends Loader {
   load (source) {
@@ -6,4 +6,4 @@ class JavaScriptLoader extends Loader {
   }
 }
 
-module.exports.JavaScriptLoader = JavaScriptLoader
+module.exports = JavaScriptLoader
