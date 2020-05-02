@@ -21,6 +21,7 @@ Generate a JSON documentation for a Vue file component
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
 - [Custom Language Processing](#custom-language-processing)
   * [Loader API](#loader-api)
+  * [Build-in loaders](#build-in-loaders)
   * [Create a custom loader](#create-a-custom-loader)
   * [TypeScript Usage](#typescript-usage)
 - [Interfaces](#interfaces)
@@ -540,77 +541,28 @@ abstract class Loader {
 }
 ```
 
-### Create a custom loader
+### Build-in loaders
 
-The example below uses the abstract `Vuedoc.Loader` class to create a
-specialized class to handle a template with the Pug language:
+| Language    | Load by default?  | Package                                                   |
+|-------------|-------------------|-----------------------------------------------------------|
+| HTML        | Yes               | [@vuedoc/parser/loader/html](loader/html.js)              |
+| JavaScript  | Yes               | [@vuedoc/parser/loader/javascript](loader/javascript.js)  |
+| Pug         | No                | [@vuedoc/parser/loader/pug](loader/pug.js)                |
+| TypeScript  | No                | [@vuedoc/parser/loader/typescript](loader/typescript.js)  |
+| Vue         | Yes               | [@vuedoc/parser/loader/vue](loader/vue.js)                |
 
-```js
-const pug = require('pug')
-const Vuedoc = require('@vuedoc/parser')
-
-class PugLoader extends Vuedoc.Loader {
-  load (source) {
-    const outputText = pug.render(source, {
-      compileDebug: false
-    })
-
-    // don't forget the return here
-    return this.emitTemplate(outputText)
-  }
-}
-
-const options = {
-  filecontent: `
-    <template lang="pug">
-      div.page
-        h1 Vuedoc Parser with Pug
-        // Use this slot to define a subtitle
-        slot(name='subtitle')
-    </template>
-  `,
-  loaders: [
-    /**
-     * Register PugLoader
-     * Note that the name of the loader is either the extension
-     * of the file or the value of the attribute `lang`
-     */
-    Vuedoc.Loader.extend('pug', PugLoader)
-  ]
-}
-
-Vuedoc.parse(options).then((component) => {
-  console.log(component.slots)
-})
-```
-
-**Output**
-
-```js
-[
-  {
-    kind: 'slot',
-    visibility: 'public',
-    description: 'Use this slot to define a subtitle',
-    keywords: [],
-    name: 'subtitle',
-    props: []
-  }
-]
-```
-
-### TypeScript Usage
+### TypeScript usage
 
 The Vuedoc Parser package contains a loader for TypeScript. To use it, you need
 to:
 
   - install `typescript` and `@types/node` dependencies according the
     [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
-  - import and load the loader `@vuedoc/parser/loader/TypeScriptLoader`
+  - import and load the loader `@vuedoc/parser/loader/typescript`
 
 ```js
 const Vuedoc = require('@vuedoc/parser')
-const TypeScriptLoader = require('@vuedoc/parser/loader/TypeScriptLoader')
+const TypeScriptLoader = require('@vuedoc/parser/loader/typescript')
 
 const options = {
   filename: 'DatePicker.ts',
@@ -629,13 +581,80 @@ Vuedoc.parse(options).then((component) => {
 })
 ```
 
-**Loader examples**
+### Create a custom loader
 
-- HTML Loader: [loader/HtmlLoader.js](loader/HtmlLoader.js)
-- JavaScript Loader: [loader/JavaScriptLoader.js](loader/JavaScriptLoader.js)
-- Pug Loader: [loader/PugLoader.js](loader/PugLoader.js)
-- TypeScript Loader: [loader/TypeScriptLoader.js](loader/TypeScriptLoader.js)
-- Vue Loader: [loader/VueLoader.js](loader/VueLoader.js)
+The example below uses the abstract `Vuedoc.Loader` class to create a
+specialized class to handle a template with the [CoffeeScript](https://www.npmjs.com/package/coffeescript)
+language. It uses the Pug language for templating:
+
+```js
+const Vuedoc = require('@vuedoc/parser')
+const PugLoader = require('@vuedoc/parser/loader/pug')
+const CoffeeScript = require('coffeescript')
+
+class CoffeeScriptLoader extends Vuedoc.Loader {
+  load (source) {
+    const outputText = CoffeeScript.compile(source);
+
+    // don't forget the return here
+    return this.emitScript(outputText);
+  }
+}
+
+const options = {
+  filecontent: `
+    <template lang="pug">
+      div.page
+        h1 Vuedoc Parser with Pug
+        // Use this slot to define a subtitle
+        slot(name='subtitle')
+    </template>
+
+    <script lang="coffee">
+      ###
+      # Description of MyInput component
+      ###
+      export default
+        name: 'MyInput'
+    </script>
+  `,
+  loaders: [
+    /**
+     * Register CoffeeScriptLoader
+     * Note that the name of the loader is either the extension
+     * of the file or the value of the attribute `lang`
+     */
+    Vuedoc.Loader.extend('coffee', CoffeeScriptLoader),
+
+    // Register the Pug loader
+    Vuedoc.Loader.extend('pug', PugLoader)
+  ]
+}
+
+Vuedoc.parse(options).then((component) => {
+  console.log(component.slots)
+})
+```
+
+**Output**
+
+```js
+{
+  name: 'MyInput',
+  description: 'Description of MyInput component',
+  slots: [
+    {
+      kind: 'slot',
+      visibility: 'public',
+      description: 'Use this slot to define a subtitle',
+      keywords: [],
+      name: 'subtitle',
+      props: []
+    }
+  ],
+  // ...
+}
+```
 
 ## Interfaces
 

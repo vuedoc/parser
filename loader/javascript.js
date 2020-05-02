@@ -1,4 +1,4 @@
-const Loader = require('./Loader')
+const Loader = require('../lib/Loader')
 
 class JavaScriptLoader extends Loader {
   load (source) {

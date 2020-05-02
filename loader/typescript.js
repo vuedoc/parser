@@ -1,7 +1,11 @@
 // eslint-disable-next-line import/no-unresolved
 const ts = require('typescript')
-const Loader = require('./Loader')
+const Loader = require('../lib/Loader')
 
+/**
+ * @note Don't fotget to install `typescript` and `@types/node` dependencies
+ * according the [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+ */
 class TypeScriptLoader extends Loader {
   load (source) {
     const options = {

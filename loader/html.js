@@ -1,4 +1,4 @@
-const Loader = require('./Loader')
+const Loader = require('../lib/Loader')
 
 class HtmlLoader extends Loader {
   load (source) {

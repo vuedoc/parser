@@ -1,8 +1,11 @@
 // eslint-disable-next-line import/no-unresolved
 const pug = require('pug')
-const Vuedoc = require('@vuedoc/parser')
+const Loader = require('../lib/Loader')
 
-class PugLoader extends Vuedoc.Loader {
+/**
+ * @note Install the [pug](https://www.npmjs.com/package/pug) dependency
+ */
+class PugLoader extends Loader {
   load (source) {
     const outputText = pug.render(source, {
       compileDebug: false

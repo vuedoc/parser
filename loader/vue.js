@@ -1,6 +1,6 @@
 const { parseComponent } = require('vue-template-compiler')
 
-const Loader = require('./Loader')
+const Loader = require('../lib/Loader')
 
 const DEFAULT_TEMPLATE_LANG = 'html'
 const DEFAULT_SCRIPT_LANG = 'js'
