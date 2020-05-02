@@ -1912,13 +1912,10 @@ describe('issues', () => {
           ],
           arguments: [
             {
-              type: null,
+              type: 'boolean',
               declaration: null,
               description: null,
-              name: {
-                type: 'boolean',
-                value: true
-              }
+              name: true
             }
           ]
         }
