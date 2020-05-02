@@ -1848,6 +1848,85 @@ describe('issues', () => {
   })
 
   ComponentTestCase({
+    name: '#61 - Parsing event fails when event name is non-primitive value',
+    options: {
+      filecontent: `
+        <script>
+          const METHODS = {
+            CLOSE: 'close'
+          }
+
+          const EVENTS = {
+            CLOSE: 'close'
+          }
+
+          export default {
+            methods: {
+              /**
+               * Close modal
+               * @method close
+               */
+              [METHODS.CLOSE] () {
+                /**
+                 * Emit the \`close\` event on click
+                 * @event close
+                 */
+                this.$emit(EVENTS.CLOSE, true)
+              }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'close',
+          visibility: 'public',
+          description: 'Close modal',
+          keywords: [
+            {
+              name: 'method',
+              description: 'close'
+            }
+          ],
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        }
+      ],
+      events: [
+        {
+          kind: 'event',
+          name: 'close',
+          visibility: 'public',
+          description: 'Emit the `close` event on click',
+          keywords: [
+            {
+              name: 'event',
+              description: 'close'
+            }
+          ],
+          arguments: [
+            {
+              type: null,
+              declaration: null,
+              description: null,
+              name: {
+                type: 'boolean',
+                value: true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
     name: '#62 - @ symbol breaks comment parsing',
     options: {
       filecontent: `
