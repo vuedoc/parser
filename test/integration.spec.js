@@ -10,10 +10,10 @@ const vuedoc = require('..')
 const { ComponentTestCase } = require('./lib/TestUtils')
 const { Fixture } = require('./lib/Fixture')
 
-const { Loader } = require('../lib/loader/Loader')
-const { VueLoader } = require('../lib/loader/VueLoader')
-const { HtmlLoader } = require('../lib/loader/HtmlLoader')
-const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
+const Loader = require('../loader/Loader')
+const VueLoader = require('../loader/VueLoader')
+const HtmlLoader = require('../loader/HtmlLoader')
+const JavaScriptLoader = require('../loader/JavaScriptLoader')
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
