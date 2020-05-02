@@ -21,6 +21,7 @@ Generate a JSON documentation for a Vue file component
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
 - [Custom Language Processing](#custom-language-processing)
   * [Loader API](#loader-api)
+  * [Create a custom loader](#create-a-custom-loader)
   * [TypeScript Usage](#typescript-usage)
 - [Interfaces](#interfaces)
 - [Related projects](#related-projects)
@@ -539,30 +540,77 @@ abstract class Loader {
 }
 ```
 
-### TypeScript Usage
+### Create a custom loader
 
-To use Vuedoc Parser with TypeScript, you need to install `typescript` and
-`@types/node` dependencies according the [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+The example below uses the abstract `Vuedoc.Loader` class to create a
+specialized class to handle a template with the Pug language:
 
 ```js
-const ts = require('typescript')
+const pug = require('pug')
 const Vuedoc = require('@vuedoc/parser')
 
-class TypeScriptLoader extends Vuedoc.Loader {
+class PugLoader extends Vuedoc.Loader {
   load (source) {
-    const options = {
-      compilerOptions: {
-        target: ts.ModuleKind.ESNext,
-        module: ts.ModuleKind.ESNext
-      }
-    }
-
-    const { outputText } = ts.transpileModule(source, options)
+    const outputText = pug.render(source, {
+      compileDebug: false
+    })
 
     // don't forget the return here
-    return this.emitScript(outputText)
+    return this.emitTemplate(outputText)
   }
 }
+
+const options = {
+  filecontent: `
+    <template lang="pug">
+      div.page
+        h1 Vuedoc Parser with Pug
+        // Use this slot to define a subtitle
+        slot(name='subtitle')
+    </template>
+  `,
+  loaders: [
+    /**
+     * Register PugLoader
+     * Note that the name of the loader is either the extension
+     * of the file or the value of the attribute `lang`
+     */
+    Vuedoc.Loader.extend('pug', PugLoader)
+  ]
+}
+
+Vuedoc.parse(options).then((component) => {
+  console.log(component.slots)
+})
+```
+
+**Output**
+
+```js
+[
+  {
+    kind: 'slot',
+    visibility: 'public',
+    description: 'Use this slot to define a subtitle',
+    keywords: [],
+    name: 'subtitle',
+    props: []
+  }
+]
+```
+
+### TypeScript Usage
+
+The Vuedoc Parser package contains a loader for TypeScript. To use it, you need
+to:
+
+  - install `typescript` and `@types/node` dependencies according the
+    [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+  - import and load the loader `@vuedoc/parser/loader/TypeScriptLoader`
+
+```js
+const Vuedoc = require('@vuedoc/parser')
+const TypeScriptLoader = require('@vuedoc/parser/loader/TypeScriptLoader')
 
 const options = {
   filename: 'DatePicker.ts',
@@ -572,7 +620,7 @@ const options = {
      * Note that the name of the loader is either the extension
      * of the file or the value of the attribute `lang`
      */
-    Loader.extend('ts', TypeScriptLoader)
+    Vuedoc.Loader.extend('ts', TypeScriptLoader)
   ]
 }
 
@@ -583,9 +631,11 @@ Vuedoc.parse(options).then((component) => {
 
 **Loader examples**
 
-- HTML Loader: [lib/loader/HtmlLoader.js](lib/loader/HtmlLoader.js)
-- JavaScript Loader: [lib/loader/JavaScriptLoader.js](lib/loader/JavaScriptLoader.js)
-- Vue Loader: [lib/loader/VueLoader.js](lib/loader/VueLoader.js)
+- HTML Loader: [loader/HtmlLoader.js](loader/HtmlLoader.js)
+- JavaScript Loader: [loader/JavaScriptLoader.js](loader/JavaScriptLoader.js)
+- Pug Loader: [loader/PugLoader.js](loader/PugLoader.js)
+- TypeScript Loader: [loader/TypeScriptLoader.js](loader/TypeScriptLoader.js)
+- Vue Loader: [loader/VueLoader.js](loader/VueLoader.js)
 
 ## Interfaces
 
