@@ -81,6 +81,9 @@ const script = `
         default: true
       },
 
+      // Prop with multiple type
+      active: [Number, Boolean],
+
       // Prop with arrow function
       propWithArrow: {
         type: Object,
@@ -1765,7 +1768,16 @@ describe('Parser', () => {
         assert.equal(prop.name, 'getValue')
         assert.equal(prop.description, null)
         assert.deepEqual(prop.keywords, [])
-        assert.deepEqual(prop.params, [])
+        assert.deepEqual(prop.params, [
+            {
+              name: 'ctx',
+              type: null,
+              defaultValue: '__undefined__',
+              description: null,
+              declaration: null
+            }
+        ])
+
         done()
       })
     })

@@ -53,6 +53,7 @@ describe('#44 - Inline Template', () => {
       inheritAttrs: true,
       description: null,
       keywords: [],
+      errors: [],
       slots:
         [ {
             kind: 'slot',

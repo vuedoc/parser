@@ -5,16 +5,15 @@
 
 const assert = require('assert')
 
-const { join } = require('path')
-const { readFileSync } = require('fs')
-
 const vuedoc = require('..')
 
 const { ComponentTestCase } = require('./lib/TestUtils')
-const { Loader } = require('../lib/loader/Loader')
-const { VueLoader } = require('../lib/loader/VueLoader')
-const { HtmlLoader } = require('../lib/loader/HtmlLoader')
-const { JavaScriptLoader } = require('../lib/loader/JavaScriptLoader')
+const { Fixture } = require('./lib/Fixture')
+
+const Loader = require('../lib/Loader')
+const VueLoader = require('../loader/vue')
+const HtmlLoader = require('../loader/html')
+const JavaScriptLoader = require('../loader/javascript')
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
@@ -22,45 +21,37 @@ const DefaultLoaders = [
   Loader.extend('vue', VueLoader)
 ]
 
-function resolve (filename) {
-  return join(__dirname, `fixtures/${filename}`)
-}
-
-function getFileContent (filename) {
-  return readFileSync(resolve(filename), 'utf8').toString()
-}
-
 const options = {
-  filename: resolve('checkbox.vue'),
+  filename: Fixture.resolve('checkbox.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsForModuleExports = {
-  filename: resolve('checkboxModuleExports.vue'),
+  filename: Fixture.resolve('checkboxModuleExports.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsForVueExtend = {
-  filename: resolve('checkboxVueExtend.vue'),
+  filename: Fixture.resolve('checkboxVueExtend.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsNoTopLevelConstant = {
-  filename: resolve('checkboxNoTopLevelConstant.vue'),
+  filename: Fixture.resolve('checkboxNoTopLevelConstant.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsWithFileSource = {
-  filecontent: getFileContent('checkbox.vue'),
+  filecontent: Fixture.get('checkbox.vue'),
   ignoredVisibilities: []
 }
 
 const optionsForPropsArray = {
-  filename: resolve('checkboxPropsArray.vue'),
+  filename: Fixture.resolve('checkboxPropsArray.vue'),
   encoding: 'utf8',
   ignoredVisibilities: []
 }
@@ -129,7 +120,7 @@ function testComponent (optionsToParse) {
   })
 
   it('should guess the component name using the filename', () => {
-    return vuedoc.parse({ filename: resolve('UnNamedInput.vue') })
+    return vuedoc.parse({ filename: Fixture.resolve('UnNamedInput.vue') })
       .then((component) => {
         assert.equal(component.name, 'UnNamedInput')
       })
@@ -286,9 +277,16 @@ function testComponentEvents (optionsToParse) {
     const event = {
       kind: 'event',
       name: 'change',
-      arguments: [],
       description: 'Fires when the card is changed.',
       keywords: [],
+      arguments: [
+        {
+          name: 'object',
+          type: 'object',
+          description: null,
+          declaration: '{\n      bankAccount: { ...this.bankAccount },\n      valid: !this.$v.$invalid\n    }'
+        }
+      ],
       visibility: 'public'
     }
 
@@ -361,7 +359,7 @@ describe('options', () => {
 
   it('should parse with options.filename', () => {
     const options = {
-      filename: resolve('checkbox.js'),
+      filename: Fixture.resolve('checkbox.js'),
       ignoredVisibilities: [ 'private' ],
       loaders: []
     }
@@ -372,7 +370,7 @@ describe('options', () => {
       ignoredVisibilities: [ ...options.ignoredVisibilities ],
       source: {
         template: '',
-        script: getFileContent('checkbox.js'),
+        script: Fixture.get('checkbox.js'),
         errors: []
       },
       loaders: [ ...DefaultLoaders ]
@@ -723,7 +721,7 @@ describe('component.methods filesource', () => testComponentMethods(optionsWithF
 describe('component.methods visibility_default', () => {
   let component = {}
   const options = {
-    filename: resolve('checkboxMethods.vue'),
+    filename: Fixture.resolve('checkboxMethods.vue'),
     encoding: 'utf8'
   }
 
@@ -758,7 +756,7 @@ describe('component.methods visibility_default', () => {
 describe('component.methods visibility_private', () => {
   let component = {}
   const options = {
-    filename: resolve('checkboxMethods.vue'),
+    filename: Fixture.resolve('checkboxMethods.vue'),
     encoding: 'utf8',
     defaultMethodVisibility: 'private'
   }
@@ -808,6 +806,7 @@ describe('dynamic import() function', () => {
       description: null,
       inheritAttrs: true,
       keywords: [],
+      errors: [],
       slots: [],
       props: [],
       data: [],
@@ -864,6 +863,7 @@ describe('Syntax: exports["default"]', () => {
       description: 'description',
       inheritAttrs: true,
       events: [],
+      errors: [],
       keywords: [],
       methods: [],
       computed: [ {
@@ -1031,6 +1031,7 @@ describe('spread operators', () => {
       description: null,
       inheritAttrs: true,
       keywords: [],
+      errors: [],
       slots: [],
       props: [],
       data: [],
@@ -1084,7 +1085,7 @@ describe('errors', () => {
   })
 
   it('should throw error for non js files', (done) => {
-    const filename = resolve('checkbox.ts')
+    const filename = Fixture.resolve('checkbox.ts')
     const options = { filename }
 
     vuedoc.parse(options)
@@ -1168,9 +1169,118 @@ ComponentTestCase({
         keywords: [],
         kind: 'prop',
         name: 'complex',
-        nativeType: 'FunctionExpression',
+        nativeType: 'ArrowFunctionExpression',
         required: false,
         type: 'Object',
+        visibility: 'public' }
+    ]
+  }
+})
+
+ComponentTestCase({
+  name: 'Dynamic object key',
+  options: {
+    filecontent: `
+      <script>
+        const name = 'blabla'
+        const complex = 'complexValue'
+        const dynamic2 = 'dynamic2Value'
+        const computedProp2 = 'computedProp2Value'
+        const boolFalse = false
+        export default {
+          name,
+          props: {
+            [complex]: {
+              type: Object
+            },
+            boolFalse: {
+              type: Boolean,
+              default: true
+            }
+          },
+          computed: {
+            ['computedProp1']() { return 1 },
+            [computedProp2]() { return 2 }
+          },
+          methods: {
+            // Make component dynamic
+            ['dynamic']: () => {
+              console.log('dynamic')
+            },
+
+            // Enter to dynamic mode
+            [dynamic2]: () => {
+              console.log(dynamic2)
+            }
+          }
+        }
+      </script>
+    `
+  },
+  expected: {
+    name: 'blabla',
+    props: [
+      {
+        default: '__undefined__',
+        describeModel: false,
+        description: null,
+        keywords: [],
+        kind: 'prop',
+        name: 'complex-value',
+        nativeType: 'object',
+        required: false,
+        type: 'Object',
+        visibility: 'public' },
+      {
+        default: true,
+        describeModel: false,
+        description: null,
+        keywords: [],
+        kind: 'prop',
+        name: 'bool-false',
+        nativeType: 'boolean',
+        required: false,
+        type: 'Boolean',
+        visibility: 'public' }
+    ],
+    computed: [
+      {
+        kind: 'computed',
+        name: 'computedProp1',
+        description: null,
+        keywords: [],
+        dependencies: [],
+        visibility: 'public' },
+      {
+        kind: 'computed',
+        name: 'computedProp2Value',
+        description: null,
+        keywords: [],
+        dependencies: [],
+        visibility: 'public' }
+    ],
+    methods: [
+      {
+        kind: 'method',
+        name: 'dynamic',
+        keywords: [],
+        description: 'Make component dynamic',
+        params: [],
+        return: {
+          type: 'void',
+          description: null
+        },
+        visibility: 'public' },
+      {
+        kind: 'method',
+        name: 'dynamic2Value',
+        keywords: [],
+        description: 'Enter to dynamic mode',
+        params: [],
+        return: {
+          type: 'void',
+          description: null
+        },
         visibility: 'public' }
     ]
   }

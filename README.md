@@ -2,7 +2,7 @@
 
 Generate a JSON documentation for a Vue file component
 
-[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/build.svg)](https://gitlab.com/vuedoc/parser/pipelines) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
 
 ## Table of Contents
 
@@ -19,9 +19,11 @@ Generate a JSON documentation for a Vue file component
 - [Keywords Extraction](#keywords-extraction)
 - [Working with Mixins](#working-with-mixins)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
-- [Custom Language Processing](#custom-language-processing)
+- [Language Processing](#language-processing)
   * [Loader API](#loader-api)
-  * [TypeScript Usage](#typescript-usage)
+  * [Build-in loaders](#build-in-loaders)
+  * [TypeScript usage](#typescript-usage)
+  * [Create a custom loader](#create-a-custom-loader)
 - [Interfaces](#interfaces)
 - [Related projects](#related-projects)
 - [Contribute](#contribute)
@@ -38,7 +40,8 @@ npm install --save @vuedoc/parser
 
 - Extract the component name (from the name field or from the filename)
 - Extract the component description
-- Keywords Support: You can define your own keywords with the `@` symbol like `@author Jon Snow`
+- Keywords Support: You can define your own keywords with the `@` symbol like
+  `@author Jon Snow`
 - Extract component model
 - Extract component props
 - Extract component data
@@ -47,7 +50,9 @@ npm install --save @vuedoc/parser
 - Extract component slots
 - Extract component methods
 - Class Component Support
-- JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
+- Vue Property Decorator Support
+- JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and
+  [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
 ## Options
 
@@ -104,13 +109,25 @@ See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/m
 
 ### Add component name
 
-By default, `vuedoc.parser` use the component's filename to generate the
+By default, Vuedoc Parser use the component's filename to generate the
 component name.
+
 To set a custom name, use the `name` field like:
 
 ```js
 export default {
   name: 'my-checkbox'
+}
+```
+
+You can also use the `@name` keyword to set the component name:
+
+```js
+/**
+ * @name my-checkbox
+ */
+export default {
+  // ...
 }
 ```
 
@@ -162,7 +179,7 @@ export default {
 }
 ```
 
-`vuedoc.parser` will automatically extract `required` and `default` values for
+Vuedoc Parser will automatically extract `required` and `default` values for
 properties and computed properties dependencies. It will also detect type for
 each defined data field.
 
@@ -186,8 +203,8 @@ export default {
 }
 ```
 
-To document a `v-model` prop, a proper way is to use the Vue's [model field](https://vuejs.org/v2/api/#model)
-if you use Vue +2.2.0.
+To document a `v-model` prop, a proper way is to use the Vue's
+[model field](https://vuejs.org/v2/api/#model) if you use Vue +2.2.0.
 
 ```js
 export default {
@@ -218,7 +235,7 @@ export default {
 }
 ```
 
-To document Vue array string props, just attach a vuedoc comment to each prop:
+To document Vue array string props, just attach a Vuedoc comment to each prop:
 
 ```js
 export default {
@@ -271,7 +288,7 @@ export default {
 }
 ```
 
-`vuedoc.parser` automatically extracts events from component hook:
+Vuedoc Parser automatically extracts events from component hooks:
 
 ```js
 export default {
@@ -284,8 +301,9 @@ export default {
 }
 ```
 
-Use the JSDoc [@param](http://usejsdoc.org/tags-param.html) and [@return](http://usejsdoc.org/tags-returns.html)
-tags to define parameters and returning type:
+Use the JSDoc [@param](http://usejsdoc.org/tags-param.html) and
+[@return](http://usejsdoc.org/tags-returns.html) tags to define parameters and
+returning type:
 
 ```js
 export default {
@@ -333,6 +351,38 @@ The parser is also able to extract events and slots from template:
     <slot name="header" v-bind:user="user" v-bind:profile="profile"/>
   </div>
 </template>
+```
+
+**Usage with non primitive name**
+
+You can use special keywords `@method` and `@event` for non primitive name:
+
+```html
+<script>
+  const METHODS = {
+    CLOSE: 'closeModal'
+  }
+
+  const EVENTS = {
+    CLOSE: 'close'
+  }
+
+  export default {
+    methods: {
+      /**
+        * Close modal
+        * @method closeModal
+        */
+      [METHODS.CLOSE] () {
+        /**
+          * Emit the `close` event on click
+          * @event close
+          */
+        this.$emit(EVENTS.CLOSE, true)
+      }
+    }
+  }
+</script>
 ```
 
 ### Annotate slots defined in Render Functions
@@ -383,7 +433,7 @@ You can attach keywords to any comment and then extract them using the parser.
 /**
  * Component description
  *
- * @author Sébastien
+ * @author Arya Stark
  * @license MIT
  */
 export default { ... }
@@ -400,7 +450,7 @@ Parsing result:
   "keywords": [
     {
       "name": "author",
-      "description": "Sébastien"
+      "description": "Arya Stark"
     },
     {
       "name": "license",
@@ -419,8 +469,8 @@ To parse, you need to parse the mixin file as a standalone component and then
 merge the parsing result with the result of the initial component:
 
 ```js
-const _ = require('lodash')
 const vuedoc = require('@vuedoc/parser')
+const merge = require('deepmerge')
 
 const parsers = [
   vuedoc.parse({ filename: 'mixinFile.js' })
@@ -428,7 +478,8 @@ const parsers = [
 ]
 
 Promise.all(parsers)
-  .then(([ mixinResult, componentResult ]) => _.merge(mixinResult, componentResult))
+  .then(merge.all)
+  .then((mergedParsingResult) => console.log(mergedParsingResult))
   .catch((err) => console.error(err))
 ```
 
@@ -475,7 +526,7 @@ vuedoc.parse(options)
   //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
-## Custom Language Processing
+## Language Processing
 
 ### Loader API
 
@@ -483,37 +534,35 @@ vuedoc.parse(options)
 abstract class Loader {
   public static extend(loaderName: string, loaderClass: Loader);
   public abstract load(source: string): Promise<void>;
-  public pipe(loaderName: string, source: string): Promise<void>;
   public emitTemplate(source: string): Promise<void>;
   public emitScript(source: string): Promise<void>;
   public emitErrors(errors: Array<string>): Promise<void>;
+  public pipe(loaderName: string, source: string): Promise<void>;
 }
 ```
 
-### TypeScript Usage
+### Build-in loaders
 
-To use Vuedoc Parser with TypeScript, you need to install `typescript` and
-`@types/node` dependencies according the [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+| Language    | Load by default?  | Package                                                   |
+|-------------|-------------------|-----------------------------------------------------------|
+| HTML        | Yes               | [@vuedoc/parser/loader/html](loader/html.js)              |
+| JavaScript  | Yes               | [@vuedoc/parser/loader/javascript](loader/javascript.js)  |
+| Pug         | No                | [@vuedoc/parser/loader/pug](loader/pug.js)                |
+| TypeScript  | No                | [@vuedoc/parser/loader/typescript](loader/typescript.js)  |
+| Vue         | Yes               | [@vuedoc/parser/loader/vue](loader/vue.js)                |
+
+### TypeScript usage
+
+The Vuedoc Parser package contains a loader for TypeScript. To use it, you need
+to:
+
+  - install `typescript` and `@types/node` dependencies according the
+    [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
+  - import and load the loader `@vuedoc/parser/loader/typescript`
 
 ```js
-const ts = require('typescript')
-const vuedoc, { Loader } = require('@vuedoc/parser')
-
-class TypeScriptLoader extends Loader {
-  load (source) {
-    const options = {
-      compilerOptions: {
-        target: ts.ModuleKind.ESNext,
-        module: ts.ModuleKind.ESNext
-      }
-    }
-
-    const { outputText } = ts.transpileModule(source, options)
-
-    // don't forget the return here
-    return this.emitScript(outputText)
-  }
-}
+const Vuedoc = require('@vuedoc/parser')
+const TypeScriptLoader = require('@vuedoc/parser/loader/typescript')
 
 const options = {
   filename: 'DatePicker.ts',
@@ -523,34 +572,109 @@ const options = {
      * Note that the name of the loader is either the extension
      * of the file or the value of the attribute `lang`
      */
-    Loader.extend('ts', TypeScriptLoader)
+    Vuedoc.Loader.extend('ts', TypeScriptLoader)
   ]
 }
 
-vuedoc.parse(options).then((component) => {
-  // console.log(component)
+Vuedoc.parse(options).then((component) => {
+  console.log(component)
 })
+```
+
+### Create a custom loader
+
+The example below uses the abstract `Vuedoc.Loader` class to create a
+specialized class to handle a template with the [CoffeeScript](https://www.npmjs.com/package/coffeescript)
+language. It uses the Pug language for templating:
+
+```js
+const Vuedoc = require('@vuedoc/parser')
+const PugLoader = require('@vuedoc/parser/loader/pug')
+const CoffeeScript = require('coffeescript')
+
+class CoffeeScriptLoader extends Vuedoc.Loader {
+  load (source) {
+    const outputText = CoffeeScript.compile(source);
+
+    // don't forget the return here
+    return this.emitScript(outputText);
+  }
+}
+
+const options = {
+  filecontent: `
+    <template lang="pug">
+      div.page
+        h1 Vuedoc Parser with Pug
+        // Use this slot to define a subtitle
+        slot(name='subtitle')
+    </template>
+
+    <script lang="coffee">
+      ###
+      # Description of MyInput component
+      ###
+      export default
+        name: 'MyInput'
+    </script>
+  `,
+  loaders: [
+    /**
+     * Register CoffeeScriptLoader
+     * Note that the name of the loader is either the extension
+     * of the file or the value of the attribute `lang`
+     */
+    Vuedoc.Loader.extend('coffee', CoffeeScriptLoader),
+
+    // Register the Pug loader
+    Vuedoc.Loader.extend('pug', PugLoader)
+  ]
+}
+
+Vuedoc.parse(options).then((component) => {
+  console.log(component.slots)
+})
+```
+
+**Output**
+
+```js
+{
+  name: 'MyInput',
+  description: 'Description of MyInput component',
+  slots: [
+    {
+      kind: 'slot',
+      visibility: 'public',
+      description: 'Use this slot to define a subtitle',
+      keywords: [],
+      name: 'subtitle',
+      props: []
+    }
+  ],
+  // ...
+}
 ```
 
 ## Interfaces
 
 ```js
 type ParsingOutput = {
-  name: string,               // Component name
-  description: string,        // Component description
-  inheritAttrs: boolean,
-  keywords: Keyword[],        // Attached component keywords
-  model?: ModelEntry,         // Component model
-  slots: SlotEntry[],         // Component slots
-  props: PropEntry[],         // Component props
-  data: DataEntry[],          // Component data
-  computed: ComputedEntry[],  // Computed properties
-  events: EventEntry[],       // Events
-  methods: MethodEntry[],     // Component methods
-  errors: string[]            // Syntax and parsing errors
-}
+  name: string;               // Component name
+  description: string;        // Component description
+  inheritAttrs: boolean;
+  keywords: Keyword[];        // Attached component keywords
+  model?: ModelEntry;         // Component model
+  slots: SlotEntry[];         // Component slots
+  props: PropEntry[];         // Component props
+  data: DataEntry[];          // Component data
+  computed: ComputedEntry[];  // Computed properties
+  events: EventEntry[];       // Events
+  methods: MethodEntry[];     // Component methods
+  errors: string[];           // Syntax and parsing errors
+};
 
-enum NativeTypeEnum = {
+enum NativeTypeEnum {
   string,
   number,
   bigint,
@@ -559,118 +683,127 @@ enum NativeTypeEnum = {
   null,           // for an explicit `null` value
   undefined,      // for an explicit `undefined` value
   CallExpression  // for a value like `new Date()`
-}
+};
 
 type Keyword = {
-  name: string,
-  description: string
+  name: string;
+  description: string;
 }
 
 interface Entry {
-  readonly kind: string,
-  visibility: 'public' | 'protected' | 'private',
-  description: string,
-  keywords: Keyword[]
+  readonly kind: string;
+  visibility: 'public' | 'protected' | 'private';
+  description: string;
+  keywords: Keyword[];
 }
 
 interface ModelEntry extends Entry {
-  readonly kind: string = 'model',
-  prop: string,
-  event: string
+  readonly kind: string = 'model';
+  prop: string;
+  event: string;
 }
 
 interface SlotEntry extends Entry {
-  readonly kind: string = 'slot',
-  name: string,
-  props: SlotProp[]
+  readonly kind: string = 'slot';
+  name: string;
+  props: SlotProp[];
 }
 
 type SlotProp = {
-  name: string,
-  type: string,
-  description: string
-}
+  name: string;
+  type: string;
+  description: string;
+};
 
 interface PropEntry extends Entry {
-  readonly kind: string = 'prop',
-  name: string,                  // v-model when the @model keyword is attached
-  type: Identifier,              // defined prop type. ex Array, Object, String, ...
-  nativeType: NativeTypeEnum,
-  default: any,                  // '__undefined__' value uncatchable value
-  required: boolean = false,
-  describeModel: boolean = false // true when the @model keyword is attached
+  readonly kind: string = 'prop';
+  name: string;                   // v-model when the @model keyword is attached
+  type: Identifier;               // defined prop type. ex Array, Object, String, ...
+  nativeType: NativeTypeEnum;
+  default: any;                   // '__undefined__' value uncatchable value
+  required: boolean = false;
+  describeModel: boolean = false; // true when the @model keyword is attached
 }
 
 interface DataEntry extends Entry {
-  readonly kind: string = 'data',
-  name: string,
-  type: NativeTypeEnum,
-  initial: any                   // '__undefined__' value uncatchable value
+  readonly kind: string = 'data';
+  name: string;
+  type: NativeTypeEnum;
+  initial: any;                   // '__undefined__' value uncatchable value
 }
 
 interface ComputedEntry extends Entry {
-  readonly kind: string = 'computed',
-  name: string,
-  dependencies: string[]         // list of dependencies properties of the computed property
+  readonly kind: string = 'computed';
+  name: string;
+  dependencies: string[];         // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
-  readonly kind: string = 'event',
-  name: string,
-  arguments: EventArgument[]
+  readonly kind: string = 'event';
+  name: string;
+  arguments: EventArgument[];
 }
 
 type EventArgument = {
-  name: string,
-  description: string,
-  type: string
-}
+  name: string;
+  description: string;
+  type: string;
+};
 
 interface MethodEntry extends Entry {
-  readonly kind: string = 'method',
-  name: string,
-  params: MethodParam[],
-  return: MethodReturn
+  readonly kind: string = 'method';
+  name: string;
+  params: MethodParam[];
+  return: MethodReturn;
 }
 
 type MethodParam = {
-  name: string,
-  description: string,
-  type: string,
-  defaultValue: any
+  name: string;
+  description: string;
+  type: string;
+  defaultValue: any;
 }
 
 type MethodReturn = {
-  type: string = 'void',
-  description: string
-}
+  type: string = 'void';
+  description: string;
+};
 ```
 
 ## Related projects
 
-- [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation Generator for Vue Components
+- [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation
+  Generator for Vue Components
 
 ## Contribute
 
 Contributions to Vuedoc Parser are welcome. Here is how you can contribute:
 
-1. [Submit bugs or a feature request](https://gitlab.com/vuedoc/parser/issues) and help us verify fixes as they are checked in
-2. Write code for a bug fix or for your new awesome feature
-3. Write test cases for your changes
-4. [Submit merge requests](https://gitlab.com/vuedoc/parser/merge_requests) for bug fixes and features and discuss existing proposals
+1. [Submit bugs or a feature request](https://gitlab.com/vuedoc/md/issues) and
+   help us verify fixes as they are checked in
+2. Create your working branch from the `dev` branch:
+   `git checkout dev -b feature/my-awesome-feature`
+3. Write code for a bug fix or for your new awesome feature
+4. Write test cases for your changes
+5. [Submit merge requests](https://gitlab.com/vuedoc/md/merge_requests) for bug
+   fixes and features and discuss existing proposals
 
 ## Versioning
 
 Given a version number `MAJOR.MINOR.PATCH`, increment the:
 
 - `MAJOR` version when you make incompatible API changes,
-- `MINOR` version when you add functionality in a backwards-compatible manner, and
+- `MINOR` version when you add functionality in a backwards-compatible manner,
+  and
 - `PATCH` version when you make backwards-compatible bug fixes.
 
-Additional labels for pre-release and build metadata are available as extensions to the `MAJOR.MINOR.PATCH` format.
+Additional labels for pre-release and build metadata are available as extensions
+to the `MAJOR.MINOR.PATCH` format.
 
 See [SemVer.org](https://semver.org/) for more details.
 
 ## License
 
-Under the MIT license. See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for more details.
+Under the MIT license.
+See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for
+more details.
