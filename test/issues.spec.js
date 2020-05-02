@@ -1848,6 +1848,42 @@ describe('issues', () => {
   })
 
   ComponentTestCase({
+    name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
+    options: {
+      filecontent: `
+        <template>
+          <div></div>
+        </template>
+        <script>
+          export default {
+            methods: {
+              example() {
+                setTimeout(() => console.log('notify'), 100);
+              }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'example',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: null
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
     name: '#61 - Parsing event fails when event name is non-primitive value',
     options: {
       filecontent: `
