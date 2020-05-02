@@ -108,12 +108,24 @@ See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/m
 ### Add component name
 
 By default, Vuedoc Parser use the component's filename to generate the
-component name.<br>
+component name.
+
 To set a custom name, use the `name` field like:
 
 ```js
 export default {
   name: 'my-checkbox'
+}
+```
+
+You can also use the `@name` keyword to set the component name:
+
+```js
+/**
+ * @name my-checkbox
+ */
+export default {
+  // ...
 }
 ```
 

@@ -60,6 +60,25 @@ describe('ScriptParser', () => {
   })
 
   ComponentTestCase({
+    name: 'Handle keyword @name prior than the component name',
+    options: {
+      filecontent: `
+        <script>
+          /**
+           * @name my-checkbox
+           */
+          export default {
+            name: MethodThatIsHandledAsUndefined()
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'my-checkbox'
+    }
+  })
+
+  ComponentTestCase({
     name: 'with undefined references',
     options: {
       filecontent: `
