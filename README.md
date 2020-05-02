@@ -19,7 +19,7 @@ Generate a JSON documentation for a Vue file component
 - [Keywords Extraction](#keywords-extraction)
 - [Working with Mixins](#working-with-mixins)
 - [Parsing control with options.features](#parsing-control-with-optionsfeatures)
-- [Custom Language Processing](#custom-language-processing)
+- [Language Processing](#language-processing)
   * [Loader API](#loader-api)
   * [Build-in loaders](#build-in-loaders)
   * [TypeScript usage](#typescript-usage)
@@ -526,7 +526,7 @@ vuedoc.parse(options)
   //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
 
-## Custom Language Processing
+## Language Processing
 
 ### Loader API
 
