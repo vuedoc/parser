@@ -1848,6 +1848,40 @@ describe('issues', () => {
   })
 
   ComponentTestCase({
+    name: '#59 - Parser fails when props have an empty validator block',
+    options: {
+      filecontent: `
+        <template>
+          <div></div>
+        </template>
+        <script>
+          export default {
+            props: {
+              myProp: {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: null,
+          keywords: [],
+          name: 'my-prop',
+          type: '__undefined__',
+          nativeType: '__undefined__',
+          default: '__undefined__',
+          required: false,
+          describeModel: false
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
     name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
     options: {
       filecontent: `
