@@ -76,7 +76,7 @@ ComponentTestCase({
         name: 'todo',
         nativeType: '__undefined__',
         required: false,
-        type: 'Any',
+        type: 'any',
         visibility: 'public' }
     ],
     slots: [

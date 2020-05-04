@@ -442,14 +442,14 @@ describe('component.props (es6 Array)', () => {
   it('should contain a model prop with a description', () => {
     const item = component.props.find((item) => item.name === 'v-model')
 
-    assert.equal(item.type, 'Any')
+    assert.equal(item.type, 'any')
     assert.equal(item.description, 'The checkbox model')
   })
 
   it('should contain a checked prop with a description', () => {
     const item = component.props.find((item) => item.name === 'checked')
 
-    assert.equal(item.type, 'Any')
+    assert.equal(item.type, 'any')
     assert.equal(item.description, 'Initial checkbox value')
   })
 })
@@ -557,7 +557,7 @@ describe('component.slots scoped', () => {
         description: '',
         props: [
           { name: 'user',
-            type: 'Any',
+            type: 'any',
             description: '' }
         ],
         keywords: []
@@ -598,7 +598,7 @@ describe('component.slots scoped', () => {
         description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
         props: [
           { name: 'todo',
-            type: 'Any',
+            type: 'any',
             description: '' }
         ],
         keywords: []
@@ -690,7 +690,7 @@ describe('component.slots scoped', () => {
             type: 'TodoItem',
             description: 'Todo item' },
           { name: 'actions',
-            type: 'Any',
+            type: 'any',
             description: '' }
         ],
         keywords: [
