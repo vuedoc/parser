@@ -24,7 +24,7 @@ Generate a JSON documentation for a Vue file component
   * [Build-in loaders](#build-in-loaders)
   * [TypeScript usage](#typescript-usage)
   * [Create a custom loader](#create-a-custom-loader)
-- [Interfaces](#interfaces)
+- [Parsing Output Interface](#parsing-output-interface)
 - [Related projects](#related-projects)
 - [Contribute](#contribute)
 - [Versioning](#versioning)
