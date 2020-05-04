@@ -129,6 +129,14 @@ describe('JSDoc', () => {
   })
 
   describe('parseReturnKeyword(text)', () => {
+    it('should parse with just a type', () => {
+      const comment = '{number}'
+      const expected = { type: 'number', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
     it('should parse @return keyword', () => {
       const comment = '{number} The x+y value.'
       const expected = { type: 'number', description: 'The x+y value.' }
