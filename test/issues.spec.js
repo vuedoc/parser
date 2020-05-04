@@ -2009,4 +2009,65 @@ describe('issues', () => {
       description: 'Defines if `bleed@small` class should be added to component for mobile view'
     }
   })
+
+  ComponentTestCase({
+    name: '#66 - @returns with type',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Returns the sum of a and b
+               * @param {number} a
+               * @param {number} b
+               * @returns {number}
+               */
+              sum: (a, b) => a + b
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'sum',
+          visibility: 'public',
+          description: 'Returns the sum of a and b',
+          keywords: [
+            {
+              name: 'param',
+              description: '{number} a'
+            },
+            {
+              name: 'param',
+              description: '{number} b'
+            },
+            {
+              name: 'returns',
+              description: '{number}'
+            }
+          ],
+          params: [
+            {
+              name: 'a',
+              type: 'number',
+              description: undefined
+            },
+            {
+              name: 'b',
+              type: 'number',
+              description: undefined
+            }
+          ],
+          return: {
+            type: 'number',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
 })
