@@ -1436,7 +1436,7 @@ describe('Parser', () => {
       new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
-        assert.equal(prop.type, 'Any')
+        assert.equal(prop.type, 'any')
         assert.equal(prop.description, null)
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.value, null)
