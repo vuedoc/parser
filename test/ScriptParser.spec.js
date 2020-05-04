@@ -105,7 +105,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: '__undefined__',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           default: '__undefined__',
           nativeType: '__undefined__',
@@ -117,7 +117,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-ref',
           type: 'CallsSomeOtherMethod',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           default: '__undefined__',
           nativeType: '__undefined__',
@@ -130,24 +130,24 @@ describe('ScriptParser', () => {
           kind: 'method',
           name: 'someMethodCall',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           name: 'someMethodRef',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         }
       ]

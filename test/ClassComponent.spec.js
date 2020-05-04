@@ -138,7 +138,7 @@ ComponentTestCase({
         keywords: [],
         visibility: 'public',
         return: {
-          description: null,
+          description: '',
           type: 'void'
         } },
       { kind: 'method',
@@ -152,7 +152,7 @@ ComponentTestCase({
         ],
         visibility: 'protected',
         return: {
-          description: null,
+          description: '',
           type: 'void'
         } }
     ],
@@ -242,7 +242,7 @@ ComponentTestCase({
   },
   expected: {
     name: 'MyComponent',
-    description: null,
+    description: '',
     inheritAttrs: true,
     errors: [],
     keywords: [],
@@ -254,7 +254,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'routeQueue',
         type: 'ArrayExpression',
-        description: null,
+        description: '',
         initial: '[this.$router.currentRoute]',
         keywords: [],
         visibility: 'public' },
@@ -262,7 +262,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'historyLength',
         type: 'MemberExpression',
-        description: null,
+        description: '',
         initial: 'window.history.length',
         keywords: [],
         visibility: 'public' },
@@ -270,7 +270,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'transitionName',
         type: 'string',
-        description: null,
+        description: '',
         initial: 'slide-left',
         keywords: [],
         visibility: 'public' },
@@ -278,7 +278,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'init',
         type: 'boolean',
-        description: null,
+        description: '',
         initial: false,
         keywords: [],
         visibility: 'public' },

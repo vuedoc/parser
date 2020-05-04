@@ -104,7 +104,7 @@ ComponentTestCase({
         kind: 'prop',
         name: 'prop-a',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         default: '__undefined__',
         nativeType: 'number',
@@ -115,7 +115,7 @@ ComponentTestCase({
         kind: 'prop',
         name: 'prop-b',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         default: 'default value',
         nativeType: 'string',
@@ -126,7 +126,7 @@ ComponentTestCase({
         kind: 'prop',
         name: 'prop-c',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         default: '__undefined__',
         nativeType: '__undefined__',
@@ -137,7 +137,7 @@ ComponentTestCase({
         kind: 'prop',
         name: 'name',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         default: '__undefined__',
         nativeType: 'string',
@@ -148,7 +148,7 @@ ComponentTestCase({
         kind: 'prop',
         name: 'checked',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         default: '__undefined__',
         nativeType: 'boolean',
@@ -160,7 +160,7 @@ ComponentTestCase({
       kind: 'model',
       prop: 'checked',
       event: 'change',
-      description: null,
+      description: '',
       keywords: [],
       visibility: 'public'
     },
@@ -168,7 +168,7 @@ ComponentTestCase({
       {
         kind: 'computed',
         name: 'syncedName',
-        description: null,
+        description: '',
         keywords: [],
         dependencies: [
           'name'
@@ -179,7 +179,7 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'update:name',
-        description: null,
+        description: '',
         arguments: [
           'name'
         ],
@@ -188,13 +188,13 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'add-to-count',
-        description: null,
+        description: '',
         arguments: [
           {
             name: 'n',
-            declaration: null,
-            description: null,
-            type: null
+            declaration: '',
+            description: '',
+            type: 'any'
           }
         ],
         keywords: [],
@@ -202,27 +202,27 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'reset',
-        description: null,
+        description: '',
         arguments: [],
         keywords: [],
         visibility: 'public' },
       {
         kind: 'event',
         name: 'return-value',
-        description: null,
+        description: '',
         arguments: [],
         keywords: [],
         visibility: 'public' },
       {
         kind: 'event',
         name: 'on-input-change',
-        description: null,
+        description: '',
         arguments: [
           {
             name: 'e',
-            declaration: null,
-            description: null,
-            type: null
+            declaration: '',
+            description: '',
+            type: 'any'
           }
         ],
         keywords: [],
@@ -230,7 +230,7 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'promise',
-        description: null,
+        description: '',
         arguments: [],
         keywords: [],
         visibility: 'public' }
