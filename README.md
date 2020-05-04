@@ -656,9 +656,9 @@ Vuedoc.parse(options).then((component) => {
 }
 ```
 
-## Interfaces
+## Parsing Output Interface
 
-```js
+```ts
 type ParsingOutput = {
   name: string;               // Component name
   description: string;        // Component description

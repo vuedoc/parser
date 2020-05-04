@@ -84,7 +84,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with malformated input', () => {
       const comment = '{ !x=> The x value.'
-      const expected = { type: 'any', name: null, description: null }
+      const expected = { type: 'any', name: null, description: '' }
       const result = JSDoc.parseParamKeyword(comment)
 
       expect(result).toEqual(expected)

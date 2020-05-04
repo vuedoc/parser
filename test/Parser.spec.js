@@ -1383,7 +1383,7 @@ describe('Parser', () => {
         assert.equal(prop.name, 'id')
         assert.equal(prop.default, '$id')
         assert.equal(prop.type, 'String')
-        assert.equal(prop.description, null)
+        assert.equal(prop.description, '')
         assert.equal(prop.required, false)
         assert.deepEqual(prop.keywords, [])
         done()
@@ -1437,7 +1437,7 @@ describe('Parser', () => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
         assert.equal(prop.type, 'any')
-        assert.equal(prop.description, null)
+        assert.equal(prop.description, '')
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.value, null)
         assert.deepEqual(prop.describeModel, false)
@@ -1766,15 +1766,15 @@ describe('Parser', () => {
       new Parser(options).walk().on('method', (prop) => {
         assert.equal(prop.visibility, 'private')
         assert.equal(prop.name, 'getValue')
-        assert.equal(prop.description, null)
+        assert.equal(prop.description, '')
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.params, [
             {
               name: 'ctx',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
         ])
 
@@ -1819,7 +1819,7 @@ describe('Parser', () => {
 
       new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
-        assert.equal(event.description, null)
+        assert.equal(event.description, '')
         assert.equal(event.visibility, 'public')
         assert.deepEqual(event.keywords, [])
         done()
