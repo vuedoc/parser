@@ -784,4 +784,158 @@ describe('ECMAScript Features Parsing', () => {
       })
     })
   })
+
+  describe('Logical Operators and Assignment Expressions', () => {
+    it('should successfully parse Logical Operators and Assignment Expressions', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              let a = true, b = false;
+
+              // "Or Or Equals" (or, the Mallet operator :wink:)
+              let c = a ||= b;
+              let d = a || (a = b);
+
+              // "And And Equals"
+              let e = a &&= b;
+              let f = a && (a = b);
+
+              return { a, b, c, d, e, f }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'boolean',
+          initial: true,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'boolean',
+          initial: false,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'AssignmentExpression',
+          initial: 'a ||= b',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'LogicalExpression',
+          initial: 'a || (a = b)',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'AssignmentExpression',
+          initial: 'a &&= b',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'LogicalExpression',
+          initial: 'a && (a = b)',
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
+
+  describe('Numeric Separators', () => {
+    it('should successfully parse Numeric Separators', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              let x = 1_000_000_000;
+              let y = 101_475_938.38;
+
+              let a = 123_00;
+              let b = 12_300;
+              let c = 12345_00;
+              let d = 123_4500;
+              let e = 1_234_500;
+
+              return { x, y, a, b, c, d, e }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'x',
+          description: '',
+          type: 'number',
+          initial: 1000000000,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'y',
+          description: '',
+          type: 'number',
+          initial: 101475938.38,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'number',
+          initial: 12300,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'number',
+          initial: 12300,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'number',
+          initial: 1234500,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'number',
+          initial: 1234500,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'number',
+          initial: 1234500,
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 })
