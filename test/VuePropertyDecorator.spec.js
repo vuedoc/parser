@@ -131,7 +131,7 @@ ComponentTestCase({
         default: '__undefined__',
         nativeType: '__undefined__',
         required: false,
-        type: ['String', 'Boolean'],
+        type: [ 'String', 'Boolean' ],
         visibility: 'public' },
       {
         kind: 'prop',

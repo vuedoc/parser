@@ -1461,7 +1461,7 @@ describe('Parser', () => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-a',
-          type: ['Boolean', 'Number'],
+          type: [ 'Boolean', 'Number' ],
           nativeType: '__undefined__',
           visibility: 'public',
           description: '',
@@ -1493,7 +1493,7 @@ describe('Parser', () => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-o',
-          type: ['Boolean', 'Number'],
+          type: [ 'Boolean', 'Number' ],
           nativeType: '__undefined__',
           visibility: 'public',
           description: '',
