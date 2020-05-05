@@ -381,6 +381,25 @@ const Features = {
     // Stack overflow in most implementations today,
     // but safe on arbitrary inputs in ES6
     factorial(100000)
+  `,
+  'Logical Operators and Assignment Expressions': `
+    // "Or Or Equals" (or, the Mallet operator :wink:)
+    a ||= b;
+    a || (a = b);
+
+    // "And And Equals"
+    a &&= b;
+    a && (a = b);
+  `,
+  'Numeric Separators': `
+    let x = 1_000_000_000   // Ah, so a billion
+    let y = 101_475_938.38  // And this is hundreds of millions
+
+    let fee = 123_00;       // $123 (12300 cents, apparently)
+        fee = 12_300;       // $12,300 (woah, that fee!)
+    let amount = 12345_00;  // 12,345 (1234500 cents, apparently)
+        amount = 123_4500;  // 123.45 (4-fixed financial)
+        amount = 1_234_500; // 1,234,500
   `
 }
 
