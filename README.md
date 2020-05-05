@@ -679,10 +679,10 @@ enum NativeTypeEnum {
   number,
   bigint,
   boolean,
-  object,         // for an array or an object
-  null,           // for an explicit `null` value
-  undefined,      // for an explicit `undefined` value
-  CallExpression  // for a value like `new Date()`
+  object,                     // for an array or an object
+  null,                       // for an explicit `null` value
+  undefined,                  // for an explicit `undefined` value
+  CallExpression              // for a value like `new Date()`
 };
 
 type Keyword = {
@@ -718,7 +718,7 @@ type SlotProp = {
 interface PropEntry extends Entry {
   readonly kind: string = 'prop';
   name: string;                   // v-model when the @model keyword is attached
-  type: Identifier;               // defined prop type. ex Array, Object, String, ...
+  type: string | string[];        // ex. Array, Object, String, [String, Number]
   nativeType: NativeTypeEnum;
   default: any;                   // '__undefined__' value uncatchable value
   required: boolean = false;
