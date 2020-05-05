@@ -795,7 +795,7 @@ describe('issues', () => {
           name: 'value',
           nativeType: '__undefined__',
           required: false,
-          type: '[String, Number]',
+          type: ['String', 'Number'],
           visibility: 'public' }
       ]
     }
@@ -972,7 +972,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           name: 'value',
-          type: '[String, Number]',
+          type: ['String', 'Number'],
           nativeType: 'string',
           default: '',
           required: false,
