@@ -1445,6 +1445,68 @@ describe('Parser', () => {
       })
     })
 
+    it('should successfully emit prop with multiple types (array syntax)', (done) => {
+      const script = `
+        export default {
+          props: {
+            opacityA: [Boolean, Number]
+          }
+        }
+      `
+      const options = {
+        source: { script }
+      }
+
+      new Parser(options).walk().on('prop', (prop) => {
+        expect(prop).toEqual({
+          kind: 'prop',
+          name: 'opacity-a',
+          type: [ 'Boolean', 'Number' ],
+          nativeType: '__undefined__',
+          visibility: 'public',
+          description: '',
+          required: false,
+          describeModel: false,
+          keywords: [],
+          default: '__undefined__'
+        })
+
+        done()
+      })
+    })
+
+    it('should successfully emit prop with multiple types (object syntax)', (done) => {
+      const script = `
+        export default {
+          props: {
+            opacityO: {
+              type: [Boolean, Number]
+            }
+          }
+        }
+      `
+      const options = {
+        source: { script }
+      }
+
+      new Parser(options).walk().on('prop', (prop) => {
+        expect(prop).toEqual({
+          kind: 'prop',
+          name: 'opacity-o',
+          type: [ 'Boolean', 'Number' ],
+          nativeType: '__undefined__',
+          visibility: 'public',
+          description: '',
+          required: false,
+          describeModel: false,
+          keywords: [],
+          default: '__undefined__'
+        })
+
+        done()
+      })
+    })
+
     it('should successfully emit a data item from an component.data object', (done) => {
       const filename = './fixtures/checkbox.vue'
       const script = `

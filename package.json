@@ -45,7 +45,7 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "gimtoc": "^1.3.2",
-    "jest": "^25.5.4"
+    "jest": "^26.0.1"
   },
   "engines": {
     "node": ">=8"
