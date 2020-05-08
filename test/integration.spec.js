@@ -141,7 +141,7 @@ function testComponentProps (optionsToParse) {
   })
 
   it('should contain a v-model prop with a description', () => {
-    const item = component.props.find((item) => item.name === 'v-model')
+    const item = component.props.find((item) => item.describeModel)
 
     assert.notEqual(item, undefined)
     assert.equal(item.type, 'Array')
@@ -435,12 +435,12 @@ describe('component.props (es6 Array)', () => {
     const propsNames = component.props.map((item) => item.name)
 
     assert.deepEqual(propsNames, [
-      'v-model', 'disabled', 'checked', 'prop-with-camel'
+      'model', 'disabled', 'checked', 'prop-with-camel'
     ])
   })
 
   it('should contain a model prop with a description', () => {
-    const item = component.props.find((item) => item.name === 'v-model')
+    const item = component.props.find((item) => item.describeModel)
 
     assert.equal(item.type, 'any')
     assert.equal(item.description, 'The checkbox model')
@@ -1111,26 +1111,38 @@ describe('errors', () => {
     })
   })
 
-  it('should throw error for lang !== js', () => {
+  it('should emit event with @event and no description', () => {
     const filecontent = `
         <script type="js">
           export default {
             created () {
               /**
-              * @event
-              */
-              this.$emit('input')
+               * @event
+               */
+              this.$emit(INPUT)
             }
           }
         </script>
       `
     const options = { filecontent }
     const expected = [
-      'Missing keyword value for @event: this.$emit(\'input\')'
+      {
+        kind: 'event',
+        name: '***unhandled***',
+        description: '',
+        arguments: [],
+        visibility: 'public',
+        keywords: [
+          {
+            name: 'event',
+            description: ''
+          }
+        ]
+      }
     ]
 
-    return vuedoc.parse(options).then(({ errors }) => {
-      assert.deepEqual(errors, expected)
+    return vuedoc.parse(options).then(({ events }) => {
+      assert.deepEqual(events, expected)
     })
   })
 })

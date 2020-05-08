@@ -36,7 +36,7 @@ describe('issues', () => {
           nativeType: 'undefined',
           default: undefined,
           name: 'value',
-          describeModel: false,
+          describeModel: true,
           required: false
         }
       ]
@@ -72,7 +72,7 @@ describe('issues', () => {
           nativeType: 'boolean',
           default: '__undefined__',
           name: 'value',
-          describeModel: false,
+          describeModel: true,
           required: false
         }
       ]
@@ -788,7 +788,7 @@ describe('issues', () => {
       props: [
         {
           default: '__undefined__',
-          describeModel: false,
+          describeModel: true,
           description: 'Badge value',
           keywords: [],
           kind: 'prop',
@@ -976,7 +976,7 @@ describe('issues', () => {
           nativeType: 'string',
           default: '',
           required: false,
-          describeModel: false
+          describeModel: true
         },
         {
           kind: 'prop',
@@ -1955,12 +1955,7 @@ describe('issues', () => {
           name: 'close',
           visibility: 'public',
           description: 'Close modal',
-          keywords: [
-            {
-              name: 'method',
-              description: 'close'
-            }
-          ],
+          keywords: [],
           params: [],
           return: {
             type: 'void',
@@ -1974,12 +1969,7 @@ describe('issues', () => {
           name: 'close',
           visibility: 'public',
           description: 'Emit the `close` event on click',
-          keywords: [
-            {
-              name: 'event',
-              description: 'close'
-            }
-          ],
+          keywords: [],
           arguments: [
             {
               type: 'boolean',

@@ -1503,7 +1503,7 @@ describe('Parser', () => {
         export default {
           props: {
             /**
-              * @model v-model keyword
+              * @model v-model keyword. Keyword description is ignored
               */
             value: { type: String }
           }
@@ -1517,9 +1517,10 @@ describe('Parser', () => {
 
       new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
-        assert.equal(prop.name, 'v-model')
+        assert.equal(prop.name, 'value')
+        assert.equal(prop.describeModel, true)
         assert.equal(prop.description, '')
-        assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
+        assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.type, 'String')
         done()
       })
@@ -1531,13 +1532,10 @@ describe('Parser', () => {
       const script = `
         export default {
           model: {
-            prop: 'value'
+            prop: 'checked'
           },
           props: {
-            /**
-              * @model v-model keyword
-              */
-            value: { type: String }
+             checked: { type: String }
           }
         }
       `
@@ -1549,11 +1547,34 @@ describe('Parser', () => {
 
       new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
-        assert.equal(prop.name, 'v-model')
+        assert.equal(prop.name, 'checked')
         assert.equal(prop.description, '')
         assert.equal(prop.describeModel, true)
         assert.equal(prop.type, 'String')
-        assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
+        assert.deepEqual(prop.keywords, [])
+        done()
+      })
+    })
+
+    it('should successfully emit prop with truthy describeModel for prop.name === "value"', (done) => {
+      const filename = './fixtures/checkbox.vue'
+      const defaultMethodVisibility = 'public'
+      const script = `
+        export default {
+          props: {
+            value: { type: String }
+          }
+        }
+      `
+      const options = {
+        source: { script },
+        filename,
+        defaultMethodVisibility
+      }
+
+      new Parser(options).walk().on('prop', (prop) => {
+        assert.equal(prop.name, 'value')
+        assert.equal(prop.describeModel, true)
         done()
       })
     })
@@ -2078,31 +2099,7 @@ describe('Parser', () => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'Event description')
         assert.equal(event.visibility, 'public')
-        assert.deepEqual(event.keywords, [ { name: 'event', description: 'loading' } ])
-
-        done()
-      })
-    })
-
-    it('should emit event with missing @event value keyword', (done) => {
-      const defaultMethodVisibility = 'private'
-      const script = `
-        export default {
-          created () {
-            /**
-              * @event
-              */
-            this.$emit(name)
-          }
-        }
-      `
-      const options = {
-        source: { script },
-        defaultMethodVisibility
-      }
-
-      new Parser(options).walk().on('error', (err) => {
-        assert.ok(/Missing keyword value for @event/.test(err.message))
+        assert.deepEqual(event.keywords, [])
 
         done()
       })
