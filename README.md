@@ -632,7 +632,7 @@ const options = {
 }
 
 Vuedoc.parse(options).then((component) => {
-  console.log(component.slots)
+  console.log(component)
 })
 ```
 
@@ -720,7 +720,7 @@ interface PropEntry extends Entry {
   name: string;                   // v-model when the @model keyword is attached
   type: string | string[];        // ex. Array, Object, String, [String, Number]
   nativeType: NativeTypeEnum;
-  default: any;                   // '__undefined__' value uncatchable value
+  default: any;                   // '__undefined__' value for uncatchable value
   required: boolean = false;
   describeModel: boolean = false; // true when the @model keyword is attached
 }
@@ -729,7 +729,7 @@ interface DataEntry extends Entry {
   readonly kind: string = 'data';
   name: string;
   type: NativeTypeEnum;
-  initial: any;                   // '__undefined__' value uncatchable value
+  initial: any;                   // '__undefined__' value for uncatchable value
 }
 
 interface ComputedEntry extends Entry {

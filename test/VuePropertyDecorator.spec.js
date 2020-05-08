@@ -147,7 +147,7 @@ ComponentTestCase({
       {
         kind: 'prop',
         name: 'checked',
-        describeModel: false,
+        describeModel: true,
         description: '',
         keywords: [],
         default: '__undefined__',
