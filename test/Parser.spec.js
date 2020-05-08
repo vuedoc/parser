@@ -58,6 +58,11 @@ const script = `
     name: 'checkbox',
     name: componentName,
 
+    model: {
+      prop: 'model',
+      event: 'input'
+    },
+
     props: {
       /**
        * The checkbox model
@@ -1362,6 +1367,107 @@ describe('Parser', () => {
       })
     })
 
+    describe('should successfully emit model', () => {
+      it('with all fields set', (done) => {
+        const script = `
+          export default {
+            model: {
+              prop: 'model',
+              event: 'change'
+            }
+          }
+        `
+        const options = {
+          source: { script }
+        }
+
+        new Parser(options).walk().on('model', (model) => {
+          expect(model).toEqual({
+            kind: 'model',
+            prop: 'model',
+            event: 'change',
+            description: '',
+            visibility: 'public',
+            keywords: []
+          })
+          done()
+        })
+      })
+
+      it('with only model.prop', (done) => {
+        const script = `
+          export default {
+            model: {
+              prop: 'model'
+            }
+          }
+        `
+        const options = {
+          source: { script }
+        }
+
+        new Parser(options).walk().on('model', (model) => {
+          expect(model).toEqual({
+            kind: 'model',
+            prop: 'model',
+            event: 'input',
+            description: '',
+            visibility: 'public',
+            keywords: []
+          })
+          done()
+        })
+      })
+
+      it('with only model.event', (done) => {
+        const script = `
+          export default {
+            model: {
+              event: 'change'
+            }
+          }
+        `
+        const options = {
+          source: { script }
+        }
+
+        new Parser(options).walk().on('model', (model) => {
+          expect(model).toEqual({
+            kind: 'model',
+            prop: 'value',
+            event: 'change',
+            description: '',
+            visibility: 'public',
+            keywords: []
+          })
+          done()
+        })
+      })
+
+      it('with empty object', (done) => {
+        const script = `
+          export default {
+            model: {}
+          }
+        `
+        const options = {
+          source: { script }
+        }
+
+        new Parser(options).walk().on('model', (model) => {
+          expect(model).toEqual({
+            kind: 'model',
+            prop: 'value',
+            event: 'input',
+            description: '',
+            visibility: 'public',
+            keywords: []
+          })
+          done()
+        })
+      })
+    })
+
     it('should successfully emit generic prop', (done) => {
       const filename = './fixtures/checkbox.vue'
       const defaultMethodVisibility = 'public'
@@ -1415,6 +1521,39 @@ describe('Parser', () => {
         assert.equal(prop.description, '')
         assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
         assert.deepEqual(prop.type, 'String')
+        done()
+      })
+    })
+
+    it('should successfully emit v-model prop with the model field', (done) => {
+      const filename = './fixtures/checkbox.vue'
+      const defaultMethodVisibility = 'public'
+      const script = `
+        export default {
+          model: {
+            prop: 'value'
+          },
+          props: {
+            /**
+              * @model v-model keyword
+              */
+            value: { type: String }
+          }
+        }
+      `
+      const options = {
+        source: { script },
+        filename,
+        defaultMethodVisibility
+      }
+
+      new Parser(options).walk().on('prop', (prop) => {
+        assert.equal(prop.visibility, 'public')
+        assert.equal(prop.name, 'v-model')
+        assert.equal(prop.description, '')
+        assert.equal(prop.describeModel, true)
+        assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
+        assert.deepEqual(prop.type, 'String'),
         done()
       })
     })
