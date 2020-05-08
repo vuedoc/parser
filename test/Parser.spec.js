@@ -1552,8 +1552,8 @@ describe('Parser', () => {
         assert.equal(prop.name, 'v-model')
         assert.equal(prop.description, '')
         assert.equal(prop.describeModel, true)
+        assert.equal(prop.type, 'String')
         assert.deepEqual(prop.keywords, [ { name: 'model', description: 'v-model keyword' } ])
-        assert.deepEqual(prop.type, 'String'),
         done()
       })
     })
