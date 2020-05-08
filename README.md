@@ -691,20 +691,20 @@ type Keyword = {
 }
 
 interface Entry {
-  readonly kind: string;
+  kind: 'computed' | 'data' | 'event' | 'method' | 'model' | 'prop' | 'slot';
   visibility: 'public' | 'protected' | 'private';
   description: string;
   keywords: Keyword[];
 }
 
 interface ModelEntry extends Entry {
-  readonly kind: string = 'model';
+  kind: 'model';
   prop: string;
   event: string;
 }
 
 interface SlotEntry extends Entry {
-  readonly kind: string = 'slot';
+  kind: 'slot';
   name: string;
   props: SlotProp[];
 }
@@ -715,8 +715,14 @@ type SlotProp = {
   description: string;
 };
 
+interface ModelEntry extends Entry {
+  kind: 'model';
+  prop: string;
+  event: string;
+}
+
 interface PropEntry extends Entry {
-  readonly kind: string = 'prop';
+  kind: 'prop';
   name: string;                   // v-model when the @model keyword is attached
   type: string | string[];        // ex. Array, Object, String, [String, Number]
   nativeType: NativeTypeEnum;
@@ -726,20 +732,20 @@ interface PropEntry extends Entry {
 }
 
 interface DataEntry extends Entry {
-  readonly kind: string = 'data';
+  kind: 'data';
   name: string;
   type: NativeTypeEnum;
   initial: any;                   // '__undefined__' value for uncatchable value
 }
 
 interface ComputedEntry extends Entry {
-  readonly kind: string = 'computed';
+  kind: 'computed';
   name: string;
   dependencies: string[];         // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
-  readonly kind: string = 'event';
+  kind: 'event';
   name: string;
   arguments: EventArgument[];
 }
@@ -751,7 +757,7 @@ type EventArgument = {
 };
 
 interface MethodEntry extends Entry {
-  readonly kind: string = 'method';
+  kind: 'method';
   name: string;
   params: MethodParam[];
   return: MethodReturn;
