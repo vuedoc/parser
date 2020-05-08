@@ -45,7 +45,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'url',
         type: 'MemberExpression',
-        description: null,
+        description: '',
         initial: 'context.url',
         keywords: [],
         visibility: 'public' },
@@ -70,13 +70,13 @@ ComponentTestCase({
       {
         default: '__undefined__',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         kind: 'prop',
         name: 'todo',
         nativeType: '__undefined__',
         required: false,
-        type: 'Any',
+        type: 'any',
         visibility: 'public' }
     ],
     slots: [

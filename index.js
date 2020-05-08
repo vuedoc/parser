@@ -103,7 +103,7 @@ module.exports.parse = (options) => this.parseOptions(options)
       switch (feature) {
         case Features.name:
         case Features.description:
-          component[feature] = null
+          component[feature] = ''
 
           parser.on(feature, ({ value }) => {
             component[feature] = value

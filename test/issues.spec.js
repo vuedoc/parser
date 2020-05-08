@@ -30,13 +30,13 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'Boolean',
           nativeType: 'undefined',
           default: undefined,
           name: 'value',
-          describeModel: false,
+          describeModel: true,
           required: false
         }
       ]
@@ -66,13 +66,13 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'Boolean',
           nativeType: 'boolean',
           default: '__undefined__',
           name: 'value',
-          describeModel: false,
+          describeModel: true,
           required: false
         }
       ]
@@ -103,7 +103,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'Boolean',
           nativeType: 'boolean',
@@ -140,7 +140,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'String',
           nativeType: 'string',
@@ -177,7 +177,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'Number',
           nativeType: 'number',
@@ -214,7 +214,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'Object',
           nativeType: 'null',
@@ -251,7 +251,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           type: 'BigInt',
           nativeType: 'bigint',
@@ -755,7 +755,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           name: 'bidule',
-          description: null,
+          description: '',
           dependencies: [ 'docs', 'name' ],
           keywords: [],
           visibility: 'public'
@@ -788,14 +788,14 @@ describe('issues', () => {
       props: [
         {
           default: '__undefined__',
-          describeModel: false,
+          describeModel: true,
           description: 'Badge value',
           keywords: [],
           kind: 'prop',
           name: 'value',
           nativeType: '__undefined__',
           required: false,
-          type: '[String, Number]',
+          type: [ 'String', 'Number' ],
           visibility: 'public' }
       ]
     }
@@ -897,7 +897,7 @@ describe('issues', () => {
         'tag <input> has no matching end tag.'
       ],
       name: 'ui-autocomplete',
-      description: null,
+      description: '',
       keywords: [],
       slots: [
         {
@@ -945,7 +945,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'name',
           type: 'String',
@@ -957,7 +957,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'placeholder',
           type: 'String',
@@ -969,19 +969,19 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'value',
-          type: '[String, Number]',
+          type: [ 'String', 'Number' ],
           nativeType: 'string',
           default: '',
           required: false,
-          describeModel: false
+          describeModel: true
         },
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'icon',
           type: 'String',
@@ -993,7 +993,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'icon-position',
           type: 'String',
@@ -1005,7 +1005,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'label',
           type: 'String',
@@ -1017,7 +1017,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'floating-label',
           type: 'Boolean',
@@ -1029,7 +1029,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'help',
           type: 'String',
@@ -1041,7 +1041,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'error',
           type: 'String',
@@ -1053,7 +1053,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'readonly',
           type: 'Boolean',
@@ -1065,7 +1065,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'disabled',
           type: 'Boolean',
@@ -1077,7 +1077,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'type',
           type: 'String',
@@ -1089,7 +1089,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'suggestions',
           type: 'Array',
@@ -1101,7 +1101,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'limit',
           type: 'Number',
@@ -1113,7 +1113,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'append',
           type: 'Boolean',
@@ -1125,7 +1125,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'append-delimiter',
           type: 'String',
@@ -1137,7 +1137,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'min-chars',
           type: 'Number',
@@ -1149,7 +1149,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'show-on-up-down',
           type: 'Boolean',
@@ -1161,7 +1161,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'autofocus',
           type: 'Boolean',
@@ -1173,7 +1173,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'filter',
           type: 'Function',
@@ -1185,7 +1185,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'highlight-on-first-match',
           type: 'Boolean',
@@ -1197,7 +1197,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'cycle-highlight',
           type: 'Boolean',
@@ -1209,7 +1209,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'keys',
           type: 'Object',
@@ -1221,7 +1221,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'invalid',
           type: 'Boolean',
@@ -1235,7 +1235,7 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'initialValue',
           type: 'MemberExpression',
@@ -1244,7 +1244,7 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'isActive',
           type: 'boolean',
@@ -1253,7 +1253,7 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
@@ -1262,7 +1262,7 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
@@ -1271,7 +1271,7 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'highlightedIndex',
           type: 'UnaryExpression',
@@ -1282,7 +1282,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'classes',
           dependencies: [
@@ -1299,7 +1299,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'labelClasses',
           dependencies: [
@@ -1310,7 +1310,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'hasLabel',
           dependencies: [
@@ -1321,7 +1321,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'hasFloatingLabel',
           dependencies: [
@@ -1332,7 +1332,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'isLabelInline',
           dependencies: [
@@ -1343,7 +1343,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'valueLength',
           dependencies: [
@@ -1353,7 +1353,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'hasFeedback',
           dependencies: [
@@ -1365,7 +1365,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'showError',
           dependencies: [
@@ -1377,7 +1377,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'showHelp',
           dependencies: [
@@ -1389,7 +1389,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'matchingSuggestions',
           dependencies: [
@@ -1405,37 +1405,37 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'select',
           arguments: [
             {
               name: 'suggestion',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'highlight-overflow',
           arguments: [
             {
               name: 'index',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'dropdown-open',
           arguments: []
@@ -1443,7 +1443,7 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'dropdown-close',
           arguments: []
@@ -1451,73 +1451,73 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'input',
           arguments: [
             {
               name: 'value',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'focus',
           arguments: [
             {
               name: 'e',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'change',
           arguments: [
             {
               name: 'value',
-              type: null,
-              description: null,
+              type: 'any',
+              description: '',
               declaration: 'this.value'
             },
             {
               name: 'e',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'blur',
           arguments: [
             {
               name: 'e',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'touch',
           arguments: []
@@ -1527,224 +1527,224 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'defaultFilter',
           params: [
             {
               name: 'suggestion',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'highlightSuggestion',
           params: [
             {
               name: 'index',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'selectHighlighted',
           params: [
             {
               name: 'index',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             },
             {
               name: 'e',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'openDropdown',
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'closeDropdown',
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'updateValue',
           params: [
             {
               name: 'value',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'onFocus',
           params: [
             {
               name: 'e',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'onChange',
           params: [
             {
               name: 'e',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'onBlur',
           params: [
             {
               name: 'e',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'onExternalClick',
           params: [
             {
               name: 'e',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         },
         {
           kind: 'method',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'reset',
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         }
       ]
@@ -1760,36 +1760,36 @@ describe('issues', () => {
       name: 'ui-autocomplete',
       methods: [
         {
-          description: null,
+          description: '',
           keywords: [],
           kind: 'method',
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           },
           visibility: 'public' }
       ],
       events: [
         {
           name: 'select',
-          description: null,
+          description: '',
           keywords: [],
           arguments: [
             {
               name: 'suggestion',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ],
           kind: 'event',
@@ -1808,36 +1808,36 @@ describe('issues', () => {
       name: 'ui-autocomplete',
       methods: [
         {
-          description: null,
+          description: '',
           keywords: [],
           kind: 'method',
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: null,
+              type: 'any',
               defaultValue: '__undefined__',
-              description: null,
-              declaration: null
+              description: '',
+              declaration: ''
             }
           ],
           return: {
             type: 'void',
-            description: null
+            description: ''
           },
           visibility: 'public' }
       ],
       events: [
         {
           name: 'select',
-          description: null,
+          description: '',
           keywords: [],
           arguments: [
             {
               name: 'suggestion',
-              type: null,
-              description: null,
-              declaration: null
+              type: 'any',
+              description: '',
+              declaration: ''
             }
           ],
           kind: 'event',
@@ -1868,7 +1868,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           name: 'my-prop',
           type: '__undefined__',
@@ -1905,12 +1905,12 @@ describe('issues', () => {
           kind: 'method',
           name: 'example',
           visibility: 'public',
-          description: null,
+          description: '',
           keywords: [],
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         }
       ]
@@ -1955,16 +1955,11 @@ describe('issues', () => {
           name: 'close',
           visibility: 'public',
           description: 'Close modal',
-          keywords: [
-            {
-              name: 'method',
-              description: 'close'
-            }
-          ],
+          keywords: [],
           params: [],
           return: {
             type: 'void',
-            description: null
+            description: ''
           }
         }
       ],
@@ -1974,17 +1969,12 @@ describe('issues', () => {
           name: 'close',
           visibility: 'public',
           description: 'Emit the `close` event on click',
-          keywords: [
-            {
-              name: 'event',
-              description: 'close'
-            }
-          ],
+          keywords: [],
           arguments: [
             {
               type: 'boolean',
-              declaration: null,
-              description: null,
+              declaration: '',
+              description: '',
               name: true
             }
           ]
@@ -2007,6 +1997,67 @@ describe('issues', () => {
     },
     expected: {
       description: 'Defines if `bleed@small` class should be added to component for mobile view'
+    }
+  })
+
+  ComponentTestCase({
+    name: '#66 - @returns with type',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Returns the sum of a and b
+               * @param {number} a
+               * @param {number} b
+               * @returns {number}
+               */
+              sum: (a, b) => a + b
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'sum',
+          visibility: 'public',
+          description: 'Returns the sum of a and b',
+          keywords: [
+            {
+              name: 'param',
+              description: '{number} a'
+            },
+            {
+              name: 'param',
+              description: '{number} b'
+            },
+            {
+              name: 'returns',
+              description: '{number}'
+            }
+          ],
+          params: [
+            {
+              name: 'a',
+              type: 'number',
+              description: undefined
+            },
+            {
+              name: 'b',
+              type: 'number',
+              description: undefined
+            }
+          ],
+          return: {
+            type: 'number',
+            description: ''
+          }
+        }
+      ]
     }
   })
 })

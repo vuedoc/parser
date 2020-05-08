@@ -93,7 +93,7 @@ function testComponentMethods (optionsToParse) {
 
   it('should contain un uncommented method', () => {
     const item = component.methods.find(
-      (item) => item.description === null
+      (item) => item.description === ''
     )
 
     assert.notEqual(item, undefined)
@@ -141,7 +141,7 @@ function testComponentProps (optionsToParse) {
   })
 
   it('should contain a v-model prop with a description', () => {
-    const item = component.props.find((item) => item.name === 'v-model')
+    const item = component.props.find((item) => item.describeModel)
 
     assert.notEqual(item, undefined)
     assert.equal(item.type, 'Array')
@@ -283,7 +283,7 @@ function testComponentEvents (optionsToParse) {
         {
           name: 'object',
           type: 'object',
-          description: null,
+          description: '',
           declaration: '{\n      bankAccount: { ...this.bankAccount },\n      valid: !this.$v.$invalid\n    }'
         }
       ],
@@ -435,21 +435,21 @@ describe('component.props (es6 Array)', () => {
     const propsNames = component.props.map((item) => item.name)
 
     assert.deepEqual(propsNames, [
-      'v-model', 'disabled', 'checked', 'prop-with-camel'
+      'model', 'disabled', 'checked', 'prop-with-camel'
     ])
   })
 
   it('should contain a model prop with a description', () => {
-    const item = component.props.find((item) => item.name === 'v-model')
+    const item = component.props.find((item) => item.describeModel)
 
-    assert.equal(item.type, 'Any')
+    assert.equal(item.type, 'any')
     assert.equal(item.description, 'The checkbox model')
   })
 
   it('should contain a checked prop with a description', () => {
     const item = component.props.find((item) => item.name === 'checked')
 
-    assert.equal(item.type, 'Any')
+    assert.equal(item.type, 'any')
     assert.equal(item.description, 'Initial checkbox value')
   })
 })
@@ -557,7 +557,7 @@ describe('component.slots scoped', () => {
         description: '',
         props: [
           { name: 'user',
-            type: 'Any',
+            type: 'any',
             description: '' }
         ],
         keywords: []
@@ -598,7 +598,7 @@ describe('component.slots scoped', () => {
         description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
         props: [
           { name: 'todo',
-            type: 'Any',
+            type: 'any',
             description: '' }
         ],
         keywords: []
@@ -690,7 +690,7 @@ describe('component.slots scoped', () => {
             type: 'TodoItem',
             description: 'Todo item' },
           { name: 'actions',
-            type: 'Any',
+            type: 'any',
             description: '' }
         ],
         keywords: [
@@ -802,8 +802,8 @@ describe('dynamic import() function', () => {
     `
     const options = { filecontent }
     const expected = {
-      name: null,
-      description: null,
+      name: '',
+      description: '',
       inheritAttrs: true,
       keywords: [],
       errors: [],
@@ -859,7 +859,7 @@ describe('Syntax: exports["default"]', () => {
     `
     const options = { filecontent }
     const expected = {
-      name: null,
+      name: '',
       description: 'description',
       inheritAttrs: true,
       events: [],
@@ -870,7 +870,7 @@ describe('Syntax: exports["default"]', () => {
         kind: 'computed',
         name: 'pages',
         dependencies: [ 'links', 'site' ],
-        description: null,
+        description: '',
         keywords: [],
         visibility: 'public'
       } ],
@@ -878,7 +878,7 @@ describe('Syntax: exports["default"]', () => {
         kind: 'data',
         name: 'currentYear',
         type: 'CallExpression',
-        description: null,
+        description: '',
         initial: 'new Date().getFullYear()',
         keywords: [],
         visibility: 'public'
@@ -891,7 +891,7 @@ describe('Syntax: exports["default"]', () => {
         required: true,
         default: '__undefined__',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         visibility: 'public'
       }, {
@@ -902,7 +902,7 @@ describe('Syntax: exports["default"]', () => {
         required: true,
         default: '__undefined__',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         visibility: 'public'
       } ],
@@ -938,7 +938,7 @@ describe('spread operators', () => {
         kind: 'computed',
         visibility: 'public',
         name: 'value',
-        description: null,
+        description: '',
         keywords: [],
         dependencies: []
       }
@@ -994,7 +994,7 @@ describe('spread operators', () => {
         kind: 'computed',
         visibility: 'public',
         name: 'value',
-        description: null,
+        description: '',
         keywords: [],
         dependencies: []
       },
@@ -1002,7 +1002,7 @@ describe('spread operators', () => {
         kind: 'computed',
         visibility: 'public',
         name: 'id',
-        description: null,
+        description: '',
         keywords: [],
         dependencies: []
       }
@@ -1027,8 +1027,8 @@ describe('spread operators', () => {
     `
     const options = { filecontent }
     const expected = {
-      name: null,
-      description: null,
+      name: '',
+      description: '',
       inheritAttrs: true,
       keywords: [],
       errors: [],
@@ -1111,26 +1111,38 @@ describe('errors', () => {
     })
   })
 
-  it('should throw error for lang !== js', () => {
+  it('should emit event with @event and no description', () => {
     const filecontent = `
         <script type="js">
           export default {
             created () {
               /**
-              * @event
-              */
-              this.$emit('input')
+               * @event
+               */
+              this.$emit(INPUT)
             }
           }
         </script>
       `
     const options = { filecontent }
     const expected = [
-      'Missing keyword value for @event: this.$emit(\'input\')'
+      {
+        kind: 'event',
+        name: '***unhandled***',
+        description: '',
+        arguments: [],
+        visibility: 'public',
+        keywords: [
+          {
+            name: 'event',
+            description: ''
+          }
+        ]
+      }
     ]
 
-    return vuedoc.parse(options).then(({ errors }) => {
-      assert.deepEqual(errors, expected)
+    return vuedoc.parse(options).then(({ events }) => {
+      assert.deepEqual(events, expected)
     })
   })
 })
@@ -1223,7 +1235,7 @@ ComponentTestCase({
       {
         default: '__undefined__',
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         kind: 'prop',
         name: 'complex-value',
@@ -1234,7 +1246,7 @@ ComponentTestCase({
       {
         default: true,
         describeModel: false,
-        description: null,
+        description: '',
         keywords: [],
         kind: 'prop',
         name: 'bool-false',
@@ -1247,14 +1259,14 @@ ComponentTestCase({
       {
         kind: 'computed',
         name: 'computedProp1',
-        description: null,
+        description: '',
         keywords: [],
         dependencies: [],
         visibility: 'public' },
       {
         kind: 'computed',
         name: 'computedProp2Value',
-        description: null,
+        description: '',
         keywords: [],
         dependencies: [],
         visibility: 'public' }
@@ -1268,7 +1280,7 @@ ComponentTestCase({
         params: [],
         return: {
           type: 'void',
-          description: null
+          description: ''
         },
         visibility: 'public' },
       {
@@ -1279,7 +1291,7 @@ ComponentTestCase({
         params: [],
         return: {
           type: 'void',
-          description: null
+          description: ''
         },
         visibility: 'public' }
     ]

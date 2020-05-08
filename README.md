@@ -24,7 +24,7 @@ Generate a JSON documentation for a Vue file component
   * [Build-in loaders](#build-in-loaders)
   * [TypeScript usage](#typescript-usage)
   * [Create a custom loader](#create-a-custom-loader)
-- [Interfaces](#interfaces)
+- [Parsing Output Interface](#parsing-output-interface)
 - [Related projects](#related-projects)
 - [Contribute](#contribute)
 - [Versioning](#versioning)
@@ -632,7 +632,7 @@ const options = {
 }
 
 Vuedoc.parse(options).then((component) => {
-  console.log(component.slots)
+  console.log(component)
 })
 ```
 
@@ -656,9 +656,9 @@ Vuedoc.parse(options).then((component) => {
 }
 ```
 
-## Interfaces
+## Parsing Output Interface
 
-```js
+```ts
 type ParsingOutput = {
   name: string;               // Component name
   description: string;        // Component description
@@ -679,10 +679,10 @@ enum NativeTypeEnum {
   number,
   bigint,
   boolean,
-  object,         // for an array or an object
-  null,           // for an explicit `null` value
-  undefined,      // for an explicit `undefined` value
-  CallExpression  // for a value like `new Date()`
+  object,                     // for an array or an object
+  null,                       // for an explicit `null` value
+  undefined,                  // for an explicit `undefined` value
+  CallExpression              // for a value like `new Date()`
 };
 
 type Keyword = {
@@ -691,20 +691,20 @@ type Keyword = {
 }
 
 interface Entry {
-  readonly kind: string;
+  kind: 'computed' | 'data' | 'event' | 'method' | 'model' | 'prop' | 'slot';
   visibility: 'public' | 'protected' | 'private';
   description: string;
   keywords: Keyword[];
 }
 
 interface ModelEntry extends Entry {
-  readonly kind: string = 'model';
+  kind: 'model';
   prop: string;
   event: string;
 }
 
 interface SlotEntry extends Entry {
-  readonly kind: string = 'slot';
+  kind: 'slot';
   name: string;
   props: SlotProp[];
 }
@@ -715,31 +715,37 @@ type SlotProp = {
   description: string;
 };
 
+interface ModelEntry extends Entry {
+  kind: 'model';
+  prop: string;
+  event: string;
+}
+
 interface PropEntry extends Entry {
-  readonly kind: string = 'prop';
+  kind: 'prop';
   name: string;                   // v-model when the @model keyword is attached
-  type: Identifier;               // defined prop type. ex Array, Object, String, ...
+  type: string | string[];        // ex. Array, Object, String, [String, Number]
   nativeType: NativeTypeEnum;
-  default: any;                   // '__undefined__' value uncatchable value
+  default: any;                   // '__undefined__' value for uncatchable value
   required: boolean = false;
   describeModel: boolean = false; // true when the @model keyword is attached
 }
 
 interface DataEntry extends Entry {
-  readonly kind: string = 'data';
+  kind: 'data';
   name: string;
   type: NativeTypeEnum;
-  initial: any;                   // '__undefined__' value uncatchable value
+  initial: any;                   // '__undefined__' value for uncatchable value
 }
 
 interface ComputedEntry extends Entry {
-  readonly kind: string = 'computed';
+  kind: 'computed';
   name: string;
   dependencies: string[];         // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
-  readonly kind: string = 'event';
+  kind: 'event';
   name: string;
   arguments: EventArgument[];
 }
@@ -751,7 +757,7 @@ type EventArgument = {
 };
 
 interface MethodEntry extends Entry {
-  readonly kind: string = 'method';
+  kind: 'method';
   name: string;
   params: MethodParam[];
   return: MethodReturn;

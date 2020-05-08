@@ -381,6 +381,25 @@ const Features = {
     // Stack overflow in most implementations today,
     // but safe on arbitrary inputs in ES6
     factorial(100000)
+  `,
+  'Logical Operators and Assignment Expressions': `
+    // "Or Or Equals" (or, the Mallet operator :wink:)
+    a ||= b;
+    a || (a = b);
+
+    // "And And Equals"
+    a &&= b;
+    a && (a = b);
+  `,
+  'Numeric Separators': `
+    let x = 1_000_000_000   // Ah, so a billion
+    let y = 101_475_938.38  // And this is hundreds of millions
+
+    let fee = 123_00;       // $123 (12300 cents, apparently)
+        fee = 12_300;       // $12,300 (woah, that fee!)
+    let amount = 12345_00;  // 12,345 (1234500 cents, apparently)
+        amount = 123_4500;  // 123.45 (4-fixed financial)
+        amount = 1_234_500; // 1,234,500
   `
 }
 
@@ -574,63 +593,63 @@ describe('ECMAScript Features Parsing', () => {
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: null,
+          description: '',
           type: 'number',
           initial: 1,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: null,
+          description: '',
           type: 'number',
           initial: 3,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
-          description: null,
+          description: '',
           type: 'undefined',
           initial: undefined,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
-          description: null,
+          description: '',
           type: 'number',
           initial: 4,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
-          description: null,
+          description: '',
           type: 'number',
           initial: 5,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'f',
-          description: null,
+          description: '',
           type: 'undefined',
           initial: undefined,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'g',
-          description: null,
+          description: '',
           type: 'number',
           initial: 6,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'h',
-          description: null,
+          description: '',
           type: '__undefined__',
           initial: '__undefined__',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'i',
-          description: null,
+          description: '',
           type: '__undefined__',
           initial: '__undefined__',
           keywords: [] }
@@ -661,7 +680,7 @@ describe('ECMAScript Features Parsing', () => {
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: null,
+          description: '',
           type: 'CallExpression',
           initial: 'Symbol("key")',
           keywords: [] }
@@ -693,14 +712,14 @@ describe('ECMAScript Features Parsing', () => {
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: null,
+          description: '',
           type: 'number',
           initial: 0b111110111,
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: null,
+          description: '',
           type: 'number',
           initial: 0o767,
           keywords: [] }
@@ -733,30 +752,184 @@ describe('ECMAScript Features Parsing', () => {
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: null,
+          description: '',
           type: 'bigint',
           initial: '9007199254740991n',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: null,
+          description: '',
           type: 'CallExpression',
           initial: 'BigInt(9007199254740991)',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
-          description: null,
+          description: '',
           type: 'CallExpression',
           initial: 'BigInt("9007199254740991")',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
-          description: null,
+          description: '',
           type: 'CallExpression',
           initial: 'BigInt("9007199254740992")',
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
+
+  describe('Logical Operators and Assignment Expressions', () => {
+    it('should successfully parse Logical Operators and Assignment Expressions', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              let a = true, b = false;
+
+              // "Or Or Equals" (or, the Mallet operator :wink:)
+              let c = a ||= b;
+              let d = a || (a = b);
+
+              // "And And Equals"
+              let e = a &&= b;
+              let f = a && (a = b);
+
+              return { a, b, c, d, e, f }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'boolean',
+          initial: true,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'boolean',
+          initial: false,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'AssignmentExpression',
+          initial: 'a ||= b',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'LogicalExpression',
+          initial: 'a || (a = b)',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'AssignmentExpression',
+          initial: 'a &&= b',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'LogicalExpression',
+          initial: 'a && (a = b)',
+          keywords: [] }
+      ]
+
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
+
+  describe('Numeric Separators', () => {
+    it('should successfully parse Numeric Separators', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              let x = 1_000_000_000;
+              let y = 101_475_938.38;
+
+              let a = 123_00;
+              let b = 12_300;
+              let c = 12345_00;
+              let d = 123_4500;
+              let e = 1_234_500;
+
+              return { x, y, a, b, c, d, e }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'x',
+          description: '',
+          type: 'number',
+          initial: 1000000000,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'y',
+          description: '',
+          type: 'number',
+          initial: 101475938.38,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'number',
+          initial: 12300,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'number',
+          initial: 12300,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'number',
+          initial: 1234500,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'number',
+          initial: 1234500,
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'number',
+          initial: 1234500,
           keywords: [] }
       ]
 
