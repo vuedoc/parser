@@ -187,7 +187,7 @@ describe('ScriptParser', () => {
           keywords: [
             {
               name: 'Note',
-              description: '`model` is not a two-way data bindings.\nTo get the form data, use the \`v-model\` directive.'
+              description: '`model` is not a two-way data bindings.\nTo get the form data, use the `v-model` directive.'
             }
           ],
           params: [
@@ -198,7 +198,7 @@ describe('ScriptParser', () => {
             },
             {
               name: 'model',
-              type: ['Number', 'String', 'Array', 'Object', 'Boolean'],
+              type: [ 'Number', 'String', 'Array', 'Object', 'Boolean' ],
               description: 'The initial data for the schema.',
               defaultValue: '"hello"'
             }

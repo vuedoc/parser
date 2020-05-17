@@ -21,8 +21,8 @@ module.exports = {
     'max-len': [
       'error',
       {
-        code: 100,
-        comments: 100,
+        code: 150,
+        comments: 150,
         tabWidth: 2,
         ignoreUrls: true,
         ignoreRegExpLiterals: true,
