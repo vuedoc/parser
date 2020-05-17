@@ -1115,7 +1115,7 @@ describe('Parser', () => {
             name: 'somebody',
             description: 'Somebody\'s name, or an array of names.',
             optional: true,
-            default: 'John Doe'
+            defaultValue: 'John Doe'
           }
         ]
 
@@ -1146,7 +1146,7 @@ describe('Parser', () => {
             name: 'somebody',
             description: 'Somebody\'s name.',
             optional: true,
-            default: 'John Doe'
+            defaultValue: 'John Doe'
           }
         ]
 
