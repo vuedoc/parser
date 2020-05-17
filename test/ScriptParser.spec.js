@@ -153,4 +153,62 @@ describe('ScriptParser', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: 'vuedoc/md#19 - does not render default param values for function',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Load the given \`schema\` with initial filled \`value\`
+               * Use this to load async schema.
+               *
+               * @param {object} schema - The JSON Schema object to load
+               * @param {Number|String|Array|Object|Boolean} model - The initial data for the schema.
+               *
+               * @Note \`model\` is not a two-way data bindings.
+               * To get the form data, use the \`v-model\` directive.
+               */
+              load(schema, model = 'hello') {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'load',
+          visibility: 'public',
+          description: 'Load the given `schema` with initial filled `value`\nUse this to load async schema.',
+          keywords: [
+            {
+              name: 'Note',
+              description: '`model` is not a two-way data bindings.\nTo get the form data, use the `v-model` directive.'
+            }
+          ],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load'
+            },
+            {
+              name: 'model',
+              type: [ 'Number', 'String', 'Array', 'Object', 'Boolean' ],
+              description: 'The initial data for the schema.',
+              defaultValue: '"hello"'
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
 })

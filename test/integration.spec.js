@@ -644,10 +644,7 @@ describe('component.slots scoped', () => {
             type: 'TodoItem',
             description: 'Todo item' }
         ],
-        keywords: [
-          { name: 'prop',
-            description: '{TodoItem} todo - Todo item' }
-        ]
+        keywords: []
       }
     ]
 
@@ -693,10 +690,7 @@ describe('component.slots scoped', () => {
             type: 'any',
             description: '' }
         ],
-        keywords: [
-          { name: 'prop',
-            description: '{TodoItem} todo - Todo item' }
-        ]
+        keywords: []
       }
     ]
 

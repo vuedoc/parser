@@ -2026,20 +2026,7 @@ describe('issues', () => {
           name: 'sum',
           visibility: 'public',
           description: 'Returns the sum of a and b',
-          keywords: [
-            {
-              name: 'param',
-              description: '{number} a'
-            },
-            {
-              name: 'param',
-              description: '{number} b'
-            },
-            {
-              name: 'returns',
-              description: '{number}'
-            }
-          ],
+          keywords: [],
           params: [
             {
               name: 'a',
