@@ -1,9 +1,10 @@
 {
   "name": "@vuedoc/parser",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
+    "preversion": "npm test",
     "test": "jest --coverage",
     "lint": "eslint index.js lib test",
     "lint:fix": "eslint --fix index.js lib test",
