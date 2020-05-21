@@ -1238,7 +1238,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           name: 'initialValue',
-          type: 'MemberExpression',
+          type: 'object',
           initial: 'this.value'
         },
         {

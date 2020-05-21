@@ -10,15 +10,24 @@ const defaultParams = [
   [ 'positiveNumber', '1', 'number' ],
   [ 'zeroNumber', '0', 'number' ],
   [ 'numeric', '1_000_000_000', 'number', '1000000000' ],
+  [ 'numeric', '101_475_938.38', 'number', '101475938.38' ],
   [ 'binary', '0b111110111', 'number', '503' ],
   [ 'octalLiteral', '0o767', 'number', '503' ],
   [ 'thruty', 'true', 'boolean' ],
   [ 'falsy', 'false', 'boolean' ],
   [ 'string', '"hello"', 'string' ],
+  [ 'unicode', '"𠮷"', 'string' ],
+  [ 'unicode', '"\u{20BB7}"', 'string' ],
   [ 'emptyString', '""', 'string' ],
+  [ 'literal', '`hello`', 'string' ],
+  [ 'literal', '`hello ${name}`', 'string', '`hello ${name}`' ],
+  [ 'tagged', 'tagged`hello`', 'string', '`hello`' ],
+  [ 'tagged', 'tagged`hello ${name}`', 'string', '`hello ${name}`' ],
+  [ 'math', 'Number.EPSILON', 'number' ],
   [ 'nully', 'null', 'any' ],
   [ 'symbol', 'Symbol(2)', 'symbol' ],
   [ 'bigint', '9007199254740991n', 'bigint' ],
+  [ 'bigint', 'BigInt(9007199254740991)', 'bigint' ],
 ]
 
 describe('MethodParser', () => {
@@ -653,6 +662,8 @@ describe('MethodParser', () => {
     options: {
       filecontent: `
         <script>
+          const name = 'Arya Stark'
+
           export default {
             methods: {
               withDefaultValue(${args}) {}

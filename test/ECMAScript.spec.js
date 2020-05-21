@@ -681,7 +681,7 @@ describe('ECMAScript Features Parsing', () => {
           visibility: 'public',
           name: 'a',
           description: '',
-          type: 'Symbol',
+          type: 'symbol',
           initial: 'Symbol("key")',
           keywords: [] }
       ]
@@ -760,21 +760,21 @@ describe('ECMAScript Features Parsing', () => {
           visibility: 'public',
           name: 'b',
           description: '',
-          type: 'BigInt',
+          type: 'bigint',
           initial: 'BigInt(9007199254740991)',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
           description: '',
-          type: 'BigInt',
+          type: 'bigint',
           initial: 'BigInt("9007199254740991")',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
           description: '',
-          type: 'BigInt',
+          type: 'bigint',
           initial: 'BigInt("9007199254740992")',
           keywords: [] }
       ]
