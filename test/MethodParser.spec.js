@@ -4,21 +4,21 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
-  ['unset', undefined, 'any'],
-  ['undefine', 'undefined', 'any'],
-  ['negativeNumber', '-1', 'number'],
-  ['positiveNumber', '1', 'number'],
-  ['zeroNumber', '0', 'number'],
-  ['numeric', '1_000_000_000', 'number', '1000000000'],
-  ['binary', '0b111110111', 'number', '503'],
-  ['octalLiteral', '0o767', 'number', '503'],
-  ['thruty', 'true', 'boolean'],
-  ['falsy', 'false', 'boolean'],
-  ['string', '"hello"', 'string'],
-  ['emptyString', '""', 'string'],
-  ['nully', 'null', 'any'],
-  ['symbol', 'Symbol(2)', 'symbol'],
-  ['bigint', '9007199254740991n', 'bigint'],
+  [ 'unset', undefined, 'any' ],
+  [ 'undefine', 'undefined', 'any' ],
+  [ 'negativeNumber', '-1', 'number' ],
+  [ 'positiveNumber', '1', 'number' ],
+  [ 'zeroNumber', '0', 'number' ],
+  [ 'numeric', '1_000_000_000', 'number', '1000000000' ],
+  [ 'binary', '0b111110111', 'number', '503' ],
+  [ 'octalLiteral', '0o767', 'number', '503' ],
+  [ 'thruty', 'true', 'boolean' ],
+  [ 'falsy', 'false', 'boolean' ],
+  [ 'string', '"hello"', 'string' ],
+  [ 'emptyString', '""', 'string' ],
+  [ 'nully', 'null', 'any' ],
+  [ 'symbol', 'Symbol(2)', 'symbol' ],
+  [ 'bigint', '9007199254740991n', 'bigint' ],
 ]
 
 describe('MethodParser', () => {
