@@ -33,8 +33,8 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Boolean',
-          nativeType: 'undefined',
-          default: undefined,
+          nativeType: 'any',
+          default: 'undefined',
           name: 'value',
           describeModel: true,
           required: false
@@ -217,8 +217,8 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Object',
-          nativeType: 'null',
-          default: null,
+          nativeType: 'any',
+          default: 'null',
           name: 'null',
           describeModel: false,
           required: false
@@ -1274,7 +1274,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           name: 'highlightedIndex',
-          type: 'UnaryExpression',
+          type: 'number',
           initial: '-1'
         }
       ],
@@ -1534,7 +1534,7 @@ describe('issues', () => {
             {
               name: 'suggestion',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1554,7 +1554,7 @@ describe('issues', () => {
             {
               name: 'suggestion',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1574,7 +1574,7 @@ describe('issues', () => {
             {
               name: 'index',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1594,14 +1594,14 @@ describe('issues', () => {
             {
               name: 'index',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             },
             {
               name: 'e',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1645,7 +1645,7 @@ describe('issues', () => {
             {
               name: 'value',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1665,7 +1665,7 @@ describe('issues', () => {
             {
               name: 'e',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1685,7 +1685,7 @@ describe('issues', () => {
             {
               name: 'e',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1705,7 +1705,7 @@ describe('issues', () => {
             {
               name: 'e',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1725,7 +1725,7 @@ describe('issues', () => {
             {
               name: 'e',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1768,7 +1768,7 @@ describe('issues', () => {
             {
               name: 'suggestion',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
@@ -1816,7 +1816,7 @@ describe('issues', () => {
             {
               name: 'suggestion',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }

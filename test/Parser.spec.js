@@ -1994,7 +1994,7 @@ describe('Parser', () => {
             {
               name: 'ctx',
               type: 'any',
-              defaultValue: '__undefined__',
+              defaultValue: undefined,
               description: '',
               declaration: ''
             }
