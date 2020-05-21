@@ -1,6 +1,7 @@
 const { ComponentTestCase } = require('./lib/TestUtils')
 
 /* global describe */
+/* eslint-disable no-template-curly-in-string */
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
