@@ -2,7 +2,7 @@
 
 Generate a JSON documentation for a Vue file component
 
-[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=master) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
 
 ## Table of Contents
 
@@ -723,25 +723,25 @@ interface ModelEntry extends Entry {
 
 interface PropEntry extends Entry {
   kind: 'prop';
-  name: string;                   // v-model when the @model keyword is attached
-  type: string | string[];        // ex. Array, Object, String, [String, Number]
+  name: string;               // v-model when the @model keyword is attached
+  type: string | string[];    // ex. Array, Object, String, [String, Number]
   nativeType: NativeTypeEnum;
-  default: any;                   // '__undefined__' value for uncatchable value
+  default?: string;
   required: boolean = false;
-  describeModel: boolean = false; // true when the @model keyword is attached
+  describeModel: boolean;     // true when the @model keyword is attached
 }
 
 interface DataEntry extends Entry {
   kind: 'data';
   name: string;
   type: NativeTypeEnum;
-  initial: any;                   // '__undefined__' value for uncatchable value
+  initial?: string;
 }
 
 interface ComputedEntry extends Entry {
   kind: 'computed';
   name: string;
-  dependencies: string[];         // list of dependencies of the computed property
+  dependencies: string[];     // list of dependencies of the computed property
 }
 
 interface EventEntry extends Entry {
@@ -764,10 +764,10 @@ interface MethodEntry extends Entry {
 }
 
 type MethodParam = {
+  type: string;
   name: string;
   description: string;
-  type: string;
-  defaultValue: any;
+  defaultValue?: string;
 }
 
 type MethodReturn = {
