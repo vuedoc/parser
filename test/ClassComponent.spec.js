@@ -261,7 +261,7 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'historyLength',
-        type: 'MemberExpression',
+        type: 'object',
         description: '',
         initial: 'window.history.length',
         keywords: [],

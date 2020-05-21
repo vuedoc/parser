@@ -44,7 +44,7 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'url',
-        type: 'MemberExpression',
+        type: 'object',
         description: '',
         initial: 'context.url',
         keywords: [],
@@ -52,7 +52,7 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'contextUrl',
-        type: 'MemberExpression',
+        type: 'object',
         description: 'data contextUrl description',
         initial: 'context.url',
         keywords: [],

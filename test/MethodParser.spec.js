@@ -1,6 +1,51 @@
 const { ComponentTestCase } = require('./lib/TestUtils')
 
 /* global describe */
+/* eslint-disable no-template-curly-in-string */
+
+// [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
+const defaultParams = [
+  [ 'unset', undefined, 'any' ],
+  [ 'undefine', 'undefined', 'any' ],
+  [ 'negativeNumber', '-1', 'number' ],
+  [ 'positiveNumber', '1', 'number' ],
+  [ 'zeroNumber', '0', 'number' ],
+  [ 'numeric', '1_000_000_000', 'number', '1000000000' ],
+  [ 'numeric', '101_475_938.38', 'number', '101475938.38' ],
+  [ 'binary', '0b111110111', 'number', '503' ],
+  [ 'octalLiteral', '0o767', 'number', '503' ],
+  [ 'thruty', 'true', 'boolean' ],
+  [ 'falsy', 'false', 'boolean' ],
+  [ 'string', '"hello"', 'string' ],
+  [ 'unicode', '"𠮷"', 'string' ],
+  [ 'unicode', '"\u{20BB7}"', 'string' ],
+  [ 'emptyString', '""', 'string' ],
+  [ 'literal', '`hello`', 'string' ],
+  [ 'literal', '`hello ${name}`', 'string', '`hello ${name}`' ],
+  [ 'tagged', 'tagged`hello`', 'string', '`hello`' ],
+  [ 'tagged', 'tagged`hello ${name}`', 'string', '`hello ${name}`' ],
+  [ 'math', 'Math.E', 'number' ],
+  [ 'math', 'Math.LN10', 'number' ],
+  [ 'math', 'Math.LN2', 'number' ],
+  [ 'math', 'Math.LOG10E', 'number' ],
+  [ 'math', 'Math.LOG2E', 'number' ],
+  [ 'math', 'Math.PI', 'number' ],
+  [ 'math', 'Math.SQRT1_2', 'number' ],
+  [ 'math', 'Math.SQRT2', 'number' ],
+  [ 'number', 'Number.SQRT2', 'number' ],
+  [ 'number', 'Number.EPSILON', 'number' ],
+  [ 'number', 'Number.MAX_SAFE_INTEGER', 'number' ],
+  [ 'number', 'Number.MAX_VALUE', 'number' ],
+  [ 'number', 'Number.MIN_SAFE_INTEGER', 'number' ],
+  [ 'number', 'Number.MIN_VALUE', 'number' ],
+  [ 'number', 'Number.NEGATIVE_INFINITY', 'number' ],
+  [ 'number', 'Number.POSITIVE_INFINITY', 'number' ],
+  [ 'obj', 'Bool.TRUE', 'object' ],
+  [ 'nully', 'null', 'any' ],
+  [ 'symbol', 'Symbol(2)', 'symbol' ],
+  [ 'bigint', '9007199254740991n', 'bigint' ],
+  [ 'bigint', 'BigInt(9007199254740991)', 'bigint' ],
+]
 
 describe('MethodParser', () => {
   ComponentTestCase({
@@ -629,6 +674,47 @@ describe('MethodParser', () => {
     }
   })
 
+  defaultParams.forEach(([ paramName, paramValue, expectedType, expectedValue = paramValue, args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}` ]) => ComponentTestCase({
+    name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
+    options: {
+      filecontent: `
+        <script>
+          const name = 'Arya Stark'
+
+          export default {
+            methods: {
+              withDefaultValue(${args}) {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'withDefaultValue',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: paramName,
+              type: expectedType,
+              description: '',
+              declaration: '',
+              defaultValue: expectedValue
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  }))
+
   ComponentTestCase({
     name: 'vuedoc/md#19 - does not render default param values for function',
     options: {
@@ -745,7 +831,7 @@ describe('MethodParser', () => {
             type: 'int',
             description: '123'
           }
-        },
+        }
       ]
     }
   })
