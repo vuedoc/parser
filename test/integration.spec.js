@@ -1291,3 +1291,37 @@ ComponentTestCase({
     ]
   }
 })
+ComponentTestCase({
+  name: '#76 - Support for @link params',
+  options: {
+    filecontent: `
+      <script>
+        export default {
+          methods: {
+            /**
+             * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
+             * Also, check out {@link http://www.google.com|Google} and
+             * {@link https://github.com GitHub}.
+             */
+            myFunction() {}
+          }
+        }
+      </script>
+    `
+  },
+  expected: {
+    methods: [
+      {
+        kind: 'method',
+        name: 'myFunction',
+        keywords: [],
+        description: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
+        params: [],
+        return: {
+          type: 'void',
+          description: ''
+        },
+        visibility: 'public' }
+    ]
+  }
+})
