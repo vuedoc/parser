@@ -56,17 +56,17 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| name                    | description                                                         |
-|-------------------------|---------------------------------------------------------------------|
-| filename                | The filename to parse. *Required* unless `filecontent` is passed    |
-| filecontent             | The file content to parse. *Required* unless `filename` is passed   |
-| encoding                | The file encoding. Default is `'utf8'`                              |
-| features                | The component features to parse and extract.                        |
+| name                    | description                                                                                                                 |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| filename                | The filename to parse. *Required* unless `filecontent` is passed                                                            |
+| filecontent             | The file content to parse. *Required* unless `filename` is passed                                                           |
+| encoding                | The file encoding. Default is `'utf8'`                                                                                      |
+| features                | The component features to parse and extract.                                                                                |
 |                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
-| loaders                 | Use this option to define [custom loaders](#custom-language-processing) for specific languages |
-| defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
-| ignoredVisibilities     | List of ignored visibilities.                                       |
-|                         | Default ignored visibilities: `['protected', 'private']`            |
+| loaders                 | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
+| defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'`                                                         |
+| ignoredVisibilities     | List of ignored visibilities.                                                                                               |
+|                         | Default ignored visibilities: `['protected', 'private']`                                                                    |
 
 ## Usage
 
