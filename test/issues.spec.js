@@ -218,7 +218,7 @@ describe('issues', () => {
           keywords: [],
           type: 'Object',
           nativeType: 'any',
-          default: 'null',
+          default: null,
           name: 'null',
           describeModel: false,
           required: false
@@ -255,7 +255,7 @@ describe('issues', () => {
           keywords: [],
           type: 'BigInt',
           nativeType: 'bigint',
-          default: '100n',
+          default: 100n,
           name: 'bigint',
           describeModel: false,
           required: false
@@ -1275,7 +1275,7 @@ describe('issues', () => {
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
-          initial: '-1'
+          initial: -1
         }
       ],
       computed: [

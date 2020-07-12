@@ -68,8 +68,9 @@ module.exports.parseOptions = (options) => {
 
 module.exports.parse = (options) => this.parseOptions(options)
   .then(() => new Promise((resolve) => {
+    const stringify = options.stringify || false
     const component = {
-      inheritAttrs: true,
+      inheritAttrs: stringify ? 'true' : true,
       errors: []
     }
 
