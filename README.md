@@ -65,8 +65,20 @@ npm install --save @vuedoc/parser
 |                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
 | loaders                 | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'`                                                         |
-| ignoredVisibilities     | List of ignored visibilities.                                                                                               |
-|                         | Default ignored visibilities: `['protected', 'private']`                                                                    |
+| ignoredVisibilities     | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
+| stringify               | Set to `true` to disable parsing of litteral values and stringify litteral values. Default: `false`                         |
+
+**Note for `stringify` option**
+
+By default Vuedoc Parser parses litteral values defined in the source code.
+This means:
+
+```js
+const binVar = 0b111110111 // will be parsed as binVar = 503
+const numVar = 1_000_000_000 // vill be parsed as numVar = 1000000000
+```
+
+To preserve litteral values, set the `stringify` option to `true`.
 
 ## Usage
 
