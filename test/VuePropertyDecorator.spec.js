@@ -239,7 +239,6 @@ ComponentTestCase({
   }
 })
 
-
 ComponentTestCase({
   name: '#47 - Vue Property Decorator with disabled features',
   options: {
