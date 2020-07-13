@@ -56,17 +56,29 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| name                    | description                                                         |
-|-------------------------|---------------------------------------------------------------------|
-| filename                | The filename to parse. *Required* unless `filecontent` is passed    |
-| filecontent             | The file content to parse. *Required* unless `filename` is passed   |
-| encoding                | The file encoding. Default is `'utf8'`                              |
-| features                | The component features to parse and extract.                        |
+| name                    | description                                                                                                                 |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| filename                | The filename to parse. *Required* unless `filecontent` is passed                                                            |
+| filecontent             | The file content to parse. *Required* unless `filename` is passed                                                           |
+| encoding                | The file encoding. Default is `'utf8'`                                                                                      |
+| features                | The component features to parse and extract.                                                                                |
 |                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
-| loaders                 | Use this option to define [custom loaders](#custom-language-processing) for specific languages |
-| defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'` |
-| ignoredVisibilities     | List of ignored visibilities.                                       |
-|                         | Default ignored visibilities: `['protected', 'private']`            |
+| loaders                 | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
+| defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'`                                                         |
+| ignoredVisibilities     | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
+| stringify               | Set to `true` to disable parsing of litteral values and stringify litteral values. Default: `false`                         |
+
+**Note for `stringify` option**
+
+By default Vuedoc Parser parses litteral values defined in the source code.
+This means:
+
+```js
+const binVar = 0b111110111 // will be parsed as binVar = 503
+const numVar = 1_000_000_000 // vill be parsed as numVar = 1000000000
+```
+
+To preserve litteral values, set the `stringify` option to `true`.
 
 ## Usage
 
@@ -679,9 +691,9 @@ enum NativeTypeEnum {
   number,
   bigint,
   boolean,
+  bigint,
+  any,                        // for an explicit `null` or `undefined` values
   object,                     // for an array or an object
-  null,                       // for an explicit `null` value
-  undefined,                  // for an explicit `undefined` value
   CallExpression              // for a value like `new Date()`
 };
 

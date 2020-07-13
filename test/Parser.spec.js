@@ -1622,13 +1622,13 @@ describe('Parser', () => {
           kind: 'prop',
           name: 'opacity-a',
           type: [ 'Boolean', 'Number' ],
-          nativeType: '__undefined__',
+          nativeType: 'any',
           visibility: 'public',
           description: '',
           required: false,
           describeModel: false,
           keywords: [],
-          default: '__undefined__'
+          default: undefined
         })
 
         done()
@@ -1654,13 +1654,13 @@ describe('Parser', () => {
           kind: 'prop',
           name: 'opacity-o',
           type: [ 'Boolean', 'Number' ],
-          nativeType: '__undefined__',
+          nativeType: 'any',
           visibility: 'public',
           description: '',
           required: false,
           describeModel: false,
           keywords: [],
-          default: '__undefined__'
+          default: undefined
         })
 
         done()

@@ -343,19 +343,43 @@ const Features = {
     0o767 === 503 // true
   `,
   'BigInt': `
-    const theBiggestInt = 9007199254740991n;
+    const theBiggestInt = 9007199254740991n
 
-    const alsoHuge = BigInt(9007199254740991);
+    const alsoHuge = BigInt(9007199254740991)
     // ↪ 9007199254740991n
 
-    const hugeString = BigInt("9007199254740991");
+    const hugeString = BigInt("9007199254740991")
     // ↪ 9007199254740991n
 
-    const hugeHex = BigInt("0x1fffffffffffff");
+    const hugeHex = BigInt("0x1fffffffffffff")
     // ↪ 9007199254740991n
 
-    const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111");
+    const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111")
     // ↪ 9007199254740991n
+
+    const previousMaxSafe = BigInt(Number.MAX_SAFE_INTEGER)
+    // ↪ 9007199254740991n
+
+    const maxPlusOne = previousMaxSafe + 1n
+    // ↪ 9007199254740992n
+
+    const theFuture = previousMaxSafe + 2n
+    // ↪ 9007199254740993n, this works now!
+
+    const multi = previousMaxSafe * 2n
+    // ↪ 18014398509481982n
+
+    const subtr = multi - 10n
+    // ↪ 18014398509481972n
+
+    const mod = multi % 10n
+    // ↪ 2n
+
+    const bigN = 2n ** 54n
+    // ↪ 18014398509481984n
+
+    bigN * -1n
+    // ↪ –18014398509481984n
   `,
   'Promises': `
     function timeout(duration = 0) {
@@ -392,14 +416,14 @@ const Features = {
     a && (a = b);
   `,
   'Numeric Separators': `
-    let x = 1_000_000_000   // Ah, so a billion
-    let y = 101_475_938.38  // And this is hundreds of millions
+    let x = 1_000_000_000     // Ah, so a billion
+    let y = 101_475_938.38    // And this is hundreds of millions
 
-    let fee = 123_00;       // $123 (12300 cents, apparently)
-        fee = 12_300;       // $12,300 (woah, that fee!)
-    let amount = 12345_00;  // 12,345 (1234500 cents, apparently)
-        amount = 123_4500;  // 123.45 (4-fixed financial)
-        amount = 1_234_500; // 1,234,500
+    let fee = 123_00,         // $123 (12300 cents, apparently)
+        fee2 = 12_300;        // $12,300 (woah, that fee!)
+    let amount = 12345_00,    // 12,345 (1234500 cents, apparently)
+        amount2 = 123_4500,   // 123.45 (4-fixed financial)
+        amount3 = 1_234_500;  // 1,234,500
   `
 }
 
@@ -588,21 +612,21 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features }
+      const options = { filecontent, features, stringify: true }
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
           description: '',
           type: 'number',
-          initial: 1,
+          initial: '1',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
           description: '',
           type: 'number',
-          initial: 3,
+          initial: '3',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
@@ -616,14 +640,14 @@ describe('ECMAScript Features Parsing', () => {
           name: 'd',
           description: '',
           type: 'number',
-          initial: 4,
+          initial: '4',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
           description: '',
           type: 'number',
-          initial: 5,
+          initial: '5',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
@@ -637,21 +661,21 @@ describe('ECMAScript Features Parsing', () => {
           name: 'g',
           description: '',
           type: 'number',
-          initial: 6,
+          initial: '6',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'h',
           description: '',
-          type: '__undefined__',
-          initial: '__undefined__',
+          type: 'any',
+          initial: 'undefined',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'i',
           description: '',
-          type: '__undefined__',
-          initial: '__undefined__',
+          type: 'any',
+          initial: 'undefined',
           keywords: [] }
       ]
 
@@ -707,21 +731,21 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features }
+      const options = { filecontent, features, stringify: true }
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
           description: '',
           type: 'number',
-          initial: 0b111110111,
+          initial: '0b111110111',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
           description: '',
           type: 'number',
-          initial: 0o767,
+          initial: '0o767',
           keywords: [] }
       ]
 
@@ -740,14 +764,16 @@ describe('ECMAScript Features Parsing', () => {
               const a = 9007199254740991n;
               const b = BigInt(9007199254740991);
               const c = BigInt("9007199254740991");
+              const e = BigInt("0x1fffffffffffff");
+              const f = BigInt("0b11111111111111111111111111111111111111111111111111111");
 
-              return { a, [b]: b, ['c']: c, d: BigInt("9007199254740992") }
+              return { a, [b]: b, ['c']: c, d: BigInt("9007199254740992"), e, f }
             }
           }
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features }
+      const options = { filecontent, features, stringify: true }
       const expected = [
         { kind: 'data',
           visibility: 'public',
@@ -776,6 +802,20 @@ describe('ECMAScript Features Parsing', () => {
           description: '',
           type: 'bigint',
           initial: 'BigInt("9007199254740992")',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt("0x1fffffffffffff")',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt("0b11111111111111111111111111111111111111111111111111111")',
           keywords: [] }
       ]
 
@@ -880,56 +920,56 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features }
+      const options = { filecontent, features, stringify: true }
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'x',
           description: '',
           type: 'number',
-          initial: 1000000000,
+          initial: '1_000_000_000',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'y',
           description: '',
           type: 'number',
-          initial: 101475938.38,
+          initial: '101_475_938.38',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'a',
           description: '',
           type: 'number',
-          initial: 12300,
+          initial: '123_00',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
           description: '',
           type: 'number',
-          initial: 12300,
+          initial: '12_300',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
           description: '',
           type: 'number',
-          initial: 1234500,
+          initial: '12345_00',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
           description: '',
           type: 'number',
-          initial: 1234500,
+          initial: '123_4500',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
           description: '',
           type: 'number',
-          initial: 1234500,
+          initial: '1_234_500',
           keywords: [] }
       ]
 

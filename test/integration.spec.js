@@ -883,7 +883,7 @@ describe('Syntax: exports["default"]', () => {
         type: 'Object',
         nativeType: 'object',
         required: true,
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],
@@ -892,9 +892,9 @@ describe('Syntax: exports["default"]', () => {
         kind: 'prop',
         name: 'site',
         type: 'Site_1.Site',
-        nativeType: '__undefined__',
+        nativeType: 'any',
         required: true,
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],
@@ -1175,7 +1175,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'prop',
         name: 'complex',
-        nativeType: 'ArrowFunctionExpression',
+        nativeType: 'object',
         required: false,
         type: 'Object',
         visibility: 'public' }
@@ -1227,7 +1227,7 @@ ComponentTestCase({
     name: 'blabla',
     props: [
       {
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],
@@ -1282,6 +1282,40 @@ ComponentTestCase({
         name: 'dynamic2Value',
         keywords: [],
         description: 'Enter to dynamic mode',
+        params: [],
+        return: {
+          type: 'void',
+          description: ''
+        },
+        visibility: 'public' }
+    ]
+  }
+})
+ComponentTestCase({
+  name: '#76 - Support for @link params',
+  options: {
+    filecontent: `
+      <script>
+        export default {
+          methods: {
+            /**
+             * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
+             * Also, check out {@link http://www.google.com|Google} and
+             * {@link https://github.com GitHub}.
+             */
+            myFunction() {}
+          }
+        }
+      </script>
+    `
+  },
+  expected: {
+    methods: [
+      {
+        kind: 'method',
+        name: 'myFunction',
+        keywords: [],
+        description: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
         params: [],
         return: {
           type: 'void',

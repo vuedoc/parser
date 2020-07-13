@@ -33,8 +33,8 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Boolean',
-          nativeType: 'any',
-          default: 'undefined',
+          nativeType: 'boolean',
+          default: undefined,
           name: 'value',
           describeModel: true,
           required: false
@@ -70,7 +70,7 @@ describe('issues', () => {
           keywords: [],
           type: 'Boolean',
           nativeType: 'boolean',
-          default: '__undefined__',
+          default: undefined,
           name: 'value',
           describeModel: true,
           required: false
@@ -217,8 +217,8 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Object',
-          nativeType: 'any',
-          default: 'null',
+          nativeType: 'object',
+          default: null,
           name: 'null',
           describeModel: false,
           required: false
@@ -255,7 +255,7 @@ describe('issues', () => {
           keywords: [],
           type: 'BigInt',
           nativeType: 'bigint',
-          default: '100n',
+          default: 100n,
           name: 'bigint',
           describeModel: false,
           required: false
@@ -787,13 +787,13 @@ describe('issues', () => {
     expected: {
       props: [
         {
-          default: '__undefined__',
+          default: undefined,
           describeModel: true,
           description: 'Badge value',
           keywords: [],
           kind: 'prop',
           name: 'value',
-          nativeType: '__undefined__',
+          nativeType: 'any',
           required: false,
           type: [ 'String', 'Number' ],
           visibility: 'public' }
@@ -950,7 +950,7 @@ describe('issues', () => {
           name: 'name',
           type: 'String',
           nativeType: 'string',
-          default: '__undefined__',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -962,7 +962,7 @@ describe('issues', () => {
           name: 'placeholder',
           type: 'String',
           nativeType: 'string',
-          default: '__undefined__',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -973,7 +973,7 @@ describe('issues', () => {
           keywords: [],
           name: 'value',
           type: [ 'String', 'Number' ],
-          nativeType: 'string',
+          nativeType: 'any',
           default: '',
           required: false,
           describeModel: true
@@ -986,7 +986,7 @@ describe('issues', () => {
           name: 'icon',
           type: 'String',
           nativeType: 'string',
-          default: '__undefined__',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -1010,7 +1010,7 @@ describe('issues', () => {
           name: 'label',
           type: 'String',
           nativeType: 'string',
-          default: '__undefined__',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -1034,7 +1034,7 @@ describe('issues', () => {
           name: 'help',
           type: 'String',
           nativeType: 'string',
-          default: '__undefined__',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -1046,7 +1046,7 @@ describe('issues', () => {
           name: 'error',
           type: 'String',
           nativeType: 'string',
-          default: '__undefined__',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -1093,7 +1093,7 @@ describe('issues', () => {
           keywords: [],
           name: 'suggestions',
           type: 'Array',
-          nativeType: 'FunctionExpression',
+          nativeType: 'array',
           default: 'function() {\n                return [];\n            }',
           required: false,
           describeModel: false
@@ -1177,8 +1177,8 @@ describe('issues', () => {
           keywords: [],
           name: 'filter',
           type: 'Function',
-          nativeType: '__undefined__',
-          default: '__undefined__',
+          nativeType: 'any',
+          default: undefined,
           required: false,
           describeModel: false
         },
@@ -1213,7 +1213,7 @@ describe('issues', () => {
           keywords: [],
           name: 'keys',
           type: 'Object',
-          nativeType: 'FunctionExpression',
+          nativeType: 'object',
           default: "function() {\n                return {\n                    label: 'label',\n                    value: 'value',\n                    image: 'image'\n                };\n            }",
           required: false,
           describeModel: false
@@ -1275,7 +1275,7 @@ describe('issues', () => {
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
-          initial: '-1'
+          initial: -1
         }
       ],
       computed: [
@@ -1871,9 +1871,9 @@ describe('issues', () => {
           description: '',
           keywords: [],
           name: 'my-prop',
-          type: '__undefined__',
-          nativeType: '__undefined__',
-          default: '__undefined__',
+          type: 'any',
+          nativeType: 'any',
+          default: undefined,
           required: false,
           describeModel: false
         }
