@@ -691,9 +691,9 @@ enum NativeTypeEnum {
   number,
   bigint,
   boolean,
+  bigint,
+  any,                        // for an explicit `null` or `undefined` values
   object,                     // for an array or an object
-  null,                       // for an explicit `null` value
-  undefined,                  // for an explicit `undefined` value
   CallExpression              // for a value like `new Date()`
 };
 

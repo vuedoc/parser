@@ -883,7 +883,7 @@ describe('Syntax: exports["default"]', () => {
         type: 'Object',
         nativeType: 'object',
         required: true,
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],
@@ -892,9 +892,9 @@ describe('Syntax: exports["default"]', () => {
         kind: 'prop',
         name: 'site',
         type: 'Site_1.Site',
-        nativeType: '__undefined__',
+        nativeType: 'any',
         required: true,
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],
@@ -1175,7 +1175,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'prop',
         name: 'complex',
-        nativeType: 'ArrowFunctionExpression',
+        nativeType: 'object',
         required: false,
         type: 'Object',
         visibility: 'public' }
@@ -1227,7 +1227,7 @@ ComponentTestCase({
     name: 'blabla',
     props: [
       {
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],

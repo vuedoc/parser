@@ -667,15 +667,15 @@ describe('ECMAScript Features Parsing', () => {
           visibility: 'public',
           name: 'h',
           description: '',
-          type: '__undefined__',
-          initial: '__undefined__',
+          type: 'any',
+          initial: 'undefined',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'i',
           description: '',
-          type: '__undefined__',
-          initial: '__undefined__',
+          type: 'any',
+          initial: 'undefined',
           keywords: [] }
       ]
 

@@ -98,17 +98,17 @@ describe('ScriptParser', () => {
       `
     },
     expected: {
-      name: '__undefined__',
+      name: undefined,
       props: [
         {
           kind: 'prop',
           name: 'some-prop-call',
-          type: '__undefined__',
+          type: 'any',
           visibility: 'public',
           description: '',
           keywords: [],
-          default: '__undefined__',
-          nativeType: '__undefined__',
+          default: undefined,
+          nativeType: 'any',
           required: false,
           describeModel: false
         },
@@ -119,8 +119,8 @@ describe('ScriptParser', () => {
           visibility: 'public',
           description: '',
           keywords: [],
-          default: '__undefined__',
-          nativeType: '__undefined__',
+          default: undefined,
+          nativeType: 'any',
           required: false,
           describeModel: false
         }

@@ -68,13 +68,13 @@ ComponentTestCase({
     ],
     props: [
       {
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: '',
         keywords: [],
         kind: 'prop',
         name: 'todo',
-        nativeType: '__undefined__',
+        nativeType: 'any',
         required: false,
         type: 'any',
         visibility: 'public' }

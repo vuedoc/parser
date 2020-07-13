@@ -661,7 +661,7 @@ describe('MethodParser', () => {
     }
   })
 
-  defaultParams.forEach(([ paramName, paramValue, expectedType, expectedValue = paramValue, args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}` ]) => ComponentTestCase({
+  defaultParams.forEach(([ paramName, paramValue, expectedType, expectedValue = paramValue === 'undefined' ? void(0) : paramValue, args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}` ]) => ComponentTestCase({
     name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
     options: {
       filecontent: `

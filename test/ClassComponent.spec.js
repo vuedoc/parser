@@ -194,7 +194,7 @@ ComponentTestCase({
         type: 'String',
         nativeType: 'string',
         required: false,
-        default: '__undefined__',
+        default: undefined,
         describeModel: false,
         description: 'prop name description',
         keywords: [],

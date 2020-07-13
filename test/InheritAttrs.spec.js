@@ -17,7 +17,7 @@ describe('#43 - InheritAttrs Field', () => {
       `
     }
 
-    const expected = 'true'
+    const expected = true
 
     return parser.parse(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected)
@@ -36,7 +36,7 @@ describe('#43 - InheritAttrs Field', () => {
       `
     }
 
-    const expected = 'false'
+    const expected = false
 
     return parser.parse(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected)
