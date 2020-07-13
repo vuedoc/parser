@@ -75,7 +75,7 @@ This means:
 
 ```js
 const binVar = 0b111110111 // will be parsed as binVar = 503
-const numVar = 1_000_000_000 // vill be parsed as numVar = 1000000000
+const numVar = 1_000_000_000 // will be parsed as numVar = 1000000000
 ```
 
 To preserve litteral values, set the `stringify` option to `true`.
