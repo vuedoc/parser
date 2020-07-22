@@ -474,10 +474,10 @@ Parsing result:
 
 ## Working with Mixins
 
-Since Vuedoc Parser don't perform I/O operations, it cannot completely ignore
-the `mixins` property.
+Since Vuedoc Parser don't perform I/O operations, it completely ignore the
+`mixins` property.
 
-To parse, you need to parse the mixin file as a standalone component and then
+To parse a mixin, you need to parse its file as a standalone component and then
 merge the parsing result with the result of the initial component:
 
 ```js
@@ -493,6 +493,24 @@ Promise.all(parsers)
   .then(merge.all)
   .then((mergedParsingResult) => console.log(mergedParsingResult))
   .catch((err) => console.error(err))
+```
+
+**Using the keyword `@mixin`**
+
+You can use the special keyword `@mixin` to force parsing named exported component:
+
+```js
+import Vue from 'vue';
+
+/**
+ * @mixin
+ */
+export const InputMixin = Vue.extend({
+  props: {
+    id: String,
+    Value: [ Boolean, Number, String ]
+  }
+});
 ```
 
 ## Parsing control with options.features

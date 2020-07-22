@@ -533,24 +533,34 @@ describe('Parser', () => {
     })
 
     describe('keywords', () => {
-      const script = `
-        /**
-         * @name my-checkbox
-         */
-        export default {}
-      `
+      it('should successfully emit component keywords by ignored name, slot and mixin', (done) => {
+        const script = `
+          /**
+           * @name my-checkbox
+           * @mixin
+           * @slot default slot
+           * @since 1.0.0
+           */
+          export default {}
+        `
 
-      it('should successfully emit component keywords', (done) => {
         const options = { source: { script } }
 
         new Parser(options).walk().on('keywords', ({ value }) => {
-          assert.deepEqual(value, [ { name: 'name', description: 'my-checkbox' } ])
+          expect(value).toEqual([ { name: 'since', description: '1.0.0' } ])
           done()
         })
       })
 
       it('should ignore the component keywords with missing `keywords` in options.features', (done) => {
         const filename = './fixtures/checkbox.vue'
+        const script = `
+          /**
+           * @name my-checkbox
+           * @since 1.0.0
+           */
+          export default {}
+        `
         const options = {
           source: { script },
           filename,
@@ -558,9 +568,7 @@ describe('Parser', () => {
         }
 
         new Parser(options).walk()
-          .on('keywords', () => {
-            throw new Error('Should ignore the component keywords')
-          })
+          .on('keywords', () => done(new Error('Should ignore the component keywords')))
           .on('end', done)
       })
     })
