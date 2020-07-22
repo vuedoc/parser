@@ -86,12 +86,12 @@ See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/master/te
 for an Vue Component decoration example.
 
 ```js
-const vuedoc = require('@vuedoc/parser')
+const Vuedoc = require('@vuedoc/parser')
 const options = {
   filename: 'test/fixtures/checkbox.vue'
 }
 
-vuedoc.parse(options)
+Vuedoc.parse(options)
   .then((component) => console.log(component))
   .catch((err) => console.error(err))
 ```
@@ -474,19 +474,19 @@ Parsing result:
 
 ## Working with Mixins
 
-Since Vuedoc Parser don't perform I/O operations, it completely ignore the
+Since Vuedoc Parser don't perform I/O operations, it completely ignores the
 `mixins` property.
 
-To parse a mixin, you need to parse its file as a standalone component and then
-merge the parsing result with the result of the initial component:
+To parse a mixin, you need to parse its file as a standalone component and
+then merge the parsing result with the result of the initial component:
 
 ```js
-const vuedoc = require('@vuedoc/parser')
+const Vuedoc = require('@vuedoc/parser')
 const merge = require('deepmerge')
 
 const parsers = [
-  vuedoc.parse({ filename: 'mixinFile.js' })
-  vuedoc.parse({ filename: 'componentUsingMixin.vue' })
+  Vuedoc.parse({ filename: 'mixinFile.js' })
+  Vuedoc.parse({ filename: 'componentUsingMixin.vue' })
 ]
 
 Promise.all(parsers)
@@ -497,7 +497,8 @@ Promise.all(parsers)
 
 **Using the keyword `@mixin`**
 
-You can use the special keyword `@mixin` to force parsing named exported component:
+You can use the special keyword `@mixin` to force parsing named exported
+component:
 
 ```js
 import Vue from 'vue';
@@ -518,21 +519,21 @@ export const InputMixin = Vue.extend({
 `options.features` lets you select which Vue Features you want to parse and
 extract.
 
-The default value is define by `Parser.SUPPORTED_FEATURES` array.
+The default value is defined by `Vuedoc.Parser.SUPPORTED_FEATURES` array.
 
 **Usage**
 
 Only parse `name`, `props`, `computed properties`, `slots` and `events`:
 
 ```js
-const vuedoc = require('@vuedoc/parser')
+const Vuedoc = require('@vuedoc/parser')
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
   features: [ 'name', 'props', 'computed', 'slots', 'events' ]
 }
 
-vuedoc.parse(options)
+Vuedoc.parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'props', 'computed', 'slots', 'events' ]
@@ -541,15 +542,14 @@ vuedoc.parse(options)
 Parse all features except `data`:
 
 ```js
-const vuedoc = require('@vuedoc/parser')
-const Parser = require('@vuedoc/parser/lib/parser')
+const Vuedoc = require('@vuedoc/parser')
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
-  features: Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data')
+  features: Vuedoc.Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data')
 }
 
-vuedoc.parse(options)
+Vuedoc.parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'description', 'keywords', 'model',
