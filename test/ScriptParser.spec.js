@@ -3,132 +3,180 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 /* global describe */
 
 describe('ScriptParser', () => {
-  ComponentTestCase({
-    name: 'Accorn parsing error',
-    options: {
-      filecontent: `
-        <script>
-          var != mù*! invalid syntax
-        </script>
-      `
-    },
-    expected: {
-      errors: [
-        'Unexpected token (2:4)'
-      ]
-    }
-  })
+  // ComponentTestCase({
+  //   name: 'Accorn parsing error',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         var != mù*! invalid syntax
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     errors: [
+  //       'Unexpected token (2:4)'
+  //     ]
+  //   }
+  // })
+
+  // ComponentTestCase({
+  //   name: 'parseComment() with disbaled description',
+  //   options: {
+  //     features: [ 'keywords' ],
+  //     filecontent: `
+  //       <script>
+  //         /**
+  //          * Disabled description
+  //          */
+  //         export default {}
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     description: undefined,
+  //     keywords: [],
+  //     errors: []
+  //   }
+  // })
+
+  // ComponentTestCase({
+  //   name: 'parseComment() with disabled keywords',
+  //   options: {
+  //     features: [ 'description' ],
+  //     filecontent: `
+  //       <script>
+  //         /**
+  //          * Component description
+  //          */
+  //         export default {}
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     description: 'Component description',
+  //     keywords: undefined,
+  //     errors: []
+  //   }
+  // })
+
+  // ComponentTestCase({
+  //   name: 'Handle keyword @name prior than the component name',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         /**
+  //          * @name my-checkbox
+  //          */
+  //         export default {
+  //           name: MethodThatIsHandledAsUndefined()
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     name: 'my-checkbox'
+  //   }
+  // })
+
+  // ComponentTestCase({
+  //   name: 'with undefined references',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         export default {
+  //           name: MethodThatIsHandledAsUndefined(),
+  //           props: {
+  //             somePropCall: MethodThanReturnAString(),
+  //             somePropRef: CallsSomeOtherMethod,
+  //           },
+  //           methods: {
+  //             someMethodCall: MethodThatReturnAFunction(),
+  //             someMethodRef: CallsSomeOtherMethod
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     name: undefined,
+  //     props: [
+  //       {
+  //         kind: 'prop',
+  //         name: 'some-prop-call',
+  //         type: 'any',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         default: undefined,
+  //         nativeType: 'any',
+  //         required: false,
+  //         describeModel: false
+  //       },
+  //       {
+  //         kind: 'prop',
+  //         name: 'some-prop-ref',
+  //         type: 'CallsSomeOtherMethod',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         default: undefined,
+  //         nativeType: 'any',
+  //         required: false,
+  //         describeModel: false
+  //       }
+  //     ],
+  //     methods: [
+  //       {
+  //         kind: 'method',
+  //         name: 'someMethodCall',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         params: [],
+  //         return: {
+  //           type: 'void',
+  //           description: ''
+  //         }
+  //       },
+  //       {
+  //         kind: 'method',
+  //         name: 'someMethodRef',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         params: [],
+  //         return: {
+  //           type: 'void',
+  //           description: ''
+  //         }
+  //       }
+  //     ]
+  //   }
+  // })
 
   ComponentTestCase({
-    name: 'parseComment() with disbaled description',
+    name: 'Mixin exported as default',
     options: {
-      features: [ 'keywords' ],
       filecontent: `
         <script>
-          /**
-           * Disabled description
-           */
-          export default {}
-        </script>
-      `
-    },
-    expected: {
-      description: undefined,
-      keywords: [],
-      errors: []
-    }
-  })
+          import Vue     from 'vue'
+          import {route} from '@pits/plugins/route'
 
-  ComponentTestCase({
-    name: 'parseComment() with disabled keywords',
-    options: {
-      features: [ 'description' ],
-      filecontent: `
-        <script>
-          /**
-           * Component description
-           */
-          export default {}
-        </script>
-      `
-    },
-    expected: {
-      description: 'Component description',
-      keywords: undefined,
-      errors: []
-    }
-  })
+          export const RouteMixin = Vue.extend({
+              methods: {
+                  route,
+              }
+          })
 
-  ComponentTestCase({
-    name: 'Handle keyword @name prior than the component name',
-    options: {
-      filecontent: `
-        <script>
-          /**
-           * @name my-checkbox
-           */
-          export default {
-            name: MethodThatIsHandledAsUndefined()
-          }
+          export default RouteMixin
         </script>
       `
     },
     expected: {
-      name: 'my-checkbox'
-    }
-  })
-
-  ComponentTestCase({
-    name: 'with undefined references',
-    options: {
-      filecontent: `
-        <script>
-          export default {
-            name: MethodThatIsHandledAsUndefined(),
-            props: {
-              somePropCall: MethodThanReturnAString(),
-              somePropRef: CallsSomeOtherMethod,
-            },
-            methods: {
-              someMethodCall: MethodThatReturnAFunction(),
-              someMethodRef: CallsSomeOtherMethod
-            }
-          }
-        </script>
-      `
-    },
-    expected: {
-      name: undefined,
-      props: [
-        {
-          kind: 'prop',
-          name: 'some-prop-call',
-          type: 'any',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          default: undefined,
-          nativeType: 'any',
-          required: false,
-          describeModel: false
-        },
-        {
-          kind: 'prop',
-          name: 'some-prop-ref',
-          type: 'CallsSomeOtherMethod',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          default: undefined,
-          nativeType: 'any',
-          required: false,
-          describeModel: false
-        }
-      ],
       methods: [
         {
           kind: 'method',
-          name: 'someMethodCall',
+          name: 'route',
           visibility: 'public',
           description: '',
           keywords: [],
@@ -137,10 +185,116 @@ describe('ScriptParser', () => {
             type: 'void',
             description: ''
           }
-        },
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Mixin exported with custom name and keyword @mixin',
+    options: {
+      filecontent: `
+        <script>
+          import Vue     from 'vue'
+          import {route} from '@pits/plugins/route'
+
+          /**
+           * @mixin
+           */
+          export const RouteMixin = Vue.extend({
+            methods: {
+              route,
+            }
+          })
+        </script>
+      `
+    },
+    expected: {
+      keywords: [],
+      methods: [
         {
           kind: 'method',
-          name: 'someMethodRef',
+          name: 'route',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Mixin exported as object and keyword @mixin',
+    options: {
+      filecontent: `
+        <script>
+          import {route} from '@pits/plugins/route'
+
+          /**
+           * @mixin
+           */
+          export const RouteMixin = {
+            methods: {
+              route,
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      keywords: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'route',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Mixin exported as factory function and keyword @mixin',
+    options: {
+      filecontent: `
+        <script>
+          import Vue     from 'vue'
+          import {route} from '@pits/plugins/route'
+
+          /**
+           * @mixin
+           */
+          const RouteMixin = Vue.extend({
+            methods: {
+              route,
+            }
+          })
+
+          /**
+           * @mixin
+           */
+          export default () => RouteMixin
+        </script>
+      `
+    },
+    expected: {
+      keywords: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'route',
           visibility: 'public',
           description: '',
           keywords: [],

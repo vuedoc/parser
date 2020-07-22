@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
@@ -45,7 +45,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",

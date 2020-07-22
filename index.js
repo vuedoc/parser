@@ -18,6 +18,7 @@ const DEFAULT_LOADERS = [
 ]
 
 module.exports.Loader = Loader
+module.exports.Parser = Parser
 
 module.exports.parseOptions = (options) => {
   if (!options) {
