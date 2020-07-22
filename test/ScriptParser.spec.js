@@ -153,4 +153,40 @@ describe('ScriptParser', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: 'Mixin exported as default',
+    options: {
+      filecontent: `
+        <script>
+          import Vue     from 'vue'
+          import {route} from '@pits/plugins/route'
+
+          export const RouteMixin = Vue.extend({
+              methods: {
+                  route,
+              }
+          })
+
+          export default RouteMixin
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'route',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
 })
