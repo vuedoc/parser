@@ -54,6 +54,18 @@ describe('JSDoc', () => {
       expect(result).toEqual(expected)
     })
 
+    it('should parse @param keyword with template type', () => {
+      const comment = '{Promise<number>} x - The x value.'
+      const expected = {
+        type: 'Promise<number>',
+        name: 'x',
+        description: 'The x value.'
+      }
+      const result = JSDoc.parseParamKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
     it('should parse @param keyword with missing dash separator', () => {
       const comment = '{number} x  The x value.'
       const expected = {
@@ -132,6 +144,14 @@ describe('JSDoc', () => {
     it('should parse with just a type', () => {
       const comment = '{number}'
       const expected = { type: 'number', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a template type', () => {
+      const comment = '{Promise<number>}'
+      const expected = { type: 'Promise<number>', description: '' }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
