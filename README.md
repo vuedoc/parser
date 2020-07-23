@@ -115,13 +115,14 @@ This will print this JSON output:
 }
 ```
 
-See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json) for the complete result.
+See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
+for the complete result.
 
 ## Syntax
 
 ### Add component name
 
-By default, Vuedoc Parser use the component's filename to generate the
+By default, Vuedoc Parser uses the component's filename to generate the
 component name.
 
 To set a custom name, use the `name` field like:
@@ -226,6 +227,9 @@ export default {
   model: {
     prop: 'checked',
     event: 'change'
+  },
+  props: {
+    checked: Boolean
   }
 }
 ```
@@ -239,10 +243,7 @@ export default {
      * The checkbox model
      * @model
      */
-    model: {
-      type: Array,
-      required: true
-    }
+    checked: Boolean
   }
 }
 ```
@@ -342,7 +343,7 @@ export default {
 
 > Note: `@arg` is an alias of `@param`
 
-The parser is also able to extract events and slots from template:
+Vuedoc Parser is also able to extract events and slots from template:
 
 ```html
 <template>

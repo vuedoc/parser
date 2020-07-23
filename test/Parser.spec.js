@@ -533,7 +533,7 @@ describe('Parser', () => {
     })
 
     describe('keywords', () => {
-      it('should successfully emit component keywords by ignored name, slot and mixin', (done) => {
+      it('should successfully emit component keywords by ignoring name, slot and mixin', (done) => {
         const script = `
           /**
            * @name my-checkbox
