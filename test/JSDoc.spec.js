@@ -55,9 +55,9 @@ describe('JSDoc', () => {
     })
 
     it('should parse @param keyword with template type', () => {
-      const comment = '{Promise<number>} x - The x value.'
+      const comment = '{Record<number>} x - The x value.'
       const expected = {
-        type: 'Promise<number>',
+        type: 'Record<number>',
         name: 'x',
         description: 'The x value.'
       }
@@ -150,8 +150,56 @@ describe('JSDoc', () => {
     })
 
     it('should parse with just a template type', () => {
-      const comment = '{Promise<number>}'
-      const expected = { type: 'Promise<number>', description: '' }
+      const comment = '{Record<number>}'
+      const expected = { type: 'Record<number>', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a complex template type', () => {
+      const comment = '{Record<number,string>}'
+      const expected = { type: 'Record<number,string>', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a complex template type (2)', () => {
+      const comment = '{Record<number, string>}'
+      const expected = { type: 'Record<number, string>', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a complex template type (3)', () => {
+      const comment = '{Record<number, string[]>}'
+      const expected = { type: 'Record<number, string[]>', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a complex template type (4)', () => {
+      const comment = '{Record<T, K extends keyof T>}'
+      const expected = { type: 'Record<T, K extends keyof T>', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a complex template type (5)', () => {
+      const comment = '{{new(): T; }}'
+      const expected = { type: '{new(): T; }', description: '' }
+      const result = JSDoc.parseReturnKeyword(comment)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should parse with just a complex template type (6)', () => {
+      const comment = '{new () => A}'
+      const expected = { type: 'new () => A', description: '' }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
