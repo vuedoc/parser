@@ -8,883 +8,1025 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 const { Fixture } = require('./lib/Fixture')
 
 describe('issues', () => {
-  describe('#27 - undefined default value is parsed as a string', () => {
-    it('should parse undefined default value as it', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                value: {
-                  type: Boolean,
-                  default: undefined
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'Boolean',
-          nativeType: 'boolean',
-          default: undefined,
-          name: 'value',
-          describeModel: true,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-
-    it('should parse missing default value', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                value: {
-                  type: Boolean
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'Boolean',
-          nativeType: 'boolean',
-          default: undefined,
-          name: 'value',
-          describeModel: true,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-
-    it('should parse boolean default value as it', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                bool: {
-                  type: Boolean,
-                  default: false
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'Boolean',
-          nativeType: 'boolean',
-          default: false,
-          name: 'bool',
-          describeModel: false,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-
-    it('should parse string default value as it', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                str: {
-                  type: String,
-                  default: 'hello'
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'String',
-          nativeType: 'string',
-          default: 'hello',
-          name: 'str',
-          describeModel: false,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-
-    it('should parse number default value as it', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                int: {
-                  type: Number,
-                  default: 123
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'Number',
-          nativeType: 'number',
-          default: 123,
-          name: 'int',
-          describeModel: false,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-
-    it('should parse null default value as it', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                null: {
-                  type: Object,
-                  default: null
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'Object',
-          nativeType: 'object',
-          default: null,
-          name: 'null',
-          describeModel: false,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-
-    it('should parse bigint default value as it', () => {
-      const options = {
-        features: [ 'props' ],
-        filecontent: `
-          <script>
-            export default {
-              props: {
-                bigint: {
-                  type: BigInt,
-                  default: 100n
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          type: 'BigInt',
-          nativeType: 'bigint',
-          default: 100n,
-          name: 'bigint',
-          describeModel: false,
-          required: false
-        }
-      ]
-
-      return parser.parse(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-  })
-
-  describe('#32 - dynamic (lazy) import() function alongside a regular import', () => {
-    it('should successfully parse component with regular import', () => {
-      const options = {
-        filecontent: `
-          <template>
-            <div>
-              <Lazy />
-            </div>
-          </template>
-          <script>
-            import Regular from './components/Regular.vue'
-            export default {
-              components: {
-                Lazy: import('./components/Lazy.vue')
-              }
-            }
-          </script>
-        `
-      }
-
-      return parser.parse(options)
-    })
-
-    it('should successfully parse component with lazy import', () => {
-      const options = {
-        filecontent: `
-          <template>
-            <div>
-              <Lazy />
-            </div>
-          </template>
-          <script>
-            import Regular from './components/Regular.vue'
-            export default {
-              computed: {
-                loading() {
-                  return () => import('input.vue')
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      return parser.parse(options)
-    })
-  })
-
-  describe('#29 - Bad format when using code block in comment', () => {
-    it('should successfully parse comment with block comment', () => {
-      const options = {
-        filecontent: `
-          <script>
-            /**
-             * My beautifull component. Usage:
-             *
-             * \`\`\`
-             * <my-component
-             *     v-model='foo'
-             * />
-             * \`\`\`
-             */
-            export default {}
-
-          </script>
-        `
-      }
-      const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```'
-
-      return parser.parse(options).then(({ description }) => {
-        expect(description).toEqual(expected)
-      })
-    })
-
-    it('should successfully preserve spaces on keywords', () => {
-      const options = {
-        filecontent: `
-          <script>
-            /**
-             * Description
-             *
-             * @note Node one
-             * - Line 1
-             *   Line 2
-             * @note Node two
-             * - Line 3
-             * @note Node three
-             */
-            export default {}
-
-          </script>
-        `
-      }
-      const expectedDescription = 'Description'
-      const expectedKeywords = [
-        {
-          name: 'note',
-          description: 'Node one\n- Line 1\n  Line 2' },
-        {
-          name: 'note',
-          description: 'Node two\n- Line 3' },
-        {
-          name: 'note',
-          description: 'Node three' }
-      ]
-
-      return parser.parse(options).then(({ description, keywords }) => {
-        expect(description).toEqual(expectedDescription)
-        expect(keywords).toEqual(expectedKeywords)
-      })
-    })
-  })
-
-  describe('#30 - Block of comment is broken when using @ in comment in replacement of v-on', () => {
-    it('should successfully parse comment with block comment', () => {
-      const options = {
-        filecontent: `
-          <script>
-            /**
-             * Usage:
-             * \`\`\`
-             * <my-component @input='doSomething' />
-             * \`\`\`
-             */
-            export default {}
-
-          </script>
-        `
-      }
-      const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```'
-
-      return parser.parse(options).then(({ description }) => {
-        expect(description).toEqual(expected)
-      })
-    })
-
-    it('should successfully parse with keywords', () => {
-      const options = {
-        filecontent: `
-          <script>
-            /**
-             * Description
-             *
-             * @note Node one
-             * - Line 1
-             *   Line 2
-             * @note Node two
-             * - Line 3
-             * @note Node three
-             */
-            export default {}
-
-          </script>
-        `
-      }
-      const expectedDescription = 'Description'
-      const expectedKeywords = [
-        {
-          name: 'note',
-          description: 'Node one\n- Line 1\n  Line 2' },
-        {
-          name: 'note',
-          description: 'Node two\n- Line 3' },
-        {
-          name: 'note',
-          description: 'Node three' }
-      ]
-
-      return parser.parse(options).then(({ description, keywords }) => {
-        expect(description).toEqual(expectedDescription)
-        expect(keywords).toEqual(expectedKeywords)
-      })
-    })
-  })
-
-  describe('#40 - Nested slot documentation', () => {
-    it('should successfully parse nested slots', () => {
-      const options = {
-        filecontent: `
-          <template>
-            <!-- Overrides entire dialog contents -->
-            <slot name="content">
-              <n-module ref="module" :type="type">
-                <!-- Overrides dialog header -->
-                <slot name="header" slot="header">
-                  <n-tile>
-                    <div>
-                      <div :class="config.children.title">{{ title }}</div>
-                    </div>
-
-                    <!-- Overrides dialog header actions, i.e. default close button -->
-                    <slot name="actions" slot="actions">
-                      <n-button @click.native="close" circle ghost color="black">
-                        <n-icon :icon="config.icons.close"></n-icon>
-                      </n-button>
-                    </slot>
-                  </n-tile>
-                </slot>
-
-                <!-- Dialog body -->
-                <slot></slot>
-
-                <!-- Dialog footer -->
-                <slot name="footer" slot="footer"></slot>
-              </n-module>
-            </slot>
-          </template>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'Overrides entire dialog contents',
-          keywords: [],
-          name: 'content',
-          props: []
-        },
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'Overrides dialog header',
-          keywords: [],
-          name: 'header',
-          props: []
-        },
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'Overrides dialog header actions, i.e. default close button',
-          keywords: [],
-          name: 'actions',
-          props: []
-        },
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'Dialog body',
-          keywords: [],
-          name: 'default',
-          props: []
-        },
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'Dialog footer',
-          keywords: [],
-          name: 'footer',
-          props: []
-        }
-      ]
-
-      return parser.parse(options).then(({ slots }) => {
-        expect(slots).toEqual(expected)
-      })
-    })
-  })
-
-  describe('#39 - Events parsing on function calls', () => {
-    it('should successfully parse events on this.$nextTick()', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              created () {
-                this.$nextTick(() => {
-                  /**
-                   * Emits when confirmation dialog is closed
-                   */
-                  this.$emit('close');
-                });
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'event',
-          name: 'close',
-          description: 'Emits when confirmation dialog is closed',
-          arguments: [],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-
-    it('should successfully parse events on Vue.nextTick()', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              created () {
-                Vue.nextTick(() => {
-                  /**
-                   * Emits when confirmation dialog is closed
-                   */
-                  this.$emit('close');
-                });
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'event',
-          name: 'close',
-          description: 'Emits when confirmation dialog is closed',
-          arguments: [],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-
-    it('should successfully parse events on callee function', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              created () {
-                load(() => {
-                  /**
-                   * Emits when confirmation dialog is closed
-                   */
-                  this.$emit('close');
-                });
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'event',
-          name: 'close',
-          description: 'Emits when confirmation dialog is closed',
-          arguments: [],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-
-    it('should successfully parse events on Promise.resolve function', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              created () {
-                load().then(() => {
-                  /**
-                   * Emits when confirmation dialog is closed
-                   */
-                  this.$emit('close');
-                });
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'event',
-          name: 'close',
-          description: 'Emits when confirmation dialog is closed',
-          arguments: [],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-
-    it('should successfully parse events on Promise.reject function', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              created () {
-                load().catch(() => {
-                  /**
-                   * Emits when confirmation dialog is closed
-                   */
-                  this.$emit('close');
-                });
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'event',
-          name: 'close',
-          description: 'Emits when confirmation dialog is closed',
-          arguments: [],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-
-    it('should successfully parse events on Promise.finally function', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              created () {
-                load().finally(() => {
-                  /**
-                   * Emits when confirmation dialog is closed
-                   */
-                  this.$emit('close');
-                });
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'event',
-          name: 'close',
-          description: 'Emits when confirmation dialog is closed',
-          arguments: [],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-  })
-
-  describe('#41 - Duplicate computed properties dependencies', () => {
-    it('should successfully parse dependencies without duplicates', () => {
-      const options = {
-        filecontent: `
-          <script>
-            export default {
-              computed: {
-                bidule () {
-                  const doc = this.docs.find(({ name }) => name === this.name)
-
-                  return this.name && doc.published
-                }
-              }
-            }
-          </script>
-        `
-      }
-
-      const expected = [
-        {
-          kind: 'computed',
-          name: 'bidule',
-          description: '',
-          dependencies: [ 'docs', 'name' ],
-          keywords: [],
-          visibility: 'public'
-        }
-      ]
-
-      return parser.parse(options).then(({ computed }) => {
-        expect(computed).toEqual(expected)
-      })
-    })
-  })
-
-  ComponentTestCase({
-    name: '#52 - Prop as array type declaration',
-    options: {
-      filecontent: `
-        <script>
-          export default {
-            props: {
-              /**
-               * Badge value
-               */
-              value: [String, Number]
-            },
-          }
-        </script>
-      `
-    },
-    expected: {
-      props: [
-        {
-          default: undefined,
-          describeModel: true,
-          description: 'Badge value',
-          keywords: [],
-          kind: 'prop',
-          name: 'value',
-          nativeType: 'any',
-          required: false,
-          type: [ 'String', 'Number' ],
-          visibility: 'public' }
-      ]
-    }
-  })
-
-  ComponentTestCase({
-    name: '#53 - Documenting dynamic slots with @slot',
-    options: {
-      filecontent: `
-        <script>
-          /**
-           * A functional component with a default slot using render function
-           * @slot title - A title slot
-           * @slot default - A default slot
-           */
-          export default {
-            functional: true,
-            render(h, { slots }) {
-              return h('div', [
-                h('h1', slots().title),
-                h('p', slots().default)
-              ])
-            }
-          }
-        </script>
-      `
-    },
-    expected: {
-      description: 'A functional component with a default slot using render function',
-      keywords: [],
-      slots: [
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'A title slot',
-          keywords: [],
-          name: 'title',
-          props: []
-        },
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'A default slot',
-          keywords: [],
-          name: 'default',
-          props: []
-        }
-      ]
-    }
-  })
-
-  ComponentTestCase({
-    name: '#53 - Documenting dynamic slots with @slot on template',
-    options: {
-      filecontent: `
-        <template>
-          <div>
-            <template v-for="name in ['title', 'default']">
-              <!--
-                @slot title - A title slot
-                @slot default - A default slot
-              -->
-              <slot :name="name" :slot="name"></slot>
-            </template>
-          </div>
-        </template>
-      `
-    },
-    expected: {
-      slots: [
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'A title slot',
-          keywords: [],
-          name: 'title',
-          props: []
-        },
-        {
-          kind: 'slot',
-          visibility: 'public',
-          description: 'A default slot',
-          keywords: [],
-          name: 'default',
-          props: []
-        }
-      ]
-    }
-  })
+  // describe('test', () => {
+  //   it('should parse undefined default value as it', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           /**
+  //            * @mixin
+  //            */
+  //           export function TestMixinFactory(boundValue: Record<string, any>) {
+  //             return Vue.extend({
+  //               methods: {
+  //                 /**
+  //                  * Testing
+  //                  *
+  //                  * @since 2.5.0
+  //                  * @public
+  //                  */
+  //                 myFunction(test: Record<string, any>): Record<string, any> {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //                 },
+  //               },
+  //             })
+  //           }
+
+  //           /**
+  //            * @mixin
+  //            */
+  //           export default (boundValue: Record<string, any>) => {
+  //             return Vue.extend({
+  //               methods: {
+  //                 /**
+  //                  * Testing
+  //                  *
+  //                  * @since 2.5.0
+  //                  * @public
+  //                  */
+  //                 myFunction0(test: Record<string, any>): Record<string, any> {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //                 },
+  //               },
+  //             })
+  //           }
+
+  //           export default Vue.extend({
+  //             methods: {
+  //               /**
+  //                * Testing
+  //                *
+  //                * @param {Record<string, any>} test <-- Parser stops with error
+  //                * @return {Record<string, any>} <-- Gets parsed as description
+  //                * @public
+  //                */
+  //               myFunction2(test: Record<string, any>): Record<string, any> {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //               },
+  //             }
+  //           })
+
+  //           const fn6 = 'myFunction6'
+  //           const fn7 = \`myFunction7\`
+  //           const fn8 = 12
+  //           const fn9 = true
+  //           const fn10 = null
+  //           const fn11 = /hello/
+  //           const fn12 = new RegExp('hello')
+
+  //           export default {
+  //             methods: {
+  //               /**
+  //                * Testing
+  //                *
+  //                * @param {Record<string, any>} test <-- Parser stops with error
+  //                * @return {Record<string, any>} <-- Gets parsed as description
+  //                * @public
+  //                */
+  //               myFunction2(test: Record<string, any>): Record<string, any> {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //               },
+  //               myFunction2(test: Record<string, any>): Record<string, any> {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //               },
+  //               myFunction4: (test: Record<string, any>): Record<string, any> => {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //               },
+  //               myFunction5: function (test: Record<string, any>): Record<string, any> {
+  //                   //this.$emit('input')
+  //                   return boundValue
+  //               },
+  //               [fn6]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [fn7]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [fn8]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [fn9]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [fn10]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [fn11]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [fn12]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [Symbol.species]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               /**
+  //                * @method test
+  //                */
+  //               [MyObject.getDynamicMethodName()]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               [MyObject.fnname]: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //               ['fn13']: function (test: Record<string, any>): Record<string, any> {
+  //                   return boundValue
+  //               },
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     return parser.parse(options).then((component) => {
+  //       console.warn(JSON.stringify(component, null, 2))
+  //     })
+  //   })
+  // })
+
+  // describe('#27 - undefined default value is parsed as a string', () => {
+  //   it('should parse undefined default value as it', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               value: {
+  //                 type: Boolean,
+  //                 default: undefined
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'Boolean',
+  //         nativeType: 'boolean',
+  //         default: undefined,
+  //         name: 'value',
+  //         describeModel: true,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should parse missing default value', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               value: {
+  //                 type: Boolean
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'Boolean',
+  //         nativeType: 'boolean',
+  //         default: undefined,
+  //         name: 'value',
+  //         describeModel: true,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should parse boolean default value as it', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               bool: {
+  //                 type: Boolean,
+  //                 default: false
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'Boolean',
+  //         nativeType: 'boolean',
+  //         default: false,
+  //         name: 'bool',
+  //         describeModel: false,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should parse string default value as it', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               str: {
+  //                 type: String,
+  //                 default: 'hello'
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'String',
+  //         nativeType: 'string',
+  //         default: 'hello',
+  //         name: 'str',
+  //         describeModel: false,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should parse number default value as it', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               int: {
+  //                 type: Number,
+  //                 default: 123
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'Number',
+  //         nativeType: 'number',
+  //         default: 123,
+  //         name: 'int',
+  //         describeModel: false,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should parse null default value as it', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               null: {
+  //                 type: Object,
+  //                 default: null
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'Object',
+  //         nativeType: 'object',
+  //         default: null,
+  //         name: 'null',
+  //         describeModel: false,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should parse bigint default value as it', () => {
+  //     const options = {
+  //       features: [ 'props' ],
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             props: {
+  //               bigint: {
+  //                 type: BigInt,
+  //                 default: 100n
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         type: 'BigInt',
+  //         nativeType: 'bigint',
+  //         default: 100n,
+  //         name: 'bigint',
+  //         describeModel: false,
+  //         required: false
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ props }) => {
+  //       expect(props).toEqual(expected)
+  //     })
+  //   })
+  // })
+
+  // describe('#32 - dynamic (lazy) import() function alongside a regular import', () => {
+  //   it('should successfully parse component with regular import', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <template>
+  //           <div>
+  //             <Lazy />
+  //           </div>
+  //         </template>
+  //         <script>
+  //           import Regular from './components/Regular.vue'
+  //           export default {
+  //             components: {
+  //               Lazy: import('./components/Lazy.vue')
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     return parser.parse(options)
+  //   })
+
+  //   it('should successfully parse component with lazy import', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <template>
+  //           <div>
+  //             <Lazy />
+  //           </div>
+  //         </template>
+  //         <script>
+  //           import Regular from './components/Regular.vue'
+  //           export default {
+  //             computed: {
+  //               loading() {
+  //                 return () => import('input.vue')
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     return parser.parse(options)
+  //   })
+  // })
+
+  // describe('#29 - Bad format when using code block in comment', () => {
+  //   it('should successfully parse comment with block comment', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           /**
+  //            * My beautifull component. Usage:
+  //            *
+  //            * \`\`\`
+  //            * <my-component
+  //            *     v-model='foo'
+  //            * />
+  //            * \`\`\`
+  //            */
+  //           export default {}
+
+  //         </script>
+  //       `
+  //     }
+  //     const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```'
+
+  //     return parser.parse(options).then(({ description }) => {
+  //       expect(description).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully preserve spaces on keywords', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           /**
+  //            * Description
+  //            *
+  //            * @note Node one
+  //            * - Line 1
+  //            *   Line 2
+  //            * @note Node two
+  //            * - Line 3
+  //            * @note Node three
+  //            */
+  //           export default {}
+
+  //         </script>
+  //       `
+  //     }
+  //     const expectedDescription = 'Description'
+  //     const expectedKeywords = [
+  //       {
+  //         name: 'note',
+  //         description: 'Node one\n- Line 1\n  Line 2' },
+  //       {
+  //         name: 'note',
+  //         description: 'Node two\n- Line 3' },
+  //       {
+  //         name: 'note',
+  //         description: 'Node three' }
+  //     ]
+
+  //     return parser.parse(options).then(({ description, keywords }) => {
+  //       expect(description).toEqual(expectedDescription)
+  //       expect(keywords).toEqual(expectedKeywords)
+  //     })
+  //   })
+  // })
+
+  // describe('#30 - Block of comment is broken when using @ in comment in replacement of v-on', () => {
+  //   it('should successfully parse comment with block comment', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           /**
+  //            * Usage:
+  //            * \`\`\`
+  //            * <my-component @input='doSomething' />
+  //            * \`\`\`
+  //            */
+  //           export default {}
+
+  //         </script>
+  //       `
+  //     }
+  //     const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```'
+
+  //     return parser.parse(options).then(({ description }) => {
+  //       expect(description).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully parse with keywords', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           /**
+  //            * Description
+  //            *
+  //            * @note Node one
+  //            * - Line 1
+  //            *   Line 2
+  //            * @note Node two
+  //            * - Line 3
+  //            * @note Node three
+  //            */
+  //           export default {}
+
+  //         </script>
+  //       `
+  //     }
+  //     const expectedDescription = 'Description'
+  //     const expectedKeywords = [
+  //       {
+  //         name: 'note',
+  //         description: 'Node one\n- Line 1\n  Line 2' },
+  //       {
+  //         name: 'note',
+  //         description: 'Node two\n- Line 3' },
+  //       {
+  //         name: 'note',
+  //         description: 'Node three' }
+  //     ]
+
+  //     return parser.parse(options).then(({ description, keywords }) => {
+  //       expect(description).toEqual(expectedDescription)
+  //       expect(keywords).toEqual(expectedKeywords)
+  //     })
+  //   })
+  // })
+
+  // describe('#40 - Nested slot documentation', () => {
+  //   it('should successfully parse nested slots', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <template>
+  //           <!-- Overrides entire dialog contents -->
+  //           <slot name="content">
+  //             <n-module ref="module" :type="type">
+  //               <!-- Overrides dialog header -->
+  //               <slot name="header" slot="header">
+  //                 <n-tile>
+  //                   <div>
+  //                     <div :class="config.children.title">{{ title }}</div>
+  //                   </div>
+
+  //                   <!-- Overrides dialog header actions, i.e. default close button -->
+  //                   <slot name="actions" slot="actions">
+  //                     <n-button @click.native="close" circle ghost color="black">
+  //                       <n-icon :icon="config.icons.close"></n-icon>
+  //                     </n-button>
+  //                   </slot>
+  //                 </n-tile>
+  //               </slot>
+
+  //               <!-- Dialog body -->
+  //               <slot></slot>
+
+  //               <!-- Dialog footer -->
+  //               <slot name="footer" slot="footer"></slot>
+  //             </n-module>
+  //           </slot>
+  //         </template>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'Overrides entire dialog contents',
+  //         keywords: [],
+  //         name: 'content',
+  //         props: []
+  //       },
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'Overrides dialog header',
+  //         keywords: [],
+  //         name: 'header',
+  //         props: []
+  //       },
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'Overrides dialog header actions, i.e. default close button',
+  //         keywords: [],
+  //         name: 'actions',
+  //         props: []
+  //       },
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'Dialog body',
+  //         keywords: [],
+  //         name: 'default',
+  //         props: []
+  //       },
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'Dialog footer',
+  //         keywords: [],
+  //         name: 'footer',
+  //         props: []
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ slots }) => {
+  //       expect(slots).toEqual(expected)
+  //     })
+  //   })
+  // })
+
+  // describe('#39 - Events parsing on function calls', () => {
+  //   it('should successfully parse events on this.$nextTick()', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             created () {
+  //               this.$nextTick(() => {
+  //                 /**
+  //                  * Emits when confirmation dialog is closed
+  //                  */
+  //                 this.$emit('close');
+  //               });
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         description: 'Emits when confirmation dialog is closed',
+  //         arguments: [],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ events }) => {
+  //       expect(events).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully parse events on Vue.nextTick()', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             created () {
+  //               Vue.nextTick(() => {
+  //                 /**
+  //                  * Emits when confirmation dialog is closed
+  //                  */
+  //                 this.$emit('close');
+  //               });
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         description: 'Emits when confirmation dialog is closed',
+  //         arguments: [],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ events }) => {
+  //       expect(events).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully parse events on callee function', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             created () {
+  //               load(() => {
+  //                 /**
+  //                  * Emits when confirmation dialog is closed
+  //                  */
+  //                 this.$emit('close');
+  //               });
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         description: 'Emits when confirmation dialog is closed',
+  //         arguments: [],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ events }) => {
+  //       expect(events).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully parse events on Promise.resolve function', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             created () {
+  //               load().then(() => {
+  //                 /**
+  //                  * Emits when confirmation dialog is closed
+  //                  */
+  //                 this.$emit('close');
+  //               });
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         description: 'Emits when confirmation dialog is closed',
+  //         arguments: [],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ events }) => {
+  //       expect(events).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully parse events on Promise.reject function', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             created () {
+  //               load().catch(() => {
+  //                 /**
+  //                  * Emits when confirmation dialog is closed
+  //                  */
+  //                 this.$emit('close');
+  //               });
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         description: 'Emits when confirmation dialog is closed',
+  //         arguments: [],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ events }) => {
+  //       expect(events).toEqual(expected)
+  //     })
+  //   })
+
+  //   it('should successfully parse events on Promise.finally function', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             created () {
+  //               load().finally(() => {
+  //                 /**
+  //                  * Emits when confirmation dialog is closed
+  //                  */
+  //                 this.$emit('close');
+  //               });
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         description: 'Emits when confirmation dialog is closed',
+  //         arguments: [],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ events }) => {
+  //       expect(events).toEqual(expected)
+  //     })
+  //   })
+  // })
+
+  // describe('#41 - Duplicate computed properties dependencies', () => {
+  //   it('should successfully parse dependencies without duplicates', () => {
+  //     const options = {
+  //       filecontent: `
+  //         <script>
+  //           export default {
+  //             computed: {
+  //               bidule () {
+  //                 const doc = this.docs.find(({ name }) => name === this.name)
+
+  //                 return this.name && doc.published
+  //               }
+  //             }
+  //           }
+  //         </script>
+  //       `
+  //     }
+
+  //     const expected = [
+  //       {
+  //         kind: 'computed',
+  //         name: 'bidule',
+  //         description: '',
+  //         dependencies: [ 'docs', 'name' ],
+  //         keywords: [],
+  //         visibility: 'public'
+  //       }
+  //     ]
+
+  //     return parser.parse(options).then(({ computed }) => {
+  //       expect(computed).toEqual(expected)
+  //     })
+  //   })
+  // })
+
+  // ComponentTestCase({
+  //   name: '#52 - Prop as array type declaration',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         export default {
+  //           props: {
+  //             /**
+  //              * Badge value
+  //              */
+  //             value: [String, Number]
+  //           },
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     props: [
+  //       {
+  //         default: undefined,
+  //         describeModel: true,
+  //         description: 'Badge value',
+  //         keywords: [],
+  //         kind: 'prop',
+  //         name: 'value',
+  //         nativeType: 'any',
+  //         required: false,
+  //         type: [ 'String', 'Number' ],
+  //         visibility: 'public' }
+  //     ]
+  //   }
+  // })
+
+  // ComponentTestCase({
+  //   name: '#53 - Documenting dynamic slots with @slot',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         /**
+  //          * A functional component with a default slot using render function
+  //          * @slot title - A title slot
+  //          * @slot default - A default slot
+  //          */
+  //         export default {
+  //           functional: true,
+  //           render(h, { slots }) {
+  //             return h('div', [
+  //               h('h1', slots().title),
+  //               h('p', slots().default)
+  //             ])
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     description: 'A functional component with a default slot using render function',
+  //     keywords: [],
+  //     slots: [
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'A title slot',
+  //         keywords: [],
+  //         name: 'title',
+  //         props: []
+  //       },
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'A default slot',
+  //         keywords: [],
+  //         name: 'default',
+  //         props: []
+  //       }
+  //     ]
+  //   }
+  // })
+
+  // ComponentTestCase({
+  //   name: '#53 - Documenting dynamic slots with @slot on template',
+  //   options: {
+  //     filecontent: `
+  //       <template>
+  //         <div>
+  //           <template v-for="name in ['title', 'default']">
+  //             <!--
+  //               @slot title - A title slot
+  //               @slot default - A default slot
+  //             -->
+  //             <slot :name="name" :slot="name"></slot>
+  //           </template>
+  //         </div>
+  //       </template>
+  //     `
+  //   },
+  //   expected: {
+  //     slots: [
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'A title slot',
+  //         keywords: [],
+  //         name: 'title',
+  //         props: []
+  //       },
+  //       {
+  //         kind: 'slot',
+  //         visibility: 'public',
+  //         description: 'A default slot',
+  //         keywords: [],
+  //         name: 'default',
+  //         props: []
+  //       }
+  //     ]
+  //   }
+  // })
 
   ComponentTestCase({
     name: '#56 - Cannot read property \'type\' of null (UiAutocomplete.vue)',
@@ -1751,300 +1893,300 @@ describe('issues', () => {
     }
   })
 
-  ComponentTestCase({
-    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
-    options: {
-      filecontent: Fixture.get('UiAutocompleteMinimal.vue')
-    },
-    expected: {
-      name: 'ui-autocomplete',
-      methods: [
-        {
-          description: '',
-          keywords: [],
-          kind: 'method',
-          name: 'selectSuggestion',
-          params: [
-            {
-              name: 'suggestion',
-              type: 'any',
-              defaultValue: undefined,
-              description: '',
-              declaration: ''
-            }
-          ],
-          return: {
-            type: 'void',
-            description: ''
-          },
-          visibility: 'public' }
-      ],
-      events: [
-        {
-          name: 'select',
-          description: '',
-          keywords: [],
-          arguments: [
-            {
-              name: 'suggestion',
-              type: 'any',
-              description: '',
-              declaration: ''
-            }
-          ],
-          kind: 'event',
-          visibility: 'public'
-        }
-      ]
-    }
-  })
+  // ComponentTestCase({
+  //   name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
+  //   options: {
+  //     filecontent: Fixture.get('UiAutocompleteMinimal.vue')
+  //   },
+  //   expected: {
+  //     name: 'ui-autocomplete',
+  //     methods: [
+  //       {
+  //         description: '',
+  //         keywords: [],
+  //         kind: 'method',
+  //         name: 'selectSuggestion',
+  //         params: [
+  //           {
+  //             name: 'suggestion',
+  //             type: 'any',
+  //             defaultValue: undefined,
+  //             description: '',
+  //             declaration: ''
+  //           }
+  //         ],
+  //         return: {
+  //           type: 'void',
+  //           description: ''
+  //         },
+  //         visibility: 'public' }
+  //     ],
+  //     events: [
+  //       {
+  //         name: 'select',
+  //         description: '',
+  //         keywords: [],
+  //         arguments: [
+  //           {
+  //             name: 'suggestion',
+  //             type: 'any',
+  //             description: '',
+  //             declaration: ''
+  //           }
+  //         ],
+  //         kind: 'event',
+  //         visibility: 'public'
+  //       }
+  //     ]
+  //   }
+  // })
 
-  ComponentTestCase({
-    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
-    options: {
-      filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
-    },
-    expected: {
-      name: 'ui-autocomplete',
-      methods: [
-        {
-          description: '',
-          keywords: [],
-          kind: 'method',
-          name: 'selectSuggestion',
-          params: [
-            {
-              name: 'suggestion',
-              type: 'any',
-              defaultValue: undefined,
-              description: '',
-              declaration: ''
-            }
-          ],
-          return: {
-            type: 'void',
-            description: ''
-          },
-          visibility: 'public' }
-      ],
-      events: [
-        {
-          name: 'select',
-          description: '',
-          keywords: [],
-          arguments: [
-            {
-              name: 'suggestion',
-              type: 'any',
-              description: '',
-              declaration: ''
-            }
-          ],
-          kind: 'event',
-          visibility: 'public'
-        }
-      ]
-    }
-  })
+  // ComponentTestCase({
+  //   name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
+  //   options: {
+  //     filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
+  //   },
+  //   expected: {
+  //     name: 'ui-autocomplete',
+  //     methods: [
+  //       {
+  //         description: '',
+  //         keywords: [],
+  //         kind: 'method',
+  //         name: 'selectSuggestion',
+  //         params: [
+  //           {
+  //             name: 'suggestion',
+  //             type: 'any',
+  //             defaultValue: undefined,
+  //             description: '',
+  //             declaration: ''
+  //           }
+  //         ],
+  //         return: {
+  //           type: 'void',
+  //           description: ''
+  //         },
+  //         visibility: 'public' }
+  //     ],
+  //     events: [
+  //       {
+  //         name: 'select',
+  //         description: '',
+  //         keywords: [],
+  //         arguments: [
+  //           {
+  //             name: 'suggestion',
+  //             type: 'any',
+  //             description: '',
+  //             declaration: ''
+  //           }
+  //         ],
+  //         kind: 'event',
+  //         visibility: 'public'
+  //       }
+  //     ]
+  //   }
+  // })
 
-  ComponentTestCase({
-    name: '#59 - Parser fails when props have an empty validator block',
-    options: {
-      filecontent: `
-        <template>
-          <div></div>
-        </template>
-        <script>
-          export default {
-            props: {
-              myProp: {}
-            }
-          }
-        </script>
-      `
-    },
-    expected: {
-      props: [
-        {
-          kind: 'prop',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          name: 'my-prop',
-          type: 'any',
-          nativeType: 'any',
-          default: undefined,
-          required: false,
-          describeModel: false
-        }
-      ]
-    }
-  })
+  // ComponentTestCase({
+  //   name: '#59 - Parser fails when props have an empty validator block',
+  //   options: {
+  //     filecontent: `
+  //       <template>
+  //         <div></div>
+  //       </template>
+  //       <script>
+  //         export default {
+  //           props: {
+  //             myProp: {}
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     props: [
+  //       {
+  //         kind: 'prop',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         name: 'my-prop',
+  //         type: 'any',
+  //         nativeType: 'any',
+  //         default: undefined,
+  //         required: false,
+  //         describeModel: false
+  //       }
+  //     ]
+  //   }
+  // })
 
-  ComponentTestCase({
-    name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
-    options: {
-      filecontent: `
-        <template>
-          <div></div>
-        </template>
-        <script>
-          export default {
-            methods: {
-              example() {
-                setTimeout(() => console.log('notify'), 100);
-              }
-            }
-          }
-        </script>
-      `
-    },
-    expected: {
-      methods: [
-        {
-          kind: 'method',
-          name: 'example',
-          visibility: 'public',
-          description: '',
-          keywords: [],
-          params: [],
-          return: {
-            type: 'void',
-            description: ''
-          }
-        }
-      ]
-    }
-  })
+  // ComponentTestCase({
+  //   name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
+  //   options: {
+  //     filecontent: `
+  //       <template>
+  //         <div></div>
+  //       </template>
+  //       <script>
+  //         export default {
+  //           methods: {
+  //             example() {
+  //               setTimeout(() => console.log('notify'), 100);
+  //             }
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     methods: [
+  //       {
+  //         kind: 'method',
+  //         name: 'example',
+  //         visibility: 'public',
+  //         description: '',
+  //         keywords: [],
+  //         params: [],
+  //         return: {
+  //           type: 'void',
+  //           description: ''
+  //         }
+  //       }
+  //     ]
+  //   }
+  // })
 
-  ComponentTestCase({
-    name: '#61 - Parsing event fails when event name is non-primitive value',
-    options: {
-      filecontent: `
-        <script>
-          const METHODS = {
-            CLOSE: 'close'
-          }
+  // ComponentTestCase({
+  //   name: '#61 - Parsing event fails when event name is non-primitive value',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         const METHODS = {
+  //           CLOSE: 'close'
+  //         }
 
-          const EVENTS = {
-            CLOSE: 'close'
-          }
+  //         const EVENTS = {
+  //           CLOSE: 'close'
+  //         }
 
-          export default {
-            methods: {
-              /**
-               * Close modal
-               * @method close
-               */
-              [METHODS.CLOSE] () {
-                /**
-                 * Emit the \`close\` event on click
-                 * @event close
-                 */
-                this.$emit(EVENTS.CLOSE, true)
-              }
-            }
-          }
-        </script>
-      `
-    },
-    expected: {
-      methods: [
-        {
-          kind: 'method',
-          name: 'close',
-          visibility: 'public',
-          description: 'Close modal',
-          keywords: [],
-          params: [],
-          return: {
-            type: 'void',
-            description: ''
-          }
-        }
-      ],
-      events: [
-        {
-          kind: 'event',
-          name: 'close',
-          visibility: 'public',
-          description: 'Emit the `close` event on click',
-          keywords: [],
-          arguments: [
-            {
-              type: 'boolean',
-              declaration: '',
-              description: '',
-              name: true
-            }
-          ]
-        }
-      ]
-    }
-  })
+  //         export default {
+  //           methods: {
+  //             /**
+  //              * Close modal
+  //              * @method close
+  //              */
+  //             [METHODS.CLOSE] () {
+  //               /**
+  //                * Emit the \`close\` event on click
+  //                * @event close
+  //                */
+  //               this.$emit(EVENTS.CLOSE, true)
+  //             }
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     methods: [
+  //       {
+  //         kind: 'method',
+  //         name: 'close',
+  //         visibility: 'public',
+  //         description: 'Close modal',
+  //         keywords: [],
+  //         params: [],
+  //         return: {
+  //           type: 'void',
+  //           description: ''
+  //         }
+  //       }
+  //     ],
+  //     events: [
+  //       {
+  //         kind: 'event',
+  //         name: 'close',
+  //         visibility: 'public',
+  //         description: 'Emit the `close` event on click',
+  //         keywords: [],
+  //         arguments: [
+  //           {
+  //             type: 'boolean',
+  //             declaration: '',
+  //             description: '',
+  //             name: true
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // })
 
-  ComponentTestCase({
-    name: '#62 - @ symbol breaks comment parsing',
-    options: {
-      filecontent: `
-        <script>
-          /**
-           * Defines if \`bleed@small\` class should be added to component for mobile view
-           */
-          export default {}
-        </script>
-      `
-    },
-    expected: {
-      description: 'Defines if `bleed@small` class should be added to component for mobile view'
-    }
-  })
+  // ComponentTestCase({
+  //   name: '#62 - @ symbol breaks comment parsing',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         /**
+  //          * Defines if \`bleed@small\` class should be added to component for mobile view
+  //          */
+  //         export default {}
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     description: 'Defines if `bleed@small` class should be added to component for mobile view'
+  //   }
+  // })
 
-  ComponentTestCase({
-    name: '#66 - @returns with type',
-    options: {
-      filecontent: `
-        <script>
-          export default {
-            methods: {
-              /**
-               * Returns the sum of a and b
-               * @param {number} a
-               * @param {number} b
-               * @returns {number}
-               */
-              sum: (a, b) => a + b
-            }
-          }
-        </script>
-      `
-    },
-    expected: {
-      methods: [
-        {
-          kind: 'method',
-          name: 'sum',
-          visibility: 'public',
-          description: 'Returns the sum of a and b',
-          keywords: [],
-          params: [
-            {
-              name: 'a',
-              type: 'number',
-              description: undefined
-            },
-            {
-              name: 'b',
-              type: 'number',
-              description: undefined
-            }
-          ],
-          return: {
-            type: 'number',
-            description: ''
-          }
-        }
-      ]
-    }
-  })
+  // ComponentTestCase({
+  //   name: '#66 - @returns with type',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         export default {
+  //           methods: {
+  //             /**
+  //              * Returns the sum of a and b
+  //              * @param {number} a
+  //              * @param {number} b
+  //              * @returns {number}
+  //              */
+  //             sum: (a, b) => a + b
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     methods: [
+  //       {
+  //         kind: 'method',
+  //         name: 'sum',
+  //         visibility: 'public',
+  //         description: 'Returns the sum of a and b',
+  //         keywords: [],
+  //         params: [
+  //           {
+  //             name: 'a',
+  //             type: 'number',
+  //             description: undefined
+  //           },
+  //           {
+  //             name: 'b',
+  //             type: 'number',
+  //             description: undefined
+  //           }
+  //         ],
+  //         return: {
+  //           type: 'number',
+  //           description: ''
+  //         }
+  //       }
+  //     ]
+  //   }
+  // })
 })

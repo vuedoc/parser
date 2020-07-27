@@ -1877,6 +1877,7 @@ describe('Parser', () => {
       }
       const expected = {
         name: 'idGetter',
+        kind: 'computed',
         keywords: [ { name: 'private', description: '' } ],
         visibility: 'private',
         description: 'ID computed prop',
@@ -1884,12 +1885,7 @@ describe('Parser', () => {
       }
 
       new Parser(options).walk().on('computed', (prop) => {
-        assert.equal(prop.name, expected.name)
-        assert.deepEqual(prop.keywords, expected.keywords)
-        assert.equal(prop.visibility, expected.visibility)
-        assert.equal(prop.description, expected.description)
-        assert.equal(prop.value, undefined)
-        assert.deepEqual(prop.dependencies, expected.dependencies)
+        expect(prop).toEqual(expected)
         done()
       })
     })

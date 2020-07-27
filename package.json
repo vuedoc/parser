@@ -4,6 +4,7 @@
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
+    "debug": "jest issue",
     "preversion": "npm test",
     "test": "jest --coverage",
     "lint": "eslint index.js lib test",
@@ -42,6 +43,7 @@
     "acorn-import-meta": "^1.1.0",
     "acorn-private-class-elements": "^0.2.6",
     "acorn-stage3": "^3.0.0",
+    "recast": "^0.19.1",
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {

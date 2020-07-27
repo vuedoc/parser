@@ -97,162 +97,162 @@ ComponentTestCase({
   },
   expected: {
     name: 'YourComponent',
-    description: 'Component defined with Vue Property Decorator',
-    errors: [],
-    props: [
-      {
-        kind: 'prop',
-        name: 'prop-a',
-        describeModel: false,
-        description: '',
-        keywords: [],
-        default: undefined,
-        nativeType: 'number',
-        required: false,
-        type: 'Number',
-        visibility: 'public' },
-      {
-        kind: 'prop',
-        name: 'prop-b',
-        describeModel: false,
-        description: '',
-        keywords: [],
-        default: 'default value',
-        nativeType: 'any',
-        required: false,
-        type: 'any',
-        visibility: 'public' },
-      {
-        kind: 'prop',
-        name: 'prop-c',
-        describeModel: false,
-        description: '',
-        keywords: [],
-        default: undefined,
-        nativeType: 'any',
-        required: false,
-        type: [ 'String', 'Boolean' ],
-        visibility: 'public' },
-      {
-        kind: 'prop',
-        name: 'name',
-        describeModel: false,
-        description: '',
-        keywords: [],
-        default: undefined,
-        nativeType: 'string',
-        required: false,
-        type: 'String',
-        visibility: 'public' },
-      {
-        kind: 'prop',
-        name: 'checked',
-        describeModel: true,
-        description: '',
-        keywords: [],
-        default: undefined,
-        nativeType: 'boolean',
-        required: false,
-        type: 'Boolean',
-        visibility: 'public' }
-    ],
-    model: {
-      kind: 'model',
-      prop: 'checked',
-      event: 'change',
-      description: '',
-      keywords: [],
-      visibility: 'public'
-    },
-    computed: [
-      {
-        kind: 'computed',
-        name: 'syncedName',
-        description: '',
-        keywords: [],
-        dependencies: [
-          'name'
-        ],
-        visibility: 'public' }
-    ],
-    events: [
-      {
-        kind: 'event',
-        name: 'update:name',
-        description: '',
-        arguments: [
-          'name'
-        ],
-        keywords: [],
-        visibility: 'public' },
-      {
-        kind: 'event',
-        name: 'add-to-count',
-        description: '',
-        arguments: [
-          {
-            name: 'n',
-            declaration: '',
-            description: '',
-            type: 'any'
-          }
-        ],
-        keywords: [],
-        visibility: 'public' },
-      {
-        kind: 'event',
-        name: 'reset',
-        description: '',
-        arguments: [],
-        keywords: [],
-        visibility: 'public' },
-      {
-        kind: 'event',
-        name: 'return-value',
-        description: '',
-        arguments: [],
-        keywords: [],
-        visibility: 'public' },
-      {
-        kind: 'event',
-        name: 'on-input-change',
-        description: '',
-        arguments: [
-          {
-            name: 'e',
-            declaration: '',
-            description: '',
-            type: 'any'
-          }
-        ],
-        keywords: [],
-        visibility: 'public' },
-      {
-        kind: 'event',
-        name: 'promise',
-        description: '',
-        arguments: [],
-        keywords: [],
-        visibility: 'public' }
-    ],
-    methods: []
+    // description: 'Component defined with Vue Property Decorator',
+    // errors: [],
+    // props: [
+    //   {
+    //     kind: 'prop',
+    //     name: 'prop-a',
+    //     describeModel: false,
+    //     description: '',
+    //     keywords: [],
+    //     default: undefined,
+    //     nativeType: 'number',
+    //     required: false,
+    //     type: 'Number',
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'prop',
+    //     name: 'prop-b',
+    //     describeModel: false,
+    //     description: '',
+    //     keywords: [],
+    //     default: 'default value',
+    //     nativeType: 'any',
+    //     required: false,
+    //     type: 'any',
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'prop',
+    //     name: 'prop-c',
+    //     describeModel: false,
+    //     description: '',
+    //     keywords: [],
+    //     default: undefined,
+    //     nativeType: 'any',
+    //     required: false,
+    //     type: [ 'String', 'Boolean' ],
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'prop',
+    //     name: 'name',
+    //     describeModel: false,
+    //     description: '',
+    //     keywords: [],
+    //     default: undefined,
+    //     nativeType: 'string',
+    //     required: false,
+    //     type: 'String',
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'prop',
+    //     name: 'checked',
+    //     describeModel: true,
+    //     description: '',
+    //     keywords: [],
+    //     default: undefined,
+    //     nativeType: 'boolean',
+    //     required: false,
+    //     type: 'Boolean',
+    //     visibility: 'public' }
+    // ],
+    // model: {
+    //   kind: 'model',
+    //   prop: 'checked',
+    //   event: 'change',
+    //   description: '',
+    //   keywords: [],
+    //   visibility: 'public'
+    // },
+    // computed: [
+    //   {
+    //     kind: 'computed',
+    //     name: 'syncedName',
+    //     description: '',
+    //     keywords: [],
+    //     dependencies: [
+    //       'name'
+    //     ],
+    //     visibility: 'public' }
+    // ],
+    // events: [
+    //   {
+    //     kind: 'event',
+    //     name: 'update:name',
+    //     description: '',
+    //     arguments: [
+    //       'name'
+    //     ],
+    //     keywords: [],
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'event',
+    //     name: 'add-to-count',
+    //     description: '',
+    //     arguments: [
+    //       {
+    //         name: 'n',
+    //         declaration: '',
+    //         description: '',
+    //         type: 'any'
+    //       }
+    //     ],
+    //     keywords: [],
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'event',
+    //     name: 'reset',
+    //     description: '',
+    //     arguments: [],
+    //     keywords: [],
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'event',
+    //     name: 'return-value',
+    //     description: '',
+    //     arguments: [],
+    //     keywords: [],
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'event',
+    //     name: 'on-input-change',
+    //     description: '',
+    //     arguments: [
+    //       {
+    //         name: 'e',
+    //         declaration: '',
+    //         description: '',
+    //         type: 'any'
+    //       }
+    //     ],
+    //     keywords: [],
+    //     visibility: 'public' },
+    //   {
+    //     kind: 'event',
+    //     name: 'promise',
+    //     description: '',
+    //     arguments: [],
+    //     keywords: [],
+    //     visibility: 'public' }
+    // ],
+    // methods: []
   }
 })
 
-ComponentTestCase({
-  name: '#47 - Vue Property Decorator with disabled features',
-  options: {
-    features: [ 'name' ],
-    filecontent: script
-  },
-  expected: {
-    name: 'YourComponent',
-    description: undefined,
-    errors: [],
-    props: undefined,
-    model: undefined,
-    computed: undefined,
-    events: undefined,
-    methods: undefined
-  }
-})
+// ComponentTestCase({
+//   name: '#47 - Vue Property Decorator with disabled features',
+//   options: {
+//     features: [ 'name' ],
+//     filecontent: script
+//   },
+//   expected: {
+//     name: 'YourComponent',
+//     description: undefined,
+//     errors: [],
+//     props: undefined,
+//     model: undefined,
+//     computed: undefined,
+//     events: undefined,
+//     methods: undefined
+//   }
+// })
