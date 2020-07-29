@@ -32,14 +32,13 @@ describe('CommentParser', () => {
 
     it('should successfully extract both description and keywords', () => {
       expect(result.description).toBe('The generic component\nSub description')
-      expect(result.keywords.length).toBe(10)
+      expect(result.keywords.length).toBe(9)
     })
 
-    it('should successfully extract the public visibility keyword', () => {
+    it('should successfully skip the public visibility keyword', () => {
       const keyword = keywords.find((keyword) => keyword.name === 'public')
 
-      expect(keyword).toBeDefined()
-      expect(keyword.description).toBe('')
+      expect(keyword).toBeUndefined()
     })
 
     it('should successfully extract keyword with alpnum chars in description', () => {

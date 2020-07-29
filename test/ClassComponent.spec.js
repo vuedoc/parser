@@ -135,11 +135,7 @@ ComponentTestCase({
         name: '_protectedMethod',
         params: [],
         description: 'method _protectedMethod description',
-        keywords: [
-          {
-            name: 'protected',
-            description: '' }
-        ],
+        keywords: [],
         visibility: 'protected',
         return: {
           description: '',

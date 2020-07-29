@@ -757,7 +757,7 @@ describe('Parser', () => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, '')
             assert.equal(event.visibility, 'private')
-            assert.deepEqual(event.keywords, [ { name: 'private', description: '' } ])
+            assert.deepEqual(event.keywords, [])
             done()
           })
       })
@@ -788,7 +788,6 @@ describe('Parser', () => {
             assert.equal(event.description, 'Emit the input event')
             assert.equal(event.visibility, 'protected')
             assert.deepEqual(event.keywords, [
-              { name: 'protected', description: '' },
               { name: 'value', description: 'A input value' }
             ])
             done()
@@ -821,7 +820,6 @@ describe('Parser', () => {
             assert.equal(event.description, 'Emit the input event')
             assert.equal(event.visibility, 'protected')
             assert.deepEqual(event.keywords, [
-              { name: 'protected', description: '' },
               { name: 'value', description: 'A input value' }
             ])
             done()
@@ -856,16 +854,14 @@ describe('Parser', () => {
             visibility: 'protected',
             description: 'Emit the input event',
             keywords:
-            [ { name: 'protected', description: '' },
-              { name: 'value', description: 'A input value' } ] },
+            [ { name: 'value', description: 'A input value' } ] },
           { kind: 'event',
             name: 'change',
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
             keywords:
-            [ { name: 'protected', description: '' },
-              { name: 'value', description: 'A input value' } ] }
+            [ { name: 'value', description: 'A input value' } ] }
         ]
 
         const result = []
@@ -1835,7 +1831,7 @@ describe('Parser', () => {
 
       const expected = {
         name: 'id',
-        keywords: [ { name: 'private', description: '' } ],
+        keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
         dependencies: [ 'value', 'name' ]
@@ -1878,7 +1874,7 @@ describe('Parser', () => {
       const expected = {
         name: 'idGetter',
         kind: 'computed',
-        keywords: [ { name: 'private', description: '' } ],
+        keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
         dependencies: [ 'value', 'name' ]
@@ -2075,7 +2071,7 @@ describe('Parser', () => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+        assert.deepEqual(event.keywords, [])
         done()
       })
     })
@@ -2161,9 +2157,7 @@ describe('Parser', () => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [
-          { name: 'protected', description: '' }
-        ])
+        assert.deepEqual(event.keywords, [])
         done()
       })
     })

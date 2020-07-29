@@ -345,6 +345,59 @@ describe('ScriptParser', () => {
   })
 
   ComponentTestCase({
+    name: '@mixin: Mixin exported as default factory function with arguments and TypeScript',
+    options: {
+      ignoredVisibilities: [],
+      filecontent: `
+        <script>
+          /**
+           * @mixin
+           */
+          export default function TestMixinFactory(boundValue: Record<string, any>) {
+            return Vue.extend({
+              methods: {
+                /**
+                 * Testing
+                 *
+                 * @param {Record<string, any>} test <-- Parser stops with error
+                 * @return {Record<string, any>} <-- Gets parsed as description
+                 * @protected
+                 */
+                myFunction(test: Record<string, any>): Record<string, any> {
+                  return boundValue
+                },
+              },
+            })
+          }
+        </script>
+      `
+    },
+    expected: {
+      keywords: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'myFunction',
+          visibility: 'protected',
+          description: 'Testing',
+          keywords: [],
+          params: [
+            {
+              name: 'test',
+              type: 'Record<string, any>',
+              description: '<-- Parser stops with error'
+            }
+          ],
+          return: {
+            type: 'Record<string, any>',
+            description: '<-- Gets parsed as description'
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and Vue.extend (es6',
     options: {
       filecontent: `
