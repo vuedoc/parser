@@ -8,25 +8,28 @@ ComponentTestCase({
   options: {
     filecontent: `
       <script>
-        var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-            var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-            if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-            else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-            return c > 3 && r && Object.defineProperty(target, key, r), r;
-        };
         import Vue from 'vue';
         import Component from 'vue-class-component';
+
         /**
          * A class component element
          *
          * @author Jon Snow
          */
-        let App = class App extends Vue {
-          /**
-           * A class component element
-           *
-           * @author Jon Snow
-           */
+        @Component({
+          inheritAttrs: false,
+          props: {
+            /**
+             * prop name description
+             */
+            name: String
+          }
+        })
+        class App extends Vue {
+          static staticVar = 123;
+
+          static ignoredMethod() {}
+
           constructor() {
             super(...arguments);
 
@@ -86,21 +89,8 @@ ComponentTestCase({
            * @private
            */
           _ignoredMethod() {}
-
-          static ignoredMethod() {}
         };
-        App.staticVar = 123;
-        App = __decorate([
-          Component({
-            inheritAttrs: false,
-            props: {
-              /**
-               * prop name description
-               */
-              name: String
-            }
-          })
-        ], App);
+
         export default App;
       </script>
     `,
@@ -209,15 +199,20 @@ ComponentTestCase({
   options: {
     filecontent: `
       <script>
-        var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-          var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-          if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-          else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-          return c > 3 && r && Object.defineProperty(target, key, r), r;
-        };
         import Vue from 'vue';
         import Component from 'vue-class-component';
-        let App = class App extends Vue {
+
+        /**
+         * MyComponent description
+         */
+        @Component({
+          name: 'MyComponent',
+          router,
+          components: {
+            XHeader,
+          },
+        })
+        class App extends Vue {
           data() {
             return {
               routeQueue: [this.$router.currentRoute],
@@ -227,22 +222,14 @@ ComponentTestCase({
             };
           }
         };
-        App = __decorate([
-          Component({
-            name: 'MyComponent',
-            router,
-            components: {
-              XHeader,
-            },
-          })
-        ], App);
+
         export default App
       </script>
     `
   },
   expected: {
     name: 'MyComponent',
-    description: '',
+    description: 'MyComponent description',
     inheritAttrs: true,
     errors: [],
     keywords: [],

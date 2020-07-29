@@ -4,7 +4,6 @@
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
-    "debug": "jest issue",
     "preversion": "npm test",
     "test": "jest --coverage",
     "lint": "eslint index.js lib test",
@@ -37,13 +36,7 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
-    "acorn": "^7.3.1",
-    "acorn-bigint": "^1.0.0",
-    "acorn-export-ns-from": "^0.2.0",
-    "acorn-import-meta": "^1.1.0",
-    "acorn-private-class-elements": "^0.2.6",
-    "acorn-stage3": "^3.0.0",
-    "recast": "^0.19.1",
+    "@babel/parser": "^7.10.5",
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {

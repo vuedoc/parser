@@ -579,38 +579,13 @@ abstract class Loader {
 | HTML        | Yes               | [@vuedoc/parser/loader/html](loader/html.js)              |
 | JavaScript  | Yes               | [@vuedoc/parser/loader/javascript](loader/javascript.js)  |
 | Pug         | No                | [@vuedoc/parser/loader/pug](loader/pug.js)                |
-| TypeScript  | No                | [@vuedoc/parser/loader/typescript](loader/typescript.js)  |
+| TypeScript  | Yes               | [@vuedoc/parser/loader/typescript](loader/typescript.js)  |
 | Vue         | Yes               | [@vuedoc/parser/loader/vue](loader/vue.js)                |
 
 ### TypeScript usage
 
-The Vuedoc Parser package contains a loader for TypeScript. To use it, you need
-to:
-
-  - install `typescript` and `@types/node` dependencies according the
-    [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
-  - import and load the loader `@vuedoc/parser/loader/typescript`
-
-```js
-const Vuedoc = require('@vuedoc/parser')
-const TypeScriptLoader = require('@vuedoc/parser/loader/typescript')
-
-const options = {
-  filename: 'DatePicker.ts',
-  loaders: [
-    /**
-     * Register TypeScriptLoader
-     * Note that the name of the loader is either the extension
-     * of the file or the value of the attribute `lang`
-     */
-    Vuedoc.Loader.extend('ts', TypeScriptLoader)
-  ]
-}
-
-Vuedoc.parse(options).then((component) => {
-  console.log(component)
-})
-```
+Vuedoc Parser implements a full TypeScript support since `v3.0.0`.
+You no longer need to load a specific loader or install additional package.
 
 ### Create a custom loader
 

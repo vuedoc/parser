@@ -4,6 +4,7 @@ const Loader = require('./lib/Loader')
 const VueLoader = require('./loader/vue')
 const HtmlLoader = require('./loader/html')
 const JavaScriptLoader = require('./loader/javascript')
+const TypeScriptLoader = require('./loader/typescript')
 
 const { Parser } = require('./lib/parser/Parser')
 const { Features } = require('./lib/Enum')
@@ -13,12 +14,14 @@ const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
 
 const DEFAULT_LOADERS = [
   Loader.extend('js', JavaScriptLoader),
+  Loader.extend('ts', TypeScriptLoader),
   Loader.extend('html', HtmlLoader),
   Loader.extend('vue', VueLoader)
 ]
 
 module.exports.Loader = Loader
 module.exports.Parser = Parser
+module.exports.DEFAULT_IGNORED_VISIBILITIES = DEFAULT_IGNORED_VISIBILITIES
 
 module.exports.parseOptions = (options) => {
   if (!options) {
@@ -67,73 +70,72 @@ module.exports.parseOptions = (options) => {
   }
 }
 
-module.exports.parse = (options) => this.parseOptions(options)
-  .then(() => new Promise((resolve) => {
-    const component = {
-      inheritAttrs: true,
-      errors: []
-    }
+module.exports.parse = (options) => this.parseOptions(options).then(() => new Promise((resolve) => {
+  const component = {
+    inheritAttrs: true,
+    errors: []
+  }
 
-    const parser = new Parser(options)
+  const parser = new Parser(options)
 
-    if (options.source.errors.length) {
-      component.errors = options.source.errors
-    }
+  if (options.source.errors.length) {
+    component.errors = options.source.errors
+  }
 
-    parser.on('error', ({ message }) => {
-      component.errors.push(message)
-    })
+  parser.on('error', ({ message }) => {
+    component.errors.push(message)
+  })
 
-    parser.on('end', () => {
-      parser.features.forEach((feature) => {
-        if (component[feature] instanceof Array) {
-          component[feature] = component[feature].filter((item) => {
-            return !options.ignoredVisibilities.includes(item.visibility)
-          })
-        }
-      })
-
-      resolve(component)
-    })
-
-    parser.on('inheritAttrs', ({ value }) => {
-      component.inheritAttrs = value
-    })
-
+  parser.on('end', () => {
     parser.features.forEach((feature) => {
-      switch (feature) {
-        case Features.name:
-        case Features.description:
-          component[feature] = ''
-
-          parser.on(feature, ({ value }) => {
-            component[feature] = value
-          })
-          break
-
-        case Features.model:
-          parser.on(feature, (model) => {
-            component[feature] = model
-          })
-          break
-
-        case Features.keywords:
-          component[feature] = []
-
-          parser.on(feature, ({ value }) => {
-            component[feature] = value
-          })
-          break
-
-        default: {
-          const eventName = Parser.getEventName(feature)
-
-          component[feature] = []
-
-          parser.on(eventName, (entry) => component[feature].push(entry))
-        }
+      if (component[feature] instanceof Array) {
+        component[feature] = component[feature].filter((item) => {
+          return !options.ignoredVisibilities.includes(item.visibility)
+        })
       }
     })
 
-    parser.walk()
-  }))
+    resolve(component)
+  })
+
+  parser.on('inheritAttrs', ({ value }) => {
+    component.inheritAttrs = value
+  })
+
+  parser.features.forEach((feature) => {
+    switch (feature) {
+      case Features.name:
+      case Features.description:
+        component[feature] = ''
+
+        parser.on(feature, ({ value }) => {
+          component[feature] = value
+        })
+        break
+
+      case Features.model:
+        parser.on(feature, (model) => {
+          component[feature] = model
+        })
+        break
+
+      case Features.keywords:
+        component[feature] = []
+
+        parser.on(feature, ({ value }) => {
+          component[feature] = value
+        })
+        break
+
+      default: {
+        const eventName = Parser.getEventName(feature)
+
+        component[feature] = []
+
+        parser.on(eventName, (entry) => component[feature].push(entry))
+      }
+    }
+  })
+
+  parser.walk()
+}))

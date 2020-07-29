@@ -562,268 +562,268 @@ function testPropertyObject (property) {
 }
 
 describe('ECMAScript Features Parsing', () => {
-  // describe('should parse without errors', () => {
-  //   Object.keys(Features).forEach((feature) => it(feature, (done) => {
-  //     const script = Features[feature]
-  //     const source = { script }
-  //     const options = { source }
-  //     const parser = new Parser(options)
+  describe('should parse without errors', () => {
+    Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      const script = Features[feature]
+      const source = { script }
+      const options = { source }
+      const parser = new Parser(options)
 
-  //     parser.on('end', done)
-  //     parser.walk()
-  //   }))
-  // })
+      parser.on('end', done)
+      parser.walk()
+    }))
+  })
 
-  // testPropertyFunction('name')
-  // testPropertyFunction('beforeRouteEnter')
-  // testPropertyFunction('beforeRouteUpdate')
-  // testPropertyFunction('beforeRouteLeave')
-  // testPropertyFunction('beforeCreate')
-  // testPropertyFunction('created')
-  // testPropertyFunction('beforeMount')
-  // testPropertyFunction('mounted')
-  // testPropertyFunction('beforeUpdate')
-  // testPropertyFunction('updated')
-  // testPropertyFunction('beforeDestroy')
-  // testPropertyFunction('destroyed')
-  // testPropertyFunction('render')
-  // testPropertyObject('props')
-  // testPropertyObject('methods')
-  // testPropertyObject('computed')
+  testPropertyFunction('name')
+  testPropertyFunction('beforeRouteEnter')
+  testPropertyFunction('beforeRouteUpdate')
+  testPropertyFunction('beforeRouteLeave')
+  testPropertyFunction('beforeCreate')
+  testPropertyFunction('created')
+  testPropertyFunction('beforeMount')
+  testPropertyFunction('mounted')
+  testPropertyFunction('beforeUpdate')
+  testPropertyFunction('updated')
+  testPropertyFunction('beforeDestroy')
+  testPropertyFunction('destroyed')
+  testPropertyFunction('render')
+  testPropertyObject('props')
+  testPropertyObject('methods')
+  testPropertyObject('computed')
 
-  // describe('Destructuring', () => {
-  //   it('should successfully extract destructuring vars', () => {
-  //     const filecontent = `
-  //       <script>
-  //         export default {
-  //           data: () => {
-  //             var [ a, , b ] = [1,2,3];
-  //             var [ c ] = [];
-  //             var [ d = 4 ] = [];
-  //             var { e } = { e: 5 };
-  //             var { f } = {};
-  //             var { g = 6 } = {};
-  //             var [ h ] = getValue();
-  //             var { i } = getValue();
+  describe('Destructuring', () => {
+    it('should successfully extract destructuring vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              var [ a, , b ] = [1,2,3];
+              var [ c ] = [];
+              var [ d = 4 ] = [];
+              var { e } = { e: 5 };
+              var { f } = {};
+              var { g = 6 } = {};
+              var [ h ] = getValue();
+              var { i } = getValue();
 
-  //             return { a, b, c, d, e, f, g, h, i }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //     const features = [ 'data' ]
-  //     const options = { filecontent, features, stringify: true }
-  //     const expected = [
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'a',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '1',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'b',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '3',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'c',
-  //         description: '',
-  //         type: 'any',
-  //         initial: 'undefined',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'd',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '4',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'e',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '5',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'f',
-  //         description: '',
-  //         type: 'any',
-  //         initial: 'undefined',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'g',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '6',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'h',
-  //         description: '',
-  //         type: 'any',
-  //         initial: 'undefined',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'i',
-  //         description: '',
-  //         type: 'any',
-  //         initial: 'undefined',
-  //         keywords: [] }
-  //     ]
+              return { a, b, c, d, e, f, g, h, i }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features, stringify: true }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'number',
+          initial: '1',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'number',
+          initial: '3',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'any',
+          initial: 'undefined',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'number',
+          initial: '4',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'number',
+          initial: '5',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'any',
+          initial: 'undefined',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'g',
+          description: '',
+          type: 'number',
+          initial: '6',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'h',
+          description: '',
+          type: 'any',
+          initial: 'undefined',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'i',
+          description: '',
+          type: 'any',
+          initial: 'undefined',
+          keywords: [] }
+      ]
 
-  //     return vuedoc.parse(options).then(({ data }) => {
-  //       expect(data).toEqual(expected)
-  //     })
-  //   })
-  // })
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 
-  // describe('Symbols', () => {
-  //   it('should successfully extract Symbols vars', () => {
-  //     const filecontent = `
-  //       <script>
-  //         export default {
-  //           data: () => {
-  //             var a = Symbol("key");
+  describe('Symbols', () => {
+    it('should successfully extract Symbols vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              var a = Symbol("key");
 
-  //             return { a }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //     const features = [ 'data' ]
-  //     const options = { filecontent, features }
-  //     const expected = [
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'a',
-  //         description: '',
-  //         type: 'symbol',
-  //         initial: 'Symbol("key")',
-  //         keywords: [] }
-  //     ]
+              return { a }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'symbol',
+          initial: 'Symbol("key")',
+          keywords: [] }
+      ]
 
-  //     return vuedoc.parse(options).then(({ data }) => {
-  //       expect(data).toEqual(expected)
-  //     })
-  //   })
-  // })
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 
-  // describe('Binary and Octal Literals', () => {
-  //   it('should successfully extract Binary and Octal Literals vars', () => {
-  //     const filecontent = `
-  //       <script>
-  //         export default {
-  //           data: () => {
-  //             var a = 0b111110111
-  //             var b = 0o767
+  describe('Binary and Octal Literals', () => {
+    it('should successfully extract Binary and Octal Literals vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              var a = 0b111110111
+              var b = 0o767
 
-  //             return { a, b }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //     const features = [ 'data' ]
-  //     const options = { filecontent, features, stringify: true }
-  //     const expected = [
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'a',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '0b111110111',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'b',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '0o767',
-  //         keywords: [] }
-  //     ]
+              return { a, b }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features, stringify: true }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'number',
+          initial: '0b111110111',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'number',
+          initial: '0o767',
+          keywords: [] }
+      ]
 
-  //     return vuedoc.parse(options).then(({ data }) => {
-  //       expect(data).toEqual(expected)
-  //     })
-  //   })
-  // })
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 
-  // describe('BigInt', () => {
-  //   it('should successfully extract BigInt vars', () => {
-  //     const filecontent = `
-  //       <script>
-  //         export default {
-  //           data: () => {
-  //             const a = 9007199254740991n;
-  //             const b = BigInt(9007199254740991);
-  //             const c = BigInt("9007199254740991");
-  //             const e = BigInt("0x1fffffffffffff");
-  //             const f = BigInt("0b11111111111111111111111111111111111111111111111111111");
+  describe('BigInt', () => {
+    it('should successfully extract BigInt vars', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              const a = 9007199254740991n;
+              const b = BigInt(9007199254740991);
+              const c = BigInt("9007199254740991");
+              const e = BigInt("0x1fffffffffffff");
+              const f = BigInt("0b11111111111111111111111111111111111111111111111111111");
 
-  //             return { a, [b]: b, ['c']: c, d: BigInt("9007199254740992"), e, f }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //     const features = [ 'data' ]
-  //     const options = { filecontent, features, stringify: true }
-  //     const expected = [
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'a',
-  //         description: '',
-  //         type: 'bigint',
-  //         initial: '9007199254740991n',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'b',
-  //         description: '',
-  //         type: 'bigint',
-  //         initial: 'BigInt(9007199254740991)',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'c',
-  //         description: '',
-  //         type: 'bigint',
-  //         initial: 'BigInt("9007199254740991")',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'd',
-  //         description: '',
-  //         type: 'bigint',
-  //         initial: 'BigInt("9007199254740992")',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'e',
-  //         description: '',
-  //         type: 'bigint',
-  //         initial: 'BigInt("0x1fffffffffffff")',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'f',
-  //         description: '',
-  //         type: 'bigint',
-  //         initial: 'BigInt("0b11111111111111111111111111111111111111111111111111111")',
-  //         keywords: [] }
-  //     ]
+              return { a, [b]: b, ['c']: c, d: BigInt("9007199254740992"), e, f }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features, stringify: true }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'bigint',
+          initial: '9007199254740991n',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt(9007199254740991)',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt("9007199254740991")',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt("9007199254740992")',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt("0x1fffffffffffff")',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'bigint',
+          initial: 'BigInt("0b11111111111111111111111111111111111111111111111111111")',
+          keywords: [] }
+      ]
 
-  //     return vuedoc.parse(options).then(({ data }) => {
-  //       expect(data).toEqual(expected)
-  //     })
-  //   })
-  // })
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 
   describe('Logical Operators and Assignment Expressions', () => {
     it('should successfully parse Logical Operators and Assignment Expressions', () => {
@@ -899,83 +899,91 @@ describe('ECMAScript Features Parsing', () => {
     })
   })
 
-  // describe('Numeric Separators', () => {
-  //   it('should successfully parse Numeric Separators', () => {
-  //     const filecontent = `
-  //       <script>
-  //         export default {
-  //           data: () => {
-  //             let x = 1_000_000_000;
-  //             let y = 101_475_938.38;
+  describe('Numeric Separators', () => {
+    it('should successfully parse Numeric Separators', () => {
+      const filecontent = `
+        <script>
+          export default {
+            data: () => {
+              let x = 1_000_000_000;
+              let y = 101_475_938.38;
 
-  //             let a = 123_00;
-  //             let b = 12_300;
-  //             let c = 12345_00;
-  //             let d = 123_4500;
-  //             let e = 1_234_500;
+              let a = 123_00;
+              let b = 12_300;
+              let c = 12345_00;
+              let d = 123_4500;
+              let e = 1_234_500;
+              let f = /azerty/;
 
-  //             return { x, y, a, b, c, d, e }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //     const features = [ 'data' ]
-  //     const options = { filecontent, features, stringify: true }
-  //     const expected = [
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'x',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '1_000_000_000',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'y',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '101_475_938.38',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'a',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '123_00',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'b',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '12_300',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'c',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '12345_00',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'd',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '123_4500',
-  //         keywords: [] },
-  //       { kind: 'data',
-  //         visibility: 'public',
-  //         name: 'e',
-  //         description: '',
-  //         type: 'number',
-  //         initial: '1_234_500',
-  //         keywords: [] }
-  //     ]
+              return { x, y, a, b, c, d, e, f }
+            }
+          }
+        </script>
+      `
+      const features = [ 'data' ]
+      const options = { filecontent, features, stringify: true }
+      const expected = [
+        { kind: 'data',
+          visibility: 'public',
+          name: 'x',
+          description: '',
+          type: 'number',
+          initial: '1_000_000_000',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'y',
+          description: '',
+          type: 'number',
+          initial: '101_475_938.38',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'a',
+          description: '',
+          type: 'number',
+          initial: '123_00',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'b',
+          description: '',
+          type: 'number',
+          initial: '12_300',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'c',
+          description: '',
+          type: 'number',
+          initial: '12345_00',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'd',
+          description: '',
+          type: 'number',
+          initial: '123_4500',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'e',
+          description: '',
+          type: 'number',
+          initial: '1_234_500',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'regexp',
+          initial: '/azerty/',
+          keywords: [] }
+      ]
 
-  //     return vuedoc.parse(options).then(({ data }) => {
-  //       expect(data).toEqual(expected)
-  //     })
-  //   })
-  // })
+      return vuedoc.parse(options).then(({ data }) => {
+        expect(data).toEqual(expected)
+      })
+    })
+  })
 })
