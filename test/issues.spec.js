@@ -785,6 +785,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       props: [
         {
           default: undefined,
@@ -824,6 +825,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       description: 'A functional component with a default slot using render function',
       keywords: [],
       slots: [
@@ -865,6 +867,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       slots: [
         {
           kind: 'slot',
@@ -1751,300 +1754,307 @@ describe('issues', () => {
     }
   })
 
-  // ComponentTestCase({
-  //   name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
-  //   options: {
-  //     filecontent: Fixture.get('UiAutocompleteMinimal.vue')
-  //   },
-  //   expected: {
-  //     name: 'ui-autocomplete',
-  //     methods: [
-  //       {
-  //         description: '',
-  //         keywords: [],
-  //         kind: 'method',
-  //         name: 'selectSuggestion',
-  //         params: [
-  //           {
-  //             name: 'suggestion',
-  //             type: 'any',
-  //             defaultValue: undefined,
-  //             description: '',
-  //             declaration: ''
-  //           }
-  //         ],
-  //         return: {
-  //           type: 'void',
-  //           description: ''
-  //         },
-  //         visibility: 'public' }
-  //     ],
-  //     events: [
-  //       {
-  //         name: 'select',
-  //         description: '',
-  //         keywords: [],
-  //         arguments: [
-  //           {
-  //             name: 'suggestion',
-  //             type: 'any',
-  //             description: '',
-  //             declaration: ''
-  //           }
-  //         ],
-  //         kind: 'event',
-  //         visibility: 'public'
-  //       }
-  //     ]
-  //   }
-  // })
+  ComponentTestCase({
+    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
+    options: {
+      filecontent: Fixture.get('UiAutocompleteMinimal.vue')
+    },
+    expected: {
+      errors: [],
+      name: 'ui-autocomplete',
+      methods: [
+        {
+          description: '',
+          keywords: [],
+          kind: 'method',
+          name: 'selectSuggestion',
+          params: [
+            {
+              name: 'suggestion',
+              type: 'any',
+              defaultValue: undefined,
+              description: '',
+              declaration: ''
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          },
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          name: 'select',
+          description: '',
+          keywords: [],
+          arguments: [
+            {
+              name: 'suggestion',
+              type: 'any',
+              description: '',
+              declaration: ''
+            }
+          ],
+          kind: 'event',
+          visibility: 'public'
+        }
+      ]
+    }
+  })
 
-  // ComponentTestCase({
-  //   name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
-  //   options: {
-  //     filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
-  //   },
-  //   expected: {
-  //     name: 'ui-autocomplete',
-  //     methods: [
-  //       {
-  //         description: '',
-  //         keywords: [],
-  //         kind: 'method',
-  //         name: 'selectSuggestion',
-  //         params: [
-  //           {
-  //             name: 'suggestion',
-  //             type: 'any',
-  //             defaultValue: undefined,
-  //             description: '',
-  //             declaration: ''
-  //           }
-  //         ],
-  //         return: {
-  //           type: 'void',
-  //           description: ''
-  //         },
-  //         visibility: 'public' }
-  //     ],
-  //     events: [
-  //       {
-  //         name: 'select',
-  //         description: '',
-  //         keywords: [],
-  //         arguments: [
-  //           {
-  //             name: 'suggestion',
-  //             type: 'any',
-  //             description: '',
-  //             declaration: ''
-  //           }
-  //         ],
-  //         kind: 'event',
-  //         visibility: 'public'
-  //       }
-  //     ]
-  //   }
-  // })
+  ComponentTestCase({
+    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
+    options: {
+      filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
+    },
+    expected: {
+      name: 'ui-autocomplete',
+      errors: [],
+      methods: [
+        {
+          description: '',
+          keywords: [],
+          kind: 'method',
+          name: 'selectSuggestion',
+          params: [
+            {
+              name: 'suggestion',
+              type: 'any',
+              defaultValue: undefined,
+              description: '',
+              declaration: ''
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          },
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          name: 'select',
+          description: '',
+          keywords: [],
+          arguments: [
+            {
+              name: 'suggestion',
+              type: 'any',
+              description: '',
+              declaration: ''
+            }
+          ],
+          kind: 'event',
+          visibility: 'public'
+        }
+      ]
+    }
+  })
 
-  // ComponentTestCase({
-  //   name: '#59 - Parser fails when props have an empty validator block',
-  //   options: {
-  //     filecontent: `
-  //       <template>
-  //         <div></div>
-  //       </template>
-  //       <script>
-  //         export default {
-  //           props: {
-  //             myProp: {}
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     props: [
-  //       {
-  //         kind: 'prop',
-  //         visibility: 'public',
-  //         description: '',
-  //         keywords: [],
-  //         name: 'my-prop',
-  //         type: 'any',
-  //         nativeType: 'any',
-  //         default: undefined,
-  //         required: false,
-  //         describeModel: false
-  //       }
-  //     ]
-  //   }
-  // })
+  ComponentTestCase({
+    name: '#59 - Parser fails when props have an empty validator block',
+    options: {
+      filecontent: `
+        <template>
+          <div></div>
+        </template>
+        <script>
+          export default {
+            props: {
+              myProp: {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'my-prop',
+          type: 'any',
+          nativeType: 'any',
+          default: undefined,
+          required: false,
+          describeModel: false
+        }
+      ]
+    }
+  })
 
-  // ComponentTestCase({
-  //   name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
-  //   options: {
-  //     filecontent: `
-  //       <template>
-  //         <div></div>
-  //       </template>
-  //       <script>
-  //         export default {
-  //           methods: {
-  //             example() {
-  //               setTimeout(() => console.log('notify'), 100);
-  //             }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     methods: [
-  //       {
-  //         kind: 'method',
-  //         name: 'example',
-  //         visibility: 'public',
-  //         description: '',
-  //         keywords: [],
-  //         params: [],
-  //         return: {
-  //           type: 'void',
-  //           description: ''
-  //         }
-  //       }
-  //     ]
-  //   }
-  // })
+  ComponentTestCase({
+    name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
+    options: {
+      filecontent: `
+        <template>
+          <div></div>
+        </template>
+        <script>
+          export default {
+            methods: {
+              example() {
+                setTimeout(() => console.log('notify'), 100);
+              }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'example',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
 
-  // ComponentTestCase({
-  //   name: '#61 - Parsing event fails when event name is non-primitive value',
-  //   options: {
-  //     filecontent: `
-  //       <script>
-  //         const METHODS = {
-  //           CLOSE: 'close'
-  //         }
+  ComponentTestCase({
+    name: '#61 - Parsing event fails when event name is non-primitive value',
+    options: {
+      filecontent: `
+        <script>
+          const METHODS = {
+            CLOSE: 'close'
+          }
 
-  //         const EVENTS = {
-  //           CLOSE: 'close'
-  //         }
+          const EVENTS = {
+            CLOSE: 'close'
+          }
 
-  //         export default {
-  //           methods: {
-  //             /**
-  //              * Close modal
-  //              * @method close
-  //              */
-  //             [METHODS.CLOSE] () {
-  //               /**
-  //                * Emit the \`close\` event on click
-  //                * @event close
-  //                */
-  //               this.$emit(EVENTS.CLOSE, true)
-  //             }
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     methods: [
-  //       {
-  //         kind: 'method',
-  //         name: 'close',
-  //         visibility: 'public',
-  //         description: 'Close modal',
-  //         keywords: [],
-  //         params: [],
-  //         return: {
-  //           type: 'void',
-  //           description: ''
-  //         }
-  //       }
-  //     ],
-  //     events: [
-  //       {
-  //         kind: 'event',
-  //         name: 'close',
-  //         visibility: 'public',
-  //         description: 'Emit the `close` event on click',
-  //         keywords: [],
-  //         arguments: [
-  //           {
-  //             type: 'boolean',
-  //             declaration: '',
-  //             description: '',
-  //             name: true
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // })
+          export default {
+            methods: {
+              /**
+               * Close modal
+               * @method close
+               */
+              [METHODS.CLOSE] () {
+                /**
+                 * Emit the \`close\` event on click
+                 * @event close
+                 */
+                this.$emit(EVENTS.CLOSE, true)
+              }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'close',
+          visibility: 'public',
+          description: 'Close modal',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ],
+      events: [
+        {
+          kind: 'event',
+          name: 'close',
+          visibility: 'public',
+          description: 'Emit the `close` event on click',
+          keywords: [],
+          arguments: [
+            {
+              type: 'boolean',
+              declaration: '',
+              description: '',
+              name: true
+            }
+          ]
+        }
+      ]
+    }
+  })
 
-  // ComponentTestCase({
-  //   name: '#62 - @ symbol breaks comment parsing',
-  //   options: {
-  //     filecontent: `
-  //       <script>
-  //         /**
-  //          * Defines if \`bleed@small\` class should be added to component for mobile view
-  //          */
-  //         export default {}
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     description: 'Defines if `bleed@small` class should be added to component for mobile view'
-  //   }
-  // })
+  ComponentTestCase({
+    name: '#62 - @ symbol breaks comment parsing',
+    options: {
+      filecontent: `
+        <script>
+          /**
+           * Defines if \`bleed@small\` class should be added to component for mobile view
+           */
+          export default {}
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      description: 'Defines if `bleed@small` class should be added to component for mobile view'
+    }
+  })
 
-  // ComponentTestCase({
-  //   name: '#66 - @returns with type',
-  //   options: {
-  //     filecontent: `
-  //       <script>
-  //         export default {
-  //           methods: {
-  //             /**
-  //              * Returns the sum of a and b
-  //              * @param {number} a
-  //              * @param {number} b
-  //              * @returns {number}
-  //              */
-  //             sum: (a, b) => a + b
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     methods: [
-  //       {
-  //         kind: 'method',
-  //         name: 'sum',
-  //         visibility: 'public',
-  //         description: 'Returns the sum of a and b',
-  //         keywords: [],
-  //         params: [
-  //           {
-  //             name: 'a',
-  //             type: 'number',
-  //             description: undefined
-  //           },
-  //           {
-  //             name: 'b',
-  //             type: 'number',
-  //             description: undefined
-  //           }
-  //         ],
-  //         return: {
-  //           type: 'number',
-  //           description: ''
-  //         }
-  //       }
-  //     ]
-  //   }
-  // })
+  ComponentTestCase({
+    name: '#66 - @returns with type',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Returns the sum of a and b
+               * @param {number} a
+               * @param {number} b
+               * @returns {number}
+               */
+              sum: (a, b) => a + b
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'sum',
+          visibility: 'public',
+          description: 'Returns the sum of a and b',
+          keywords: [],
+          params: [
+            {
+              name: 'a',
+              type: 'number',
+              description: undefined
+            },
+            {
+              name: 'b',
+              type: 'number',
+              description: undefined
+            }
+          ],
+          return: {
+            type: 'number',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
 })
