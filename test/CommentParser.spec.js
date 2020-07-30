@@ -10,7 +10,6 @@ const comment = `
    * The generic component
    * Sub description
    *
-   *
    * @public
    * @alpnum azert0 123456789
    * @generic Keyword generic description

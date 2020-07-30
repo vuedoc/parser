@@ -1530,36 +1530,45 @@ describe('Integration', () => {
   })
 
   ComponentTestCase({
-    name: '#76 - Support for @link params',
+    name: 'Keyword @slot',
     options: {
       filecontent: `
         <script>
-          export default {
-            methods: {
-              /**
-               * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
-               * Also, check out {@link http://www.google.com|Google} and
-               * {@link https://github.com GitHub}.
-               */
-              myFunction() {}
-            }
-          }
+          /**
+           * @slot inputs - Use this slot to define form inputs ontrols
+           * @slot actions - Use this slot to define form action buttons controls
+           * @slot footer - Use this slot to define form footer content
+           */
+          export default {}
         </script>
       `
     },
     expected: {
-      methods: [
+      slots: [
         {
-          kind: 'method',
-          name: 'myFunction',
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Use this slot to define form inputs ontrols',
           keywords: [],
-          description: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
-          params: [],
-          return: {
-            type: 'void',
-            description: ''
-          },
-          visibility: 'public' }
+          name: 'inputs',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Use this slot to define form action buttons controls',
+          keywords: [],
+          name: 'actions',
+          props: []
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: 'Use this slot to define form footer content',
+          keywords: [],
+          name: 'footer',
+          props: []
+        }
       ]
     }
   })

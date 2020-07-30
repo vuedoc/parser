@@ -154,7 +154,7 @@ statement like:
  * Component description
  */
 export default {
-  ...
+  // ...
 }
 ```
 
@@ -206,7 +206,7 @@ export default {
      * @default { anything: 'custom default value' }
      */
     custom: {
-      type: String,
+      type: Object,
       default: () => {
         // complex code
         return anythingExpression()
@@ -632,7 +632,7 @@ const options = {
      */
     Vuedoc.Loader.extend('coffee', CoffeeScriptLoader),
 
-    // Register the Pug loader
+    // Register the built-in Pug loader
     Vuedoc.Loader.extend('pug', PugLoader)
   ]
 }
@@ -774,7 +774,7 @@ type MethodParam = {
   name: string;
   description: string;
   defaultValue?: string;
-}
+};
 
 type MethodReturn = {
   type: string = 'void';

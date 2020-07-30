@@ -471,8 +471,6 @@ describe('Parser', () => {
 
       const parser = new Parser(options)
 
-//       events.forEach((event) => parser.on(event, console.warn))
-
       parser.on('end', done)
       parser.walk()
     })
