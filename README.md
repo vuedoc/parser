@@ -449,7 +449,7 @@ You can attach keywords to any comment and then extract them using the parser.
  * @author Arya Stark
  * @license MIT
  */
-export default { ... }
+export default { /* ... */ }
 ```
 
 > Note that the description must alway appear before keywords definition
@@ -513,6 +513,25 @@ export const InputMixin = Vue.extend({
     Value: [ Boolean, Number, String ]
   }
 });
+```
+
+Bellow an example with a factory:
+
+```js
+import Vue from 'vue';
+
+/**
+ * @mixin
+ */
+export function InputMixin (route) {
+  return Vue.extend({
+    props: {
+      id: String,
+      value: [ Boolean, Number, String ]
+    },
+    methods: { route }
+  });
+}
 ```
 
 ## Parsing control with options.features
