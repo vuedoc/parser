@@ -5,95 +5,76 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 
 const script = `
   <script>
-    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    };
-    import 'reflect-metadata';
-    import { Vue, Component, Prop, Model, Watch, Emit } from 'vue-property-decorator';
-    /**
-     * Component defined with Vue Property Decorator
-     */
-    let YourComponent = class YourComponent extends Vue {
-        /**
-         * Component defined with Vue Property Decorator
-         */
-        constructor() {
-            super(...arguments);
-            this.count = 0;
-        }
-        onChildChanged(val, oldVal) { }
-        onPersonChanged1(val, oldVal) { }
-        addToCount(n) {
-            this.count += n;
-        }
-        resetCount() {
-            this.count = 0;
-        }
-        returnValue() {
-            return 10;
-        }
-        onInputChange(e) {
-            return e.target.value;
-        }
-        promise() {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve(20);
-                }, 0);
-            });
-        }
-    };
-    __decorate([
-        Prop(Number)
-    ], YourComponent.prototype, "propA", void 0);
-    __decorate([
-        Prop({ default: 'default value' })
-    ], YourComponent.prototype, "propB", void 0);
-    __decorate([
-        Prop([String, Boolean])
-    ], YourComponent.prototype, "propC", void 0);
-    __decorate([
-        PropSync('name', { type: String })
-    ], YourComponent.prototype, "syncedName", void 0);
-    __decorate([
-        Model('change', { type: Boolean })
-    ], YourComponent.prototype, "checked", void 0);
-    __decorate([
-        Watch('child')
-    ], YourComponent.prototype, "onChildChanged", null);
-    __decorate([
-        Watch('person', { immediate: true, deep: true })
-    ], YourComponent.prototype, "onPersonChanged1", null);
-    __decorate([
-        Emit()
-    ], YourComponent.prototype, "addToCount", null);
-    __decorate([
-        Emit('reset')
-    ], YourComponent.prototype, "resetCount", null);
-    __decorate([
-        Emit()
-    ], YourComponent.prototype, "returnValue", null);
-    __decorate([
-        Emit()
-    ], YourComponent.prototype, "onInputChange", null);
-    __decorate([
-        Emit()
-    ], YourComponent.prototype, "promise", null);
-    YourComponent = __decorate([
-        Component
-    ], YourComponent);
-    export default YourComponent;
+  import { Vue, Component, Prop, Model, Watch, Emit } from 'vue-property-decorator'
 
+  class MyClass {}
+
+  /**
+   * Component defined with Vue Property Decorator
+   * @prop propA -
+   */
+  @Component
+  export default class YourComponent extends Vue {
+    count = 0
+
+    /**
+     * description of propA
+     */
+    @Prop(Number) readonly propA!: number
+    @Prop({ default: 'default value' }) readonly propB!: string
+    @Prop([String, Boolean]) readonly propC!: string | boolean
+    @Prop({ default: 'default value', required: true }) readonly propD!: string
+    @Prop({ type: String, default: 'default value', required: false }) readonly propE!: any
+    @Prop({ default: 'default value', required: false }) readonly propF!: any
+    @PropSync('name', { type: String }) syncedName!: string
+
+    @Model('change', { type: Boolean }) readonly checked!: boolean
+
+    @Watch('child')
+    onChildChanged(val: string, oldVal: string) { }
+
+    @Watch('person', { immediate: true, deep: true })
+    onPersonChanged1(val: Person, oldVal: Person) { }
+
+    @Emit()
+    addToCount(n: number) {
+      this.count += n
+    }
+
+    @Emit('reset')
+    resetCount() {
+      this.count = 0
+    }
+
+    @Emit()
+    returnValue() {
+      return 10
+    }
+
+    @Emit()
+    onInputChange(e) {
+      return e.target.value
+    }
+
+    @Emit()
+    promise() {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(20)
+        }, 0)
+      })
+    }
+
+    #privateMethod() {}
+  }
   </script>
 `
 
 ComponentTestCase({
   name: '#47 - Vue Property Decorator',
   options: {
-    filecontent: script
+    filecontent: script,
+    ignoredVisibilities: []
   },
   expected: {
     name: 'YourComponent',
@@ -104,10 +85,10 @@ ComponentTestCase({
         kind: 'prop',
         name: 'prop-a',
         describeModel: false,
-        description: '',
+        description: 'description of propA',
         keywords: [],
         default: undefined,
-        nativeType: 'number',
+        nativeType: 'Number',
         required: false,
         type: 'Number',
         visibility: 'public' },
@@ -118,9 +99,9 @@ ComponentTestCase({
         description: '',
         keywords: [],
         default: 'default value',
-        nativeType: 'any',
+        nativeType: 'string',
         required: false,
-        type: 'any',
+        type: 'string',
         visibility: 'public' },
       {
         kind: 'prop',
@@ -129,9 +110,42 @@ ComponentTestCase({
         description: '',
         keywords: [],
         default: undefined,
-        nativeType: 'any',
+        nativeType: [ 'String', 'Boolean' ],
         required: false,
         type: [ 'String', 'Boolean' ],
+        visibility: 'public' },
+      {
+        kind: 'prop',
+        name: 'prop-d',
+        describeModel: false,
+        description: '',
+        keywords: [],
+        default: 'default value',
+        nativeType: 'string',
+        required: true,
+        type: 'string',
+        visibility: 'public' },
+      {
+        kind: 'prop',
+        name: 'prop-e',
+        describeModel: false,
+        description: '',
+        keywords: [],
+        default: 'default value',
+        nativeType: 'String',
+        required: false,
+        type: 'String',
+        visibility: 'public' },
+      {
+        kind: 'prop',
+        name: 'prop-f',
+        describeModel: false,
+        description: '',
+        keywords: [],
+        default: 'default value',
+        nativeType: 'string',
+        required: false,
+        type: 'string',
         visibility: 'public' },
       {
         kind: 'prop',
@@ -140,7 +154,7 @@ ComponentTestCase({
         description: '',
         keywords: [],
         default: undefined,
-        nativeType: 'string',
+        nativeType: 'String',
         required: false,
         type: 'String',
         visibility: 'public' },
@@ -151,7 +165,7 @@ ComponentTestCase({
         description: '',
         keywords: [],
         default: undefined,
-        nativeType: 'boolean',
+        nativeType: 'Boolean',
         required: false,
         type: 'Boolean',
         visibility: 'public' }
@@ -235,7 +249,150 @@ ComponentTestCase({
         keywords: [],
         visibility: 'public' }
     ],
-    methods: []
+    methods: [
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'onChildChanged',
+        params: [
+          {
+            name: 'val',
+            type: 'string',
+            description: '',
+            declaration: '',
+            defaultValue: undefined
+          },
+          {
+            name: 'oldVal',
+            type: 'string',
+            description: '',
+            declaration: '',
+            defaultValue: undefined
+          }
+        ],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'onPersonChanged1',
+        params: [
+          {
+            name: 'val',
+            type: 'Person',
+            description: '',
+            declaration: '',
+            defaultValue: undefined
+          },
+          {
+            name: 'oldVal',
+            type: 'Person',
+            description: '',
+            declaration: '',
+            defaultValue: undefined
+          }
+        ],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'addToCount',
+        params: [
+          {
+            name: 'n',
+            type: 'number',
+            description: '',
+            declaration: '',
+            defaultValue: undefined
+          }
+        ],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'resetCount',
+        params: [],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'returnValue',
+        params: [],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'onInputChange',
+        params: [
+          {
+            name: 'e',
+            type: 'any',
+            description: '',
+            declaration: '',
+            defaultValue: undefined
+          }
+        ],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'promise',
+        params: [],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'public',
+      },
+      {
+        description: '',
+        keywords: [],
+        kind: 'method',
+        name: 'privateMethod',
+        params: [],
+        return: {
+          description: '',
+          type: 'void',
+        },
+        visibility: 'private',
+      }
+    ]
   }
 })
 

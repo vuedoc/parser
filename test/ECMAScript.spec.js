@@ -913,8 +913,9 @@ describe('ECMAScript Features Parsing', () => {
               let c = 12345_00;
               let d = 123_4500;
               let e = 1_234_500;
+              let f = /azerty/;
 
-              return { x, y, a, b, c, d, e }
+              return { x, y, a, b, c, d, e, f }
             }
           }
         </script>
@@ -970,6 +971,13 @@ describe('ECMAScript Features Parsing', () => {
           description: '',
           type: 'number',
           initial: '1_234_500',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          description: '',
+          type: 'regexp',
+          initial: '/azerty/',
           keywords: [] }
       ]
 

@@ -471,8 +471,6 @@ describe('Parser', () => {
 
       const parser = new Parser(options)
 
-//       events.forEach((event) => parser.on(event, console.warn))
-
       parser.on('end', done)
       parser.walk()
     })
@@ -757,7 +755,7 @@ describe('Parser', () => {
             assert.equal(event.name, 'input')
             assert.equal(event.description, '')
             assert.equal(event.visibility, 'private')
-            assert.deepEqual(event.keywords, [ { name: 'private', description: '' } ])
+            assert.deepEqual(event.keywords, [])
             done()
           })
       })
@@ -788,7 +786,6 @@ describe('Parser', () => {
             assert.equal(event.description, 'Emit the input event')
             assert.equal(event.visibility, 'protected')
             assert.deepEqual(event.keywords, [
-              { name: 'protected', description: '' },
               { name: 'value', description: 'A input value' }
             ])
             done()
@@ -821,7 +818,6 @@ describe('Parser', () => {
             assert.equal(event.description, 'Emit the input event')
             assert.equal(event.visibility, 'protected')
             assert.deepEqual(event.keywords, [
-              { name: 'protected', description: '' },
               { name: 'value', description: 'A input value' }
             ])
             done()
@@ -856,16 +852,14 @@ describe('Parser', () => {
             visibility: 'protected',
             description: 'Emit the input event',
             keywords:
-            [ { name: 'protected', description: '' },
-              { name: 'value', description: 'A input value' } ] },
+            [ { name: 'value', description: 'A input value' } ] },
           { kind: 'event',
             name: 'change',
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
             keywords:
-            [ { name: 'protected', description: '' },
-              { name: 'value', description: 'A input value' } ] }
+            [ { name: 'value', description: 'A input value' } ] }
         ]
 
         const result = []
@@ -1835,7 +1829,7 @@ describe('Parser', () => {
 
       const expected = {
         name: 'id',
-        keywords: [ { name: 'private', description: '' } ],
+        keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
         dependencies: [ 'value', 'name' ]
@@ -1877,19 +1871,15 @@ describe('Parser', () => {
       }
       const expected = {
         name: 'idGetter',
-        keywords: [ { name: 'private', description: '' } ],
+        kind: 'computed',
+        keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
         dependencies: [ 'value', 'name' ]
       }
 
       new Parser(options).walk().on('computed', (prop) => {
-        assert.equal(prop.name, expected.name)
-        assert.deepEqual(prop.keywords, expected.keywords)
-        assert.equal(prop.visibility, expected.visibility)
-        assert.equal(prop.description, expected.description)
-        assert.equal(prop.value, undefined)
-        assert.deepEqual(prop.dependencies, expected.dependencies)
+        expect(prop).toEqual(expected)
         done()
       })
     })
@@ -2079,7 +2069,7 @@ describe('Parser', () => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [ { name: 'protected', description: '' } ])
+        assert.deepEqual(event.keywords, [])
         done()
       })
     })
@@ -2165,9 +2155,7 @@ describe('Parser', () => {
         assert.equal(event.name, 'loading')
         assert.equal(event.description, 'loading event')
         assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [
-          { name: 'protected', description: '' }
-        ])
+        assert.deepEqual(event.keywords, [])
         done()
       })
     })

@@ -7,19 +7,12 @@ const filecontent = `
     export default {
       name: 'my-checkbox',
       /**
-        * Use v-model to define a reactive model
-        */
+       * Use v-model to define a reactive model
+       */
       model: {
         prop: 'checked',
         event: 'change'
-      },
-      props: {
-        // value: String,
-        checked: {
-          type: Number,
-          default: 0
-        }
-      },
+      }
       // ...
     }
   </script>

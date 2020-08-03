@@ -345,6 +345,59 @@ describe('ScriptParser', () => {
   })
 
   ComponentTestCase({
+    name: '@mixin: Mixin exported as default factory function with arguments and TypeScript',
+    options: {
+      ignoredVisibilities: [],
+      filecontent: `
+        <script>
+          /**
+           * @mixin
+           */
+          export default function TestMixinFactory(boundValue: Record<string, any>) {
+            return Vue.extend({
+              methods: {
+                /**
+                 * Testing
+                 *
+                 * @param {Record<string, any>} test <-- Parser stops with error
+                 * @return {Record<string, any>} <-- Gets parsed as description
+                 * @protected
+                 */
+                myFunction(test: Record<string, any>): Record<string, any> {
+                  return boundValue
+                },
+              },
+            })
+          }
+        </script>
+      `
+    },
+    expected: {
+      keywords: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'myFunction',
+          visibility: 'protected',
+          description: 'Testing',
+          keywords: [],
+          params: [
+            {
+              name: 'test',
+              type: 'Record<string, any>',
+              description: '<-- Parser stops with error'
+            }
+          ],
+          return: {
+            type: 'Record<string, any>',
+            description: '<-- Gets parsed as description'
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and Vue.extend (es6',
     options: {
       filecontent: `
@@ -453,6 +506,140 @@ describe('ScriptParser', () => {
           visibility: 'public',
           description: '',
           keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '@mixin: Mixin exported as factory function and @name',
+    options: {
+      filecontent: `
+        <script>
+          import Vue from 'vue';
+
+          /**
+           * @mixin
+           * @name InputMixin
+           */
+          export function mixin (route) {
+            return Vue.extend({
+              props: {
+                id: String,
+                value: [ Boolean, Number, String ]
+              },
+              methods: { route }
+            })
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'InputMixin',
+      errors: [],
+      keywords: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'id',
+          type: 'String',
+          nativeType: 'string',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          name: 'value',
+          type: [ 'Boolean', 'Number', 'String' ],
+          nativeType: 'any',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          required: false,
+          describeModel: true
+        }
+      ],
+      methods: [
+        {
+          kind: 'method',
+          name: 'route',
+          description: '',
+          keywords: [],
+          visibility: 'public',
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '@mixin: Mixin exported as factory arrow function with arguments and referenced Vue.extend',
+    options: {
+      filecontent: `
+        <script>
+          import Vue from 'vue';
+
+          /**
+           * @mixin
+           * @name InputMixin
+           */
+          export default (route) => Vue.extend({
+            props: {
+              id: String,
+              value: [ Boolean, Number, String ]
+            },
+            methods: { route }
+          })
+        </script>
+      `
+    },
+    expected: {
+      name: 'InputMixin',
+      errors: [],
+      keywords: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'id',
+          type: 'String',
+          nativeType: 'string',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          required: false,
+          describeModel: false
+        },
+        {
+          kind: 'prop',
+          name: 'value',
+          type: [ 'Boolean', 'Number', 'String' ],
+          nativeType: 'any',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          required: false,
+          describeModel: true
+        }
+      ],
+      methods: [
+        {
+          kind: 'method',
+          name: 'route',
+          description: '',
+          keywords: [],
+          visibility: 'public',
           params: [],
           return: {
             type: 'void',

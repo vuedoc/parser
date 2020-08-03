@@ -785,6 +785,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       props: [
         {
           default: undefined,
@@ -824,6 +825,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       description: 'A functional component with a default slot using render function',
       keywords: [],
       slots: [
@@ -865,6 +867,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       slots: [
         {
           kind: 'slot',
@@ -1757,6 +1760,7 @@ describe('issues', () => {
       filecontent: Fixture.get('UiAutocompleteMinimal.vue')
     },
     expected: {
+      errors: [],
       name: 'ui-autocomplete',
       methods: [
         {
@@ -1806,6 +1810,7 @@ describe('issues', () => {
     },
     expected: {
       name: 'ui-autocomplete',
+      errors: [],
       methods: [
         {
           description: '',
@@ -1864,6 +1869,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       props: [
         {
           kind: 'prop',
@@ -1900,6 +1906,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       methods: [
         {
           kind: 'method',
@@ -1949,6 +1956,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       methods: [
         {
           kind: 'method',
@@ -1996,6 +2004,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       description: 'Defines if `bleed@small` class should be added to component for mobile view'
     }
   })
@@ -2020,6 +2029,7 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       methods: [
         {
           kind: 'method',
@@ -2043,6 +2053,101 @@ describe('issues', () => {
             type: 'number',
             description: ''
           }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#76 - Support for @link params',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
+               * Also, check out {@link http://www.google.com|Google} and
+               * {@link https://github.com GitHub}.
+               */
+              myFunction() {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'myFunction',
+          keywords: [],
+          description: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          },
+          visibility: 'public' }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#77 - Parsing TypeScript methods doesn\'t work correctly',
+    options: {
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+
+          /**
+           * @mixin
+           */
+          export function TestMixinFactory(boundValue: Record<string, any>) {
+            return Vue.extend({
+              methods: {
+                /**
+                 * Testing
+                 *
+                 * @param {Record<string, any>} test <-- Parser stops with error
+                 * @return {Record<string, any>} <-- Gets parsed as description
+                 * @public
+                 */
+                myFunction(test: Record<string, any>): Record<string, any> {
+                  return boundValue
+                },
+              },
+            })
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'TestMixinFactory',
+      description: '',
+      errors: [],
+      props: [],
+      model: undefined,
+      computed: [],
+      events: [],
+      methods: [
+        {
+          description: 'Testing',
+          keywords: [],
+          kind: 'method',
+          name: 'myFunction',
+          params: [
+            {
+              name: 'test',
+              type: 'Record<string, any>',
+              description: '<-- Parser stops with error'
+            }
+          ],
+          return: {
+            description: '<-- Gets parsed as description',
+            type: 'Record<string, any>',
+          },
+          visibility: 'public',
         }
       ]
     }
