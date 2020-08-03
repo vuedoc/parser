@@ -2173,7 +2173,8 @@ describe('issues', () => {
                  * @type boolean
                  * @initial false
                  */
-                e
+                e,
+                f: !!d,
               }
             }
           }
@@ -2227,6 +2228,15 @@ describe('issues', () => {
           name: 'e',
           type: 'boolean',
           initial: 'false'
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'f',
+          type: 'any',
+          initial: '!!d'
         }
       ]
     }
