@@ -14,6 +14,11 @@ Generate a JSON documentation for a Vue file component.
   * [Add component name](#add-component-name)
   * [Add component description](#add-component-description)
   * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
+    + [Special keywords to annotate data](#special-keywords-to-annotate-data)
+    + [Special keyword to annotate props](#special-keyword-to-annotate-props)
+    + [Annotate a `v-model` prop](#annotate-a-v-model-prop)
+    + [Annotate Vue Array String Props](#annotate-vue-array-string-props)
+    + [Ignore an item from parsing](#ignore-an-item-from-parsing)
   * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
   * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
 - [Keywords Extraction](#keywords-extraction)
@@ -160,13 +165,13 @@ export default {
 
 ### Annotate model, props, data and computed properties
 
-To document props, data or computed properties, use comments like:
+To document props, data or computed properties, annotate your code like:
 
 ```js
 export default {
   props: {
     /**
-     * Component ID
+     * Element ID
      */
     id: {
       type: String,
@@ -194,9 +199,32 @@ export default {
 
 Vuedoc Parser will automatically extract `required` and `default` values for
 properties and computed properties dependencies. It will also detect type for
-each defined data field.
+each defined data field and catch their initial value.
 
-You can set a custom default value of an prop by using the keyword `@default`.
+#### Special keywords to annotate data
+
+You can set a custom type anf initial value of a data by using keywords
+`@type` and `@initial`:
+
+```js
+export default {
+  data () {
+    return {
+      /**
+       * A data with a complex expression
+       * @type boolean
+       * @initial false
+       */
+      isChecked: !(a || b || c)
+    }
+  }
+}
+```
+
+#### Special keyword to annotate props
+
+You can also set a custom default value of an prop by using the keyword
+`@default`
 
 ```js
 export default {
@@ -215,6 +243,8 @@ export default {
   }
 }
 ```
+
+#### Annotate a `v-model` prop
 
 To document a `v-model` prop, a proper way is to use the Vue's
 [model field](https://vuejs.org/v2/api/#model) if you use Vue +2.2.0.
@@ -248,6 +278,8 @@ export default {
 }
 ```
 
+#### Annotate Vue Array String Props
+
 To document Vue array string props, just attach a Vuedoc comment to each prop:
 
 ```js
@@ -265,6 +297,8 @@ export default {
   ]
 }
 ```
+
+#### Ignore an item from parsing
 
 By default, all extracted things have the `public` visibility.
 To change this for one entry, add `@protected` or `@private` keyword.

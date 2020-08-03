@@ -2152,4 +2152,93 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#80 - Parser issue with !(...)',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            data() {
+              let a, b, c = 0
+              let d = !(a || b || c)
+              let e = !d
+
+              return {
+                a,
+                b,
+                c,
+                d,
+                /**
+                 * @type boolean
+                 * @initial false
+                 */
+                e,
+                f: !!d,
+              }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      data: [
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'a',
+          type: 'any',
+          initial: undefined
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'b',
+          type: 'any',
+          initial: undefined
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'c',
+          type: 'number',
+          initial: 0
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'd',
+          type: 'any',
+          initial: '!(a || b || c)'
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'e',
+          type: 'boolean',
+          initial: 'false'
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'f',
+          type: 'any',
+          initial: '!!d'
+        }
+      ]
+    }
+  })
 })
