@@ -2161,9 +2161,20 @@ describe('issues', () => {
           export default {
             data() {
               let a, b, c = 0
-              let d = !(a || b || c) // <-- Error
+              let d = !(a || b || c)
+              let e = !d
 
-              return { a, b, c, d }
+              return {
+                a,
+                b,
+                c,
+                d,
+                /**
+                 * @type boolean
+                 * @initial false
+                 */
+                e
+              }
             }
           }
         </script>
@@ -2205,8 +2216,17 @@ describe('issues', () => {
           description: '',
           keywords: [],
           name: 'd',
+          type: 'any',
+          initial: '!(a || b || c)'
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          name: 'e',
           type: 'boolean',
-          initial: true
+          initial: 'false'
         }
       ]
     }
