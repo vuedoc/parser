@@ -790,7 +790,6 @@ interface PropEntry extends Entry {
   kind: 'prop';
   name: string;               // v-model when the @model keyword is attached
   type: string | string[];    // ex. Array, Object, String, [String, Number]
-  nativeType: NativeTypeEnum;
   default?: string;
   required: boolean = false;
   describeModel: boolean;     // true when the @model keyword is attached

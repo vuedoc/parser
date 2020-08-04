@@ -178,7 +178,6 @@ ComponentTestCase({
       { kind: 'prop',
         name: 'name',
         type: 'String',
-        nativeType: 'string',
         required: false,
         default: undefined,
         describeModel: false,
