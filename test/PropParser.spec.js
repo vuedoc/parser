@@ -150,4 +150,63 @@ describe('PropParser', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: 'Falsy default value',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              disabled: { type: Boolean, default: false }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      props: [
+        {
+          default: false,
+          describeModel: false,
+          description: '',
+          keywords: [],
+          kind: 'prop',
+          name: 'disabled',
+          required: false,
+          type: 'Boolean',
+          visibility: 'public' }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Falsy default value and stringify',
+    options: {
+      stringify: true,
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              disabled: { type: Boolean, default: false }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      props: [
+        {
+          default: 'false',
+          describeModel: false,
+          description: '',
+          keywords: [],
+          kind: 'prop',
+          name: 'disabled',
+          required: false,
+          type: 'Boolean',
+          visibility: 'public' }
+      ]
+    }
+  })
 })
