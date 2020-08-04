@@ -1180,7 +1180,7 @@ describe('issues', () => {
           keywords: [],
           name: 'filter',
           type: 'Function',
-          nativeType: 'any',
+          nativeType: 'function',
           default: undefined,
           required: false,
           describeModel: false

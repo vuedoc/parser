@@ -14,11 +14,6 @@ Generate a JSON documentation for a Vue file component.
   * [Add component name](#add-component-name)
   * [Add component description](#add-component-description)
   * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
-    + [Special keywords to annotate data](#special-keywords-to-annotate-data)
-    + [Special keyword to annotate props](#special-keyword-to-annotate-props)
-    + [Annotate a `v-model` prop](#annotate-a-v-model-prop)
-    + [Annotate Vue Array String Props](#annotate-vue-array-string-props)
-    + [Ignore an item from parsing](#ignore-an-item-from-parsing)
   * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
   * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
 - [Keywords Extraction](#keywords-extraction)
@@ -203,8 +198,13 @@ each defined data field and catch their initial value.
 
 #### Special keywords to annotate data
 
-You can set a custom type anf initial value of a data by using keywords
-`@type` and `@initial`:
+- `@type {typeName}`: Commented data will use provided type name as type
+  instead of type in source code. This option may be helpful in case the
+  data type is a complex object or a function, which you may want to further
+  detail with `@typedef` in another place
+- `@initial {value}`: Commented data will use the provided value as initial
+  data value. This option may be helpful in case the data type is a complex
+  object or function
 
 ```js
 export default {
@@ -221,16 +221,22 @@ export default {
 }
 ```
 
-#### Special keyword to annotate props
+#### Special keywords to annotate props
 
-You can also set a custom default value of an prop by using the keyword
-`@default`
+- `@type {typeName}`: Commented prop will use provided type name as type
+  instead of type in source code. This option may be helpful in case the
+  prop type is a complex object or a function, which you may want to further
+  detail with `@typedef` in another place
+- `@default {value}`: Commented prop will use the provided value as default
+  prop value. This option may be helpful in case the prop type is a complex
+  object or function
 
 ```js
 export default {
   props: {
     /**
      * Custom default value
+     * @type Complex.Object
      * @default { anything: 'custom default value' }
      */
     custom: {
