@@ -74,7 +74,6 @@ ComponentTestCase({
         keywords: [],
         kind: 'prop',
         name: 'todo',
-        nativeType: 'any',
         required: false,
         type: 'any',
         visibility: 'public' }

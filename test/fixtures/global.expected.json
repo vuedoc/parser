@@ -106,7 +106,6 @@
       ],
       "name": "v-model",
       "type": "Array",
-      "nativeType": "__undefined__",
       "default": "__undefined__",
       "required": true,
       "describeModel": true
@@ -118,7 +117,6 @@
       "keywords": [],
       "name": "disabled",
       "type": "Boolean",
-      "nativeType": "__undefined__",
       "default": "__undefined__",
       "required": false,
       "describeModel": false
@@ -130,7 +128,6 @@
       "keywords": [],
       "name": "checked",
       "type": "Boolean",
-      "nativeType": "boolean",
       "default": true,
       "required": false,
       "describeModel": false
@@ -142,7 +139,6 @@
       "keywords": [],
       "name": "prop-with-arrow",
       "type": "Object",
-      "nativeType": "FunctionExpression",
       "default": "() => ({ name: 'X'})",
       "required": false,
       "describeModel": false
@@ -154,7 +150,6 @@
       "keywords": [],
       "name": "prop-with-function",
       "type": "Object",
-      "nativeType": "FunctionExpression",
       "default": "function() {\n          return { name: 'X' }\n        }",
       "required": false,
       "describeModel": false
@@ -166,7 +161,6 @@
       "keywords": [],
       "name": "prop-with-anonymous-function",
       "type": "Object",
-      "nativeType": "FunctionExpression",
       "default": "function() {\n          return { name: 'X' }\n        }",
       "required": false,
       "describeModel": false
@@ -178,7 +172,6 @@
       "keywords": [],
       "name": "prop-with-named-function",
       "type": "Object",
-      "nativeType": "FunctionExpression",
       "default": "function propWithNamedFunction() {\n          return { name: 'X' }\n        }",
       "required": false,
       "describeModel": false
@@ -195,7 +188,6 @@
       ],
       "name": "prop-with-private-visibility",
       "type": "Object",
-      "nativeType": "FunctionExpression",
       "default": "function propWithNamedFunction() {\n          return { name: 'X' }\n        }",
       "required": false,
       "describeModel": false

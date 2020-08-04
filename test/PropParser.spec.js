@@ -33,7 +33,6 @@ describe('PropParser', () => {
           keywords: [],
           kind: 'prop',
           name: 'format',
-          nativeType: 'function',
           required: false,
           type: 'TextInput.FormatCallback',
           visibility: 'public' }
@@ -71,7 +70,6 @@ describe('PropParser', () => {
           keywords: [],
           kind: 'prop',
           name: 'format',
-          nativeType: 'function',
           required: false,
           type: 'Function',
           visibility: 'public' }
@@ -105,7 +103,6 @@ describe('PropParser', () => {
           keywords: [],
           kind: 'prop',
           name: 'complex',
-          nativeType: 'object',
           required: false,
           type: 'Complex.Object',
           visibility: 'public' }
@@ -147,7 +144,6 @@ describe('PropParser', () => {
           keywords: [],
           kind: 'prop',
           name: 'complex',
-          nativeType: 'object',
           required: false,
           type: 'Object',
           visibility: 'public' }

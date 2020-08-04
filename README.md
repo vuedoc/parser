@@ -2,7 +2,9 @@
 
 Generate a JSON documentation for a Vue file component.
 
-[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser) [![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=master) [![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+[![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser)
+[![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=master)
+[![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
 
 ## Table of Contents
 
@@ -40,8 +42,7 @@ npm install --save @vuedoc/parser
 
 - Extract the component name (from the name field or from the filename)
 - Extract the component description
-- Keywords Support: You can define your own keywords with the `@` symbol like
-  `@author Jon Snow`
+- [Keywords support](#keywords-extraction)
 - Extract component model
 - Extract component props
 - Extract component data
@@ -49,9 +50,10 @@ npm install --save @vuedoc/parser
 - Extract component events
 - Extract component slots
 - Extract component methods
-- Class Component Support
-- Vue Property Decorator Support
-- JSDoc Support ([`@param`](http://usejsdoc.org/tags-param.html) and
+- [Class Component](https://www.npmjs.com/package/vue-class-component) support
+- [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support
+- [Prop Types](https://github.com/znck/prop-types) support
+- JSDoc support ([`@param`](http://usejsdoc.org/tags-param.html) and
   [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 
 ## Options
@@ -746,8 +748,7 @@ enum NativeTypeEnum {
   boolean,
   bigint,
   any,                        // for an explicit `null` or `undefined` values
-  object,                     // for an array or an object
-  CallExpression              // for a value like `new Date()`
+  object                      // for an array or an object
 };
 
 type Keyword = {
@@ -790,9 +791,8 @@ interface PropEntry extends Entry {
   kind: 'prop';
   name: string;               // v-model when the @model keyword is attached
   type: string | string[];    // ex. Array, Object, String, [String, Number]
-  nativeType: NativeTypeEnum;
   default?: string;
-  required: boolean = false;
+  required: boolean;
   describeModel: boolean;     // true when the @model keyword is attached
 }
 

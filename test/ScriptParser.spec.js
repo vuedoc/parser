@@ -108,7 +108,6 @@ describe('ScriptParser', () => {
           description: '',
           keywords: [],
           default: undefined,
-          nativeType: 'any',
           required: false,
           describeModel: false
         },
@@ -120,7 +119,6 @@ describe('ScriptParser', () => {
           description: '',
           keywords: [],
           default: undefined,
-          nativeType: 'any',
           required: false,
           describeModel: false
         }
@@ -548,7 +546,6 @@ describe('ScriptParser', () => {
           kind: 'prop',
           name: 'id',
           type: 'String',
-          nativeType: 'string',
           visibility: 'public',
           description: '',
           keywords: [],
@@ -559,7 +556,6 @@ describe('ScriptParser', () => {
           kind: 'prop',
           name: 'value',
           type: [ 'Boolean', 'Number', 'String' ],
-          nativeType: 'any',
           visibility: 'public',
           description: '',
           keywords: [],
@@ -614,7 +610,6 @@ describe('ScriptParser', () => {
           kind: 'prop',
           name: 'id',
           type: 'String',
-          nativeType: 'string',
           visibility: 'public',
           description: '',
           keywords: [],
@@ -625,7 +620,6 @@ describe('ScriptParser', () => {
           kind: 'prop',
           name: 'value',
           type: [ 'Boolean', 'Number', 'String' ],
-          nativeType: 'any',
           visibility: 'public',
           description: '',
           keywords: [],
