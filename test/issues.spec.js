@@ -2208,4 +2208,114 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#83 - Parser issue with !(...)',
+    options: {
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+
+          /**
+           * @mixin
+           */
+          export function TestMixinFactory(boundValue: number) {
+              return Vue.extend({
+                  methods: {
+                      /**
+                       * Testing
+                       *
+                       * @public
+                       */
+                      myFunction(test: Promise<string>): number {
+                          let a, b, c = 0
+                          let d = !(a || b || c)
+                          return boundValue
+                      },
+                  },
+              })
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'myFunction',
+          description: 'Testing',
+          visibility: 'public',
+          keywords: [],
+          params: [
+            {
+              name: 'test',
+              type: 'Promise<string>',
+              defaultValue: undefined,
+              description: '',
+              declaration: ''
+            }
+          ],
+          return: {
+            type: 'number',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '#83 - Issue with arrow function',
+    options: {
+      filecontent: `
+        <template>
+          <div>
+
+          </div>
+        </template>
+
+        <script lang='ts'>
+          import {extend, pick} from 'lodash'
+          import mixins   from 'vue-typed-mixins'
+
+          const Vue = mixins()
+          export default Vue.extend({
+            name: "TestComponent",
+            methods: {
+              test() {
+                function pickOpts({sortBy, sortDesc, page, itemsPerPage}) {
+                  return {sortBy, sortDesc, page, itemsPerPage}
+                }
+
+                const params: any = (({sortBy, sortDesc, page, itemsPerPage}) => ({sortBy, sortDesc, page, itemsPerPage}))(this.options)
+                //const params: any = pick(this.options, ['sortBy', 'sortDesc', 'page', 'itemsPerPage'])
+                //const params: any = pickOpts(this.options)
+                params.search     = this.dSearch
+                extend(params, this.fetchParams) // <--- error here I think
+              }
+            }
+          })
+        </script>
+      `
+    },
+    expected: {
+      name: 'TestComponent',
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'test',
+          description: '',
+          visibility: 'public',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        }
+      ]
+    }
+  })
 })
