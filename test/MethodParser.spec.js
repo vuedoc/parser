@@ -5,22 +5,22 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
   [ 'unset', undefined, 'any' ],
-  [ 'undefine', 'undefined', 'any', undefined ],
-  [ 'negativeNumber', '-1', 'number', -1 ],
-  [ 'positiveNumber', '1', 'number', 1 ],
-  [ 'zeroNumber', '0', 'number', 0 ],
-  [ 'numeric', '1_000_000_000', 'number', 1000000000 ],
-  [ 'numeric', '101_475_938.38', 'number', 101475938.38 ],
-  [ 'binary', '0b111110111', 'number', 503 ],
-  [ 'octalLiteral', '0o767', 'number', 503 ],
-  [ 'thruty', 'true', 'boolean', true ],
-  [ 'falsy', 'false', 'boolean', false ],
-  [ 'string', '"hello"', 'string', 'hello' ],
-  [ 'unicode', '"𠮷"', 'string', '𠮷' ],
-  [ 'unicode', '"\u{20BB7}"', 'string', '𠮷' ],
-  [ 'emptyString', '""', 'string', '' ],
+  [ 'undefine', 'undefined', 'any' ],
+  [ 'negativeNumber', '-1', 'number' ],
+  [ 'positiveNumber', '1', 'number' ],
+  [ 'zeroNumber', '0', 'number' ],
+  [ 'numeric', '1_000_000_000', 'number' ],
+  [ 'numeric', '101_475_938.38', 'number' ],
+  [ 'binary', '0b111110111', 'number' ],
+  [ 'octalLiteral', '0o767', 'number' ],
+  [ 'thruty', 'true', 'boolean' ],
+  [ 'falsy', 'false', 'boolean' ],
+  [ 'string', '"hello"', 'string', '"hello"' ],
+  [ 'unicode', '"𠮷"', 'string', '"𠮷"' ],
+  [ 'unicode', '"\u{20BB7}"', 'string', '"𠮷"' ],
+  [ 'emptyString', '""', 'string', '""' ],
   [ 'literal', '`hello`', 'string' ],
-  [ 'literal', '`hello ${name}`', 'string', '`hello ${name}`' ],
+  [ 'literal', '`hello ${name}`', 'string' ],
   [ 'tagged', 'tagged`hello`', 'string', '`hello`' ],
   [ 'tagged', 'tagged`hello ${name}`', 'string', '`hello ${name}`' ],
   [ 'math', 'Math.PI', 'number' ],
@@ -28,10 +28,10 @@ const defaultParams = [
   [ 'number', 'Number.MAX_VALUE', 'number' ],
   [ 'number', 'Number.blabla', 'number' ],
   [ 'obj', 'Bool.TRUE', 'object' ],
-  [ 'nully', 'null', 'any', null ],
+  [ 'nully', 'null', 'any' ],
   [ 'symbol', 'Symbol(2)', 'symbol' ],
-  [ 'bigint', '9007199254740991n', 'bigint', 9007199254740991n ],
-  [ 'bigint', 'BigInt(9007199254740991)', 'bigint', 'BigInt(9007199254740991)' ]
+  [ 'bigint', '9007199254740991n', 'bigint' ],
+  [ 'bigint', 'BigInt(9007199254740991)', 'bigint' ]
 ]
 
 describe('MethodParser', () => {
@@ -261,6 +261,18 @@ describe('MethodParser', () => {
                 return new Promise(function(resolve, reject) {
                   resolve(a + b);
                 });
+              },
+
+              /**
+               * Returns the sum of a and b
+               * @param {number} a
+               * @param {number} b
+               * @returns {Promise} Promise object represents the sum of a and b
+               */
+              withSpreadParam(a, ...b) {
+                return new Promise(function(resolve, reject) {
+                  resolve(a + b);
+                });
               }
             }
           };
@@ -324,7 +336,8 @@ describe('MethodParser', () => {
           params: [
             {
               type: 'any',
-              name: 'somebody'
+              name: 'somebody',
+              description: undefined
             }
           ],
           return: {
@@ -341,7 +354,8 @@ describe('MethodParser', () => {
           params: [
             {
               type: 'string',
-              name: 'somebody'
+              name: 'somebody',
+              description: undefined
             }
           ],
           return: {
@@ -595,11 +609,13 @@ describe('MethodParser', () => {
           params: [
             {
               type: 'number',
-              name: 'a'
+              name: 'a',
+              description: undefined
             },
             {
               type: 'number',
-              name: 'b'
+              name: 'b',
+              description: undefined
             }
           ],
           return: {
@@ -616,11 +632,13 @@ describe('MethodParser', () => {
           params: [
             {
               type: 'number',
-              name: 'a'
+              name: 'a',
+              description: undefined
             },
             {
               type: 'number',
-              name: 'b'
+              name: 'b',
+              description: undefined
             },
             {
               type: 'boolean',
@@ -645,11 +663,37 @@ describe('MethodParser', () => {
           params: [
             {
               type: 'number',
-              name: 'a'
+              name: 'a',
+              description: undefined
             },
             {
               type: 'number',
-              name: 'b'
+              name: 'b',
+              description: undefined
+            }
+          ],
+          return: {
+            type: 'Promise',
+            description: 'Promise object represents the sum of a and b'
+          }
+        },
+        {
+          kind: 'method',
+          visibility: 'public',
+          description: 'Returns the sum of a and b',
+          keywords: [],
+          name: 'withSpreadParam',
+          params: [
+            {
+              type: 'number',
+              name: 'a',
+              description: undefined
+            },
+            {
+              type: 'number',
+              name: 'b',
+              description: undefined,
+              declaration: '...b'
             }
           ],
           return: {
@@ -661,7 +705,7 @@ describe('MethodParser', () => {
     }
   })
 
-  defaultParams.forEach(([ paramName, paramValue, expectedType, expectedValue = paramValue === 'undefined' ? void(0) : paramValue, args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}` ]) => ComponentTestCase({
+  defaultParams.forEach(([ paramName, paramValue, expectedType, expectedValue = paramValue, args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}` ]) => ComponentTestCase({
     name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
     options: {
       filecontent: `
@@ -689,8 +733,8 @@ describe('MethodParser', () => {
               name: paramName,
               type: expectedType,
               description: '',
-              declaration: '',
-              defaultValue: expectedValue
+              declaration: args,
+              defaultValue: expectedValue ? `${expectedValue}` : expectedValue
             }
           ],
           return: {
@@ -764,7 +808,7 @@ describe('MethodParser', () => {
               name: 'model',
               type: [ 'Number', 'String', 'Array', 'Object', 'Boolean' ],
               description: 'The initial data for the schema.',
-              defaultValue: 'hello'
+              defaultValue: '"hello"'
             }
           ],
           return: {
@@ -783,8 +827,8 @@ describe('MethodParser', () => {
               name: 'model',
               type: 'number',
               description: '',
-              defaultValue: 123,
-              declaration: ''
+              defaultValue: '123',
+              declaration: 'model = 123'
             }
           ],
           return: {
