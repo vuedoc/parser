@@ -7,10 +7,7 @@ const JavaScriptLoader = require('./loader/javascript')
 const TypeScriptLoader = require('./loader/typescript')
 
 const { Parser } = require('./lib/parser/Parser')
-const { Features } = require('./lib/Enum')
-
-const DEFAULT_ENCODING = 'utf8'
-const DEFAULT_IGNORED_VISIBILITIES = [ 'protected', 'private' ]
+const { Features, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } = require('./lib/Enum')
 
 const DEFAULT_LOADERS = [
   Loader.extend('js', JavaScriptLoader),
@@ -21,7 +18,6 @@ const DEFAULT_LOADERS = [
 
 module.exports.Loader = Loader
 module.exports.Parser = Parser
-module.exports.DEFAULT_IGNORED_VISIBILITIES = DEFAULT_IGNORED_VISIBILITIES
 
 module.exports.parseOptions = (options) => {
   if (!options) {

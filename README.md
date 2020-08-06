@@ -53,8 +53,10 @@ npm install --save @vuedoc/parser
 - [Class Component](https://www.npmjs.com/package/vue-class-component) support
 - [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support
 - [Prop Types](https://github.com/znck/prop-types) support
-- JSDoc support ([`@param`](http://usejsdoc.org/tags-param.html) and
-  [`@return`](http://usejsdoc.org/tags-returns.html) tags)
+- [JSDoc](https://jsdoc.app/) support
+  ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
+- [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
+  (`@param <param name>`, `@return(s)`, `@hidden`, `@ignore`)
 
 ## Options
 
@@ -67,7 +69,7 @@ npm install --save @vuedoc/parser
 |                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
 | loaders                 | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
 | defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'`                                                         |
-| ignoredVisibilities     | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
+| ignoredVisibilities     | List of ignored visibilities. Default: `['protected', 'private', 'ignore', 'hidden']`                                       |
 | stringify               | Set to `true` to disable parsing of literal values and stringify literal values. Default: `false`                           |
 
 **Note for `stringify` option**
@@ -322,6 +324,8 @@ export default {
   })
 }
 ```
+
+You can also use the [TypeDoc's tags `@hidden` and `@ignore`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
 
 ### Annotate methods, events and slots
 

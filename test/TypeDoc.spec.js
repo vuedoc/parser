@@ -101,4 +101,30 @@ describe('TypeDoc', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '@hidden and @ignore',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * @hidden
+               */
+              doSomething(target: any, value: number): number {},
+              /**
+               * @ignore
+               */
+              doSomething2(target: any, value: number): number {},
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: []
+    }
+  })
 })

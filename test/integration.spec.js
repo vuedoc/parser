@@ -456,7 +456,7 @@ describe('Integration', () => {
       const expected = {
         filecontent,
         encoding: 'utf8',
-        ignoredVisibilities: [ 'protected', 'private' ],
+        ignoredVisibilities: [ 'ignore', 'hidden', 'protected', 'private' ],
         source: {
           template: '',
           script: '',
