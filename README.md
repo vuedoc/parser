@@ -15,7 +15,7 @@ Generate a JSON documentation for a Vue file component.
 - [Syntax](#syntax)
   * [Add component name](#add-component-name)
   * [Add component description](#add-component-description)
-  * [Annotate model, props, data and computed properties](#annotate-model-props-data-and-computed-properties)
+  * [Annotate props](#annotate-props)
     + [Annotate a `v-model` prop](#annotate-a-v-model-prop)
     + [Annotate Vue Array String Props](#annotate-vue-array-string-props)
     + [Special keywords for props](#special-keywords-for-props)
@@ -167,7 +167,7 @@ export default {
 }
 ```
 
-### Annotate model, props, data and computed properties
+### Annotate props
 
 To document props, annotate your code like:
 
