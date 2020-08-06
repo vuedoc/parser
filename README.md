@@ -204,7 +204,7 @@ each defined data field and catch their initial value.
   instead of type in source code. This option may be helpful in case the
   data type is a complex object or a function, which you may want to further
   detail with `@typedef` in another place
-- `@initial {value}`: Commented data will use the provided value as initial
+- `@initialValue {value}`: Commented data will use the provided value as initial
   data value. This option may be helpful in case the data type is a complex
   object or function
 
@@ -215,7 +215,7 @@ export default {
       /**
        * A data with a complex expression
        * @type boolean
-       * @initial false
+       * @initialValue false
        */
       isChecked: !(a || b || c)
     }
@@ -800,7 +800,7 @@ interface DataEntry extends Entry {
   kind: 'data';
   name: string;
   type: NativeTypeEnum;
-  initial?: string;
+  initialValue?: string;
 }
 
 interface ComputedEntry extends Entry {
@@ -819,6 +819,7 @@ type EventArgument = {
   name: string;
   description: string;
   type: string;
+  rest: boolean;
 };
 
 interface MethodEntry extends Entry {
@@ -833,6 +834,7 @@ type MethodParam = {
   name: string;
   description: string;
   defaultValue?: string;
+  rest: boolean;
 };
 
 type MethodReturn = {

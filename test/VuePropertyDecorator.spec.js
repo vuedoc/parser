@@ -198,9 +198,9 @@ ComponentTestCase({
         arguments: [
           {
             name: 'n',
-            declaration: '',
             description: '',
-            type: 'any'
+            type: 'any',
+            rest: false
           }
         ],
         keywords: [],
@@ -226,9 +226,9 @@ ComponentTestCase({
         arguments: [
           {
             name: 'e',
-            declaration: '',
             description: '',
-            type: 'any'
+            type: 'any',
+            rest: false
           }
         ],
         keywords: [],
@@ -252,15 +252,15 @@ ComponentTestCase({
             name: 'val',
             type: 'string',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           },
           {
             name: 'oldVal',
             type: 'string',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -279,15 +279,15 @@ ComponentTestCase({
             name: 'val',
             type: 'Person',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           },
           {
             name: 'oldVal',
             type: 'Person',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -306,8 +306,8 @@ ComponentTestCase({
             name: 'n',
             type: 'number',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -350,8 +350,8 @@ ComponentTestCase({
             name: 'e',
             type: 'any',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {

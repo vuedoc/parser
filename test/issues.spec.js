@@ -1210,7 +1210,7 @@ describe('issues', () => {
           keywords: [],
           name: 'initialValue',
           type: 'object',
-          initial: 'this.value'
+          initialValue: 'this.value'
         },
         {
           kind: 'data',
@@ -1219,7 +1219,7 @@ describe('issues', () => {
           keywords: [],
           name: 'isActive',
           type: 'boolean',
-          initial: false
+          initialValue: false
         },
         {
           kind: 'data',
@@ -1228,7 +1228,7 @@ describe('issues', () => {
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
-          initial: false
+          initialValue: false
         },
         {
           kind: 'data',
@@ -1237,7 +1237,7 @@ describe('issues', () => {
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
-          initial: false
+          initialValue: false
         },
         {
           kind: 'data',
@@ -1246,7 +1246,7 @@ describe('issues', () => {
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
-          initial: -1
+          initialValue: -1
         }
       ],
       computed: [
@@ -1384,7 +1384,7 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
@@ -1399,7 +1399,7 @@ describe('issues', () => {
               name: 'index',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
@@ -1430,7 +1430,7 @@ describe('issues', () => {
               name: 'value',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
@@ -1445,7 +1445,7 @@ describe('issues', () => {
               name: 'e',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
@@ -1460,13 +1460,13 @@ describe('issues', () => {
               name: 'value',
               type: 'any',
               description: '',
-              declaration: 'this.value'
+              rest: false
             },
             {
               name: 'e',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
@@ -1481,7 +1481,7 @@ describe('issues', () => {
               name: 'e',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
@@ -1507,7 +1507,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1527,7 +1527,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1547,7 +1547,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1567,14 +1567,14 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             },
             {
               name: 'e',
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1618,7 +1618,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1638,7 +1638,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1658,7 +1658,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1678,7 +1678,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1698,7 +1698,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1742,7 +1742,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1761,7 +1761,7 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           kind: 'event',
@@ -1791,7 +1791,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1810,7 +1810,7 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           kind: 'event',
@@ -1948,9 +1948,9 @@ describe('issues', () => {
           arguments: [
             {
               type: 'boolean',
-              declaration: '',
               description: '',
-              name: true
+              name: 'true',
+              rest: false
             }
           ]
         }
@@ -2008,12 +2008,14 @@ describe('issues', () => {
             {
               name: 'a',
               type: 'number',
-              description: undefined
+              description: undefined,
+              rest: false
             },
             {
               name: 'b',
               type: 'number',
-              description: undefined
+              description: undefined,
+              rest: false
             }
           ],
           return: {
@@ -2107,7 +2109,8 @@ describe('issues', () => {
             {
               name: 'test',
               type: 'Record<string, any>',
-              description: '<-- Parser stops with error'
+              description: '<-- Parser stops with error',
+              rest: false
             }
           ],
           return: {
@@ -2138,7 +2141,7 @@ describe('issues', () => {
                 d,
                 /**
                  * @type boolean
-                 * @initial false
+                 * @initialValue false
                  */
                 e,
                 f: !!d,
@@ -2158,7 +2161,7 @@ describe('issues', () => {
           keywords: [],
           name: 'a',
           type: 'any',
-          initial: undefined
+          initialValue: undefined
         },
         {
           kind: 'data',
@@ -2167,7 +2170,7 @@ describe('issues', () => {
           keywords: [],
           name: 'b',
           type: 'any',
-          initial: undefined
+          initialValue: undefined
         },
         {
           kind: 'data',
@@ -2176,7 +2179,7 @@ describe('issues', () => {
           keywords: [],
           name: 'c',
           type: 'number',
-          initial: 0
+          initialValue: 0
         },
         {
           kind: 'data',
@@ -2185,7 +2188,7 @@ describe('issues', () => {
           keywords: [],
           name: 'd',
           type: 'any',
-          initial: '!(a || b || c)'
+          initialValue: '!(a || b || c)'
         },
         {
           kind: 'data',
@@ -2194,7 +2197,7 @@ describe('issues', () => {
           keywords: [],
           name: 'e',
           type: 'boolean',
-          initial: 'false'
+          initialValue: 'false'
         },
         {
           kind: 'data',
@@ -2203,7 +2206,7 @@ describe('issues', () => {
           keywords: [],
           name: 'f',
           type: 'any',
-          initial: '!!d'
+          initialValue: '!!d'
         }
       ]
     }
@@ -2253,7 +2256,7 @@ describe('issues', () => {
               type: 'Promise<string>',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -2313,6 +2316,156 @@ describe('issues', () => {
           return: {
             type: 'void',
             description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'vuedoc/md#19 - does not render default param values for function',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Load the given \`schema\` with initial filled \`value\`
+               * Use this to load async schema.
+               *
+               * @param {object} schema - The JSON Schema object to load
+               * @param {Number|String|Array|Object|Boolean} model - The initial data for the schema.
+               *
+               * @Note \`model\` is not a two-way data bindings.
+               * To get the form data, use the \`v-model\` directive.
+               */
+              load(schema, model = 'hello') {},
+              number(model = 123) {},
+              /**
+               * @param {object} schema - The JSON Schema object to load
+               */
+              withImplicitUndefinedReturn(schema) {
+                return undefined;
+              },
+              /**
+               * @param {object} schema - The JSON Schema object to load
+               * @return undefined
+               */
+              withExplicitUndefinedReturn(schema) {},
+              /**
+               * @return {int} 123
+               */
+              withExplicitReturn() {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'load',
+          visibility: 'public',
+          description: 'Load the given `schema` with initial filled `value`\nUse this to load async schema.',
+          keywords: [
+            {
+              name: 'Note',
+              description: '`model` is not a two-way data bindings.\nTo get the form data, use the `v-model` directive.'
+            }
+          ],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load',
+              defaultValue: undefined,
+              rest: false
+            },
+            {
+              name: 'model',
+              type: [ 'Number', 'String', 'Array', 'Object', 'Boolean' ],
+              description: 'The initial data for the schema.',
+              defaultValue: undefined,
+              defaultValue: '"hello"',
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        },
+        {
+          kind: 'method',
+          name: 'number',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: 'model',
+              type: 'number',
+              description: '',
+              defaultValue: '123',
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        },
+        {
+          kind: 'method',
+          name: 'withImplicitUndefinedReturn',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load',
+              defaultValue: undefined,
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        },
+        {
+          kind: 'method',
+          name: 'withExplicitUndefinedReturn',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load',
+              defaultValue: undefined,
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: 'undefined'
+          }
+        },
+        {
+          kind: 'method',
+          name: 'withExplicitReturn',
+          visibility: 'public',
+          description: '',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'int',
+            description: '123'
           }
         }
       ]

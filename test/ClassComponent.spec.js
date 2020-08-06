@@ -162,7 +162,7 @@ ComponentTestCase({
         name: 'msg',
         type: 'string',
         description: 'data msg description',
-        initial: 'Hello',
+        initialValue: 'Hello',
         keywords: [],
         visibility: 'public' },
       {
@@ -170,7 +170,7 @@ ComponentTestCase({
         name: 'helloMsg',
         type: 'BinaryExpression',
         description: 'data helloMsg with expression',
-        initial: '\'Hello, \' + this.name',
+        initialValue: '\'Hello, \' + this.name',
         keywords: [],
         visibility: 'public' }
     ],
@@ -235,9 +235,9 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'routeQueue',
-        type: 'ArrayExpression',
+        type: 'array',
         description: '',
-        initial: '[this.$router.currentRoute]',
+        initialValue: '[this.$router.currentRoute]',
         keywords: [],
         visibility: 'public' },
       {
@@ -245,7 +245,7 @@ ComponentTestCase({
         name: 'historyLength',
         type: 'object',
         description: '',
-        initial: 'window.history.length',
+        initialValue: 'window.history.length',
         keywords: [],
         visibility: 'public' },
       {
@@ -253,7 +253,7 @@ ComponentTestCase({
         name: 'transitionName',
         type: 'string',
         description: '',
-        initial: 'slide-left',
+        initialValue: 'slide-left',
         keywords: [],
         visibility: 'public' },
       {
@@ -261,7 +261,7 @@ ComponentTestCase({
         name: 'init',
         type: 'boolean',
         description: '',
-        initial: false,
+        initialValue: false,
         keywords: [],
         visibility: 'public' },
     ],

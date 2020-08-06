@@ -6,7 +6,7 @@
   "scripts": {
     "preversion": "npm test",
     "test": "jest --coverage",
-    "lint": "eslint index.js lib test",
+    "lint": "eslint index.js lib loader test",
     "lint:fix": "eslint --fix index.js lib test",
     "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },

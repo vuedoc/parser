@@ -24,7 +24,7 @@ describe('DataParser', () => {
           keywords: [],
           kind: 'data',
           name: 'initialValue',
-          initial: '',
+          initialValue: '',
           type: 'string',
           visibility: 'public' }
       ]
@@ -52,7 +52,7 @@ describe('DataParser', () => {
           keywords: [],
           kind: 'data',
           name: 'initialValue',
-          initial: '""',
+          initialValue: '""',
           type: 'string',
           visibility: 'public' }
       ]

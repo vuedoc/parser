@@ -383,7 +383,9 @@ describe('ScriptParser', () => {
             {
               name: 'test',
               type: 'Record<string, any>',
-              description: '<-- Parser stops with error'
+              description: '<-- Parser stops with error',
+              defaultValue: undefined,
+              rest: false
             }
           ],
           return: {

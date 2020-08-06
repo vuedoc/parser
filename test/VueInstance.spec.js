@@ -46,7 +46,7 @@ ComponentTestCase({
         name: 'url',
         type: 'object',
         description: '',
-        initial: 'context.url',
+        initialValue: 'context.url',
         keywords: [],
         visibility: 'public' },
       {
@@ -54,7 +54,7 @@ ComponentTestCase({
         name: 'contextUrl',
         type: 'object',
         description: 'data contextUrl description',
-        initial: 'context.url',
+        initialValue: 'context.url',
         keywords: [],
         visibility: 'public' },
       {
@@ -62,7 +62,7 @@ ComponentTestCase({
         name: 'contextNumber',
         type: 'number',
         description: 'data contextNumber description',
-        initial: 12,
+        initialValue: 12,
         keywords: [],
         visibility: 'public' }
     ],

@@ -36,15 +36,15 @@ describe('TypeDoc', () => {
               name: 'target',
               type: 'any',
               description: '',
-              declaration: '',
-              defaultValue: undefined
+              defaultValue: undefined,
+              rest: false
             },
             {
               name: 'text',
               type: 'string',
               description: 'Comment for parameter ´text´.',
-              declaration: '',
-              defaultValue: undefined
+              defaultValue: undefined,
+              rest: false
             },
           ],
           return: {

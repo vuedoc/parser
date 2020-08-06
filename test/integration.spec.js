@@ -283,10 +283,10 @@ function testComponentEvents (optionsToParse) {
       keywords: [],
       arguments: [
         {
-          name: 'object',
+          name: '{ bankAccount: { ...this.bankAccount }, valid: !this.$v.$invalid }',
           type: 'object',
           description: '',
-          declaration: '{\n      bankAccount: { ...this.bankAccount },\n      valid: !this.$v.$invalid\n    }'
+          rest: false
         }
       ],
       visibility: 'public'
@@ -621,7 +621,7 @@ describe('Integration', () => {
           keywords: [],
           visibility: 'public',
           description: 'ID data',
-          initial: 'Hello',
+          initialValue: 'Hello',
           type: 'string',
           name: 'id'
         }
@@ -1016,7 +1016,7 @@ describe('Integration', () => {
           name: 'currentYear',
           type: 'CallExpression',
           description: '',
-          initial: 'new Date().getFullYear()',
+          initialValue: 'new Date().getFullYear()',
           keywords: [],
           visibility: 'public'
         } ],
@@ -1108,7 +1108,7 @@ describe('Integration', () => {
           name: 'currentYear',
           type: 'CallExpression',
           description: '',
-          initial: 'new Date().getFullYear()',
+          initialValue: 'new Date().getFullYear()',
           keywords: [],
           visibility: 'public'
         } ],
@@ -1423,7 +1423,6 @@ describe('Integration', () => {
           const name = 'blabla'
           const complex = 'complexValue'
           const dynamic2 = 'dynamic2Value'
-          const computedProp2 = 'computedProp2Value'
           const boolFalse = false
           export default {
             name,
@@ -1435,10 +1434,6 @@ describe('Integration', () => {
                 type: Boolean,
                 default: true
               }
-            },
-            computed: {
-              ['computedProp1']() { return 1 },
-              [computedProp2]() { return 2 }
             },
             methods: {
               // Make component dynamic
@@ -1477,22 +1472,6 @@ describe('Integration', () => {
           name: 'bool-false',
           required: false,
           type: 'Boolean',
-          visibility: 'public' }
-      ],
-      computed: [
-        {
-          kind: 'computed',
-          name: 'computedProp1',
-          description: '',
-          keywords: [],
-          dependencies: [],
-          visibility: 'public' },
-        {
-          kind: 'computed',
-          name: 'computedProp2Value',
-          description: '',
-          keywords: [],
-          dependencies: [],
           visibility: 'public' }
       ],
       methods: [
