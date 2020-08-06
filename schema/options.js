@@ -1,10 +1,4 @@
-const {
-  Visibilities,
-  DEFAULT_IGNORED_VISIBILITIES,
-  DEFAULT_ENCODING,
-  VisibilitiesList,
-  FeaturesList
-} = require("../lib/Enum");
+const { Visibilities, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING, VisibilitiesList, FeaturesList } = require('../lib/Enum');
 
 module.exports = {
   type: 'object',
