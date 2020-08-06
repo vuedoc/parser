@@ -24,6 +24,8 @@ Generate a JSON documentation for a Vue file component.
   * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
   * [Ignore item from parsing](#ignore-item-from-parsing)
 - [Keywords Extraction](#keywords-extraction)
+- [Supported tags](#supported-tags)
+- [Visibility tags](#visibility-tags)
 - [Working with Mixins](#working-with-mixins)
 - [Parsing control with `options.features`](#parsing-control-with-optionsfeatures)
 - [Language Processing](#language-processing)
@@ -514,7 +516,7 @@ You can attach keywords to any comment and then extract them using the parser.
 export default { /* ... */ }
 ```
 
-> Note that the description must alway appear before keywords definition
+> Note that the description must always appear before keywords definition.
 
 Parsing result:
 
@@ -534,6 +536,36 @@ Parsing result:
   ]
 }
 ```
+
+## Supported tags
+
+| Keyword         | Alias       | Scope                                         | Description                                                       |
+| --------------- | ----------- | --------------------------------------------- | ----------------------------------------------------------------- |
+| `@type`         |             | `props`, `data`                               | Force the type of a prop or a data                                |
+| `@default`      |             | `props`                                       | Provides a default value of a prop                                |
+| `@model`        |             | `props`                                       | Marks a prop as `v-model`                                         |
+| `@initialValue` |             | `data`                                        | Provides an initial value of a data                               |
+| `@method`       |             | `methods`                                     | Force the name of a specific method                               |
+| `@param`        |             | `methods`                                     | Provides the name, type, and description of a function parameter  |
+| `@returns`      | `@return`   | `methods`                                     | Documents the value that a function returns                       |
+| `@event`        |             | `events`                                      | Force the name of a specific event                                |
+| `@arg`          | `@argument` | `events`                                      | Provides the name, type, and description of an event argument     |
+| `@slot`         |             | `slots`                                       | Documents slot defined in render function                         |
+| `@prop`         |             | `slots`                                       | Provides the name, type, and description of a slot prop           |
+| `@category`     |             | `props`, `data`, `methods`, `events`, `slots` | Attaches a category to an element                                 |
+
+**Visibility tags**
+
+| Keyword                   | Description                                                                                         |
+|---------------------------|-----------------------------------------------------------------------------------------------------|
+| `@public`                 | By default all commented members are public; this means they will be part of the documented members |
+| `@protected`, `@private`  | Keeps the subsequent code from being documented                                                     |
+
+Vuedoc Parser also handles [TypeDoc's visibility tags](https://typedoc.org/guides/doccomments/#hidden-and-ignore):
+
+| Keyword               | Description                                     |
+|-----------------------|-------------------------------------------------|
+| `@ignore`, `@hidden`  | Keeps the subsequent code from being documented |
 
 ## Working with Mixins
 
@@ -867,7 +899,7 @@ class NameEntry extends AbstractLiteralEntry {
 class PropEntry extends AbstractCategorizeEntry {
   kind: 'prop';
   name: string;
-  type: string;
+  type: string | string[];
   default: string;
   required: boolean;
   describeModel: boolean;
