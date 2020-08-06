@@ -118,6 +118,7 @@ describe('CommentParser', () => {
     it('should return the attached visibility', () => {
       const keywords = [
         { name: 'private',
+          category: null,
           description: '' }
       ]
       const result = CommentParser.getVisibility(keywords)
@@ -129,6 +130,7 @@ describe('CommentParser', () => {
     it('should return null for not found visibility', () => {
       const keywords = [
         { name: 'author',
+          category: null,
           description: 'Sébastien' }
       ]
       const result = CommentParser.getVisibility(keywords)

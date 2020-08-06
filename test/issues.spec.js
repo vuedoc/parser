@@ -30,6 +30,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'Boolean',
@@ -65,6 +66,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'Boolean',
@@ -101,6 +103,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'Boolean',
@@ -137,6 +140,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'String',
@@ -173,6 +177,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'Number',
@@ -209,6 +214,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'Object',
@@ -245,6 +251,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           type: 'BigInt',
@@ -475,6 +482,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Overrides entire dialog contents',
           keywords: [],
           name: 'content',
@@ -483,6 +491,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Overrides dialog header',
           keywords: [],
           name: 'header',
@@ -491,6 +500,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Overrides dialog header actions, i.e. default close button',
           keywords: [],
           name: 'actions',
@@ -499,6 +509,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Dialog body',
           keywords: [],
           name: 'default',
@@ -507,6 +518,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Dialog footer',
           keywords: [],
           name: 'footer',
@@ -543,6 +555,7 @@ describe('issues', () => {
         {
           kind: 'event',
           name: 'close',
+          category: null,
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
@@ -577,6 +590,7 @@ describe('issues', () => {
         {
           kind: 'event',
           name: 'close',
+          category: null,
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
@@ -611,6 +625,7 @@ describe('issues', () => {
         {
           kind: 'event',
           name: 'close',
+          category: null,
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
@@ -645,6 +660,7 @@ describe('issues', () => {
         {
           kind: 'event',
           name: 'close',
+          category: null,
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
@@ -679,6 +695,7 @@ describe('issues', () => {
         {
           kind: 'event',
           name: 'close',
+          category: null,
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
@@ -713,6 +730,7 @@ describe('issues', () => {
         {
           kind: 'event',
           name: 'close',
+          category: null,
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
@@ -748,6 +766,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           name: 'bidule',
+          category: null,
           description: '',
           dependencies: [ 'docs', 'name' ],
           keywords: [],
@@ -783,6 +802,7 @@ describe('issues', () => {
         {
           default: undefined,
           describeModel: true,
+          category: null,
           description: 'Badge value',
           keywords: [],
           kind: 'prop',
@@ -824,6 +844,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'A title slot',
           keywords: [],
           name: 'title',
@@ -832,6 +853,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'A default slot',
           keywords: [],
           name: 'default',
@@ -864,6 +886,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'A title slot',
           keywords: [],
           name: 'title',
@@ -872,6 +895,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'A default slot',
           keywords: [],
           name: 'default',
@@ -898,6 +922,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'icon',
@@ -906,6 +931,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'default',
@@ -914,6 +940,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'suggestion',
@@ -922,6 +949,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'error',
@@ -930,6 +958,7 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'help',
@@ -940,6 +969,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'name',
@@ -951,6 +981,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'placeholder',
@@ -962,6 +993,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'value',
@@ -973,6 +1005,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'icon',
@@ -984,6 +1017,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'icon-position',
@@ -995,6 +1029,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'label',
@@ -1006,6 +1041,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'floating-label',
@@ -1017,6 +1053,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'help',
@@ -1028,6 +1065,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'error',
@@ -1039,6 +1077,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'readonly',
@@ -1050,6 +1089,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'disabled',
@@ -1061,6 +1101,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'type',
@@ -1072,6 +1113,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'suggestions',
@@ -1083,6 +1125,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'limit',
@@ -1094,6 +1137,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'append',
@@ -1105,6 +1149,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'append-delimiter',
@@ -1116,6 +1161,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'min-chars',
@@ -1127,6 +1173,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'show-on-up-down',
@@ -1138,6 +1185,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'autofocus',
@@ -1149,6 +1197,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'filter',
@@ -1160,6 +1209,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'highlight-on-first-match',
@@ -1171,6 +1221,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'cycle-highlight',
@@ -1182,6 +1233,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'keys',
@@ -1193,6 +1245,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'invalid',
@@ -1206,53 +1259,59 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'initialValue',
           type: 'object',
-          initial: 'this.value'
+          initialValue: 'this.value'
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'isActive',
           type: 'boolean',
-          initial: false
+          initialValue: false
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
-          initial: false
+          initialValue: false
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
-          initial: false
+          initialValue: false
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
-          initial: -1
+          initialValue: -1
         }
       ],
       computed: [
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'classes',
@@ -1270,6 +1329,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'labelClasses',
@@ -1281,6 +1341,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'hasLabel',
@@ -1292,6 +1353,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'hasFloatingLabel',
@@ -1303,6 +1365,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'isLabelInline',
@@ -1314,6 +1377,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'valueLength',
@@ -1324,6 +1388,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'hasFeedback',
@@ -1336,6 +1401,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'showError',
@@ -1348,6 +1414,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'showHelp',
@@ -1360,6 +1427,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'matchingSuggestions',
@@ -1376,6 +1444,7 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'select',
@@ -1384,13 +1453,14 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'highlight-overflow',
@@ -1399,13 +1469,14 @@ describe('issues', () => {
               name: 'index',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'dropdown-open',
@@ -1414,6 +1485,7 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'dropdown-close',
@@ -1422,6 +1494,7 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'input',
@@ -1430,13 +1503,14 @@ describe('issues', () => {
               name: 'value',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'focus',
@@ -1445,13 +1519,14 @@ describe('issues', () => {
               name: 'e',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'change',
@@ -1460,19 +1535,20 @@ describe('issues', () => {
               name: 'value',
               type: 'any',
               description: '',
-              declaration: 'this.value'
+              rest: false
             },
             {
               name: 'e',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'blur',
@@ -1481,13 +1557,14 @@ describe('issues', () => {
               name: 'e',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ]
         },
         {
           kind: 'event',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'touch',
@@ -1498,6 +1575,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'defaultFilter',
@@ -1507,7 +1585,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1518,6 +1596,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'selectSuggestion',
@@ -1527,7 +1606,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1538,6 +1617,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'highlightSuggestion',
@@ -1547,7 +1627,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1558,6 +1638,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'selectHighlighted',
@@ -1567,14 +1648,14 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             },
             {
               name: 'e',
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1585,6 +1666,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'openDropdown',
@@ -1597,6 +1679,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'closeDropdown',
@@ -1609,6 +1692,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'updateValue',
@@ -1618,7 +1702,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1629,6 +1713,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'onFocus',
@@ -1638,7 +1723,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1649,6 +1734,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'onChange',
@@ -1658,7 +1744,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1669,6 +1755,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'onBlur',
@@ -1678,7 +1765,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1689,6 +1776,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'onExternalClick',
@@ -1698,7 +1786,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1709,6 +1797,7 @@ describe('issues', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'reset',
@@ -1732,6 +1821,7 @@ describe('issues', () => {
       name: 'ui-autocomplete',
       methods: [
         {
+          category: null,
           description: '',
           keywords: [],
           kind: 'method',
@@ -1742,7 +1832,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1754,6 +1844,7 @@ describe('issues', () => {
       events: [
         {
           name: 'select',
+          category: null,
           description: '',
           keywords: [],
           arguments: [
@@ -1761,7 +1852,7 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           kind: 'event',
@@ -1781,6 +1872,7 @@ describe('issues', () => {
       errors: [],
       methods: [
         {
+          category: null,
           description: '',
           keywords: [],
           kind: 'method',
@@ -1791,7 +1883,7 @@ describe('issues', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -1803,6 +1895,7 @@ describe('issues', () => {
       events: [
         {
           name: 'select',
+          category: null,
           description: '',
           keywords: [],
           arguments: [
@@ -1810,7 +1903,7 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'any',
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           kind: 'event',
@@ -1842,6 +1935,7 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'my-prop',
@@ -1879,6 +1973,7 @@ describe('issues', () => {
           kind: 'method',
           name: 'example',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           params: [],
@@ -1929,6 +2024,7 @@ describe('issues', () => {
           kind: 'method',
           name: 'close',
           visibility: 'public',
+          category: null,
           description: 'Close modal',
           keywords: [],
           params: [],
@@ -1943,14 +2039,15 @@ describe('issues', () => {
           kind: 'event',
           name: 'close',
           visibility: 'public',
+          category: null,
           description: 'Emit the `close` event on click',
           keywords: [],
           arguments: [
             {
               type: 'boolean',
-              declaration: '',
               description: '',
-              name: true
+              name: 'true',
+              rest: false
             }
           ]
         }
@@ -2002,18 +2099,21 @@ describe('issues', () => {
           kind: 'method',
           name: 'sum',
           visibility: 'public',
+          category: null,
           description: 'Returns the sum of a and b',
           keywords: [],
           params: [
             {
               name: 'a',
               type: 'number',
-              description: undefined
+              description: undefined,
+              rest: false
             },
             {
               name: 'b',
               type: 'number',
-              description: undefined
+              description: undefined,
+              rest: false
             }
           ],
           return: {
@@ -2049,6 +2149,7 @@ describe('issues', () => {
           kind: 'method',
           name: 'myFunction',
           keywords: [],
+          category: null,
           description: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
           params: [],
           return: {
@@ -2099,6 +2200,7 @@ describe('issues', () => {
       events: [],
       methods: [
         {
+          category: null,
           description: 'Testing',
           keywords: [],
           kind: 'method',
@@ -2107,7 +2209,8 @@ describe('issues', () => {
             {
               name: 'test',
               type: 'Record<string, any>',
-              description: '<-- Parser stops with error'
+              description: '<-- Parser stops with error',
+              rest: false
             }
           ],
           return: {
@@ -2138,7 +2241,7 @@ describe('issues', () => {
                 d,
                 /**
                  * @type boolean
-                 * @initial false
+                 * @initialValue false
                  */
                 e,
                 f: !!d,
@@ -2154,56 +2257,62 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'a',
           type: 'any',
-          initial: undefined
+          initialValue: undefined
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'b',
           type: 'any',
-          initial: undefined
+          initialValue: undefined
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'c',
           type: 'number',
-          initial: 0
+          initialValue: 0
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'd',
           type: 'any',
-          initial: '!(a || b || c)'
+          initialValue: '!(a || b || c)'
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'e',
           type: 'boolean',
-          initial: 'false'
+          initialValue: 'false'
         },
         {
           kind: 'data',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'f',
           type: 'any',
-          initial: '!!d'
+          initialValue: '!!d'
         }
       ]
     }
@@ -2244,6 +2353,7 @@ describe('issues', () => {
         {
           kind: 'method',
           name: 'myFunction',
+          category: null,
           description: 'Testing',
           visibility: 'public',
           keywords: [],
@@ -2253,7 +2363,7 @@ describe('issues', () => {
               type: 'Promise<string>',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
           ],
           return: {
@@ -2306,6 +2416,7 @@ describe('issues', () => {
         {
           kind: 'method',
           name: 'test',
+          category: null,
           description: '',
           visibility: 'public',
           keywords: [],
@@ -2313,6 +2424,161 @@ describe('issues', () => {
           return: {
             type: 'void',
             description: ''
+          }
+        }
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'vuedoc/md#19 - does not render default param values for function',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Load the given \`schema\` with initial filled \`value\`
+               * Use this to load async schema.
+               *
+               * @param {object} schema - The JSON Schema object to load
+               * @param {Number|String|Array|Object|Boolean} model - The initial data for the schema.
+               *
+               * @Note \`model\` is not a two-way data bindings.
+               * To get the form data, use the \`v-model\` directive.
+               */
+              load(schema, model = 'hello') {},
+              number(model = 123) {},
+              /**
+               * @param {object} schema - The JSON Schema object to load
+               */
+              withImplicitUndefinedReturn(schema) {
+                return undefined;
+              },
+              /**
+               * @param {object} schema - The JSON Schema object to load
+               * @return undefined
+               */
+              withExplicitUndefinedReturn(schema) {},
+              /**
+               * @return {int} 123
+               */
+              withExplicitReturn() {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      methods: [
+        {
+          kind: 'method',
+          name: 'load',
+          visibility: 'public',
+          category: null,
+          description: 'Load the given `schema` with initial filled `value`\nUse this to load async schema.',
+          keywords: [
+            {
+              name: 'Note',
+              description: '`model` is not a two-way data bindings.\nTo get the form data, use the `v-model` directive.'
+            }
+          ],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load',
+              defaultValue: undefined,
+              rest: false
+            },
+            {
+              name: 'model',
+              type: [ 'Number', 'String', 'Array', 'Object', 'Boolean' ],
+              description: 'The initial data for the schema.',
+              defaultValue: undefined,
+              defaultValue: '"hello"',
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        },
+        {
+          kind: 'method',
+          name: 'number',
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: 'model',
+              type: 'number',
+              description: '',
+              defaultValue: '123',
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        },
+        {
+          kind: 'method',
+          name: 'withImplicitUndefinedReturn',
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load',
+              defaultValue: undefined,
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: ''
+          }
+        },
+        {
+          kind: 'method',
+          name: 'withExplicitUndefinedReturn',
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          params: [
+            {
+              name: 'schema',
+              type: 'object',
+              description: 'The JSON Schema object to load',
+              defaultValue: undefined,
+              rest: false
+            }
+          ],
+          return: {
+            type: 'void',
+            description: 'undefined'
+          }
+        },
+        {
+          kind: 'method',
+          name: 'withExplicitReturn',
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          params: [],
+          return: {
+            type: 'int',
+            description: '123'
           }
         }
       ]

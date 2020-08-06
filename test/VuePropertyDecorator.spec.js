@@ -90,6 +90,7 @@ ComponentTestCase({
         default: undefined,
         required: false,
         type: 'Number',
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -100,6 +101,7 @@ ComponentTestCase({
         default: 'default value',
         required: false,
         type: 'string',
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -110,6 +112,7 @@ ComponentTestCase({
         default: undefined,
         required: false,
         type: [ 'String', 'Boolean' ],
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -120,6 +123,7 @@ ComponentTestCase({
         default: 'default value',
         required: true,
         type: 'string',
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -130,6 +134,7 @@ ComponentTestCase({
         default: 'default value',
         required: false,
         type: 'String',
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -140,6 +145,7 @@ ComponentTestCase({
         default: 'default value',
         required: false,
         type: 'string',
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -150,6 +156,7 @@ ComponentTestCase({
         default: undefined,
         required: false,
         type: 'String',
+        category: null,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -160,6 +167,7 @@ ComponentTestCase({
         default: undefined,
         required: false,
         type: 'Boolean',
+        category: null,
         visibility: 'public' }
     ],
     model: {
@@ -167,14 +175,14 @@ ComponentTestCase({
       prop: 'checked',
       event: 'change',
       description: '',
-      keywords: [],
-      visibility: 'public'
+      keywords: []
     },
     computed: [
       {
         kind: 'computed',
         name: 'syncedName',
         description: '',
+        category: null,
         keywords: [],
         dependencies: [
           'name'
@@ -186,6 +194,7 @@ ComponentTestCase({
         kind: 'event',
         name: 'update:name',
         description: '',
+        category: null,
         arguments: [
           'name'
         ],
@@ -195,12 +204,13 @@ ComponentTestCase({
         kind: 'event',
         name: 'add-to-count',
         description: '',
+        category: null,
         arguments: [
           {
             name: 'n',
-            declaration: '',
             description: '',
-            type: 'any'
+            type: 'any',
+            rest: false
           }
         ],
         keywords: [],
@@ -209,6 +219,7 @@ ComponentTestCase({
         kind: 'event',
         name: 'reset',
         description: '',
+        category: null,
         arguments: [],
         keywords: [],
         visibility: 'public' },
@@ -216,6 +227,7 @@ ComponentTestCase({
         kind: 'event',
         name: 'return-value',
         description: '',
+        category: null,
         arguments: [],
         keywords: [],
         visibility: 'public' },
@@ -223,12 +235,13 @@ ComponentTestCase({
         kind: 'event',
         name: 'on-input-change',
         description: '',
+        category: null,
         arguments: [
           {
             name: 'e',
-            declaration: '',
             description: '',
-            type: 'any'
+            type: 'any',
+            rest: false
           }
         ],
         keywords: [],
@@ -237,6 +250,7 @@ ComponentTestCase({
         kind: 'event',
         name: 'promise',
         description: '',
+        category: null,
         arguments: [],
         keywords: [],
         visibility: 'public' }
@@ -247,20 +261,21 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'onChildChanged',
+        category: null,
         params: [
           {
             name: 'val',
             type: 'string',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           },
           {
             name: 'oldVal',
             type: 'string',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -274,20 +289,21 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'onPersonChanged1',
+        category: null,
         params: [
           {
             name: 'val',
             type: 'Person',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           },
           {
             name: 'oldVal',
             type: 'Person',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -301,13 +317,14 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'addToCount',
+        category: null,
         params: [
           {
             name: 'n',
             type: 'number',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -321,6 +338,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'resetCount',
+        category: null,
         params: [],
         return: {
           description: '',
@@ -333,6 +351,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'returnValue',
+        category: null,
         params: [],
         return: {
           description: '',
@@ -345,13 +364,14 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'onInputChange',
+        category: null,
         params: [
           {
             name: 'e',
             type: 'any',
             description: '',
-            declaration: '',
-            defaultValue: undefined
+            defaultValue: undefined,
+            rest: false
           }
         ],
         return: {
@@ -365,6 +385,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'promise',
+        category: null,
         params: [],
         return: {
           description: '',
@@ -377,6 +398,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'method',
         name: 'privateMethod',
+        category: null,
         params: [],
         return: {
           description: '',

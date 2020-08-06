@@ -13,13 +13,13 @@ written with TypeScript.
 The property `PropEntry.nativeType` was removed.
 
 ```diff
-interface PropEntry extends Entry {
+class PropEntry extends AbstractCategorizeEntry {
   kind: 'prop';
-  name: string;               // v-model when the @model keyword is attached
-  type: string | string[];    // ex. Array, Object, String, [String, Number]
+  name: string;
+  type: string | string[];
 -  nativeType: NativeTypeEnum;
-  default?: string;
+  default: string;
   required: boolean;
-  describeModel: boolean;     // true when the @model keyword is attached
+  describeModel: boolean;
 }
 ```

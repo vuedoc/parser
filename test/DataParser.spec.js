@@ -20,11 +20,12 @@ describe('DataParser', () => {
     expected: {
       data: [
         {
+          category: null,
           description: '',
           keywords: [],
           kind: 'data',
           name: 'initialValue',
-          initial: '',
+          initialValue: '',
           type: 'string',
           visibility: 'public' }
       ]
@@ -48,11 +49,12 @@ describe('DataParser', () => {
     expected: {
       data: [
         {
+          category: null,
           description: '',
           keywords: [],
           kind: 'data',
           name: 'initialValue',
-          initial: '""',
+          initialValue: '""',
           type: 'string',
           visibility: 'public' }
       ]

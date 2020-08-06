@@ -279,14 +279,15 @@ function testComponentEvents (optionsToParse) {
     const event = {
       kind: 'event',
       name: 'change',
+      category: null,
       description: 'Fires when the card is changed.',
       keywords: [],
       arguments: [
         {
-          name: 'object',
+          name: '{ bankAccount: { ...this.bankAccount }, valid: !this.$v.$invalid }',
           type: 'object',
           description: '',
-          declaration: '{\n      bankAccount: { ...this.bankAccount },\n      valid: !this.$v.$invalid\n    }'
+          rest: false
         }
       ],
       visibility: 'public'
@@ -456,7 +457,7 @@ describe('Integration', () => {
       const expected = {
         filecontent,
         encoding: 'utf8',
-        ignoredVisibilities: [ 'protected', 'private' ],
+        ignoredVisibilities: [ 'ignore', 'hidden', 'protected', 'private' ],
         source: {
           template: '',
           script: '',
@@ -620,8 +621,9 @@ describe('Integration', () => {
           kind: 'data',
           keywords: [],
           visibility: 'public',
+          category: null,
           description: 'ID data',
-          initial: 'Hello',
+          initialValue: 'Hello',
           type: 'string',
           name: 'id'
         }
@@ -697,6 +699,7 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'default',
+          category: null,
           description: '',
           props: [
             { name: 'user',
@@ -738,6 +741,7 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'todo',
+          category: null,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -781,6 +785,7 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'todo',
+          category: null,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -824,6 +829,7 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'todo',
+          category: null,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -1007,6 +1013,7 @@ describe('Integration', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -1015,8 +1022,9 @@ describe('Integration', () => {
           kind: 'data',
           name: 'currentYear',
           type: 'CallExpression',
+          category: null,
           description: '',
-          initial: 'new Date().getFullYear()',
+          initialValue: 'new Date().getFullYear()',
           keywords: [],
           visibility: 'public'
         } ],
@@ -1027,6 +1035,7 @@ describe('Integration', () => {
           required: true,
           default: undefined,
           describeModel: false,
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -1037,6 +1046,7 @@ describe('Integration', () => {
           required: true,
           default: undefined,
           describeModel: false,
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -1099,6 +1109,7 @@ describe('Integration', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -1107,8 +1118,9 @@ describe('Integration', () => {
           kind: 'data',
           name: 'currentYear',
           type: 'CallExpression',
+          category: null,
           description: '',
-          initial: 'new Date().getFullYear()',
+          initialValue: 'new Date().getFullYear()',
           keywords: [],
           visibility: 'public'
         } ],
@@ -1119,6 +1131,7 @@ describe('Integration', () => {
           required: true,
           default: undefined,
           describeModel: false,
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -1129,6 +1142,7 @@ describe('Integration', () => {
           required: true,
           default: undefined,
           describeModel: false,
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -1165,6 +1179,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'value',
+          category: null,
           description: '',
           keywords: [],
           dependencies: []
@@ -1221,6 +1236,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'value',
+          category: null,
           description: '',
           keywords: [],
           dependencies: []
@@ -1229,6 +1245,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'id',
+          category: null,
           description: '',
           keywords: [],
           dependencies: []
@@ -1356,6 +1373,7 @@ describe('Integration', () => {
         {
           kind: 'event',
           name: '***unhandled***',
+          category: null,
           description: '',
           arguments: [],
           visibility: 'public',
@@ -1404,6 +1422,7 @@ describe('Integration', () => {
         {
           default: '{ last: \'keyword\' }',
           describeModel: false,
+          category: null,
           description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
           keywords: [],
           kind: 'prop',
@@ -1423,7 +1442,6 @@ describe('Integration', () => {
           const name = 'blabla'
           const complex = 'complexValue'
           const dynamic2 = 'dynamic2Value'
-          const computedProp2 = 'computedProp2Value'
           const boolFalse = false
           export default {
             name,
@@ -1435,10 +1453,6 @@ describe('Integration', () => {
                 type: Boolean,
                 default: true
               }
-            },
-            computed: {
-              ['computedProp1']() { return 1 },
-              [computedProp2]() { return 2 }
             },
             methods: {
               // Make component dynamic
@@ -1461,6 +1475,7 @@ describe('Integration', () => {
         {
           default: undefined,
           describeModel: false,
+          category: null,
           description: '',
           keywords: [],
           kind: 'prop',
@@ -1471,6 +1486,7 @@ describe('Integration', () => {
         {
           default: true,
           describeModel: false,
+          category: null,
           description: '',
           keywords: [],
           kind: 'prop',
@@ -1479,27 +1495,12 @@ describe('Integration', () => {
           type: 'Boolean',
           visibility: 'public' }
       ],
-      computed: [
-        {
-          kind: 'computed',
-          name: 'computedProp1',
-          description: '',
-          keywords: [],
-          dependencies: [],
-          visibility: 'public' },
-        {
-          kind: 'computed',
-          name: 'computedProp2Value',
-          description: '',
-          keywords: [],
-          dependencies: [],
-          visibility: 'public' }
-      ],
       methods: [
         {
           kind: 'method',
           name: 'dynamic',
           keywords: [],
+          category: null,
           description: 'Make component dynamic',
           params: [],
           return: {
@@ -1511,6 +1512,7 @@ describe('Integration', () => {
           kind: 'method',
           name: 'dynamic2Value',
           keywords: [],
+          category: null,
           description: 'Enter to dynamic mode',
           params: [],
           return: {
@@ -1541,6 +1543,7 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Use this slot to define form inputs ontrols',
           keywords: [],
           name: 'inputs',
@@ -1549,6 +1552,7 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Use this slot to define form action buttons controls',
           keywords: [],
           name: 'actions',
@@ -1557,6 +1561,7 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
+          category: null,
           description: 'Use this slot to define form footer content',
           keywords: [],
           name: 'footer',

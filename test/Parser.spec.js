@@ -848,6 +848,7 @@ describe('Parser', () => {
         const expected = [
           { kind: 'event',
             name: 'input',
+            category: null,
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
@@ -855,6 +856,7 @@ describe('Parser', () => {
             [ { name: 'value', description: 'A input value' } ] },
           { kind: 'event',
             name: 'change',
+            category: null,
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
@@ -874,83 +876,39 @@ describe('Parser', () => {
     })
 
     describe('parseKeywords()', () => {
-      it('should successfully emit param', (done) => {
-        const filename = './fixtures/checkbox.vue'
-        const script = `
-          export default {
-            methods: {
-              /**
-               * Get the x value.
-               * @param {number} x - The x value.
-               */
-              getX (x) {}
+      [ 'arg', 'prop', 'param', 'argument' ].forEach((tag) => {
+        it(`should successfully emit param with @${tag}`, (done) => {
+          const filename = './fixtures/checkbox.vue'
+          const script = `
+            export default {
+              methods: {
+                /**
+                 * Get the x value.
+                 * @${tag} {number} x - The x value.
+                 */
+                getX (x) {}
+              }
             }
-          }
-        `
-        const options = { source: { script }, filename }
-        const expected = [
-          { type: 'number', name: 'x', description: 'The x value.' }
-        ]
-
-        new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
-
-      it('should successfully emit param with alias @arg', (done) => {
-        const filename = './fixtures/checkbox.vue'
-        const script = `
-          export default {
-            methods: {
-              /**
-               * Get the x value.
-               * @arg {number} x - The x value.
-               */
-              getX (x) {}
+          `
+          const options = { source: { script }, filename }
+          const expected = [
+            {
+              type: 'number',
+              name: 'x',
+              description: 'The x value.',
+              defaultValue: undefined,
+              rest: false
             }
-          }
-        `
-        const options = { source: { script }, filename }
-        const expected = [
-          { type: 'number', name: 'x', description: 'The x value.' }
-        ]
+          ]
 
-        new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.params, expected)
-          done()
+          new Parser(options).walk().on('method', (method) => {
+            assert.equal(method.name, 'getX')
+            assert.equal(method.description, 'Get the x value.')
+            assert.deepEqual(method.params, expected)
+            done()
+          })
         })
-      })
-
-      it('should successfully emit param with alias @argument', (done) => {
-        const filename = './fixtures/checkbox.vue'
-        const script = `
-          export default {
-            methods: {
-              /**
-               * Get the x value.
-               * @argument {number} x - The x value.
-               */
-              getX (x) {}
-            }
-          }
-        `
-        const options = { source: { script }, filename }
-        const expected = [
-          { type: 'number', name: 'x', description: 'The x value.' }
-        ]
-
-        new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+      });
 
       it('should successfully emit param with parameter\'s properties', (done) => {
         const filename = './fixtures/checkbox.vue'
@@ -969,9 +927,24 @@ describe('Parser', () => {
         `
         const options = { source: { script }, filename }
         const expected = [
-          { type: 'Object', name: 'employee', description: 'The employee who is responsible for the project.' },
-          { type: 'string', name: 'employee.name', description: 'The name of the employee.' },
-          { type: 'string', name: 'employee.department', description: 'The employee\'s department.' }
+          {
+            type: 'Object',
+            name: 'employee',
+            description: 'The employee who is responsible for the project.',
+            defaultValue: undefined,
+            rest: false },
+          {
+            type: 'string',
+            name: 'employee.name',
+            description: 'The name of the employee.',
+            defaultValue: undefined,
+            rest: false },
+          {
+            type: 'string',
+            name: 'employee.department',
+            description: 'The employee\'s department.',
+            defaultValue: undefined,
+            rest: false }
         ]
 
         new Parser(options).walk().on('method', (method) => {
@@ -991,13 +964,18 @@ describe('Parser', () => {
                * Assign the project to a list of employees.
                * @param {Object[]} employees - The employees who are responsible for the project.
                */
-              assign (employee) {}
+              assign (employees) {}
             }
           }
         `
         const options = { source: { script }, filename }
         const expected = [
-          { type: 'Object[]', name: 'employees', description: 'The employees who are responsible for the project.' }
+          {
+            type: 'Object[]',
+            name: 'employees',
+            description: 'The employees who are responsible for the project.',
+            defaultValue: undefined,
+            rest: false }
         ]
 
         new Parser(options).walk().on('method', (method) => {
@@ -1019,15 +997,30 @@ describe('Parser', () => {
                * @param {string} employees[].name - The name of an employee.
                * @param {string} employees[].department - The employee's department.
                */
-              assign (employee) {}
+              assign (employees) {}
             }
           }
         `
         const options = { source: { script }, filename }
         const expected = [
-          { type: 'Object[]', name: 'employees', description: 'The employees who are responsible for the project.' },
-          { type: 'string', name: 'employees[].name', description: 'The name of an employee.' },
-          { type: 'string', name: 'employees[].department', description: 'The employee\'s department.' }
+          {
+            type: 'Object[]',
+            name: 'employees',
+            description: 'The employees who are responsible for the project.',
+            defaultValue: undefined,
+            rest: false },
+          {
+            type: 'string',
+            name: 'employees[].name',
+            description: 'The name of an employee.',
+            defaultValue: undefined,
+            rest: false },
+          {
+            type: 'string',
+            name: 'employees[].department',
+            description: 'The employee\'s department.',
+            defaultValue: undefined,
+            rest: false }
         ]
 
         new Parser(options).walk().on('method', (method) => {
@@ -1056,7 +1049,9 @@ describe('Parser', () => {
             type: 'string',
             name: 'somebody',
             description: 'Somebody\'s name.',
-            optional: true
+            optional: true,
+            defaultValue: undefined,
+            rest: false
           }
         ]
 
@@ -1086,7 +1081,9 @@ describe('Parser', () => {
             type: 'string',
             name: 'somebody',
             description: 'Somebody\'s name.',
-            optional: true
+            defaultValue: undefined,
+            optional: true,
+            rest: false
           }
         ]
 
@@ -1117,7 +1114,8 @@ describe('Parser', () => {
             name: 'somebody',
             description: 'Somebody\'s name, or an array of names.',
             optional: true,
-            defaultValue: 'John Doe'
+            defaultValue: 'John Doe',
+            rest: false
           }
         ]
 
@@ -1148,7 +1146,8 @@ describe('Parser', () => {
             name: 'somebody',
             description: 'Somebody\'s name.',
             optional: true,
-            defaultValue: 'John Doe'
+            defaultValue: 'John Doe',
+            rest: false
           }
         ]
 
@@ -1179,7 +1178,8 @@ describe('Parser', () => {
         const expected = [
           { type: 'number',
             name: 'x',
-            description: 'The x value.' }
+            description: 'The x value.',
+            rest: false }
         ]
 
         new Parser(options).walk().on('event', (event) => {
@@ -1204,7 +1204,10 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const expected = { type: 'number', description: 'The x value.' }
+        const expected = {
+          type: 'number',
+          description: 'The x value.'
+        }
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
@@ -1228,7 +1231,10 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const expected = { type: 'number', description: 'The x value.' }
+        const expected = {
+          type: 'number',
+          description: 'The x value.'
+        }
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
@@ -1252,7 +1258,10 @@ describe('Parser', () => {
           }
         `
         const options = { source: { script }, filename }
-        const expected = { type: 'number[]', description: 'The x values.' }
+        const expected = {
+          type: 'number[]',
+          description: 'The x values.'
+        }
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
@@ -1268,14 +1277,17 @@ describe('Parser', () => {
           export default {
             methods: {
               /**
-               * @return {(string|string[])} The x values.
+               * @return {(string| string[])} The x values.
                */
               getX () {}
             }
           }
         `
         const options = { source: { script }, filename }
-        const expected = { type: [ 'string', 'string[]' ], description: 'The x values.' }
+        const expected = {
+          type: [ 'string', 'string[]' ],
+          description: 'The x values.'
+        }
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
@@ -1625,6 +1637,7 @@ describe('Parser', () => {
           name: 'opacity-a',
           type: [ 'Boolean', 'Number' ],
           visibility: 'public',
+          category: null,
           description: '',
           required: false,
           describeModel: false,
@@ -1656,6 +1669,7 @@ describe('Parser', () => {
           name: 'opacity-o',
           type: [ 'Boolean', 'Number' ],
           visibility: 'public',
+          category: null,
           description: '',
           required: false,
           describeModel: false,
@@ -1687,9 +1701,10 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'ID data',
-        initial: 12,
+        initialValue: 12,
         type: 'number',
         name: 'id'
       }
@@ -1720,9 +1735,10 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'Enabled data',
-        initial: false,
+        initialValue: false,
         type: 'boolean',
         name: 'enabled'
       }
@@ -1755,9 +1771,10 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'ID data',
-        initial: 'Hello',
+        initialValue: 'Hello',
         type: 'string',
         name: 'id'
       }
@@ -1790,9 +1807,10 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'ID data',
-        initial: 'Hello',
+        initialValue: 'Hello',
         type: 'string',
         name: 'id'
       }
@@ -1830,6 +1848,7 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
+        category: null,
         dependencies: [ 'value', 'name' ]
       }
 
@@ -1870,6 +1889,7 @@ describe('Parser', () => {
       const expected = {
         name: 'idGetter',
         kind: 'computed',
+        category: null,
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
@@ -1992,7 +2012,7 @@ describe('Parser', () => {
               type: 'any',
               defaultValue: undefined,
               description: '',
-              declaration: ''
+              rest: false
             }
         ])
 

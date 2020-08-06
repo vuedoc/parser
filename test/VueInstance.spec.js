@@ -45,24 +45,27 @@ ComponentTestCase({
         kind: 'data',
         name: 'url',
         type: 'object',
+        category: null,
         description: '',
-        initial: 'context.url',
+        initialValue: 'context.url',
         keywords: [],
         visibility: 'public' },
       {
         kind: 'data',
         name: 'contextUrl',
         type: 'object',
+        category: null,
         description: 'data contextUrl description',
-        initial: 'context.url',
+        initialValue: 'context.url',
         keywords: [],
         visibility: 'public' },
       {
         kind: 'data',
         name: 'contextNumber',
         type: 'number',
+        category: null,
         description: 'data contextNumber description',
-        initial: 12,
+        initialValue: 12,
         keywords: [],
         visibility: 'public' }
     ],
@@ -70,6 +73,7 @@ ComponentTestCase({
       {
         default: undefined,
         describeModel: false,
+        category: null,
         description: '',
         keywords: [],
         kind: 'prop',
@@ -81,6 +85,7 @@ ComponentTestCase({
     slots: [
       {
         description: '',
+        category: null,
         keywords: [],
         kind: 'slot',
         name: 'default',
