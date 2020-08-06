@@ -16,18 +16,18 @@ describe('#44 - Inline Template', () => {
       `
     }
 
-    const expected = [
-      {
-        kind: 'slot',
-        visibility: 'public',
-        description: '',
-        keywords: [],
-        name: 'default',
-        props: [] }
-    ]
-
     return parser.parse(options).then(({ slots }) => {
-      expect(slots).toEqual(expected)
+      expect(slots).toEqual([
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: '',
+          category: null,
+          keywords: [],
+          name: 'default',
+          props: []
+        }
+      ])
     })
   })
 
@@ -48,36 +48,36 @@ describe('#44 - Inline Template', () => {
       `
     }
 
-    const expected = {
-      name: '',
-      inheritAttrs: true,
-      description: '',
-      keywords: [],
-      errors: [],
-      slots:
-        [ {
-            kind: 'slot',
-            visibility: 'public',
-            description: 'Use this slot to set the content',
-            keywords: [],
-            name: 'content',
-            props: [] } ],
-      props: [],
-      data: [],
-      computed: [],
-      events:
-        [ {
-            kind: 'event',
-            visibility: 'public',
-            description: '',
-            keywords: [],
-            name: 'input',
-            arguments: [] } ],
-      methods: []
-    }
-
     return parser.parse(options).then((component) => {
-      expect(component).toEqual(expected)
+      expect(component).toEqual({
+        name: '',
+        inheritAttrs: true,
+        description: '',
+        keywords: [],
+        errors: [],
+        slots:
+          [ {
+              kind: 'slot',
+              visibility: 'public',
+              description: 'Use this slot to set the content',
+              category: null,
+              keywords: [],
+              name: 'content',
+              props: [] } ],
+        props: [],
+        data: [],
+        computed: [],
+        events:
+          [ {
+              kind: 'event',
+              visibility: 'public',
+              description: '',
+              category: null,
+              keywords: [],
+              name: 'input',
+              arguments: [] } ],
+        methods: []
+      })
     })
   })
 })

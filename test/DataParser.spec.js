@@ -20,6 +20,7 @@ describe('DataParser', () => {
     expected: {
       data: [
         {
+          category: null,
           description: '',
           keywords: [],
           kind: 'data',
@@ -48,6 +49,7 @@ describe('DataParser', () => {
     expected: {
       data: [
         {
+          category: null,
           description: '',
           keywords: [],
           kind: 'data',

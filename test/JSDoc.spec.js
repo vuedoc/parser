@@ -293,6 +293,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Set the checkbox ID',
           keywords: [],
           name: 'set',
@@ -378,6 +379,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -425,6 +427,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Name and type',
           keywords: [],
           name: 'nameAndType',
@@ -472,6 +475,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Name, type, and description',
           keywords: [],
           name: 'nameTypeAndDescription',
@@ -519,6 +523,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Name, type, and description, with a hyphen before the description',
           keywords: [],
           name: 'nameTypeAndDescriptionWithHyphen',
@@ -573,6 +578,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Assign the project to an employee.',
           keywords: [],
           name: 'withParameterProperties',
@@ -636,6 +642,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Assign the project to an employee.',
           keywords: [],
           name: 'withDestructuringParameter',
@@ -699,6 +706,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Assign the project to a list of employees.',
           keywords: [],
           name: 'withPropertiesOfValuesInAnArray',
@@ -764,6 +772,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'An optional parameter (using JSDoc syntax)',
           keywords: [],
           name: 'withOptionalParameter',
@@ -815,6 +824,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'An optional parameter and default value',
           keywords: [],
           name: 'withOptionalParameterAndDefaultValue',
@@ -875,6 +885,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Allows one type OR another type (type union)',
           keywords: [],
           name: 'withMultipleType',
@@ -926,6 +937,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Allows any type',
           keywords: [],
           name: 'withAnyType',
@@ -978,6 +990,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Allows a parameter to be repeated.\nReturns the sum of all numbers passed to the function.',
           keywords: [],
           name: 'withSpreadNotation',
@@ -1037,6 +1050,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Does something asynchronously and executes the callback on completion.',
           keywords: [],
           name: 'doSomethingAsynchronously',
@@ -1086,6 +1100,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withType',
@@ -1146,6 +1161,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withMultipleType',
@@ -1214,6 +1230,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withPromise',
@@ -1272,6 +1289,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           visibility: 'public',
+          category: null,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withSpreadParam',

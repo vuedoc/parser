@@ -46,6 +46,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: '',
           visibility: 'public',
           arguments: [],
@@ -76,6 +77,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: '',
           visibility: 'public',
           arguments: [
@@ -117,6 +119,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -157,6 +160,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -198,6 +202,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -238,6 +243,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -279,6 +285,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -319,6 +326,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -359,6 +367,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
+          category: null,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [

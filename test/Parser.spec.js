@@ -848,6 +848,7 @@ describe('Parser', () => {
         const expected = [
           { kind: 'event',
             name: 'input',
+            category: null,
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
@@ -855,6 +856,7 @@ describe('Parser', () => {
             [ { name: 'value', description: 'A input value' } ] },
           { kind: 'event',
             name: 'change',
+            category: null,
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
@@ -1635,6 +1637,7 @@ describe('Parser', () => {
           name: 'opacity-a',
           type: [ 'Boolean', 'Number' ],
           visibility: 'public',
+          category: null,
           description: '',
           required: false,
           describeModel: false,
@@ -1666,6 +1669,7 @@ describe('Parser', () => {
           name: 'opacity-o',
           type: [ 'Boolean', 'Number' ],
           visibility: 'public',
+          category: null,
           description: '',
           required: false,
           describeModel: false,
@@ -1697,6 +1701,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'ID data',
         initialValue: 12,
@@ -1730,6 +1735,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'Enabled data',
         initialValue: false,
@@ -1765,6 +1771,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'ID data',
         initialValue: 'Hello',
@@ -1800,6 +1807,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
+        category: null,
         visibility: 'public',
         description: 'ID data',
         initialValue: 'Hello',
@@ -1840,6 +1848,7 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
+        category: null,
         dependencies: [ 'value', 'name' ]
       }
 
@@ -1880,6 +1889,7 @@ describe('Parser', () => {
       const expected = {
         name: 'idGetter',
         kind: 'computed',
+        category: null,
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',

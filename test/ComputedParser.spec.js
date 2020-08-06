@@ -29,6 +29,7 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -69,6 +70,7 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -79,6 +81,7 @@ describe('ComputedParser', () => {
           kind: 'event',
           name: 'update:pages',
           keywords: [],
+          category: null,
           description: '',
           visibility: 'public',
           arguments: [
@@ -126,6 +129,7 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
+          category: null,
           description: '',
           keywords: [],
           visibility: 'public'
@@ -136,6 +140,7 @@ describe('ComputedParser', () => {
           kind: 'event',
           name: 'update:pages',
           keywords: [],
+          category: null,
           description: '',
           visibility: 'public',
           arguments: [
@@ -173,6 +178,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'computedProp1',
+          category: null,
           description: '',
           keywords: [],
           dependencies: [],
@@ -180,6 +186,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'computedProp2Value',
+          category: null,
           description: '',
           keywords: [],
           dependencies: [],
@@ -265,6 +272,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'classes',
@@ -282,6 +290,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'labelClasses',
@@ -293,6 +302,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'hasLabel',
@@ -304,6 +314,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'hasFloatingLabel',
@@ -315,6 +326,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'isLabelInline',
@@ -326,6 +338,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'valueLength',
@@ -336,6 +349,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'hasFeedback',
@@ -348,6 +362,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'showError',
@@ -360,6 +375,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'showHelp',
@@ -372,6 +388,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           name: 'matchingSuggestions',

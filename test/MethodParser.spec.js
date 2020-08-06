@@ -56,6 +56,7 @@ describe('MethodParser', () => {
           kind: 'method',
           name: 'withDefaultValue',
           visibility: 'public',
+          category: null,
           description: '',
           keywords: [],
           params: [

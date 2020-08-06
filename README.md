@@ -56,7 +56,7 @@ npm install --save @vuedoc/parser
 - [JSDoc](https://jsdoc.app/) support
   ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
-  (`@param <param name>`, `@return(s)`, `@hidden`, `@ignore`)
+  (`@param <param name>`, `@return(s)`, `@hidden`, `@ignore`, `@category`)
 
 ## Options
 
@@ -164,7 +164,7 @@ export default {
 
 ### Annotate model, props, data and computed properties
 
-To document props, data or computed properties, annotate your code like:
+To document props, annotate your code like:
 
 ```js
 export default {
@@ -176,83 +176,12 @@ export default {
       type: String,
       required: true
     }
-  },
-  data () {
-    return {
-      /**
-       * Indicates that the control is checked
-       */
-      isChecked: false
-    }
-  },
-  computed: {
-    /**
-     * Indicates that the control is selected
-     */
-    selected () {
-      return this.isChecked
-    }
   }
 }
 ```
 
 Vuedoc Parser will automatically extract `required` and `default` values for
-properties and computed properties dependencies. It will also detect type for
-each defined data field and catch their initial value.
-
-#### Special keywords to annotate data
-
-- `@type {typeName}`: Commented data will use provided type name as type
-  instead of type in source code. This option may be helpful in case the
-  data type is a complex object or a function, which you may want to further
-  detail with `@typedef` in another place
-- `@initialValue {value}`: Commented data will use the provided value as initial
-  data value. This option may be helpful in case the data type is a complex
-  object or function
-
-```js
-export default {
-  data () {
-    return {
-      /**
-       * A data with a complex expression
-       * @type boolean
-       * @initialValue false
-       */
-      isChecked: !(a || b || c)
-    }
-  }
-}
-```
-
-#### Special keywords to annotate props
-
-- `@type {typeName}`: Commented prop will use provided type name as type
-  instead of type in source code. This option may be helpful in case the
-  prop type is a complex object or a function, which you may want to further
-  detail with `@typedef` in another place
-- `@default {value}`: Commented prop will use the provided value as default
-  prop value. This option may be helpful in case the prop type is a complex
-  object or function
-
-```js
-export default {
-  props: {
-    /**
-     * Custom default value
-     * @type Complex.Object
-     * @default { anything: 'custom default value' }
-     */
-    custom: {
-      type: Object,
-      default: () => {
-        // complex code
-        return anythingExpression()
-      }
-    }
-  }
-}
-```
+properties.
 
 #### Annotate a `v-model` prop
 
@@ -308,24 +237,87 @@ export default {
 }
 ```
 
-#### Ignore an item from parsing
+#### Special keywords for props
 
-By default, all extracted things have the `public` visibility.
-To change this for one entry, add `@protected` or `@private` keyword.
+- `@type {typeName}`: Commented prop will use provided type name as type
+  instead of type in source code. This option may be helpful in case the
+  prop type is a complex object or a function, which you may want to further
+  detail with `@typedef` in another place
+- `@default {value}`: Commented prop will use the provided value as default
+  prop value. This option may be helpful in case the prop type is a complex
+  object or function
 
 ```js
 export default {
-  data: () => ({
+  props: {
     /**
-     * This will be ignored on parsing
-     * @private
+     * Custom default value
+     * @type Complex.Object
+     * @default { anything: 'custom default value' }
      */
-    isChecked: false
-  })
+    custom: {
+      type: Object,
+      default: () => {
+        // complex code
+        return anythingExpression()
+      }
+    }
+  }
 }
 ```
 
-You can also use the [TypeDoc's tags `@hidden` and `@ignore`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
+### Annotate data and computed properties
+
+To document data or computed properties, annotate your code like:
+
+```js
+export default {
+  data () {
+    return {
+      /**
+       * Indicates that the control is checked
+       */
+      isChecked: false
+    }
+  },
+  computed: {
+    /**
+     * Indicates that the control is selected
+     */
+    selected () {
+      return this.isChecked
+    }
+  }
+}
+```
+
+Vuedoc Parser will automatically extract computed properties dependencies. It will
+also detect type for each defined data field and catch their initial value.
+
+**Special keywords for data**
+
+- `@type {typeName}`: Commented data will use provided type name as type
+  instead of type in source code. This option may be helpful in case the
+  data type is a complex object or a function, which you may want to further
+  detail with `@typedef` in another place
+- `@initialValue {value}`: Commented data will use the provided value as initial
+  data value. This option may be helpful in case the data type is a complex
+  object or function
+
+```js
+export default {
+  data () {
+    return {
+      /**
+       * A data with a complex expression
+       * @type boolean
+       * @initialValue false
+       */
+      isChecked: !(a || b || c)
+    }
+  }
+}
+```
 
 ### Annotate methods, events and slots
 
@@ -482,6 +474,25 @@ You can also use the keyword `@slot` to define dynamic slots on template:
 </template>
 ```
 
+### Ignore item from parsing
+
+By default, all extracted things have the `public` visibility.
+To change this for one entry, add `@protected` or `@private` keyword.
+
+```js
+export default {
+  data: () => ({
+    /**
+     * This will be ignored on parsing
+     * @private
+     */
+    isChecked: false
+  })
+}
+```
+
+You can also use the [TypeDoc's tags `@hidden` and `@ignore`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
+
 ## Keywords Extraction
 
 You can attach keywords to any comment and then extract them using the parser.
@@ -580,7 +591,7 @@ export function InputMixin (route) {
 }
 ```
 
-## Parsing control with options.features
+## Parsing control with `options.features`
 
 `options.features` lets you select which Vue Features you want to parse and
 extract.
@@ -650,13 +661,13 @@ abstract class Loader {
 ### TypeScript usage
 
 Vuedoc Parser implements a full TypeScript support since `v3.0.0`.
-You no longer need to load a specific loader or install additional package.
+You no longer need to load a specific loader or install additional packages.
 
 ### Create a custom loader
 
 The example below uses the abstract `Vuedoc.Loader` class to create a
 specialized class to handle a template with the [CoffeeScript](https://www.npmjs.com/package/coffeescript)
-language. It uses the Pug language for templating:
+language. It uses the built-in `PugLoader` to load Pug template:
 
 ```js
 const Vuedoc = require('@vuedoc/parser')
@@ -755,96 +766,119 @@ enum NativeTypeEnum {
   object                      // for an array or an object
 };
 
-type Keyword = {
-  name: string;
-  description: string;
+abstract class AbstractEntry {
+  kind: 'computed' | 'data' | 'description' | 'event' | 'inheritAttrs' | 'method' | 'model' | 'name' | 'prop' | 'slot';
 }
 
-interface Entry {
-  kind: 'computed' | 'data' | 'event' | 'method' | 'model' | 'prop' | 'slot';
-  visibility: 'public' | 'protected' | 'private';
+abstract class AbstractDecorativeEntry extends AbstractEntry {
   description: string;
   keywords: Keyword[];
 }
 
-interface ModelEntry extends Entry {
-  kind: 'model';
-  prop: string;
-  event: string;
+abstract class AbstractCategorizeEntry extends AbstractDecorativeEntry {
+  category: string | null;
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
 }
 
-interface SlotEntry extends Entry {
-  kind: 'slot';
-  name: string;
-  props: SlotProp[];
+abstract class AbstractLiteralEntry extends AbstractEntry {
+  value: string;
 }
 
-type SlotProp = {
-  name: string;
-  type: string;
-  description: string;
-};
-
-interface ModelEntry extends Entry {
-  kind: 'model';
-  prop: string;
-  event: string;
-}
-
-interface PropEntry extends Entry {
-  kind: 'prop';
-  name: string;               // v-model when the @model keyword is attached
-  type: string | string[];    // ex. Array, Object, String, [String, Number]
-  default?: string;
-  required: boolean;
-  describeModel: boolean;     // true when the @model keyword is attached
-}
-
-interface DataEntry extends Entry {
-  kind: 'data';
-  name: string;
-  type: NativeTypeEnum;
-  initialValue?: string;
-}
-
-interface ComputedEntry extends Entry {
+class ComputedEntry extends AbstractCategorizeEntry {
   kind: 'computed';
   name: string;
-  dependencies: string[];     // list of dependencies of the computed property
+  dependencies: string[];
 }
 
-interface EventEntry extends Entry {
+class DataEntry extends AbstractCategorizeEntry {
+  kind: 'data';
+  name: string;
+  type: NativeTypeEnum | string;
+  initialValue: string;
+}
+
+class DescriptionEntry extends AbstractLiteralEntry {
+  kind: 'description'
+  value: string;
+}
+
+class EventEntry extends AbstractCategorizeEntry {
   kind: 'event';
   name: string;
   arguments: EventArgument[];
 }
 
-type EventArgument = {
+class EventArgument {
+  name: string;
+  type: NativeTypeEnum | string;
+  description: string;
+  rest: boolean;
+}
+
+class InheritAttrsEntry extends AbstractLiteralEntry {
+  kind: 'inheritAttrs'
+}
+
+class Keyword {
   name: string;
   description: string;
-  type: string;
-  rest: boolean;
-};
+}
 
-interface MethodEntry extends Entry {
-  kind: 'method';
+class KeywordsEntry extends AbstractLiteralEntry {
+  kind: 'keywords';
+  value: Keyword[];
+}
+
+class MethodEntry extends AbstractCategorizeEntry {
+  kind: 'method'
   name: string;
   params: MethodParam[];
   return: MethodReturn;
 }
 
-type MethodParam = {
-  type: string;
+class MethodParam {
   name: string;
+  type: NativeTypeEnum | string;
   description: string;
   defaultValue?: string;
   rest: boolean;
-};
+}
 
-type MethodReturn = {
-  type: string = 'void';
+class MethodReturn {
+  type: string;
   description: string;
-};
+}
+
+class ModelEntry extends AbstractDecorativeEntry {
+  kind: 'model';
+  prop: string;
+  event: string;
+}
+
+class NameEntry extends AbstractLiteralEntry {
+  kind: 'name';
+}
+
+class PropEntry extends AbstractCategorizeEntry {
+  kind: 'prop';
+  name: string;
+  type: string;
+  default: string;
+  required: boolean;
+  describeModel: boolean;
+}
+
+class SlotEntry extends AbstractCategorizeEntry {
+  kind: 'slot';
+  name: string;
+  props: SlotProp[];
+}
+
+class SlotProp {
+  name: string;
+  type: string;
+  description: string;
+}
 ```
 
 ## Related projects

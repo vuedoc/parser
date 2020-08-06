@@ -45,6 +45,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'url',
         type: 'object',
+        category: null,
         description: '',
         initialValue: 'context.url',
         keywords: [],
@@ -53,6 +54,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'contextUrl',
         type: 'object',
+        category: null,
         description: 'data contextUrl description',
         initialValue: 'context.url',
         keywords: [],
@@ -61,6 +63,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'contextNumber',
         type: 'number',
+        category: null,
         description: 'data contextNumber description',
         initialValue: 12,
         keywords: [],
@@ -70,6 +73,7 @@ ComponentTestCase({
       {
         default: undefined,
         describeModel: false,
+        category: null,
         description: '',
         keywords: [],
         kind: 'prop',
@@ -81,6 +85,7 @@ ComponentTestCase({
     slots: [
       {
         description: '',
+        category: null,
         keywords: [],
         kind: 'slot',
         name: 'default',

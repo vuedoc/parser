@@ -26,6 +26,7 @@ describe('TypeDoc', () => {
         {
           kind: 'method',
           name: 'doSomething',
+          category: null,
           description: '',
           keywords: [],
           params: [
@@ -75,6 +76,7 @@ describe('TypeDoc', () => {
         {
           kind: 'method',
           name: 'doSomething',
+          category: null,
           description: '',
           keywords: [],
           params: [
@@ -125,6 +127,45 @@ describe('TypeDoc', () => {
     expected: {
       errors: [],
       methods: []
+    }
+  })
+
+  ComponentTestCase({
+    name: '@category',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Regular description
+               *
+               * @category Category Name
+               */
+              doSomething() {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      props: [],
+      methods: [
+        {
+          kind: 'method',
+          name: 'doSomething',
+          description: 'Regular description',
+          keywords: [],
+          category: 'Category Name',
+          params: [],
+          return: {
+            type: 'void',
+            description: ''
+          },
+          visibility: 'public'
+        },
+      ]
     }
   })
 })
