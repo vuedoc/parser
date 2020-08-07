@@ -15,6 +15,7 @@ const VueLoader = require('../loader/vue')
 const HtmlLoader = require('../loader/html')
 const JavaScriptLoader = require('../loader/javascript')
 const TypeScriptLoader = require('../loader/typescript')
+const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec')
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
@@ -1569,5 +1570,99 @@ describe('Integration', () => {
         }
       ]
     }
+  })
+
+  JSDocTypeSpec.forEach(({ name, values, expected = values }) => {
+    const propsDeclaration = values.map((value, index) => `
+      /**
+       * @type {${value}}
+       */
+      propA${index}: String,
+      /**
+       * @type ${value}
+       */
+      propB${index}: String,
+    `).join('')
+
+    const dataDeclaration = values.map((value, index) => `
+      /**
+       * @type {${value}}
+       */
+      dataA${index}: null,
+      /**
+       * @type ${value}
+       */
+      dataB${index}: null,
+    `).join('')
+
+    ComponentTestCase({
+      name: '@type',
+      description: name,
+      options: {
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                ${propsDeclaration}
+              },
+              data: () => ({
+                ${dataDeclaration}
+              })
+            };
+          </script>
+        `
+      },
+      expected: {
+        errors: [],
+        props: expected.map((value, index) => [
+          {
+            kind: 'prop',
+            name: `prop-a${index}`,
+            type: value,
+            required: false,
+            default: undefined,
+            describeModel: false,
+            category: null,
+            description: '',
+            keywords: [],
+            visibility: 'public'
+          },
+          {
+            kind: 'prop',
+            name: `prop-b${index}`,
+            type: value,
+            required: false,
+            default: undefined,
+            describeModel: false,
+            category: null,
+            description: '',
+            keywords: [],
+            visibility: 'public'
+          }
+        ]).flat(),
+        data: expected.map((value, index) => [
+          {
+            kind: 'data',
+            name: `dataA${index}`,
+            type: value,
+            category: null,
+            description: '',
+            initialValue: null,
+            keywords: [],
+            visibility: 'public'
+          },
+          {
+            kind: 'data',
+            name: `dataB${index}`,
+            type: value,
+            category: null,
+            description: '',
+            initialValue: null,
+            keywords: [],
+            visibility: 'public'
+          }
+        ]).flat()
+      }
+    })
   })
 })

@@ -1,16 +1,17 @@
 const { JSDoc } = require('../lib/JSDoc')
 const { ComponentTestCase } = require('./lib/TestUtils')
+const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec')
 
 /* global describe it expect */
 
 describe('JSDoc', () => {
-  describe('parseType(type)', () => {
+  describe('parseTypeParam(type)', () => {
     it('should parse JSDoc type', () => {
       const type = 'string'
       const expected = { type: 'string' }
       const result = {}
 
-      JSDoc.parseType(type, result)
+      JSDoc.parseTypeParam(type, result)
       expect(result).toEqual(expected)
     })
 
@@ -19,7 +20,7 @@ describe('JSDoc', () => {
       const expected = { type: [ 'string', 'string[]' ] }
       const result = {}
 
-      JSDoc.parseType(type, result)
+      JSDoc.parseTypeParam(type, result)
       expect(result).toEqual(expected)
     })
 
@@ -28,7 +29,7 @@ describe('JSDoc', () => {
       const expected = { type: 'number', rest: true }
       const result = {}
 
-      JSDoc.parseType(type, result)
+      JSDoc.parseTypeParam(type, result)
       expect(result).toEqual(expected)
     })
 
@@ -37,7 +38,7 @@ describe('JSDoc', () => {
       const expected = { type: 'any' }
       const result = {}
 
-      JSDoc.parseType(type, result)
+      JSDoc.parseTypeParam(type, result)
       expect(result).toEqual(expected)
     })
   })
@@ -255,10 +256,28 @@ describe('JSDoc', () => {
 
       expect(result).toEqual(expected)
     })
+  });
+
+  JSDocTypeSpec.forEach(({ name, values, expected = values }) => {
+    describe(`@type: ${name}`, () => {
+      values.forEach((value, index) => {
+        const description1 = `{${value}}`
+        const description2 = `${value}`
+
+        it(`JSDoc.parseType('${description1}')`, () => {
+          expect(JSDoc.parseType(description1)).toEqual(expected[index])
+        })
+
+        it(`JSDoc.parseType('${description2}')`, () => {
+          expect(JSDoc.parseType(description2)).toEqual(expected[index])
+        })
+      })
+    })
   })
 
   ComponentTestCase({
-    name: 'Generic usage',
+    name: '@param and @return',
+    description: 'Generic usage',
     options: {
       filecontent: `
         <script>

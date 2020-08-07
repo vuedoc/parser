@@ -61,7 +61,7 @@ npm install --save @vuedoc/parser
 - [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support
 - [Prop Types](https://github.com/znck/prop-types) support
 - [JSDoc](https://jsdoc.app/) support
-  ([`@param`](http://usejsdoc.org/tags-param.html) and [`@return`](http://usejsdoc.org/tags-returns.html) tags)
+  ([`@type`](http://usejsdoc.org/tags-type.html), [`@param`](http://usejsdoc.org/tags-param.html) and [`@returns`](http://usejsdoc.org/tags-returns.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
   (`@param <param name>`, `@return(s)`, `@hidden`, `@ignore`, `@category`)
 
@@ -359,8 +359,8 @@ export default {
 }
 ```
 
-Use the JSDoc [@param](http://usejsdoc.org/tags-param.html) and
-[@return](http://usejsdoc.org/tags-returns.html) tags to define parameters and
+Use the JSDoc [`@param`](http://usejsdoc.org/tags-param.html),
+[`@returns`](http://usejsdoc.org/tags-returns.html) and `@arg` tags to define parameters and
 returning type:
 
 ```js
@@ -370,7 +370,7 @@ export default {
      * Submit form
      *
      * @param {object} data - Data to submit
-     * @return {boolean} true on success; otherwise, false
+     * @returns {boolean} true on success; otherwise, false
      */
     submit (data) {
       /**
@@ -386,7 +386,8 @@ export default {
 }
 ```
 
-> Note: `@arg` is an alias of `@param`
+> Note: `@arg` and `@argument` are aliases of `@param`,
+  so they share the same syntax
 
 Vuedoc Parser is also able to extract events and slots from template:
 
@@ -539,20 +540,20 @@ Parsing result:
 
 ## Supported tags
 
-| Keyword         | Alias       | Scope                                         | Description                                                       |
-| --------------- | ----------- | --------------------------------------------- | ----------------------------------------------------------------- |
-| `@type`         |             | `props`, `data`                               | Force the type of a prop or a data                                |
-| `@default`      |             | `props`                                       | Provides a default value of a prop                                |
-| `@model`        |             | `props`                                       | Marks a prop as `v-model`                                         |
-| `@initialValue` |             | `data`                                        | Provides an initial value of a data                               |
-| `@method`       |             | `methods`                                     | Force the name of a specific method                               |
-| `@param`        |             | `methods`                                     | Provides the name, type, and description of a function parameter  |
-| `@returns`      | `@return`   | `methods`                                     | Documents the value that a function returns                       |
-| `@event`        |             | `events`                                      | Force the name of a specific event                                |
-| `@arg`          | `@argument` | `events`                                      | Provides the name, type, and description of an event argument     |
-| `@slot`         |             | `slots`                                       | Documents slot defined in render function                         |
-| `@prop`         |             | `slots`                                       | Provides the name, type, and description of a slot prop           |
-| `@category`     |             | `props`, `data`, `methods`, `events`, `slots` | Attaches a category to an element                                 |
+| Keyword               | Scope                                         | Description                                                       |
+| --------------------- | --------------------------------------------- | ----------------------------------------------------------------- |
+| `@type`               | `props`, `data`                               | Provide a type expression identifying the type of value that a prop or a data may contain |
+| `@default`            | `props`                                       | Provides a default value of a prop                                |
+| `@model`              | `props`                                       | Marks a prop as `v-model`                                         |
+| `@initialValue`       | `data`                                        | Provides an initial value of a data                               |
+| `@method`             | `methods`                                     | Force the name of a specific method                               |
+| `@param`              | `methods`                                     | Provides the name, type, and description of a function parameter  |
+| `@returns`, `@return` | `methods`                                     | Documents the value that a function returns                       |
+| `@event`              | `events`                                      | Force the name of a specific event                                |
+| `@arg`, `@argument`   | `events`                                      | Provides the name, type, and description of an event argument     |
+| `@slot`               | `slots`                                       | Documents slot defined in render function                         |
+| `@prop`               | `slots`                                       | Provides the name, type, and description of a slot prop           |
+| `@category`           | `props`, `data`, `methods`, `events`, `slots` | Attaches a category to an element                                 |
 
 **Visibility tags**
 
@@ -561,11 +562,8 @@ Parsing result:
 | `@public`                 | By default all commented members are public; this means they will be part of the documented members |
 | `@protected`, `@private`  | Keeps the subsequent code from being documented                                                     |
 
-Vuedoc Parser also handles [TypeDoc's visibility tags](https://typedoc.org/guides/doccomments/#hidden-and-ignore):
-
-| Keyword               | Description                                     |
-|-----------------------|-------------------------------------------------|
-| `@ignore`, `@hidden`  | Keeps the subsequent code from being documented |
+You can also use [TypeDoc tags `@ignore` and `hidden`](https://typedoc.org/guides/doccomments/#hidden-and-ignore)
+to keeps the subsequent code from being documented.
 
 ## Working with Mixins
 
