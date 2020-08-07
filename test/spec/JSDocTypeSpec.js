@@ -9,16 +9,29 @@ module.exports.JSDocTypeSpec = [
     ]
   },
   {
+    name: 'Unknown type',
+    values: [
+      '?'
+    ],
+    expected: [
+      'any'
+    ]
+  },
+  {
     name: 'Symbol name (name expression)',
     values: [
       '  string ',
       'boolean',
-      'myNamespace.MyClass'
+      'myNamespace.MyClass',
+      'PromiseLike<string>',
+      'HTMLElement'
     ],
     expected: [
       'string',
       'boolean',
-      'myNamespace.MyClass'
+      'myNamespace.MyClass',
+      'PromiseLike<string>',
+      'HTMLElement'
     ]
   },
   {
@@ -39,11 +52,25 @@ module.exports.JSDocTypeSpec = [
     ]
   },
   {
-    name: 'Arrays and objects (type applications and record types) ',
+    name: 'Arrays and objects (type applications and record types)',
     values: [
+      'Array<number>',
       'Array.<MyClass>',
       'MyClass[]',
+      'Object.<string, number>',
       'Object.<string, number>'
+    ]
+  },
+  {
+    name: 'Closure syntax',
+    values: [
+      'function(string, boolean): number'
+    ]
+  },
+  {
+    name: 'TypeScript syntax',
+    values: [
+      '(s: string, b: boolean) => number'
     ]
   },
   {
