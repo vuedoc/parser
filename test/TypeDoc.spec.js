@@ -25,6 +25,9 @@ describe('TypeDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'doSomething(target: any, text: string): number'
+          ],
           name: 'doSomething',
           category: null,
           description: '',
@@ -45,7 +48,7 @@ describe('TypeDoc', () => {
               rest: false
             },
           ],
-          return: {
+          returns: {
             type: 'number',
             description: ''
           },
@@ -75,6 +78,9 @@ describe('TypeDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'doSomething(target: any, value: number): number'
+          ],
           name: 'doSomething',
           category: null,
           description: '',
@@ -95,7 +101,7 @@ describe('TypeDoc', () => {
               rest: false
             },
           ],
-          return: {
+          returns: {
             type: 'number',
             description: 'Comment for special return value.'
           },
@@ -154,12 +160,15 @@ describe('TypeDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'doSomething(): void'
+          ],
           name: 'doSomething',
           description: 'Regular description',
           keywords: [],
           category: 'Category Name',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           },

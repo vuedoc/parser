@@ -18,14 +18,16 @@ Generate a JSON documentation for a Vue file component.
   * [Annotate props](#annotate-props)
     + [Annotate a `v-model` prop](#annotate-a-v-model-prop)
     + [Annotate Vue Array String Props](#annotate-vue-array-string-props)
-    + [Special keywords for props](#special-keywords-for-props)
-  * [Annotate data and computed properties](#annotate-data-and-computed-properties)
-  * [Annotate methods, events and slots](#annotate-methods-events-and-slots)
-  * [Annotate slots defined in Render Functions](#annotate-slots-defined-in-render-functions)
+    + [Special tags for props](#special-keywords-for-props)
+    + [Prop Entry Interface](#prop-entry-interface)
+  * [Annotate data](#annotate-data)
+  * [Annotate computed properties](#annotate-computed-properties)
+  * [Annotate methods](#annotate-methods)
+  * [Annotate events](#annotate-events)
+  * [Annotate slots](#annotate-slots)
   * [Ignore item from parsing](#ignore-item-from-parsing)
 - [Keywords Extraction](#keywords-extraction)
 - [Supported tags](#supported-tags)
-- [Visibility tags](#visibility-tags)
 - [Working with Mixins](#working-with-mixins)
 - [Parsing control with `options.features`](#parsing-control-with-optionsfeatures)
 - [Language Processing](#language-processing)
@@ -244,7 +246,7 @@ export default {
 }
 ```
 
-#### Special keywords for props
+#### Special tags for props
 
 - `@type {typeName}`: Commented prop will use provided type name as type
   instead of type in source code. This option may be helpful in case the
@@ -273,9 +275,31 @@ export default {
 }
 ```
 
-### Annotate data and computed properties
+#### Prop Entry Interface
 
-To document data or computed properties, annotate your code like:
+```ts
+interface PropEntry {
+  kind: 'prop';
+  name: string;
+  type: string | string[];
+  default: string;
+  required: boolean;
+  describeModel: boolean;
+  category: string | null;
+  description: string;
+  keywords: Keyword[];
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+}
+
+type Keyword = {
+  name: string;
+  description: string;
+};
+```
+
+### Annotate data
+
+To document data, annotate your code like:
 
 ```js
 export default {
@@ -286,7 +310,49 @@ export default {
        */
       isChecked: false
     }
-  },
+  }
+}
+```
+
+Vuedoc Parser will automatically detect type for each defined data field and catch
+their initial value.
+
+**Special tags for data**
+
+- `@type {typeName}`<br>
+  Commented data will use provided type name as type instead of type in source code.
+  This option may be helpful in case the data type is a complex object or a
+  function, which you may want to further detail with `@typedef` in another place
+- `@initialValue {value}`<br>
+  Commented data will use the provided value as initial data value. This option may
+  be helpful in case the data type is a complex object or function
+
+**Data Entry Interface**
+
+```ts
+interface DataEntry {
+  kind: 'data';
+  name: string;
+  type: string;
+  initialValue: string;
+  category: string | null;
+  description: string;
+  keywords: Keyword[];
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+}
+
+type Keyword = {
+  name: string;
+  description: string;
+};
+```
+
+### Annotate computed properties
+
+To document computed properties, annotate your code like:
+
+```js
+export default {
   computed: {
     /**
      * Indicates that the control is selected
@@ -298,18 +364,7 @@ export default {
 }
 ```
 
-Vuedoc Parser will automatically extract computed properties dependencies. It will
-also detect type for each defined data field and catch their initial value.
-
-**Special keywords for data**
-
-- `@type {typeName}`: Commented data will use provided type name as type
-  instead of type in source code. This option may be helpful in case the
-  data type is a complex object or a function, which you may want to further
-  detail with `@typedef` in another place
-- `@initialValue {value}`: Commented data will use the provided value as initial
-  data value. This option may be helpful in case the data type is a complex
-  object or function
+Vuedoc Parser will automatically extract computed properties dependencies.
 
 ```js
 export default {
@@ -326,9 +381,28 @@ export default {
 }
 ```
 
-### Annotate methods, events and slots
+**Computed Property Entry Interface**
 
-To document methods or events, just add comments before:
+```ts
+interface ComputedEntry {
+  kind: 'computed';
+  name: string;
+  dependencies: string[];
+  category: string | null;
+  description: string;
+  keywords: Keyword[];
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+}
+
+type Keyword = {
+  name: string;
+  description: string;
+};
+```
+
+### Annotate methods
+
+To document methods, annotate your code like:
 
 ```js
 export default {
@@ -336,31 +410,13 @@ export default {
     /**
      * Submit form
      */
-    check () {
-      /**
-       * Emit the `input` event on submit
-       */
-      this.$emit('input', true)
-    }
+    submit () {}
   }
 }
 ```
 
-Vuedoc Parser automatically extracts events from component hooks:
-
-```js
-export default {
-  created () {
-    /**
-     * Emit on Vue `created` hook
-     */
-    this.$emit('created', true)
-  }
-}
-```
-
-Use the JSDoc [`@param`](http://usejsdoc.org/tags-param.html),
-[`@returns`](http://usejsdoc.org/tags-returns.html) and `@arg` tags to define parameters and
+Use the JSDoc [`@param`](http://usejsdoc.org/tags-param.html) and
+[`@returns`](http://usejsdoc.org/tags-returns.html) tags to define parameters and
 returning type:
 
 ```js
@@ -373,29 +429,211 @@ export default {
      * @returns {boolean} true on success; otherwise, false
      */
     submit (data) {
-      /**
-       * Emit the `loading` event on submit
-       *
-       * @arg {boolean} status - The loading status
-       */
-      this.$emit('loading', true)
-
       return true
     }
   }
 }
 ```
 
-> Note: `@arg` and `@argument` are aliases of `@param`,
-  so they share the same syntax
+**Special tags for methods**
 
-Vuedoc Parser is also able to extract events and slots from template:
+- `@method <method name>`<br>
+  You can use special tag `@method` for non primitive name:
+
+  ```html
+  <script>
+    const METHODS = {
+      CLOSE: 'closeModal'
+    }
+
+    export default {
+      methods: {
+        /**
+          * Close modal
+          * @method closeModal
+          */
+        [METHODS.CLOSE] () {}
+      }
+    }
+  </script>
+  ```
+- `@syntax <custom method syntax>`<br>
+  By default, Vuedoc Parser automatically generates method syntax with typing.
+  For example, the previous example will generate:
+
+  ```js
+  {
+    kind: 'method',
+    name: 'closeModal',
+    params: [],
+    returns: { type: 'void', description: '' },
+    syntax: [
+      'closeModal(): void'
+    ],
+    category: null,
+    description: '',
+    keywords: [],
+    visibility: 'public'
+  }
+  ```
+
+  You can overwrite syntax generation by using tag `@syntax`. You can also
+  define multiple syntax examples:
+
+  ```js
+  export default {
+    methods: {
+      /**
+       * @syntax target.addEventListener(type, listener [, options]);
+       * @syntax target.addEventListener(type, listener [, useCapture]);
+       * @syntax target.addEventListener(type, listener [, useCapture, wantsUntrusted  ]); // Gecko/Mozilla only
+       */
+      addEventListener(type, listener, options, useCapture) {}
+    }
+  }
+  ```
+
+**Method Entry Interface**
+
+```ts
+interface MethodEntry {
+  kind: 'method';
+  name: string;
+  params: MethodParam[];
+  returns: MethodReturn;
+  syntax: string[];
+  category: string | null;
+  description: string;
+  keywords: Keyword[];
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+}
+
+type Keyword = {
+  name: string;
+  description: string;
+};
+
+type MethodParam = {
+  name: string;
+  type: NativeTypeEnum | string;
+  description: string;
+  defaultValue?: string;
+  rest: boolean;
+};
+
+type MethodReturn = {
+  type: string;
+  description: string;
+};
+```
+
+### Annotate events
+
+Vuedoc Parser automatically extracts events from component template, hooks and
+methods:
 
 ```html
 <template>
   <div>
-    <!-- Emit the `input` event on submit -->
-    <button @click="$emit('input', $event)">Submit</button>
+    <!-- Emit the `click` event on submit -->
+    <button @click="$emit('click', $event)">Submit</button>
+  </div>
+</template>
+<script>
+  export default {
+    created () {
+      /**
+      * Emit on Vue `created` hook
+      */
+      this.$emit('created', true)
+    },
+    methods: {
+      submit () {
+        /**
+        * Emit the `input` event on submit
+        */
+        this.$emit('input', true)
+      }
+    }
+  }
+</script>
+```
+
+Use `@arg` tag to define arguments of an event:
+
+```js
+export default {
+  methods: {
+    submit (data) {
+      /**
+       * Emit the `loading` event on submit
+       *
+       * @arg {boolean} status - The loading status
+       */
+      this.$emit('loading', true)
+    }
+  }
+}
+```
+
+> Note: `@arg` is an alias of `@argument`.
+
+You can use special keyword `@event` for non primitive name:
+
+```html
+<script>
+  const EVENTS = {
+    CLOSE: 'close'
+  }
+
+  export default {
+    methods: {
+      closeModal() {
+        /**
+          * Emit the `close` event on click
+          * @event close
+          */
+        this.$emit(EVENTS.CLOSE, true)
+      }
+    }
+  }
+</script>
+```
+
+**Event Entry Interface**
+
+```ts
+interface EventEntry {
+  kind: 'event';
+  name: string;
+  arguments: EventArgument[];
+  category: string | null;
+  description: string;
+  keywords: Keyword[];
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+}
+
+type Keyword = {
+  name: string;
+  description: string;
+};
+
+type EventArgument = {
+  name: string;
+  type: NativeTypeEnum | string;
+  description: string;
+  rest: boolean;
+};
+```
+
+### Annotate slots
+
+Vuedoc Parser automatically extracts slots from template. You must use `@prop` tag
+to define properties of a slot:
+
+```html
+<template>
+  <div>
     <!-- Default slot -->
     <slot></slot>
     <!-- Use this slot to set the checkbox label -->
@@ -412,39 +650,7 @@ Vuedoc Parser is also able to extract events and slots from template:
 </template>
 ```
 
-**Usage with non primitive name**
-
-You can use special keywords `@method` and `@event` for non primitive name:
-
-```html
-<script>
-  const METHODS = {
-    CLOSE: 'closeModal'
-  }
-
-  const EVENTS = {
-    CLOSE: 'close'
-  }
-
-  export default {
-    methods: {
-      /**
-        * Close modal
-        * @method closeModal
-        */
-      [METHODS.CLOSE] () {
-        /**
-          * Emit the `close` event on click
-          * @event close
-          */
-        this.$emit(EVENTS.CLOSE, true)
-      }
-    }
-  }
-</script>
-```
-
-### Annotate slots defined in Render Functions
+**Annotate slots defined in Render Functions**
 
 To annotate slots defined in Render Functions, just attach the keyword `@slot`
 to the component definition:
@@ -482,9 +688,34 @@ You can also use the keyword `@slot` to define dynamic slots on template:
 </template>
 ```
 
+**Slot Entry Interface**
+
+```ts
+interface SlotEntry {
+  kind: 'slot';
+  name: string;
+  props: SlotProp[];
+  category: string | null;
+  description: string;
+  keywords: Keyword[];
+  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+}
+
+type Keyword = {
+  name: string;
+  description: string;
+};
+
+type SlotProp = {
+  name: string;
+  type: string;
+  description: string;
+};
+```
+
 ### Ignore item from parsing
 
-By default, all extracted things have the `public` visibility.
+By default, all extracted things with the `public` visibility.
 To change this for one entry, add `@protected` or `@private` keyword.
 
 ```js
@@ -540,20 +771,22 @@ Parsing result:
 
 ## Supported tags
 
-| Keyword               | Scope                                         | Description                                                       |
-| --------------------- | --------------------------------------------- | ----------------------------------------------------------------- |
+| Keyword               | Scope                                         | Description                                                                               |
+| --------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `@type`               | `props`, `data`                               | Provide a type expression identifying the type of value that a prop or a data may contain |
-| `@default`            | `props`                                       | Provides a default value of a prop                                |
-| `@model`              | `props`                                       | Marks a prop as `v-model`                                         |
-| `@initialValue`       | `data`                                        | Provides an initial value of a data                               |
-| `@method`             | `methods`                                     | Force the name of a specific method                               |
-| `@param`              | `methods`                                     | Provides the name, type, and description of a function parameter  |
-| `@returns`, `@return` | `methods`                                     | Documents the value that a function returns                       |
-| `@event`              | `events`                                      | Force the name of a specific event                                |
-| `@arg`, `@argument`   | `events`                                      | Provides the name, type, and description of an event argument     |
-| `@slot`               | `slots`                                       | Documents slot defined in render function                         |
-| `@prop`               | `slots`                                       | Provides the name, type, and description of a slot prop           |
-| `@category`           | `props`, `data`, `methods`, `events`, `slots` | Attaches a category to an element                                 |
+| `@default`            | `props`                                       | Provides a default value of a prop                                                        |
+| `@model`              | `props`                                       | Marks a prop as `v-model`                                                                 |
+| `@initialValue`       | `data`                                        | Provides an initial value of a data                                                       |
+| `@method`             | `methods`                                     | Force the name of a specific method                                                       |
+| `@syntax`             | `methods`                                     | Provides the custom method syntax                                                         |
+| `@param`              | `methods`                                     | Provides the name, type, and description of a function parameter                          |
+| `@returns`, `@return` | `methods`                                     | Documents the value that a function returns                                               |
+| `@event`              | `events`                                      | Force the name of a specific event                                                        |
+| `@arg`, `@argument`   | `events`                                      | Provides the name, type, and description of an event argument                             |
+| `@slot`               | `slots`                                       | Documents slot defined in render function                                                 |
+| `@prop`               | `slots`                                       | Provides the name, type, and description of a slot prop                                   |
+| `@mixin`              |                                               | Force parsing of the exported item as a mixin component                                   |
+| `@category`           | `props`, `data`, `methods`, `events`, `slots` | Attaches a category to an element                                                         |
 
 **Visibility tags**
 
@@ -791,129 +1024,38 @@ type ParsingOutput = {
   errors: string[];           // Syntax and parsing errors
 };
 
-enum NativeTypeEnum {
-  string,
-  number,
-  bigint,
-  boolean,
-  bigint,
-  any,                        // for an explicit `null` or `undefined` values
-  object                      // for an array or an object
-};
-
-abstract class AbstractEntry {
-  kind: 'computed' | 'data' | 'description' | 'event' | 'inheritAttrs' | 'method' | 'model' | 'name' | 'prop' | 'slot';
-}
-
-abstract class AbstractDecorativeEntry extends AbstractEntry {
-  description: string;
-  keywords: Keyword[];
-}
-
-abstract class AbstractCategorizeEntry extends AbstractDecorativeEntry {
-  category: string | null;
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
-}
-
-abstract class AbstractLiteralEntry extends AbstractEntry {
+interface NameEntry {
+  kind: 'name';
   value: string;
 }
 
-class ComputedEntry extends AbstractCategorizeEntry {
-  kind: 'computed';
-  name: string;
-  dependencies: string[];
-}
-
-class DataEntry extends AbstractCategorizeEntry {
-  kind: 'data';
-  name: string;
-  type: NativeTypeEnum | string;
-  initialValue: string;
-}
-
-class DescriptionEntry extends AbstractLiteralEntry {
+interface DescriptionEntry {
   kind: 'description'
   value: string;
 }
 
-class EventEntry extends AbstractCategorizeEntry {
-  kind: 'event';
-  name: string;
-  arguments: EventArgument[];
-}
-
-class EventArgument {
-  name: string;
-  type: NativeTypeEnum | string;
-  description: string;
-  rest: boolean;
-}
-
-class InheritAttrsEntry extends AbstractLiteralEntry {
+interface InheritAttrsEntry {
   kind: 'inheritAttrs'
+  value: boolean;
 }
 
-class Keyword {
-  name: string;
-  description: string;
-}
-
-class KeywordsEntry extends AbstractLiteralEntry {
+interface KeywordsEntry {
   kind: 'keywords';
   value: Keyword[];
 }
 
-class MethodEntry extends AbstractCategorizeEntry {
-  kind: 'method'
-  name: string;
-  params: MethodParam[];
-  return: MethodReturn;
-}
-
-class MethodParam {
-  name: string;
-  type: NativeTypeEnum | string;
-  description: string;
-  defaultValue?: string;
-  rest: boolean;
-}
-
-class MethodReturn {
-  type: string;
-  description: string;
-}
-
-class ModelEntry extends AbstractDecorativeEntry {
+interface ModelEntry {
   kind: 'model';
   prop: string;
   event: string;
-}
-
-class NameEntry extends AbstractLiteralEntry {
-  kind: 'name';
-}
-
-class PropEntry extends AbstractCategorizeEntry {
-  kind: 'prop';
-  name: string;
-  type: string | string[];
-  default: string;
-  required: boolean;
-  describeModel: boolean;
-}
-
-class SlotEntry extends AbstractCategorizeEntry {
-  kind: 'slot';
-  name: string;
-  props: SlotProp[];
-}
-
-class SlotProp {
-  name: string;
-  type: string;
   description: string;
+  keywords: Keyword[];
 }
+
+type Keyword = {
+  name: string;
+  description: string;
+};
 ```
 
 ## Related projects

@@ -12,6 +12,7 @@ module.exports = {
   'rules': {
     'comma-dangle': 'off',
     'semi': 'off',
+    'prefer-destructuring': 'off',
     'max-classes-per-file': 'off',
     'prefer-template': 'off',
     'class-methods-use-this': 'error',

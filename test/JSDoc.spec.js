@@ -311,6 +311,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'set(id: string, name?: string, order?: number = 1, values?: string | string[], ...rest: any[]): boolean'
+          ],
           visibility: 'public',
           category: null,
           description: 'Set the checkbox ID',
@@ -360,7 +363,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'boolean',
             description: 'True on success; ortherwise false'
           }
@@ -397,6 +400,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'nameOnly(somebody: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Name only',
@@ -404,14 +410,14 @@ describe('JSDoc', () => {
           name: 'nameOnly',
           params: [
             {
-              type: 'any',
+              type: 'unknow',
               name: 'somebody',
               description: undefined,
               defaultValue: undefined,
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -445,6 +451,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'nameAndType(somebody: string): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Name and type',
@@ -459,7 +468,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -493,6 +502,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'nameTypeAndDescription(somebody: string): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Name, type, and description',
@@ -507,7 +519,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -541,6 +553,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'nameTypeAndDescriptionWithHyphen(somebody: string): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Name, type, and description, with a hyphen before the description',
@@ -555,7 +570,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -596,6 +611,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withParameterProperties(employee: Object): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Assign the project to an employee.',
@@ -624,7 +642,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -660,6 +678,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withDestructuringParameter(employee: Object): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Assign the project to an employee.',
@@ -688,7 +709,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -724,6 +745,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withPropertiesOfValuesInAnArray(employees: Object[]): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Assign the project to a list of employees.',
@@ -752,7 +776,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -790,6 +814,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withOptionalParameter(somebody?: string): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'An optional parameter (using JSDoc syntax)',
@@ -805,7 +832,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -824,7 +851,7 @@ describe('JSDoc', () => {
             methods: {
               /**
                * An optional parameter and default value
-              * @param {string} [somebody=John Doe] - Somebody's name.
+              * @param {string} [somebody="John Doe"] - Somebody's name.
               */
               withOptionalParameterAndDefaultValue(somebody) {
                   if (!somebody) {
@@ -842,6 +869,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withOptionalParameterAndDefaultValue(somebody?: string = "John Doe"): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'An optional parameter and default value',
@@ -853,11 +883,11 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: 'Somebody\'s name.',
               optional: true,
-              defaultValue: 'John Doe',
+              defaultValue: '"John Doe"',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -882,7 +912,7 @@ describe('JSDoc', () => {
             methods: {
               /**
                * Allows one type OR another type (type union)
-               * @param {(string|string[])} [somebody=John Doe] - Somebody's name, or an array of names.
+               * @param {(string|string[])} [somebody="John Doe"] - Somebody's name, or an array of names.
                */
               withMultipleType(somebody) {
                 if (!somebody) {
@@ -903,6 +933,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withMultipleType(somebody?: string | string[] = "John Doe"): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Allows one type OR another type (type union)',
@@ -917,11 +950,11 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: 'Somebody\'s name, or an array of names.',
               optional: true,
-              defaultValue: 'John Doe',
+              defaultValue: '"John Doe"',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -955,6 +988,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withAnyType(somebody: any): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Allows any type',
@@ -969,7 +1005,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -1008,6 +1044,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withSpreadNotation(...num: number[]): unknow'
+          ],
           visibility: 'public',
           category: null,
           description: 'Allows a parameter to be repeated.\nReturns the sum of all numbers passed to the function.',
@@ -1022,8 +1061,8 @@ describe('JSDoc', () => {
               rest: true
             }
           ],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         },
@@ -1068,6 +1107,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'doSomethingAsynchronously(cb: requestCallback): void'
+          ],
           visibility: 'public',
           category: null,
           description: 'Does something asynchronously and executes the callback on completion.',
@@ -1082,7 +1124,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -1118,6 +1160,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withType(a: number, b: number): number'
+          ],
           visibility: 'public',
           category: null,
           description: 'Returns the sum of a and b',
@@ -1139,7 +1184,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'number',
             description: ''
           }
@@ -1179,6 +1224,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withMultipleType(a: number, b: number, retArr: boolean): number | Array'
+          ],
           visibility: 'public',
           category: null,
           description: 'Returns the sum of a and b',
@@ -1207,7 +1255,7 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: [
               'number',
               'Array'
@@ -1248,6 +1296,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withPromise(a: number, b: number): Promise<unknow>'
+          ],
           visibility: 'public',
           category: null,
           description: 'Returns the sum of a and b',
@@ -1269,8 +1320,8 @@ describe('JSDoc', () => {
               rest: false
             }
           ],
-          return: {
-            type: 'Promise',
+          returns: {
+            type: 'Promise<unknow>',
             description: 'Promise object represents the sum of a and b'
           }
         },
@@ -1307,6 +1358,9 @@ describe('JSDoc', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'withSpreadParam(a: number, ...b: number[]): Promise<unknow>'
+          ],
           visibility: 'public',
           category: null,
           description: 'Returns the sum of a and b',
@@ -1328,8 +1382,8 @@ describe('JSDoc', () => {
               rest: true
             }
           ],
-          return: {
-            type: 'Promise',
+          returns: {
+            type: 'Promise<unknow>',
             description: 'Promise object represents the sum of a and b'
           }
         }

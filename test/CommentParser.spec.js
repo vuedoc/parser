@@ -3,7 +3,6 @@ const { CommentParser } = require('../lib/parser/CommentParser')
 /* global describe it expect */
 /* eslint-disable max-len */
 /* eslint-disable indent */
-/* eslint-disable prefer-destructuring */
 
 const comment = `
   /**

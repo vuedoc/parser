@@ -104,7 +104,8 @@ ComponentTestCase({
     keywords: [
       {
         name: 'author',
-        description: 'Jon Snow' }
+        description: 'Jon Snow'
+      }
     ],
     events: [
       { kind: 'event',
@@ -113,14 +114,16 @@ ComponentTestCase({
         description: 'event constructor description',
         category: null,
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       { kind: 'event',
         name: 'mounted',
         arguments: [],
         description: 'event mounted description',
         category: null,
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     methods: [
       { kind: 'method',
@@ -129,22 +132,30 @@ ComponentTestCase({
         description: 'method greet description',
         category: null,
         keywords: [],
+        syntax: [
+          'greet(): void'
+        ],
         visibility: 'public',
-        return: {
+        returns: {
           description: '',
           type: 'void'
-        } },
+        }
+      },
       { kind: 'method',
         name: '_protectedMethod',
         params: [],
         description: 'method _protectedMethod description',
         category: null,
         keywords: [],
+        syntax: [
+          '_protectedMethod(): void'
+        ],
         visibility: 'protected',
-        return: {
+        returns: {
           description: '',
           type: 'void'
-        } }
+        }
+      }
     ],
     computed: [
       { kind: 'computed',
@@ -153,14 +164,16 @@ ComponentTestCase({
         dependencies: [ 'msg' ],
         description: 'computed computedMsg description',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       { kind: 'computed',
         name: '[Symbol.species]',
         category: null,
         dependencies: [],
         description: 'computed [Symbol.species] description',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     data: [
       {
@@ -171,7 +184,8 @@ ComponentTestCase({
         description: 'data msg description',
         initialValue: 'Hello',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'helloMsg',
@@ -180,7 +194,8 @@ ComponentTestCase({
         description: 'data helloMsg with expression',
         initialValue: '\'Hello, \' + this.name',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     props: [
       { kind: 'prop',
@@ -192,7 +207,8 @@ ComponentTestCase({
         describeModel: false,
         description: 'prop name description',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     slots: []
   }
@@ -249,7 +265,8 @@ ComponentTestCase({
         category: null,
         initialValue: '[this.$router.currentRoute]',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'historyLength',
@@ -258,7 +275,8 @@ ComponentTestCase({
         category: null,
         initialValue: 'window.history.length',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'transitionName',
@@ -267,7 +285,8 @@ ComponentTestCase({
         category: null,
         initialValue: 'slide-left',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'init',
@@ -276,7 +295,8 @@ ComponentTestCase({
         category: null,
         initialValue: false,
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
     ],
     props: [],
     slots: []

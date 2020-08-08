@@ -128,27 +128,33 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'someMethodCall(): unknow'
+          ],
           name: 'someMethodCall',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'someMethodRef(): unknow'
+          ],
           name: 'someMethodRef',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -178,14 +184,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'route(): unknow'
+          ],
           name: 'route',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -217,14 +226,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'route(): unknow'
+          ],
           name: 'route',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -255,14 +267,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'route(): unknow'
+          ],
           name: 'route',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -296,14 +311,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'route(): unknow'
+          ],
           name: 'route',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -336,14 +354,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): unknow'
+          ],
           name: 'myFunction',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -384,6 +405,9 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(test: Record<string, any>): Record<string, any>'
+          ],
           name: 'myFunction',
           visibility: 'protected',
           category: null,
@@ -398,7 +422,7 @@ describe('ScriptParser', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'Record<string, any>',
             description: '<-- Gets parsed as description'
           }
@@ -432,14 +456,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): unknow'
+          ],
           name: 'myFunction',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -472,14 +499,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): unknow'
+          ],
           name: 'myFunction',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -514,14 +544,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): unknow'
+          ],
           name: 'myFunction',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -583,14 +616,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'route(): unknow'
+          ],
           name: 'route',
           category: null,
           description: '',
           keywords: [],
           visibility: 'public',
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -650,14 +686,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'route(): unknow'
+          ],
           name: 'route',
           category: null,
           description: '',
           keywords: [],
           visibility: 'public',
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -690,14 +729,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): unknow'
+          ],
           name: 'myFunction',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }
@@ -732,14 +774,17 @@ describe('ScriptParser', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): unknow'
+          ],
           name: 'myFunction',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         }

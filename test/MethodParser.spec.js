@@ -4,7 +4,7 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
-  [ 'unset', undefined, 'any' ],
+  [ 'unset', undefined, [ 'unknow', 'any' ] ],
   [ 'undefine', 'undefined', 'any' ],
   [ 'negativeNumber', '-1', 'number' ],
   [ 'positiveNumber', '1', 'number' ],
@@ -21,8 +21,8 @@ const defaultParams = [
   [ 'emptyString', '""', 'string', '""' ],
   [ 'literal', '`hello`', 'string' ],
   [ 'literal', '`hello ${name}`', 'string' ],
-  [ 'tagged', 'tagged`hello`', 'string', '`hello`' ],
-  [ 'tagged', 'tagged`hello ${name}`', 'string', '`hello ${name}`' ],
+  [ 'tagged', 'tagged`hello`', 'string' ],
+  [ 'tagged', 'tagged`hello ${name}`', 'string' ],
   [ 'math', 'Math.PI', 'number' ],
   [ 'math', 'Math.blabla', 'number' ],
   [ 'number', 'Number.MAX_VALUE', 'number' ],
@@ -35,45 +35,80 @@ const defaultParams = [
 ]
 
 describe('MethodParser', () => {
-  defaultParams.forEach(([ paramName, paramValue, expectedType, expectedValue = paramValue, args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}` ]) => ComponentTestCase({
-    name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
-    options: {
-      filecontent: `
-        <script>
-          const name = 'Arya Stark'
+  defaultParams.forEach(([ paramName, paramValue, expectedTypes, expectedValue = paramValue ]) => {
+    const [ expectedType, expectedType2 = expectedType ] = expectedTypes instanceof Array ? expectedTypes : [ expectedTypes ]
+    const args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}`
+    const argsWithTyping = paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}`
+    const expectedArgs = paramValue ? `${paramName}: ${expectedType2} = ${paramValue}` : `${paramName}: ${expectedType}`
 
-          export default {
-            methods: {
-              withDefaultValue(${args}) {}
+    ComponentTestCase({
+      name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
+      options: {
+        filecontent: `
+          <script>
+            const name = 'Arya Stark'
+
+            export default {
+              methods: {
+                withDefaultValue(${args}) {},
+                withDefaultValueAndTyping(${argsWithTyping}) {}
+              }
+            };
+          </script>
+        `
+      },
+      expected: {
+        methods: [
+          {
+            kind: 'method',
+            syntax: [
+              `withDefaultValue(${expectedArgs}): void`
+            ],
+            name: 'withDefaultValue',
+            visibility: 'public',
+            category: null,
+            description: '',
+            keywords: [],
+            params: [
+              {
+                name: paramName,
+                type: expectedType,
+                description: '',
+                defaultValue: expectedValue ? `${expectedValue}` : expectedValue,
+                rest: false
+              }
+            ],
+            returns: {
+              type: 'void',
+              description: ''
             }
-          };
-        </script>
-      `
-    },
-    expected: {
-      methods: [
-        {
-          kind: 'method',
-          name: 'withDefaultValue',
-          visibility: 'public',
-          category: null,
-          description: '',
-          keywords: [],
-          params: [
-            {
-              name: paramName,
-              type: expectedType,
-              description: '',
-              defaultValue: expectedValue ? `${expectedValue}` : expectedValue,
-              rest: false
+          },
+          {
+            kind: 'method',
+            syntax: [
+              `withDefaultValueAndTyping(${expectedArgs}): void`
+            ],
+            name: 'withDefaultValueAndTyping',
+            visibility: 'public',
+            category: null,
+            description: '',
+            keywords: [],
+            params: [
+              {
+                name: paramName,
+                type: expectedType,
+                description: '',
+                defaultValue: expectedValue ? `${expectedValue}` : expectedValue,
+                rest: false
+              }
+            ],
+            returns: {
+              type: 'void',
+              description: ''
             }
-          ],
-          return: {
-            type: 'void',
-            description: ''
           }
-        }
-      ]
-    }
-  }))
+        ]
+      }
+    })
+  })
 })

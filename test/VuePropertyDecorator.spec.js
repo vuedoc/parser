@@ -262,6 +262,9 @@ ComponentTestCase({
         kind: 'method',
         name: 'onChildChanged',
         category: null,
+        syntax: [
+          'onChildChanged(val: string, oldVal: string): void'
+        ],
         params: [
           {
             name: 'val',
@@ -278,7 +281,7 @@ ComponentTestCase({
             rest: false
           }
         ],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -290,6 +293,9 @@ ComponentTestCase({
         kind: 'method',
         name: 'onPersonChanged1',
         category: null,
+        syntax: [
+          'onPersonChanged1(val: Person, oldVal: Person): void'
+        ],
         params: [
           {
             name: 'val',
@@ -306,7 +312,7 @@ ComponentTestCase({
             rest: false
           }
         ],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -318,6 +324,9 @@ ComponentTestCase({
         kind: 'method',
         name: 'addToCount',
         category: null,
+        syntax: [
+          'addToCount(n: number): void'
+        ],
         params: [
           {
             name: 'n',
@@ -327,7 +336,7 @@ ComponentTestCase({
             rest: false
           }
         ],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -339,8 +348,11 @@ ComponentTestCase({
         kind: 'method',
         name: 'resetCount',
         category: null,
+        syntax: [
+          'resetCount(): void'
+        ],
         params: [],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -352,8 +364,11 @@ ComponentTestCase({
         kind: 'method',
         name: 'returnValue',
         category: null,
+        syntax: [
+          'returnValue(): void'
+        ],
         params: [],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -365,16 +380,19 @@ ComponentTestCase({
         kind: 'method',
         name: 'onInputChange',
         category: null,
+        syntax: [
+          'onInputChange(e: unknow): void'
+        ],
         params: [
           {
             name: 'e',
-            type: 'any',
+            type: 'unknow',
             description: '',
             defaultValue: undefined,
             rest: false
           }
         ],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -386,8 +404,11 @@ ComponentTestCase({
         kind: 'method',
         name: 'promise',
         category: null,
+        syntax: [
+          'promise(): void'
+        ],
         params: [],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },
@@ -399,8 +420,11 @@ ComponentTestCase({
         kind: 'method',
         name: 'privateMethod',
         category: null,
+        syntax: [
+          'privateMethod(): void'
+        ],
         params: [],
-        return: {
+        returns: {
           description: '',
           type: 'void',
         },

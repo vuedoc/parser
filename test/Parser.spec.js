@@ -1212,7 +1212,7 @@ describe('Parser', () => {
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.return, expected)
+          assert.deepEqual(method.returns, expected)
           done()
         })
       })
@@ -1239,7 +1239,7 @@ describe('Parser', () => {
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.return, expected)
+          assert.deepEqual(method.returns, expected)
           done()
         })
       })
@@ -1266,7 +1266,7 @@ describe('Parser', () => {
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
           assert.equal(method.description, 'Get the x values.')
-          assert.deepEqual(method.return, expected)
+          assert.deepEqual(method.returns, expected)
           done()
         })
       })
@@ -1291,7 +1291,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'getX')
-          assert.deepEqual(method.return, expected)
+          assert.deepEqual(method.returns, expected)
           done()
         })
       })
@@ -2009,7 +2009,7 @@ describe('Parser', () => {
         assert.deepEqual(prop.params, [
             {
               name: 'ctx',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false

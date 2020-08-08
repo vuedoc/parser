@@ -1499,24 +1499,30 @@ describe('Integration', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'dynamic(): void'
+          ],
           name: 'dynamic',
           keywords: [],
           category: null,
           description: 'Make component dynamic',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           },
           visibility: 'public' },
         {
           kind: 'method',
+          syntax: [
+            'dynamic2Value(): void'
+          ],
           name: 'dynamic2Value',
           keywords: [],
           category: null,
           description: 'Enter to dynamic mode',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           },

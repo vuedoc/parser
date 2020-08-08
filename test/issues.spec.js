@@ -1574,6 +1574,9 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'defaultFilter(suggestion: unknow): unknow'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1582,19 +1585,22 @@ describe('issues', () => {
           params: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'selectSuggestion(suggestion: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1603,19 +1609,22 @@ describe('issues', () => {
           params: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'highlightSuggestion(index: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1624,19 +1633,22 @@ describe('issues', () => {
           params: [
             {
               name: 'index',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'selectHighlighted(index: unknow, e: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1645,52 +1657,61 @@ describe('issues', () => {
           params: [
             {
               name: 'index',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             },
             {
               name: 'e',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'openDropdown(): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           name: 'openDropdown',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'closeDropdown(): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           name: 'closeDropdown',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'updateValue(value: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1699,19 +1720,22 @@ describe('issues', () => {
           params: [
             {
               name: 'value',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'onFocus(e: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1720,19 +1744,22 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'onChange(e: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1741,19 +1768,22 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'onBlur(e: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1762,19 +1792,22 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'onExternalClick(e: unknow): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
@@ -1783,26 +1816,29 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'reset(): void'
+          ],
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           name: 'reset',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -1825,17 +1861,20 @@ describe('issues', () => {
           description: '',
           keywords: [],
           kind: 'method',
+          syntax: [
+            'selectSuggestion(suggestion: unknow): void'
+          ],
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           },
@@ -1876,17 +1915,20 @@ describe('issues', () => {
           description: '',
           keywords: [],
           kind: 'method',
+          syntax: [
+            'selectSuggestion(suggestion: unknow): void'
+          ],
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknow',
               defaultValue: undefined,
               description: '',
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           },
@@ -1971,13 +2013,16 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'example(): void'
+          ],
           name: 'example',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -2022,13 +2067,16 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'close(): void'
+          ],
           name: 'close',
           visibility: 'public',
           category: null,
           description: 'Close modal',
           keywords: [],
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -2097,6 +2145,9 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'sum(a: number, b: number): number'
+          ],
           name: 'sum',
           visibility: 'public',
           category: null,
@@ -2106,17 +2157,19 @@ describe('issues', () => {
             {
               name: 'a',
               type: 'number',
+              defaultValue: undefined,
               description: undefined,
               rest: false
             },
             {
               name: 'b',
               type: 'number',
+              defaultValue: undefined,
               description: undefined,
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'number',
             description: ''
           }
@@ -2144,15 +2197,19 @@ describe('issues', () => {
       `
     },
     expected: {
+      errors: [],
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(): void'
+          ],
           name: 'myFunction',
           keywords: [],
           category: null,
           description: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           },
@@ -2204,6 +2261,9 @@ describe('issues', () => {
           description: 'Testing',
           keywords: [],
           kind: 'method',
+          syntax: [
+            'myFunction(test: Record<string, any>): Record<string, any>'
+          ],
           name: 'myFunction',
           params: [
             {
@@ -2213,7 +2273,7 @@ describe('issues', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             description: '<-- Gets parsed as description',
             type: 'Record<string, any>',
           },
@@ -2352,6 +2412,9 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'myFunction(test: Promise<string>): number'
+          ],
           name: 'myFunction',
           category: null,
           description: 'Testing',
@@ -2366,7 +2429,7 @@ describe('issues', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'number',
             description: ''
           }
@@ -2415,13 +2478,16 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'test(): void'
+          ],
           name: 'test',
           category: null,
           description: '',
           visibility: 'public',
           keywords: [],
           params: [],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
@@ -2473,6 +2539,9 @@ describe('issues', () => {
       methods: [
         {
           kind: 'method',
+          syntax: [
+            'load(schema: object, model: Number | String | Array | Object | Boolean = "hello"): void'
+          ],
           name: 'load',
           visibility: 'public',
           category: null,
@@ -2500,13 +2569,16 @@ describe('issues', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'number(model: number = 123): void'
+          ],
           name: 'number',
           visibility: 'public',
           category: null,
@@ -2521,13 +2593,16 @@ describe('issues', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'withImplicitUndefinedReturn(schema: object): unknow'
+          ],
           name: 'withImplicitUndefinedReturn',
           visibility: 'public',
           category: null,
@@ -2542,13 +2617,16 @@ describe('issues', () => {
               rest: false
             }
           ],
-          return: {
-            type: 'void',
+          returns: {
+            type: 'unknow',
             description: ''
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'withExplicitUndefinedReturn(schema: object): void'
+          ],
           name: 'withExplicitUndefinedReturn',
           visibility: 'public',
           category: null,
@@ -2563,20 +2641,23 @@ describe('issues', () => {
               rest: false
             }
           ],
-          return: {
+          returns: {
             type: 'void',
             description: 'undefined'
           }
         },
         {
           kind: 'method',
+          syntax: [
+            'withExplicitReturn(): int'
+          ],
           name: 'withExplicitReturn',
           visibility: 'public',
           category: null,
           description: '',
           keywords: [],
           params: [],
-          return: {
+          returns: {
             type: 'int',
             description: '123'
           }
