@@ -336,14 +336,6 @@ describe('JSDoc', () => {
               rest: false
             },
             {
-              type: 'any',
-              name: 'rest',
-              description: 'The rest options',
-              defaultValue: undefined,
-              optional: true,
-              rest: true
-            },
-            {
               type: 'number',
               name: 'order',
               description: 'The checkbox order',
@@ -361,6 +353,14 @@ describe('JSDoc', () => {
               defaultValue: undefined,
               optional: true,
               rest: false
+            },
+            {
+              type: 'any',
+              name: 'rest',
+              description: 'The rest options',
+              defaultValue: undefined,
+              optional: true,
+              rest: true
             }
           ],
           returns: {
