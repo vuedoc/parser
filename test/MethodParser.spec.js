@@ -294,4 +294,112 @@ describe('MethodParser', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: 'generator method',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              *nameOnly() {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            '*nameOnly(): void'
+          ],
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          name: 'nameOnly',
+          params: [],
+          returns: {
+            type: 'void',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'async method',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              async nameOnly() {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'async nameOnly(): Promise'
+          ],
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          name: 'nameOnly',
+          params: [],
+          returns: {
+            type: 'Promise',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'async method with explicit typing',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              async nameOnly(): Promise<string> {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'async nameOnly(): Promise<string>'
+          ],
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          name: 'nameOnly',
+          params: [],
+          returns: {
+            type: 'Promise<string>',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
 })

@@ -1297,7 +1297,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withPromise(a: number, b: number): Promise<unknow>'
+            'withPromise(a: number, b: number): Promise'
           ],
           visibility: 'public',
           category: null,
@@ -1321,7 +1321,7 @@ describe('JSDoc', () => {
             }
           ],
           returns: {
-            type: 'Promise<unknow>',
+            type: 'Promise',
             description: 'Promise object represents the sum of a and b'
           }
         },
@@ -1359,7 +1359,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withSpreadParam(a: number, ...b: number[]): Promise<unknow>'
+            'withSpreadParam(a: number, ...b: number[]): Promise'
           ],
           visibility: 'public',
           category: null,
@@ -1383,7 +1383,7 @@ describe('JSDoc', () => {
             }
           ],
           returns: {
-            type: 'Promise<unknow>',
+            type: 'Promise',
             description: 'Promise object represents the sum of a and b'
           }
         }
