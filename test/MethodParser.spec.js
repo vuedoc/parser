@@ -368,6 +368,44 @@ describe('MethodParser', () => {
   })
 
   ComponentTestCase({
+    name: 'async method with returning statement',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              async nameOnly() {
+                return 12
+              }
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'async nameOnly(): Promise<unknow>'
+          ],
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          name: 'nameOnly',
+          params: [],
+          returns: {
+            type: 'Promise<unknow>',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
     name: 'async method with explicit typing',
     options: {
       filecontent: `
