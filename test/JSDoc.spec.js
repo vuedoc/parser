@@ -355,7 +355,7 @@ describe('JSDoc', () => {
               rest: false
             },
             {
-              type: 'any',
+              type: 'any[]',
               name: 'rest',
               description: 'The rest options',
               defaultValue: undefined,
@@ -1054,7 +1054,7 @@ describe('JSDoc', () => {
           name: 'withSpreadNotation',
           params: [
             {
-              type: 'number',
+              type: 'number[]',
               name: 'num',
               description: 'A positive or negative number.',
               defaultValue: undefined,
@@ -1375,7 +1375,7 @@ describe('JSDoc', () => {
               rest: false
             },
             {
-              type: 'number',
+              type: 'number[]',
               name: 'b',
               description: undefined,
               defaultValue: undefined,

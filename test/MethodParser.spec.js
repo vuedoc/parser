@@ -111,4 +111,187 @@ describe('MethodParser', () => {
       }
     })
   })
+
+  ComponentTestCase({
+    name: '@syntax',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Name only
+               * @syntax nameOnly(somebody: string) => void
+               */
+              nameOnly(somebody) {
+                alert('Hello ' + somebody);
+              },
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'nameOnly(somebody: string) => void'
+          ],
+          visibility: 'public',
+          category: null,
+          description: 'Name only',
+          keywords: [],
+          name: 'nameOnly',
+          params: [
+            {
+              type: 'unknow',
+              name: 'somebody',
+              description: '',
+              defaultValue: undefined,
+              rest: false
+            }
+          ],
+          returns: {
+            type: 'void',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '@syntax',
+    description: 'with rest param and returning arrow function',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Name only
+               */
+              nameOnly: (...somebody: string[]) => alert('Hello ' + somebody)
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'nameOnly(...somebody: string[]): unknow'
+          ],
+          visibility: 'public',
+          category: null,
+          description: 'Name only',
+          keywords: [],
+          name: 'nameOnly',
+          params: [
+            {
+              type: 'string[]',
+              name: 'somebody',
+              description: '',
+              defaultValue: undefined,
+              rest: true
+            }
+          ],
+          returns: {
+            type: 'unknow',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '@syntax',
+    description: 'with rest param and empty arrow function',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              /**
+               * Name only
+               */
+              nameOnly: (...somebody: string[]) => {}
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'nameOnly(...somebody: string[]): void'
+          ],
+          visibility: 'public',
+          category: null,
+          description: 'Name only',
+          keywords: [],
+          name: 'nameOnly',
+          params: [
+            {
+              type: 'string[]',
+              name: 'somebody',
+              description: '',
+              defaultValue: undefined,
+              rest: true
+            }
+          ],
+          returns: {
+            type: 'void',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: '@syntax',
+    description: 'with rest param and unknow identifier method',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              nameOnly
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'nameOnly(): unknow'
+          ],
+          visibility: 'public',
+          category: null,
+          description: '',
+          keywords: [],
+          name: 'nameOnly',
+          params: [],
+          returns: {
+            type: 'unknow',
+            description: ''
+          }
+        },
+      ]
+    }
+  })
 })
