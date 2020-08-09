@@ -90,99 +90,99 @@ ComponentTestCase({
         default: undefined,
         required: false,
         type: 'Number',
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'prop-b',
         describeModel: false,
-        description: '',
+        description: undefined,
         keywords: [],
         default: 'default value',
         required: false,
         type: 'string',
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'prop-c',
         describeModel: false,
-        description: '',
+        description: undefined,
         keywords: [],
         default: undefined,
         required: false,
         type: [ 'String', 'Boolean' ],
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'prop-d',
         describeModel: false,
-        description: '',
+        description: undefined,
         keywords: [],
         default: 'default value',
         required: true,
         type: 'string',
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'prop-e',
         describeModel: false,
-        description: '',
+        description: undefined,
         keywords: [],
         default: 'default value',
         required: false,
         type: 'String',
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'prop-f',
         describeModel: false,
-        description: '',
+        description: undefined,
         keywords: [],
         default: 'default value',
         required: false,
         type: 'string',
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'name',
         describeModel: false,
-        description: '',
+        description: undefined,
         keywords: [],
         default: undefined,
         required: false,
         type: 'String',
-        category: null,
+        category: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
         name: 'checked',
         describeModel: true,
-        description: '',
+        description: undefined,
         keywords: [],
         default: undefined,
         required: false,
         type: 'Boolean',
-        category: null,
+        category: undefined,
         visibility: 'public' }
     ],
     model: {
       kind: 'model',
       prop: 'checked',
       event: 'change',
-      description: '',
+      description: undefined,
       keywords: []
     },
     computed: [
       {
         kind: 'computed',
         name: 'syncedName',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         keywords: [],
         dependencies: [
           'name'
@@ -193,8 +193,8 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'update:name',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         arguments: [
           'name'
         ],
@@ -203,12 +203,12 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'add-to-count',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         arguments: [
           {
             name: 'n',
-            description: '',
+            description: undefined,
             type: 'any',
             rest: false
           }
@@ -218,28 +218,28 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'reset',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         arguments: [],
         keywords: [],
         visibility: 'public' },
       {
         kind: 'event',
         name: 'return-value',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         arguments: [],
         keywords: [],
         visibility: 'public' },
       {
         kind: 'event',
         name: 'on-input-change',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         arguments: [
           {
             name: 'e',
-            description: '',
+            description: undefined,
             type: 'any',
             rest: false
           }
@@ -249,19 +249,19 @@ ComponentTestCase({
       {
         kind: 'event',
         name: 'promise',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         arguments: [],
         keywords: [],
         visibility: 'public' }
     ],
     methods: [
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'onChildChanged',
-        category: null,
+        category: undefined,
         syntax: [
           'onChildChanged(val: string, oldVal: string): void'
         ],
@@ -269,30 +269,30 @@ ComponentTestCase({
           {
             name: 'val',
             type: 'string',
-            description: '',
+            description: undefined,
             defaultValue: undefined,
             rest: false
           },
           {
             name: 'oldVal',
             type: 'string',
-            description: '',
+            description: undefined,
             defaultValue: undefined,
             rest: false
           }
         ],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'onPersonChanged1',
-        category: null,
+        category: undefined,
         syntax: [
           'onPersonChanged1(val: Person, oldVal: Person): void'
         ],
@@ -300,30 +300,30 @@ ComponentTestCase({
           {
             name: 'val',
             type: 'Person',
-            description: '',
+            description: undefined,
             defaultValue: undefined,
             rest: false
           },
           {
             name: 'oldVal',
             type: 'Person',
-            description: '',
+            description: undefined,
             defaultValue: undefined,
             rest: false
           }
         ],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'addToCount',
-        category: null,
+        category: undefined,
         syntax: [
           'addToCount(n: number): void'
         ],
@@ -331,55 +331,55 @@ ComponentTestCase({
           {
             name: 'n',
             type: 'number',
-            description: '',
+            description: undefined,
             defaultValue: undefined,
             rest: false
           }
         ],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'resetCount',
-        category: null,
+        category: undefined,
         syntax: [
           'resetCount(): void'
         ],
         params: [],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'returnValue',
-        category: null,
+        category: undefined,
         syntax: [
           'returnValue(): void'
         ],
         params: [],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'onInputChange',
-        category: null,
+        category: undefined,
         syntax: [
           'onInputChange(e: unknow): void'
         ],
@@ -387,45 +387,45 @@ ComponentTestCase({
           {
             name: 'e',
             type: 'unknow',
-            description: '',
+            description: undefined,
             defaultValue: undefined,
             rest: false
           }
         ],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'promise',
-        category: null,
+        category: undefined,
         syntax: [
           'promise(): void'
         ],
         params: [],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'public',
       },
       {
-        description: '',
+        description: undefined,
         keywords: [],
         kind: 'method',
         name: 'privateMethod',
-        category: null,
+        category: undefined,
         syntax: [
           'privateMethod(): void'
         ],
         params: [],
         returns: {
-          description: '',
+          description: undefined,
           type: 'void',
         },
         visibility: 'private',

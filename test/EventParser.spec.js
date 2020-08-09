@@ -46,8 +46,8 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           visibility: 'public',
           arguments: [],
         }
@@ -77,12 +77,12 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: 'this.values',
               rest: true,
               type: 'any',
@@ -119,7 +119,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -160,12 +160,12 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: '{ value: this.value }',
               rest: false,
               type: 'object',
@@ -202,7 +202,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -243,12 +243,12 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: '[ this.value ]',
               rest: false,
               type: 'array',
@@ -285,7 +285,7 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -326,12 +326,12 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: 'this.cache',
               rest: false,
               type: 'any',
@@ -367,12 +367,12 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: '***unhandled***',
               rest: false,
               type: 'any',

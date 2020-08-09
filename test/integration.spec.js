@@ -69,32 +69,26 @@ function testComponentMethods (optionsToParse) {
       (item) => item.name === 'check'
     )
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Check the checkbox')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Check the checkbox')
   })
 
   it('should contain a protected method', () => {
-    const item = component.methods.find(
-      (item) => item.visibility === 'protected'
-    )
+    const item = component.methods.find((item) => item.visibility === 'protected')
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
   })
 
   it('should contain a private method', () => {
-    const item = component.methods.find(
-      (item) => item.visibility === 'private'
-    )
+    const item = component.methods.find((item) => item.visibility === 'private')
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
   })
 
   it('should contain un uncommented method', () => {
-    const item = component.methods.find(
-      (item) => item.description === ''
-    )
+    const item = component.methods.find((item) => !item.description)
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
   })
 }
 
@@ -141,37 +135,37 @@ function testComponentProps (optionsToParse) {
   it('should contain a v-model prop with a description', () => {
     const item = component.props.find((item) => item.describeModel)
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
     assert.equal(item.type, 'Array')
     assert.equal(item.required, true)
     assert.equal(item.twoWay, undefined)
-    assert.equal(item.description, 'The checkbox model')
+    expect(item.description).toBe('The checkbox model')
   })
 
   it('should contain a disabled prop with comments', () => {
     const item = component.props.find((item) => item.name === 'disabled')
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
     assert.equal(item.type, 'Boolean')
-    assert.equal(item.description, 'Initial checkbox state')
+    expect(item.description).toBe('Initial checkbox state')
   })
 
   it('should contain a checked prop with default value and comments', () => {
     const item = component.props.find((item) => item.name === 'checked')
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
     assert.equal(item.type, 'Boolean')
     assert.equal(item.default, 'true')
-    assert.equal(item.description, 'Initial checkbox value')
+    expect(item.description).toBe('Initial checkbox value')
   })
 
   it('should contain a checked prop with camel name', () => {
     const item = component.props.find((item) => item.name === 'prop-with-camel')
 
-    assert.notEqual(item, undefined)
+    expect(item).toBeDefined()
     assert.equal(item.type, 'Object')
     assert.equal(item.default, '() => ({ name: \'X\'})')
-    assert.equal(item.description, 'Prop with camel name')
+    expect(item.description).toBe('Prop with camel name')
   })
 }
 
@@ -187,31 +181,29 @@ function testComponentSlots (optionsToParse) {
   it('should contain a default slot', () => {
     const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'default')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Default slot')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Default slot')
   })
 
   it('should contain a named slot', () => {
     const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'label')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Use this slot to set the checkbox label')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Use this slot to set the checkbox label')
   })
 
   it('should contain a named slot with multiline description', () => {
     const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'This\nis multiline description')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('This\nis multiline description')
   })
 
   it('should contain a named slot without description', () => {
-    const item = component.slots.find(
-      (item) => item.name === 'undescribed'
-    )
+    const item = component.slots.find((item) => item.name === 'undescribed')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, '')
+    expect(item).toBeDefined()
+    expect(item.description).toBeUndefined()
   })
 }
 
@@ -227,29 +219,29 @@ function testComponentEvents (optionsToParse) {
   it('should contain event with literal name', () => {
     const item = component.events.find((item) => item.name === 'loaded')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Emit when the component has been loaded')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Emit when the component has been loaded')
   })
 
   it('should contain event with identifier name', () => {
     const item = component.events.find((item) => item.name === 'check')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Event with identifier name')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Event with identifier name')
   })
 
   it('should contain event with renamed identifier name', () => {
     const item = component.events.find((item) => item.name === 'renamed')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Event with renamed identifier name')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Event with renamed identifier name')
   })
 
   it('should contain event with recursive identifier name', () => {
     const item = component.events.find((item) => item.name === 'recursive')
 
-    assert.notEqual(item, undefined)
-    assert.equal(item.description, 'Event with recursive identifier name')
+    expect(item).toBeDefined()
+    expect(item.description).toBe('Event with recursive identifier name')
   })
 
   it('should contain event with spread syntax', () => {
@@ -275,14 +267,14 @@ function testComponentEvents (optionsToParse) {
     const event = {
       kind: 'event',
       name: 'change',
-      category: null,
+      category: undefined,
       description: 'Fires when the card is changed.',
       keywords: [],
       arguments: [
         {
           name: '{ bankAccount: { ...this.bankAccount }, valid: !this.$v.$invalid }',
           type: 'object',
-          description: '',
+          description: undefined,
           rest: false
         }
       ],
@@ -578,14 +570,14 @@ describe('Integration', () => {
       const item = component.props.find((item) => item.describeModel)
 
       assert.equal(item.type, 'any')
-      assert.equal(item.description, 'The checkbox model')
+      expect(item.description).toBe('The checkbox model')
     })
 
     it('should contain a checked prop with a description', () => {
       const item = component.props.find((item) => item.name === 'checked')
 
       assert.equal(item.type, 'any')
-      assert.equal(item.description, 'Initial checkbox value')
+      expect(item.description).toBe('Initial checkbox value')
     })
   })
 
@@ -612,7 +604,7 @@ describe('Integration', () => {
           kind: 'data',
           keywords: [],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'ID data',
           initialValue: '"Hello"',
           type: 'string',
@@ -690,12 +682,12 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'default',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           props: [
             { name: 'user',
               type: 'any',
-              description: '' }
+              description: undefined }
           ],
           keywords: []
         }
@@ -732,12 +724,12 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'todo',
-          category: null,
+          category: undefined,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
               type: 'any',
-              description: '' }
+              description: undefined }
           ],
           keywords: []
         }
@@ -776,7 +768,7 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'todo',
-          category: null,
+          category: undefined,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -820,7 +812,7 @@ describe('Integration', () => {
         { kind: 'slot',
           visibility: 'public',
           name: 'todo',
-          category: null,
+          category: undefined,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -828,7 +820,7 @@ describe('Integration', () => {
               description: 'Todo item' },
             { name: 'actions',
               type: 'any',
-              description: '' }
+              description: undefined }
           ],
           keywords: []
         }
@@ -875,8 +867,8 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'value',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           dependencies: []
         }
@@ -932,8 +924,8 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'value',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           dependencies: []
         },
@@ -941,8 +933,8 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'id',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           dependencies: []
         }
@@ -967,8 +959,8 @@ describe('Integration', () => {
       `
       const options = { filecontent }
       const expected = {
-        name: '',
-        description: '',
+        name: undefined,
+        description: undefined,
         inheritAttrs: true,
         keywords: [],
         errors: [],
@@ -1069,14 +1061,13 @@ describe('Integration', () => {
         {
           kind: 'event',
           name: '***unhandled***',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           arguments: [],
           visibility: 'public',
           keywords: [
             {
-              name: 'event',
-              description: ''
+              name: 'event'
             }
           ]
         }
@@ -1118,7 +1109,7 @@ describe('Integration', () => {
         {
           default: '{ last: \'keyword\' }',
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
           keywords: [],
           kind: 'prop',
@@ -1171,8 +1162,8 @@ describe('Integration', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'complex-value',
@@ -1182,8 +1173,8 @@ describe('Integration', () => {
         {
           default: 'true',
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'bool-false',
@@ -1199,12 +1190,12 @@ describe('Integration', () => {
           ],
           name: 'dynamic',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Make component dynamic',
           params: [],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           },
           visibility: 'public' },
         {
@@ -1214,12 +1205,12 @@ describe('Integration', () => {
           ],
           name: 'dynamic2Value',
           keywords: [],
-          category: null,
+          category: undefined,
           description: 'Enter to dynamic mode',
           params: [],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           },
           visibility: 'public' }
       ]
@@ -1245,7 +1236,7 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Use this slot to define form inputs ontrols',
           keywords: [],
           name: 'inputs',
@@ -1254,7 +1245,7 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Use this slot to define form action buttons controls',
           keywords: [],
           name: 'actions',
@@ -1263,7 +1254,7 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Use this slot to define form footer content',
           keywords: [],
           name: 'footer',
@@ -1323,8 +1314,8 @@ describe('Integration', () => {
             required: false,
             default: undefined,
             describeModel: false,
-            category: null,
-            description: '',
+            category: undefined,
+            description: undefined,
             keywords: [],
             visibility: 'public'
           },
@@ -1335,8 +1326,8 @@ describe('Integration', () => {
             required: false,
             default: undefined,
             describeModel: false,
-            category: null,
-            description: '',
+            category: undefined,
+            description: undefined,
             keywords: [],
             visibility: 'public'
           }
@@ -1346,8 +1337,8 @@ describe('Integration', () => {
             kind: 'data',
             name: `dataA${index}`,
             type: value,
-            category: null,
-            description: '',
+            category: undefined,
+            description: undefined,
             initialValue: 'null',
             keywords: [],
             visibility: 'public'
@@ -1356,8 +1347,8 @@ describe('Integration', () => {
             kind: 'data',
             name: `dataB${index}`,
             type: value,
-            category: null,
-            description: '',
+            category: undefined,
+            description: undefined,
             initialValue: 'null',
             keywords: [],
             visibility: 'public'

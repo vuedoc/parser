@@ -18,8 +18,8 @@ describe('ScriptParser', () => {
       `
     },
     expected: {
-      name: '',
-      description: '',
+      name: undefined,
+      description: undefined,
       inheritAttrs: true,
       keywords: [],
       errors: [],
@@ -72,7 +72,7 @@ describe('ScriptParser', () => {
       `
     },
     expected: {
-      name: '',
+      name: undefined,
       description: 'description',
       inheritAttrs: true,
       events: [],
@@ -83,8 +83,8 @@ describe('ScriptParser', () => {
         kind: 'computed',
         name: 'pages',
         dependencies: [ 'links', 'site' ],
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         keywords: [],
         visibility: 'public'
       } ],
@@ -92,8 +92,8 @@ describe('ScriptParser', () => {
         kind: 'data',
         name: 'currentYear',
         type: 'CallExpression',
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         initialValue: 'new Date().getFullYear()',
         keywords: [],
         visibility: 'public'
@@ -105,8 +105,8 @@ describe('ScriptParser', () => {
         required: true,
         default: undefined,
         describeModel: false,
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         keywords: [],
         visibility: 'public'
       }, {
@@ -116,8 +116,8 @@ describe('ScriptParser', () => {
         required: true,
         default: undefined,
         describeModel: false,
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         keywords: [],
         visibility: 'public'
       } ],
@@ -165,7 +165,7 @@ describe('ScriptParser', () => {
       `
     },
     expected: {
-      name: '',
+      name: undefined,
       description: 'description',
       inheritAttrs: true,
       events: [],
@@ -176,8 +176,8 @@ describe('ScriptParser', () => {
         kind: 'computed',
         name: 'pages',
         dependencies: [ 'links', 'site' ],
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         keywords: [],
         visibility: 'public'
       } ],
@@ -185,8 +185,8 @@ describe('ScriptParser', () => {
         kind: 'data',
         name: 'currentYear',
         type: 'CallExpression',
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         initialValue: 'new Date().getFullYear()',
         keywords: [],
         visibility: 'public'
@@ -198,8 +198,8 @@ describe('ScriptParser', () => {
         required: true,
         default: undefined,
         describeModel: false,
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         keywords: [],
         visibility: 'public'
       }, {
@@ -209,8 +209,8 @@ describe('ScriptParser', () => {
         required: true,
         default: undefined,
         describeModel: false,
-        category: null,
-        description: '',
+        category: undefined,
+        description: undefined,
         keywords: [],
         visibility: 'public'
       } ],
@@ -320,8 +320,8 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'any',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           default: undefined,
           required: false,
@@ -332,8 +332,8 @@ describe('ScriptParser', () => {
           name: 'some-prop-ref',
           type: 'CallsSomeOtherMethod',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           default: undefined,
           required: false,
@@ -348,13 +348,13 @@ describe('ScriptParser', () => {
           ],
           name: 'someMethodCall',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         },
         {
@@ -364,13 +364,13 @@ describe('ScriptParser', () => {
           ],
           name: 'someMethodRef',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -404,13 +404,13 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -446,13 +446,13 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -487,13 +487,13 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -531,13 +531,13 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -574,13 +574,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -625,7 +625,7 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'protected',
-          category: null,
+          category: undefined,
           description: 'Testing',
           keywords: [],
           params: [
@@ -676,13 +676,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -719,13 +719,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -764,13 +764,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -810,8 +810,8 @@ describe('ScriptParser', () => {
           name: 'id',
           type: 'String',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           required: false,
           describeModel: false
@@ -821,8 +821,8 @@ describe('ScriptParser', () => {
           name: 'value',
           type: [ 'Boolean', 'Number', 'String' ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           required: false,
           describeModel: true
@@ -835,14 +835,14 @@ describe('ScriptParser', () => {
             'route(): unknow'
           ],
           name: 'route',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           visibility: 'public',
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -880,8 +880,8 @@ describe('ScriptParser', () => {
           name: 'id',
           type: 'String',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           required: false,
           describeModel: false
@@ -891,8 +891,8 @@ describe('ScriptParser', () => {
           name: 'value',
           type: [ 'Boolean', 'Number', 'String' ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           required: false,
           describeModel: true
@@ -905,14 +905,14 @@ describe('ScriptParser', () => {
             'route(): unknow'
           ],
           name: 'route',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           visibility: 'public',
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -949,13 +949,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]
@@ -994,13 +994,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         }
       ]

@@ -29,8 +29,8 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           visibility: 'public'
         }
@@ -70,8 +70,8 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           visibility: 'public'
         }
@@ -81,12 +81,12 @@ describe('ComputedParser', () => {
           kind: 'event',
           name: 'update:pages',
           keywords: [],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: 'value',
               rest: false,
               type: 'any',
@@ -129,8 +129,8 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           dependencies: [ 'links', 'site' ],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           visibility: 'public'
         }
@@ -140,12 +140,12 @@ describe('ComputedParser', () => {
           kind: 'event',
           name: 'update:pages',
           keywords: [],
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           visibility: 'public',
           arguments: [
             {
-              description: '',
+              description: undefined,
               name: 'value',
               rest: false,
               type: 'any',
@@ -178,16 +178,16 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'computedProp1',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           dependencies: [],
           visibility: 'public' },
         {
           kind: 'computed',
           name: 'computedProp2Value',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           dependencies: [],
           visibility: 'public' }
@@ -272,8 +272,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'classes',
           dependencies: [
@@ -290,8 +290,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'labelClasses',
           dependencies: [
@@ -302,8 +302,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'hasLabel',
           dependencies: [
@@ -314,8 +314,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'hasFloatingLabel',
           dependencies: [
@@ -326,8 +326,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'isLabelInline',
           dependencies: [
@@ -338,8 +338,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'valueLength',
           dependencies: [
@@ -349,8 +349,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'hasFeedback',
           dependencies: [
@@ -362,8 +362,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'showError',
           dependencies: [
@@ -375,8 +375,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'showHelp',
           dependencies: [
@@ -388,8 +388,8 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'matchingSuggestions',
           dependencies: [

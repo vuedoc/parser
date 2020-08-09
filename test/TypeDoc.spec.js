@@ -29,14 +29,14 @@ describe('TypeDoc', () => {
             'doSomething(target: any, text: string): number'
           ],
           name: 'doSomething',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [
             {
               name: 'target',
               type: 'any',
-              description: '',
+              description: undefined,
               defaultValue: undefined,
               rest: false
             },
@@ -50,7 +50,7 @@ describe('TypeDoc', () => {
           ],
           returns: {
             type: 'number',
-            description: ''
+            description: undefined
           },
           visibility: 'public' },
       ]
@@ -82,21 +82,21 @@ describe('TypeDoc', () => {
             'doSomething(target: any, value: number): number'
           ],
           name: 'doSomething',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           params: [
             {
               name: 'target',
               type: 'any',
-              description: '',
+              description: undefined,
               defaultValue: undefined,
               rest: false
             },
             {
               name: 'value',
               type: 'number',
-              description: '',
+              description: undefined,
               defaultValue: undefined,
               rest: false
             },
@@ -170,7 +170,7 @@ describe('TypeDoc', () => {
           params: [],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           },
           visibility: 'public'
         },

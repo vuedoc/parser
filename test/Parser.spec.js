@@ -626,7 +626,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('slot', (slot) => {
           assert.equal(slot.name, 'default')
-          assert.equal(slot.description, '')
+          assert.equal(slot.description, undefined)
           done()
         })
       })
@@ -694,7 +694,7 @@ describe('Parser', () => {
         new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
-            assert.equal(event.description, '')
+            assert.equal(event.description, undefined)
             assert.equal(event.visibility, 'public')
             assert.deepEqual(event.keywords, [])
             done()
@@ -745,7 +745,7 @@ describe('Parser', () => {
         new Parser(options).walk()
           .on('event', (event) => {
             assert.equal(event.name, 'input')
-            assert.equal(event.description, '')
+            assert.equal(event.description, undefined)
             assert.equal(event.visibility, 'private')
             assert.deepEqual(event.keywords, [])
             done()
@@ -843,7 +843,7 @@ describe('Parser', () => {
         const expected = [
           { kind: 'event',
             name: 'input',
-            category: null,
+            category: undefined,
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
@@ -851,7 +851,7 @@ describe('Parser', () => {
             [ { name: 'value', description: 'A input value' } ] },
           { kind: 'event',
             name: 'change',
-            category: null,
+            category: undefined,
             arguments: [],
             visibility: 'protected',
             description: 'Emit the input event',
@@ -1052,7 +1052,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, '')
+          assert.equal(method.description, undefined)
           assert.deepEqual(method.params, expected)
           done()
         })
@@ -1084,7 +1084,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, '')
+          assert.equal(method.description, undefined)
           assert.deepEqual(method.params, expected)
           done()
         })
@@ -1116,7 +1116,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, '')
+          assert.equal(method.description, undefined)
           assert.deepEqual(method.params, expected)
           done()
         })
@@ -1148,7 +1148,7 @@ describe('Parser', () => {
 
         new Parser(options).walk().on('method', (method) => {
           assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, '')
+          assert.equal(method.description, undefined)
           assert.deepEqual(method.params, expected)
           done()
         })
@@ -1391,7 +1391,7 @@ describe('Parser', () => {
             kind: 'model',
             prop: 'model',
             event: 'change',
-            description: '',
+            description: undefined,
             visibility: 'public',
             keywords: []
           })
@@ -1416,7 +1416,7 @@ describe('Parser', () => {
             kind: 'model',
             prop: 'model',
             event: 'input',
-            description: '',
+            description: undefined,
             visibility: 'public',
             keywords: []
           })
@@ -1441,7 +1441,7 @@ describe('Parser', () => {
             kind: 'model',
             prop: 'value',
             event: 'change',
-            description: '',
+            description: undefined,
             visibility: 'public',
             keywords: []
           })
@@ -1464,7 +1464,7 @@ describe('Parser', () => {
             kind: 'model',
             prop: 'value',
             event: 'input',
-            description: '',
+            description: undefined,
             visibility: 'public',
             keywords: []
           })
@@ -1492,7 +1492,7 @@ describe('Parser', () => {
         assert.equal(prop.name, 'id')
         assert.equal(prop.default, '"$id"')
         assert.equal(prop.type, 'String')
-        assert.equal(prop.description, '')
+        expect(prop.description).toBeUndefined()
         assert.equal(prop.required, false)
         assert.deepEqual(prop.keywords, [])
         done()
@@ -1520,7 +1520,7 @@ describe('Parser', () => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'value')
         assert.equal(prop.describeModel, true)
-        assert.equal(prop.description, '')
+        expect(prop.description).toBeUndefined()
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.type, 'String')
         done()
@@ -1547,7 +1547,7 @@ describe('Parser', () => {
       new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'checked')
-        assert.equal(prop.description, '')
+        expect(prop.description).toBeUndefined()
         assert.equal(prop.describeModel, true)
         assert.equal(prop.type, 'String')
         assert.deepEqual(prop.keywords, [])
@@ -1592,7 +1592,7 @@ describe('Parser', () => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
         assert.equal(prop.type, 'any')
-        assert.equal(prop.description, '')
+        expect(prop.description).toBeUndefined()
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.value, null)
         assert.deepEqual(prop.describeModel, false)
@@ -1618,8 +1618,8 @@ describe('Parser', () => {
           name: 'opacity-a',
           type: [ 'Boolean', 'Number' ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           required: false,
           describeModel: false,
           keywords: [],
@@ -1650,8 +1650,8 @@ describe('Parser', () => {
           name: 'opacity-o',
           type: [ 'Boolean', 'Number' ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           required: false,
           describeModel: false,
           keywords: [],
@@ -1682,7 +1682,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
-        category: null,
+        category: undefined,
         visibility: 'public',
         description: 'ID data',
         initialValue: '12',
@@ -1716,7 +1716,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
-        category: null,
+        category: undefined,
         visibility: 'public',
         description: 'Enabled data',
         initialValue: 'false',
@@ -1752,7 +1752,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
-        category: null,
+        category: undefined,
         visibility: 'public',
         description: 'ID data',
         initialValue: '"Hello"',
@@ -1788,7 +1788,7 @@ describe('Parser', () => {
       const expected = {
         kind: 'data',
         keywords: [],
-        category: null,
+        category: undefined,
         visibility: 'public',
         description: 'ID data',
         initialValue: '"Hello"',
@@ -1830,7 +1830,7 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
-        category: null,
+        category: undefined,
         dependencies: [ 'value', 'name' ]
       }
 
@@ -1869,7 +1869,7 @@ describe('Parser', () => {
       const expected = {
         name: 'idGetter',
         kind: 'computed',
-        category: null,
+        category: undefined,
         keywords: [],
         visibility: 'public',
         description: 'ID computed prop',
@@ -1976,14 +1976,14 @@ describe('Parser', () => {
       new Parser(options).walk().on('method', (prop) => {
         expect(prop.visibility).toBe('public')
         assert.equal(prop.name, 'getValue')
-        assert.equal(prop.description, '')
+        expect(prop.description).toBeUndefined()
         assert.deepEqual(prop.keywords, [])
         assert.deepEqual(prop.params, [
             {
               name: 'ctx',
               type: 'unknow',
               defaultValue: undefined,
-              description: '',
+              description: undefined,
               rest: false
             }
         ])
@@ -2025,7 +2025,7 @@ describe('Parser', () => {
 
       new Parser(options).walk().on('event', (event) => {
         assert.equal(event.name, 'loading')
-        assert.equal(event.description, '')
+        assert.equal(event.description, undefined)
         assert.equal(event.visibility, 'public')
         assert.deepEqual(event.keywords, [])
         done()

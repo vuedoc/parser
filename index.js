@@ -92,8 +92,6 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
     switch (feature) {
       case Feature.name:
       case Feature.description:
-        component[feature] = ''
-
         parser.on(feature, ({ value }) => {
           component[feature] = value
         })

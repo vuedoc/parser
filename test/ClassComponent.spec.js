@@ -112,7 +112,7 @@ ComponentTestCase({
         name: 'created',
         arguments: [],
         description: 'event constructor description',
-        category: null,
+        category: undefined,
         keywords: [],
         visibility: 'public'
       },
@@ -120,7 +120,7 @@ ComponentTestCase({
         name: 'mounted',
         arguments: [],
         description: 'event mounted description',
-        category: null,
+        category: undefined,
         keywords: [],
         visibility: 'public'
       }
@@ -130,14 +130,14 @@ ComponentTestCase({
         name: 'greet',
         params: [],
         description: 'method greet description',
-        category: null,
+        category: undefined,
         keywords: [],
         syntax: [
           'greet(): void'
         ],
         visibility: 'public',
         returns: {
-          description: '',
+          description: undefined,
           type: 'void'
         }
       },
@@ -145,14 +145,14 @@ ComponentTestCase({
         name: '_protectedMethod',
         params: [],
         description: 'method _protectedMethod description',
-        category: null,
+        category: undefined,
         keywords: [],
         syntax: [
           '_protectedMethod(): void'
         ],
         visibility: 'protected',
         returns: {
-          description: '',
+          description: undefined,
           type: 'void'
         }
       }
@@ -160,7 +160,7 @@ ComponentTestCase({
     computed: [
       { kind: 'computed',
         name: 'computedMsg',
-        category: null,
+        category: undefined,
         dependencies: [ 'msg' ],
         description: 'computed computedMsg description',
         keywords: [],
@@ -168,7 +168,7 @@ ComponentTestCase({
       },
       { kind: 'computed',
         name: '[Symbol.species]',
-        category: null,
+        category: undefined,
         dependencies: [],
         description: 'computed [Symbol.species] description',
         keywords: [],
@@ -180,7 +180,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'msg',
         type: 'string',
-        category: null,
+        category: undefined,
         description: 'data msg description',
         initialValue: '"Hello"',
         keywords: [],
@@ -190,7 +190,7 @@ ComponentTestCase({
         kind: 'data',
         name: 'helloMsg',
         type: 'BinaryExpression',
-        category: null,
+        category: undefined,
         description: 'data helloMsg with expression',
         initialValue: '\'Hello, \' + this.name',
         keywords: [],
@@ -201,7 +201,7 @@ ComponentTestCase({
       { kind: 'prop',
         name: 'name',
         type: 'String',
-        category: null,
+        category: undefined,
         required: false,
         default: undefined,
         describeModel: false,
@@ -261,8 +261,8 @@ ComponentTestCase({
         kind: 'data',
         name: 'routeQueue',
         type: 'array',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         initialValue: '[this.$router.currentRoute]',
         keywords: [],
         visibility: 'public'
@@ -271,8 +271,8 @@ ComponentTestCase({
         kind: 'data',
         name: 'historyLength',
         type: 'object',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         initialValue: 'window.history.length',
         keywords: [],
         visibility: 'public'
@@ -281,8 +281,8 @@ ComponentTestCase({
         kind: 'data',
         name: 'transitionName',
         type: 'string',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         initialValue: '"slide-left"',
         keywords: [],
         visibility: 'public'
@@ -291,8 +291,8 @@ ComponentTestCase({
         kind: 'data',
         name: 'init',
         type: 'boolean',
-        description: '',
-        category: null,
+        description: undefined,
+        category: undefined,
         initialValue: 'false',
         keywords: [],
         visibility: 'public'

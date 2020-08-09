@@ -20,8 +20,8 @@ describe('DataParser', () => {
     expected: {
       data: [
         {
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'data',
           name: 'initialValue',

@@ -66,21 +66,21 @@ describe('MethodParser', () => {
             ],
             name: 'withDefaultValue',
             visibility: 'public',
-            category: null,
-            description: '',
+            category: undefined,
+            description: undefined,
             keywords: [],
             params: [
               {
                 name: paramName,
                 type: expectedType,
-                description: '',
+                description: undefined,
                 defaultValue: expectedValue ? `${expectedValue}` : expectedValue,
                 rest: false
               }
             ],
             returns: {
               type: 'void',
-              description: ''
+              description: undefined
             }
           },
           {
@@ -90,21 +90,21 @@ describe('MethodParser', () => {
             ],
             name: 'withDefaultValueAndTyping',
             visibility: 'public',
-            category: null,
-            description: '',
+            category: undefined,
+            description: undefined,
             keywords: [],
             params: [
               {
                 name: paramName,
                 type: expectedType,
-                description: '',
+                description: undefined,
                 defaultValue: expectedValue ? `${expectedValue}` : expectedValue,
                 rest: false
               }
             ],
             returns: {
               type: 'void',
-              description: ''
+              description: undefined
             }
           }
         ]
@@ -140,7 +140,7 @@ describe('MethodParser', () => {
             'nameOnly(somebody: string) => void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -148,14 +148,14 @@ describe('MethodParser', () => {
             {
               type: 'unknow',
               name: 'somebody',
-              description: '',
+              description: undefined,
               defaultValue: undefined,
               rest: false
             }
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -188,7 +188,7 @@ describe('MethodParser', () => {
             'nameOnly(...somebody: string[]): unknow'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -196,14 +196,14 @@ describe('MethodParser', () => {
             {
               type: 'string[]',
               name: 'somebody',
-              description: '',
+              description: undefined,
               defaultValue: undefined,
               rest: true
             }
           ],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -236,7 +236,7 @@ describe('MethodParser', () => {
             'nameOnly(...somebody: string[]): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -244,14 +244,14 @@ describe('MethodParser', () => {
             {
               type: 'string[]',
               name: 'somebody',
-              description: '',
+              description: undefined,
               defaultValue: undefined,
               rest: true
             }
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -281,14 +281,14 @@ describe('MethodParser', () => {
             'nameOnly(): unknow'
           ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -317,14 +317,14 @@ describe('MethodParser', () => {
             '*nameOnly(): void'
           ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -353,14 +353,14 @@ describe('MethodParser', () => {
             'async nameOnly(): Promise'
           ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'Promise',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -391,14 +391,14 @@ describe('MethodParser', () => {
             'async nameOnly(): Promise<unknow>'
           ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'Promise<unknow>',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -427,14 +427,14 @@ describe('MethodParser', () => {
             'async nameOnly(): Promise<string>'
           ],
           visibility: 'public',
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'Promise<string>',
-            description: ''
+            description: undefined
           }
         },
       ]

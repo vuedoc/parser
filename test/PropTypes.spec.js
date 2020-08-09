@@ -71,7 +71,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'are all optional.',
           keywords: [],
           kind: 'prop',
@@ -82,8 +82,8 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'optional-bool',
@@ -93,8 +93,8 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'optional-func',
@@ -104,8 +104,8 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'optional-number',
@@ -115,8 +115,8 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'optional-object',
@@ -126,8 +126,8 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'optional-string',
@@ -137,8 +137,8 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'optional-symbol',
@@ -148,7 +148,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'JS\'s instanceof operator.',
           keywords: [],
           kind: 'prop',
@@ -159,7 +159,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'it as an enum.',
           keywords: [],
           kind: 'prop',
@@ -173,7 +173,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'An object that could be one of many types',
           keywords: [],
           kind: 'prop',
@@ -188,7 +188,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'An array of a certain type',
           keywords: [],
           kind: 'prop',
@@ -199,7 +199,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'An object with property values of a certain type',
           keywords: [],
           kind: 'prop',
@@ -210,7 +210,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'An object taking on a particular shape',
           keywords: [],
           kind: 'prop',
@@ -221,7 +221,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'is shown if the prop isn\'t provided.',
           keywords: [],
           kind: 'prop',
@@ -232,7 +232,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'A value of any data type',
           keywords: [],
           kind: 'prop',
@@ -243,7 +243,7 @@ describe('@znck/prop-types', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'You can also supply a custom validator.',
           keywords: [],
           kind: 'prop',

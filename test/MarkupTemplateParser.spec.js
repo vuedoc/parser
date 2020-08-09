@@ -27,7 +27,7 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'label',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Use this slot to set the label',
           keywords: [],
           props: []
@@ -36,7 +36,7 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'default',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Use this slot to set the textarea value',
           keywords: [],
           props: []
@@ -73,7 +73,7 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'a',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Slot A',
           keywords: [],
           props: []
@@ -82,7 +82,7 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'b',
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Slot B',
           keywords: [],
           props: []

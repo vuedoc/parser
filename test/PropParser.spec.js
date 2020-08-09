@@ -29,7 +29,7 @@ describe('PropParser', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'The input format callback',
           keywords: [],
           kind: 'prop',
@@ -67,7 +67,7 @@ describe('PropParser', () => {
         {
           default: 'value.trim()',
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'The input format callback',
           keywords: [],
           kind: 'prop',
@@ -101,8 +101,8 @@ describe('PropParser', () => {
         {
           default: undefined,
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'complex',
@@ -143,7 +143,7 @@ describe('PropParser', () => {
         {
           default: '{ last: \'keyword\' }',
           describeModel: false,
-          category: null,
+          category: undefined,
           description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
           keywords: [],
           kind: 'prop',
@@ -173,8 +173,8 @@ describe('PropParser', () => {
         {
           default: 'false',
           describeModel: false,
-          category: null,
-          description: '',
+          category: undefined,
+          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'disabled',

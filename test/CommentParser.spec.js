@@ -117,8 +117,7 @@ describe('CommentParser', () => {
     it('should return the attached visibility', () => {
       const keywords = [
         { name: 'private',
-          category: null,
-          description: '' }
+          description: undefined }
       ]
       const result = CommentParser.getVisibility(keywords)
       const expected = 'private'
@@ -126,16 +125,24 @@ describe('CommentParser', () => {
       expect(result).toBe(expected)
     })
 
-    it('should return null for not found visibility', () => {
+    it('should return default method visibility for non visibility keyword', () => {
       const keywords = [
         { name: 'author',
-          category: null,
           description: 'Sébastien' }
       ]
       const result = CommentParser.getVisibility(keywords)
-      const expected = null
 
-      expect(result).toBe(expected)
+      expect(result).toBe('public')
+    })
+
+    it('should return explicit default visibility', () => {
+      const keywords = [
+        { name: 'author',
+          description: 'Sébastien' }
+      ]
+      const result = CommentParser.getVisibility(keywords, 'private')
+
+      expect(result).toBe('private')
     })
   })
 

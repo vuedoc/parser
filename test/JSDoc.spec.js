@@ -58,7 +58,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with custom param generator', () => {
       function* customParamGenerator() {
-        yield { name: null, type: 'void', description: '', kind: 'param' }
+        yield { name: null, type: 'void', description: undefined, kind: 'param' }
       }
 
       const comment = '{number} x - The x value.'
@@ -116,7 +116,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with malformated input', () => {
       const comment = '{ !x=> The x value.'
-      const expected = { type: 'any', name: null, description: '' }
+      const expected = { type: 'any', name: null, description: undefined }
       const result = JSDoc.parseParamKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -163,7 +163,7 @@ describe('JSDoc', () => {
   describe('parseReturnKeyword(text)', () => {
     it('should parse with just a type', () => {
       const comment = '{number}'
-      const expected = { type: 'number', description: '' }
+      const expected = { type: 'number', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -171,7 +171,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a template type', () => {
       const comment = '{Record<number>}'
-      const expected = { type: 'Record<number>', description: '' }
+      const expected = { type: 'Record<number>', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -179,7 +179,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a complex template type', () => {
       const comment = '{Record<number,string>}'
-      const expected = { type: 'Record<number,string>', description: '' }
+      const expected = { type: 'Record<number,string>', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -187,7 +187,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a complex template type (2)', () => {
       const comment = '{Record<number, string>}'
-      const expected = { type: 'Record<number, string>', description: '' }
+      const expected = { type: 'Record<number, string>', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -195,7 +195,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a complex template type (3)', () => {
       const comment = '{Record<number, string[]>}'
-      const expected = { type: 'Record<number, string[]>', description: '' }
+      const expected = { type: 'Record<number, string[]>', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -203,7 +203,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a complex template type (4)', () => {
       const comment = '{Record<T, K extends keyof T>}'
-      const expected = { type: 'Record<T, K extends keyof T>', description: '' }
+      const expected = { type: 'Record<T, K extends keyof T>', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -211,7 +211,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a complex template type (5)', () => {
       const comment = '{{new(): T; }}'
-      const expected = { type: '{new(): T; }', description: '' }
+      const expected = { type: '{new(): T; }', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -219,7 +219,7 @@ describe('JSDoc', () => {
 
     it('should parse with just a complex template type (6)', () => {
       const comment = '{new () => A}'
-      const expected = { type: 'new () => A', description: '' }
+      const expected = { type: 'new () => A', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -251,7 +251,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with malformated input', () => {
       const comment = ''
-      const expected = { type: 'any', description: '' }
+      const expected = { type: 'any', description: undefined }
       const result = JSDoc.parseReturnKeyword(comment)
 
       expect(result).toEqual(expected)
@@ -315,7 +315,7 @@ describe('JSDoc', () => {
             'set(id: string, name?: string, order?: number = 1, values?: string | string[], ...rest: any[]): boolean'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Set the checkbox ID',
           keywords: [],
           name: 'set',
@@ -404,7 +404,7 @@ describe('JSDoc', () => {
             'nameOnly(somebody: unknow): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -419,7 +419,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -455,7 +455,7 @@ describe('JSDoc', () => {
             'nameAndType(somebody: string): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name and type',
           keywords: [],
           name: 'nameAndType',
@@ -470,7 +470,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -506,7 +506,7 @@ describe('JSDoc', () => {
             'nameTypeAndDescription(somebody: string): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name, type, and description',
           keywords: [],
           name: 'nameTypeAndDescription',
@@ -521,7 +521,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -557,7 +557,7 @@ describe('JSDoc', () => {
             'nameTypeAndDescriptionWithHyphen(somebody: string): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Name, type, and description, with a hyphen before the description',
           keywords: [],
           name: 'nameTypeAndDescriptionWithHyphen',
@@ -572,7 +572,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -615,7 +615,7 @@ describe('JSDoc', () => {
             'withParameterProperties(employee: Object): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Assign the project to an employee.',
           keywords: [],
           name: 'withParameterProperties',
@@ -644,7 +644,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -682,7 +682,7 @@ describe('JSDoc', () => {
             'withDestructuringParameter(employee: Object): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Assign the project to an employee.',
           keywords: [],
           name: 'withDestructuringParameter',
@@ -711,7 +711,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -749,7 +749,7 @@ describe('JSDoc', () => {
             'withPropertiesOfValuesInAnArray(employees: Object[]): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Assign the project to a list of employees.',
           keywords: [],
           name: 'withPropertiesOfValuesInAnArray',
@@ -778,7 +778,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -818,7 +818,7 @@ describe('JSDoc', () => {
             'withOptionalParameter(somebody?: string): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'An optional parameter (using JSDoc syntax)',
           keywords: [],
           name: 'withOptionalParameter',
@@ -834,7 +834,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -873,7 +873,7 @@ describe('JSDoc', () => {
             'withOptionalParameterAndDefaultValue(somebody?: string = "John Doe"): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'An optional parameter and default value',
           keywords: [],
           name: 'withOptionalParameterAndDefaultValue',
@@ -889,7 +889,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -937,7 +937,7 @@ describe('JSDoc', () => {
             'withMultipleType(somebody?: string | string[] = "John Doe"): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Allows one type OR another type (type union)',
           keywords: [],
           name: 'withMultipleType',
@@ -956,7 +956,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -992,7 +992,7 @@ describe('JSDoc', () => {
             'withAnyType(somebody: any): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Allows any type',
           keywords: [],
           name: 'withAnyType',
@@ -1007,7 +1007,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -1048,7 +1048,7 @@ describe('JSDoc', () => {
             'withSpreadNotation(...num: number[]): unknow'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Allows a parameter to be repeated.\nReturns the sum of all numbers passed to the function.',
           keywords: [],
           name: 'withSpreadNotation',
@@ -1063,7 +1063,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'unknow',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -1111,7 +1111,7 @@ describe('JSDoc', () => {
             'doSomethingAsynchronously(cb: requestCallback): void'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Does something asynchronously and executes the callback on completion.',
           keywords: [],
           name: 'doSomethingAsynchronously',
@@ -1126,7 +1126,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -1164,7 +1164,7 @@ describe('JSDoc', () => {
             'withType(a: number, b: number): number'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withType',
@@ -1186,7 +1186,7 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'number',
-            description: ''
+            description: undefined
           }
         },
       ]
@@ -1228,7 +1228,7 @@ describe('JSDoc', () => {
             'withMultipleType(a: number, b: number, retArr: boolean): number | Array'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withMultipleType',
@@ -1300,7 +1300,7 @@ describe('JSDoc', () => {
             'withPromise(a: number, b: number): Promise'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withPromise',
@@ -1362,7 +1362,7 @@ describe('JSDoc', () => {
             'withSpreadParam(a: number, ...b: number[]): Promise'
           ],
           visibility: 'public',
-          category: null,
+          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withSpreadParam',

@@ -270,15 +270,15 @@ interface PropEntry {
   default: string;
   required: boolean;
   describeModel: boolean;
-  category: string | null;
-  description: string;
+  category?: string;
+  description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 ```
 
@@ -320,15 +320,15 @@ interface DataEntry {
   name: string;
   type: string;
   initialValue: string;
-  category: string | null;
-  description: string;
+  category?: string;
+  description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 ```
 
@@ -373,15 +373,15 @@ interface ComputedEntry {
   kind: 'computed';
   name: string;
   dependencies: string[];
-  category: string | null;
-  description: string;
+  category?: string;
+  description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 ```
 
@@ -451,12 +451,12 @@ export default {
     kind: 'method',
     name: 'closeModal',
     params: [],
-    returns: { type: 'void', description: '' },
+    returns: { type: 'void', description: undefined },
     syntax: [
       'closeModal(): void'
     ],
-    category: null,
-    description: '',
+    category: undefined,
+    description: undefined,
     keywords: [],
     visibility: 'public'
   }
@@ -487,28 +487,28 @@ interface MethodEntry {
   params: MethodParam[];
   returns: MethodReturn;
   syntax: string[];
-  category: string | null;
-  description: string;
+  category?: string;
+  description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 
 type MethodParam = {
   name: string;
   type: NativeTypeEnum | string;
-  description: string;
+  description?: string;
   defaultValue?: string;
   rest: boolean;
 };
 
 type MethodReturn = {
   type: string;
-  description: string;
+  description?: string;
 };
 ```
 
@@ -592,21 +592,21 @@ interface EventEntry {
   kind: 'event';
   name: string;
   arguments: EventArgument[];
-  category: string | null;
-  description: string;
+  category?: string;
+  description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 
 type EventArgument = {
   name: string;
   type: NativeTypeEnum | string;
-  description: string;
+  description?: string;
   rest: boolean;
 };
 ```
@@ -680,21 +680,21 @@ interface SlotEntry {
   kind: 'slot';
   name: string;
   props: SlotProp[];
-  category: string | null;
-  description: string;
+  category?: string;
+  description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 
 type SlotProp = {
   name: string;
   type: string;
-  description: string;
+  description?: string;
 };
 ```
 
@@ -993,7 +993,7 @@ Vuedoc.parse(options).then((component) => {
 ```ts
 type ParsingOutput = {
   name: string;               // Component name
-  description: string;        // Component description
+  description?: string;       // Component description
   inheritAttrs: boolean;
   keywords: Keyword[];        // Attached component keywords
   model?: ModelEntry;         // Component model
@@ -1030,13 +1030,13 @@ interface ModelEntry {
   kind: 'model';
   prop: string;
   event: string;
-  description: string;
+  description?: string;
   keywords: Keyword[];
 }
 
 type Keyword = {
   name: string;
-  description: string;
+  description?: string;
 };
 ```
 

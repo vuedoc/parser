@@ -21,8 +21,8 @@ describe('#44 - Inline Template', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          description: '',
-          category: null,
+          description: undefined,
+          category: undefined,
           keywords: [],
           name: 'default',
           props: []
@@ -50,9 +50,9 @@ describe('#44 - Inline Template', () => {
 
     return parser.parse(options).then((component) => {
       expect(component).toEqual({
-        name: '',
+        name: undefined,
         inheritAttrs: true,
-        description: '',
+        description: undefined,
         keywords: [],
         errors: [],
         slots:
@@ -60,7 +60,7 @@ describe('#44 - Inline Template', () => {
               kind: 'slot',
               visibility: 'public',
               description: 'Use this slot to set the content',
-              category: null,
+              category: undefined,
               keywords: [],
               name: 'content',
               props: [] } ],
@@ -71,8 +71,8 @@ describe('#44 - Inline Template', () => {
           [ {
               kind: 'event',
               visibility: 'public',
-              description: '',
-              category: null,
+              description: undefined,
+              category: undefined,
               keywords: [],
               name: 'input',
               arguments: [] } ],
