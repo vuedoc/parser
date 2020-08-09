@@ -4,11 +4,226 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 
 describe('ScriptParser', () => {
   ComponentTestCase({
-    name: 'Accorn parsing error',
+    name: 'dynamic import() function',
+    description: 'should successfully parse code with the reserved import keyword',
     options: {
       filecontent: `
         <script>
-          var != mù*! invalid syntax
+          export default {
+            components: {
+              Lazy: import('./components/Lazy.vue')
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: '',
+      description: '',
+      inheritAttrs: true,
+      keywords: [],
+      errors: [],
+      slots: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: []
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Syntax',
+    description: 'exports["default"]',
+    options: {
+      filecontent: `
+        <script>
+          exports.__esModule = true;
+          var vue_1 = require("vue");
+          var Site_1 = require("@/designer/models/Site");
+
+          /**
+           * description
+           */
+          exports["default"] = vue_1["default"].extend({
+              props: {
+                  links: {
+                      type: Object,
+                      required: true
+                  },
+                  site: {
+                      type: Site_1.Site,
+                      required: true
+                  }
+              },
+              data: function () { return ({
+                  currentYear: new Date().getFullYear()
+              }); },
+              computed: {
+                  pages: function () {
+                      var _this = this;
+                      return this.links.map(function (pageId) {
+                          return _this.site.getPage(pageId);
+                      });
+                  }
+              }
+          });
+        </script>
+      `
+    },
+    expected: {
+      name: '',
+      description: 'description',
+      inheritAttrs: true,
+      events: [],
+      errors: [],
+      keywords: [],
+      methods: [],
+      computed: [ {
+        kind: 'computed',
+        name: 'pages',
+        dependencies: [ 'links', 'site' ],
+        category: null,
+        description: '',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      data: [ {
+        kind: 'data',
+        name: 'currentYear',
+        type: 'CallExpression',
+        category: null,
+        description: '',
+        initialValue: 'new Date().getFullYear()',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      props: [ {
+        kind: 'prop',
+        name: 'links',
+        type: 'Object',
+        required: true,
+        default: undefined,
+        describeModel: false,
+        category: null,
+        description: '',
+        keywords: [],
+        visibility: 'public'
+      }, {
+        kind: 'prop',
+        name: 'site',
+        type: 'Site_1.Site',
+        required: true,
+        default: undefined,
+        describeModel: false,
+        category: null,
+        description: '',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      slots: []
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Syntax',
+    description: 'module.exports',
+    options: {
+      filecontent: `
+        <script>
+          exports.__esModule = true;
+          var vue_1 = require("vue");
+          var Site_1 = require("@/designer/models/Site");
+
+          /**
+           * description
+           */
+          module.exports = vue_1["default"].extend({
+              props: {
+                  links: {
+                      type: Object,
+                      required: true
+                  },
+                  site: {
+                      type: Site_1.Site,
+                      required: true
+                  }
+              },
+              data: function () { return ({
+                  currentYear: new Date().getFullYear()
+              }); },
+              computed: {
+                  pages: function () {
+                      var _this = this;
+                      return this.links.map(function (pageId) {
+                          return _this.site.getPage(pageId);
+                      });
+                  }
+              }
+          });
+        </script>
+      `
+    },
+    expected: {
+      name: '',
+      description: 'description',
+      inheritAttrs: true,
+      events: [],
+      errors: [],
+      keywords: [],
+      methods: [],
+      computed: [ {
+        kind: 'computed',
+        name: 'pages',
+        dependencies: [ 'links', 'site' ],
+        category: null,
+        description: '',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      data: [ {
+        kind: 'data',
+        name: 'currentYear',
+        type: 'CallExpression',
+        category: null,
+        description: '',
+        initialValue: 'new Date().getFullYear()',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      props: [ {
+        kind: 'prop',
+        name: 'links',
+        type: 'Object',
+        required: true,
+        default: undefined,
+        describeModel: false,
+        category: null,
+        description: '',
+        keywords: [],
+        visibility: 'public'
+      }, {
+        kind: 'prop',
+        name: 'site',
+        type: 'Site_1.Site',
+        required: true,
+        default: undefined,
+        describeModel: false,
+        category: null,
+        description: '',
+        keywords: [],
+        visibility: 'public'
+      } ],
+      slots: []
+    }
+  })
+
+  ComponentTestCase({
+    name: 'Parsing error',
+    options: {
+      filecontent: `
+        <script>
+          var !*/= mù*! invalid syntax
         </script>
       `
     },

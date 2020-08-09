@@ -26,25 +26,21 @@ const DefaultLoaders = [
 
 const options = {
   filename: Fixture.resolve('checkbox.vue'),
-  encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsForModuleExports = {
   filename: Fixture.resolve('checkboxModuleExports.vue'),
-  encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsForVueExtend = {
   filename: Fixture.resolve('checkboxVueExtend.vue'),
-  encoding: 'utf8',
   ignoredVisibilities: []
 }
 
 const optionsNoTopLevelConstant = {
   filename: Fixture.resolve('checkboxNoTopLevelConstant.vue'),
-  encoding: 'utf8',
   ignoredVisibilities: []
 }
 
@@ -55,7 +51,6 @@ const optionsWithFileSource = {
 
 const optionsForPropsArray = {
   filename: Fixture.resolve('checkboxPropsArray.vue'),
-  encoding: 'utf8',
   ignoredVisibilities: []
 }
 
@@ -166,7 +161,7 @@ function testComponentProps (optionsToParse) {
 
     assert.notEqual(item, undefined)
     assert.equal(item.type, 'Boolean')
-    assert.equal(item.default, true)
+    assert.equal(item.default, 'true')
     assert.equal(item.description, 'Initial checkbox value')
   })
 
@@ -457,8 +452,7 @@ describe('Integration', () => {
       const options = { filecontent }
       const expected = {
         filecontent,
-        encoding: 'utf8',
-        ignoredVisibilities: [ 'ignore', 'hidden', 'protected', 'private' ],
+        ignoredVisibilities: [ 'protected', 'private' ],
         source: {
           template: '',
           script: '',
@@ -474,7 +468,6 @@ describe('Integration', () => {
 
     it('should parse with user options', () => {
       const options = {
-        encoding: 'utf8',
         filecontent: ' ',
         ignoredVisibilities: [ 'private' ],
         loaders: [
@@ -483,7 +476,6 @@ describe('Integration', () => {
       }
 
       const expected = {
-        encoding: options.encoding,
         filecontent: options.filecontent,
         ignoredVisibilities: [ ...options.ignoredVisibilities ],
         source: {
@@ -510,7 +502,6 @@ describe('Integration', () => {
       }
 
       const expected = {
-        encoding: 'utf8',
         filename: options.filename,
         ignoredVisibilities: [ ...options.ignoredVisibilities ],
         source: {
@@ -534,7 +525,6 @@ describe('Integration', () => {
       }
 
       const expected = {
-        encoding: 'utf8',
         filecontent: options.filecontent,
         ignoredVisibilities: [ ...options.ignoredVisibilities ],
         source: {
@@ -624,7 +614,7 @@ describe('Integration', () => {
           visibility: 'public',
           category: null,
           description: 'ID data',
-          initialValue: 'Hello',
+          initialValue: '"Hello"',
           type: 'string',
           name: 'id'
         }
@@ -862,301 +852,6 @@ describe('Integration', () => {
 
   describe('component.methods filesource', () => testComponentMethods(optionsWithFileSource))
 
-  describe('component.methods visibility_default', () => {
-    let component = {}
-    const options = {
-      filename: Fixture.resolve('checkboxMethods.vue'),
-      encoding: 'utf8'
-    }
-
-    it('should parse without error', () => {
-      return vuedoc.parse(options).then((_component) => {
-        component = _component
-      })
-    })
-
-    it('public method should be public', () => {
-      const item = component.methods.find(
-        (item) => item.name === 'publicMethod'
-      )
-      assert.equal(item.visibility, 'public')
-    })
-
-    it('uncommented method should be public', () => {
-      const item = component.methods.find(
-        (item) => item.name === 'uncommentedMethod'
-      )
-      assert.equal(item.visibility, 'public')
-    })
-
-    it('default method should be public', () => {
-      const item = component.methods.find(
-        (item) => item.name === 'defaultMethod'
-      )
-      assert.equal(item.visibility, 'public')
-    })
-  })
-
-  describe('component.methods visibility_private', () => {
-    let component = {}
-    const options = {
-      filename: Fixture.resolve('checkboxMethods.vue'),
-      encoding: 'utf8',
-      defaultMethodVisibility: 'private'
-    }
-
-    it('should parse without error', () => {
-      return vuedoc.parse(options).then((_component) => {
-        component = _component
-      })
-    })
-
-    it('public method should be public', () => {
-      const item = component.methods.find(
-        (item) => item.name === 'publicMethod'
-      )
-      assert.equal(item.visibility, 'public')
-    })
-
-    it('uncommented method should not exist', () => {
-      const item = component.methods.find(
-        (item) => item.name === 'uncommentedMethod'
-      )
-      assert.equal(item, undefined)
-    })
-
-    it('default method should not exist', () => {
-      const item = component.methods.find(
-        (item) => item.name === 'defaultMethod'
-      )
-      assert.equal(item, undefined)
-    })
-  })
-
-  describe('dynamic import() function', () => {
-    it('should successfully parse code with the reserved import keyword', () => {
-      const filecontent = `
-        <script>
-          export default {
-            components: {
-              Lazy: import('./components/Lazy.vue')
-            }
-          }
-        </script>
-      `
-      const options = { filecontent }
-      const expected = {
-        name: '',
-        description: '',
-        inheritAttrs: true,
-        keywords: [],
-        errors: [],
-        slots: [],
-        props: [],
-        data: [],
-        computed: [],
-        events: [],
-        methods: []
-      }
-
-      return vuedoc.parse(options).then((component) => {
-        assert.deepEqual(component, expected)
-      })
-    })
-  })
-
-  describe('Syntax: exports["default"]', () => {
-    it('should successfully parse', () => {
-      const filecontent = `
-        <script>
-          exports.__esModule = true;
-          var vue_1 = require("vue");
-          var Site_1 = require("@/designer/models/Site");
-
-          /**
-           * description
-           */
-          exports["default"] = vue_1["default"].extend({
-              props: {
-                  links: {
-                      type: Object,
-                      required: true
-                  },
-                  site: {
-                      type: Site_1.Site,
-                      required: true
-                  }
-              },
-              data: function () { return ({
-                  currentYear: new Date().getFullYear()
-              }); },
-              computed: {
-                  pages: function () {
-                      var _this = this;
-                      return this.links.map(function (pageId) {
-                          return _this.site.getPage(pageId);
-                      });
-                  }
-              }
-          });
-        </script>
-      `
-      const options = { filecontent }
-      const expected = {
-        name: '',
-        description: 'description',
-        inheritAttrs: true,
-        events: [],
-        errors: [],
-        keywords: [],
-        methods: [],
-        computed: [ {
-          kind: 'computed',
-          name: 'pages',
-          dependencies: [ 'links', 'site' ],
-          category: null,
-          description: '',
-          keywords: [],
-          visibility: 'public'
-        } ],
-        data: [ {
-          kind: 'data',
-          name: 'currentYear',
-          type: 'CallExpression',
-          category: null,
-          description: '',
-          initialValue: 'new Date().getFullYear()',
-          keywords: [],
-          visibility: 'public'
-        } ],
-        props: [ {
-          kind: 'prop',
-          name: 'links',
-          type: 'Object',
-          required: true,
-          default: undefined,
-          describeModel: false,
-          category: null,
-          description: '',
-          keywords: [],
-          visibility: 'public'
-        }, {
-          kind: 'prop',
-          name: 'site',
-          type: 'Site_1.Site',
-          required: true,
-          default: undefined,
-          describeModel: false,
-          category: null,
-          description: '',
-          keywords: [],
-          visibility: 'public'
-        } ],
-        slots: []
-      }
-
-      return vuedoc.parse(options).then((component) => {
-        assert.deepEqual(component, expected)
-      })
-    })
-  })
-
-  describe('Syntax: module.exports', () => {
-    it('should successfully parse', () => {
-      const filecontent = `
-        <script>
-          exports.__esModule = true;
-          var vue_1 = require("vue");
-          var Site_1 = require("@/designer/models/Site");
-
-          /**
-           * description
-           */
-          module.exports = vue_1["default"].extend({
-              props: {
-                  links: {
-                      type: Object,
-                      required: true
-                  },
-                  site: {
-                      type: Site_1.Site,
-                      required: true
-                  }
-              },
-              data: function () { return ({
-                  currentYear: new Date().getFullYear()
-              }); },
-              computed: {
-                  pages: function () {
-                      var _this = this;
-                      return this.links.map(function (pageId) {
-                          return _this.site.getPage(pageId);
-                      });
-                  }
-              }
-          });
-        </script>
-      `
-      const options = { filecontent }
-      const expected = {
-        name: '',
-        description: 'description',
-        inheritAttrs: true,
-        events: [],
-        errors: [],
-        keywords: [],
-        methods: [],
-        computed: [ {
-          kind: 'computed',
-          name: 'pages',
-          dependencies: [ 'links', 'site' ],
-          category: null,
-          description: '',
-          keywords: [],
-          visibility: 'public'
-        } ],
-        data: [ {
-          kind: 'data',
-          name: 'currentYear',
-          type: 'CallExpression',
-          category: null,
-          description: '',
-          initialValue: 'new Date().getFullYear()',
-          keywords: [],
-          visibility: 'public'
-        } ],
-        props: [ {
-          kind: 'prop',
-          name: 'links',
-          type: 'Object',
-          required: true,
-          default: undefined,
-          describeModel: false,
-          category: null,
-          description: '',
-          keywords: [],
-          visibility: 'public'
-        }, {
-          kind: 'prop',
-          name: 'site',
-          type: 'Site_1.Site',
-          required: true,
-          default: undefined,
-          describeModel: false,
-          category: null,
-          description: '',
-          keywords: [],
-          visibility: 'public'
-        } ],
-        slots: []
-      }
-
-      return vuedoc.parse(options).then((component) => {
-        assert.deepEqual(component, expected)
-      })
-    })
-  })
-
   describe('spread operators', () => {
     it('should successfully parse', () => {
       const filecontent = `
@@ -1286,7 +981,7 @@ describe('Integration', () => {
       }
 
       return vuedoc.parse(options).then((component) => {
-        assert.deepEqual(component, expected)
+        expect(component).toEqual(expected)
       })
     })
   })
@@ -1485,7 +1180,7 @@ describe('Integration', () => {
           type: 'Object',
           visibility: 'public' },
         {
-          default: true,
+          default: 'true',
           describeModel: false,
           category: null,
           description: '',
@@ -1653,7 +1348,7 @@ describe('Integration', () => {
             type: value,
             category: null,
             description: '',
-            initialValue: null,
+            initialValue: 'null',
             keywords: [],
             visibility: 'public'
           },
@@ -1663,7 +1358,7 @@ describe('Integration', () => {
             type: value,
             category: null,
             description: '',
-            initialValue: null,
+            initialValue: 'null',
             keywords: [],
             visibility: 'public'
           }

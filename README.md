@@ -69,29 +69,14 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| name                    | description                                                                                                                 |
-|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| filename                | The filename to parse. *Required* unless `filecontent` is passed                                                            |
-| filecontent             | The file content to parse. *Required* unless `filename` is passed                                                           |
-| encoding                | The file encoding. Default is `'utf8'`                                                                                      |
-| features                | The component features to parse and extract.                                                                                |
-|                         | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
-| loaders                 | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
-| defaultMethodVisibility | Can be set to `'public'` (*default*), `'protected'`, or `'private'`                                                         |
-| ignoredVisibilities     | List of ignored visibilities. Default: `['protected', 'private', 'ignore', 'hidden']`                                       |
-| stringify               | Set to `true` to disable parsing of literal values and stringify literal values. Default: `false`                           |
-
-**Note for `stringify` option**
-
-By default Vuedoc Parser parses literal values defined in the source code.
-This means:
-
-```js
-const binVar = 0b111110111 // will be parsed as binVar = 503
-const numVar = 1_000_000_000 // will be parsed as numVar = 1000000000
-```
-
-To preserve literal values, set the `stringify` option to `true`.
+| name                | description                                                                                                                 |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| filename            | The filename to parse. *Required* unless `filecontent` is passed                                                            |
+| filecontent         | The file content to parse. *Required* unless `filename` is passed                                                           |
+| features            | The component features to parse and extract.                                                                                |
+|                     | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
+| loaders             | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
+| ignoredVisibilities | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
 
 ## Usage
 
@@ -288,7 +273,7 @@ interface PropEntry {
   category: string | null;
   description: string;
   keywords: Keyword[];
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+  visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
@@ -338,7 +323,7 @@ interface DataEntry {
   category: string | null;
   description: string;
   keywords: Keyword[];
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+  visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
@@ -391,7 +376,7 @@ interface ComputedEntry {
   category: string | null;
   description: string;
   keywords: Keyword[];
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+  visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
@@ -505,7 +490,7 @@ interface MethodEntry {
   category: string | null;
   description: string;
   keywords: Keyword[];
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+  visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
@@ -610,7 +595,7 @@ interface EventEntry {
   category: string | null;
   description: string;
   keywords: Keyword[];
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+  visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
@@ -698,7 +683,7 @@ interface SlotEntry {
   category: string | null;
   description: string;
   keywords: Keyword[];
-  visibility: 'public' | 'protected' | 'private' | 'ignore' | 'hidden' | string;
+  visibility: 'public' | 'protected' | 'private';
 }
 
 type Keyword = {
@@ -715,22 +700,22 @@ type SlotProp = {
 
 ### Ignore item from parsing
 
-By default, all extracted things with the `public` visibility.
-To change this for one entry, add `@protected` or `@private` keyword.
+Use the [JSDoc's tag `@ignore`](https://jsdoc.app/tags-ignore.html) to keeps the
+subsequent code from being documented.
 
 ```js
 export default {
   data: () => ({
     /**
      * This will be ignored on parsing
-     * @private
+     * @ignore
      */
     isChecked: false
   })
 }
 ```
 
-You can also use the [TypeDoc's tags `@hidden` and `@ignore`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
+You can also use the [TypeDoc's tag `@hidden`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
 
 ## Keywords Extraction
 
@@ -774,29 +759,26 @@ Parsing result:
 | Keyword               | Scope                                         | Description                                                                               |
 | --------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `@type`               | `props`, `data`                               | Provide a type expression identifying the type of value that a prop or a data may contain |
-| `@default`            | `props`                                       | Provides a default value of a prop                                                        |
-| `@model`              | `props`                                       | Marks a prop as `v-model`                                                                 |
-| `@initialValue`       | `data`                                        | Provides an initial value of a data                                                       |
+| `@default`            | `props`                                       | Provide a default value of a prop                                                         |
+| `@model`              | `props`                                       | Mark a prop as `v-model`                                                                  |
+| `@initialValue`       | `data`                                        | Provide an initial value of a data                                                        |
 | `@method`             | `methods`                                     | Force the name of a specific method                                                       |
-| `@syntax`             | `methods`                                     | Provides the custom method syntax                                                         |
-| `@param`              | `methods`                                     | Provides the name, type, and description of a function parameter                          |
-| `@returns`, `@return` | `methods`                                     | Documents the value that a function returns                                               |
+| `@syntax`             | `methods`                                     | Provide the custom method syntax                                                          |
+| `@param`              | `methods`                                     | Provide the name, type, and description of a function parameter                           |
+| `@returns`, `@return` | `methods`                                     | Document the value that a function returns                                                |
 | `@event`              | `events`                                      | Force the name of a specific event                                                        |
-| `@arg`, `@argument`   | `events`                                      | Provides the name, type, and description of an event argument                             |
-| `@slot`               | `slots`                                       | Documents slot defined in render function                                                 |
+| `@arg`, `@argument`   | `events`                                      | Provide the name, type, and description of an event argument                              |
+| `@slot`               | `slots`                                       | Document slot defined in render function                                                  |
 | `@prop`               | `slots`                                       | Provides the name, type, and description of a slot prop                                   |
 | `@mixin`              |                                               | Force parsing of the exported item as a mixin component                                   |
-| `@category`           | `props`, `data`, `methods`, `events`, `slots` | Attaches a category to an element                                                         |
-
-**Visibility tags**
-
-| Keyword                   | Description                                                                                         |
-|---------------------------|-----------------------------------------------------------------------------------------------------|
-| `@public`                 | By default all commented members are public; this means they will be part of the documented members |
-| `@protected`, `@private`  | Keeps the subsequent code from being documented                                                     |
-
-You can also use [TypeDoc tags `@ignore` and `hidden`](https://typedoc.org/guides/doccomments/#hidden-and-ignore)
-to keeps the subsequent code from being documented.
+| `@category`           | `props`, `data`, `methods`, `events`, `slots` | Attache a category to an element                                                          |
+| `@ignore`             | `props`, `data`, `methods`, `events`, `slots` | Keep the subsequent code from being documented                                            |
+| **TypeDoc**                                                                                                                                                       |
+| `@hidden`             | `props`, `data`, `methods`, `events`, `slots` | Keep the subsequent code from being documented                                            |
+| **Visibility**                                                                                                                                                    |
+| `@public`             | `props`, `data`, `methods`, `events`, `slots` | Mark a symbol as public                                                                   |
+| `@protected`          | `props`, `data`, `methods`, `events`, `slots` | Mark a symbol as private                                                                  |
+| `@private`            | `props`, `data`, `methods`, `events`, `slots` | Mark a symbol as protected                                                                |
 
 ## Working with Mixins
 

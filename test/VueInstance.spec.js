@@ -65,7 +65,7 @@ ComponentTestCase({
         type: 'number',
         category: null,
         description: 'data contextNumber description',
-        initialValue: 12,
+        initialValue: '12',
         keywords: [],
         visibility: 'public' }
     ],

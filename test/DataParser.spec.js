@@ -25,35 +25,6 @@ describe('DataParser', () => {
           keywords: [],
           kind: 'data',
           name: 'initialValue',
-          initialValue: '',
-          type: 'string',
-          visibility: 'public' }
-      ]
-    }
-  })
-
-  ComponentTestCase({
-    name: 'Data with empty value with stringify',
-    options: {
-      stringify: true,
-      filecontent: `
-        <script>
-          export default {
-            data: () => ({
-              initialValue: ''
-            })
-          }
-        </script>
-      `
-    },
-    expected: {
-      data: [
-        {
-          category: null,
-          description: '',
-          keywords: [],
-          kind: 'data',
-          name: 'initialValue',
           initialValue: '""',
           type: 'string',
           visibility: 'public' }

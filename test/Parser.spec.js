@@ -421,18 +421,15 @@ describe('Parser', () => {
   describe('constructor(options)', () => {
     it('should successfully create new object', () => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const options = {
         source: { script, template },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       const parser = new Parser(options)
 
       expect(parser.options.source.template).toBe(template)
       expect(parser.options.source.script).toBe(script)
-      expect(parser.options.defaultMethodVisibility).toBe(defaultMethodVisibility)
       expect(parser.scope).toEqual({})
     })
 
@@ -462,11 +459,9 @@ describe('Parser', () => {
   describe('walk()', () => {
     it('should successfully create new object', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const options = {
         source: { script, template },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       const parser = new Parser(options)
@@ -623,12 +618,10 @@ describe('Parser', () => {
     describe('parseTemplate()', () => {
       it('should successfully emit default slot', (done) => {
         const filename = './fixtures/checkbox.vue'
-        const defaultMethodVisibility = 'public'
         const template = '<slot/>'
         const options = {
           source: { template },
-          filename,
-          defaultMethodVisibility
+          filename
         }
 
         new Parser(options).walk().on('slot', (slot) => {
@@ -640,7 +633,6 @@ describe('Parser', () => {
 
       it('should successfully emit default slot with description', (done) => {
         const filename = './fixtures/checkbox.vue'
-        const defaultMethodVisibility = 'public'
         const template = `
           <div>
             <!-- a comment -->
@@ -652,8 +644,7 @@ describe('Parser', () => {
         `
         const options = {
           source: { template },
-          filename,
-          defaultMethodVisibility
+          filename
         }
 
         new Parser(options).walk().on('slot', (slot) => {
@@ -747,7 +738,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ]
+          features: [ 'events' ],
+          ignoredVisibilities: [ 'protected' ]
         }
 
         new Parser(options).walk()
@@ -777,7 +769,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ]
+          features: [ 'events' ],
+          ignoredVisibilities: [ 'private' ]
         }
 
         new Parser(options).walk()
@@ -809,7 +802,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ]
+          features: [ 'events' ],
+          ignoredVisibilities: [ 'private' ]
         }
 
         new Parser(options).walk()
@@ -842,7 +836,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ]
+          features: [ 'events' ],
+          ignoredVisibilities: [ 'private' ]
         }
 
         const expected = [
@@ -1300,7 +1295,6 @@ describe('Parser', () => {
     describe('parseComponentName()', () => {
       it('should successfully emit component name with only template', (done) => {
         const filename = './fixtures/checkbox.vue'
-        const defaultMethodVisibility = 'private'
         const template = `
           <div>
             <!-- a comment -->
@@ -1309,8 +1303,7 @@ describe('Parser', () => {
         `
         const options = {
           source: { template },
-          filename,
-          defaultMethodVisibility
+          filename
         }
 
         new Parser(options).walk().on('name', ({ value }) => {
@@ -1321,7 +1314,6 @@ describe('Parser', () => {
 
       it('should successfully emit component name with explicit name', (done) => {
         const filename = './fixtures/checkbox.vue'
-        const defaultMethodVisibility = 'private'
         const script = `
           export default {
             name: 'myInput'
@@ -1329,8 +1321,7 @@ describe('Parser', () => {
         `
         const options = {
           source: { script },
-          filename,
-          defaultMethodVisibility
+          filename
         }
 
         new Parser(options).walk().on('name', ({ value }) => {
@@ -1484,7 +1475,6 @@ describe('Parser', () => {
 
     it('should successfully emit generic prop', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           props: {
@@ -1494,14 +1484,13 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk().on('prop', (prop) => {
         assert.equal(prop.visibility, 'public')
         assert.equal(prop.name, 'id')
-        assert.equal(prop.default, '$id')
+        assert.equal(prop.default, '"$id"')
         assert.equal(prop.type, 'String')
         assert.equal(prop.description, '')
         assert.equal(prop.required, false)
@@ -1512,7 +1501,6 @@ describe('Parser', () => {
 
     it('should successfully emit v-model prop', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           props: {
@@ -1525,8 +1513,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1542,7 +1529,6 @@ describe('Parser', () => {
 
     it('should successfully emit v-model prop with the model field', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           model: {
@@ -1555,8 +1541,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1572,7 +1557,6 @@ describe('Parser', () => {
 
     it('should successfully emit prop with truthy describeModel for prop.name === "value"', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           props: {
@@ -1582,8 +1566,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1595,7 +1578,6 @@ describe('Parser', () => {
 
     it('should successfully emit generic prop declared in array', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           props: ['id']
@@ -1603,8 +1585,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1704,7 +1685,7 @@ describe('Parser', () => {
         category: null,
         visibility: 'public',
         description: 'ID data',
-        initialValue: 12,
+        initialValue: '12',
         type: 'number',
         name: 'id'
       }
@@ -1738,7 +1719,7 @@ describe('Parser', () => {
         category: null,
         visibility: 'public',
         description: 'Enabled data',
-        initialValue: false,
+        initialValue: 'false',
         type: 'boolean',
         name: 'enabled'
       }
@@ -1774,7 +1755,7 @@ describe('Parser', () => {
         category: null,
         visibility: 'public',
         description: 'ID data',
-        initialValue: 'Hello',
+        initialValue: '"Hello"',
         type: 'string',
         name: 'id'
       }
@@ -1810,7 +1791,7 @@ describe('Parser', () => {
         category: null,
         visibility: 'public',
         description: 'ID data',
-        initialValue: 'Hello',
+        initialValue: '"Hello"',
         type: 'string',
         name: 'id'
       }
@@ -1840,7 +1821,8 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename
+        filename,
+        ignoredVisibilities: [ 'protected' ]
       }
 
       const expected = {
@@ -1870,8 +1852,6 @@ describe('Parser', () => {
           computed: {
             /**
               * ID computed prop
-              *
-              * @private
               */
             idGetter: {
               get () {
@@ -1891,7 +1871,7 @@ describe('Parser', () => {
         kind: 'computed',
         category: null,
         keywords: [],
-        visibility: 'private',
+        visibility: 'public',
         description: 'ID computed prop',
         dependencies: [ 'value', 'name' ]
       }
@@ -1909,8 +1889,6 @@ describe('Parser', () => {
           computed: {
             /**
               * ID computed prop
-              *
-              * @private
               */
             idGetter: {
               foo () {
@@ -1934,7 +1912,6 @@ describe('Parser', () => {
 
     it('shouldn\'t emit an unknow item (object)', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           unknow: {
@@ -1947,8 +1924,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       /* eslint-disable no-unused-vars */
@@ -1961,7 +1937,6 @@ describe('Parser', () => {
 
     it('shouldn\'t emit an unknow item (array)', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'public'
       const script = `
         export default {
           unknow: [
@@ -1974,8 +1949,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk()
@@ -1987,7 +1961,6 @@ describe('Parser', () => {
 
     it('should successfully emit methods', (done) => {
       const filename = './fixtures/checkbox.vue'
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           methods: {
@@ -1997,12 +1970,11 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        filename,
-        defaultMethodVisibility
+        filename
       }
 
       new Parser(options).walk().on('method', (prop) => {
-        assert.equal(prop.visibility, 'private')
+        expect(prop.visibility).toBe('public')
         assert.equal(prop.name, 'getValue')
         assert.equal(prop.description, '')
         assert.deepEqual(prop.keywords, [])
@@ -2021,15 +1993,13 @@ describe('Parser', () => {
     })
 
     it('should emit nothing', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           description: 'desc-v'
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       const parser = new Parser(options)
@@ -2042,7 +2012,6 @@ describe('Parser', () => {
     })
 
     it('should emit event without description', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           mounted: () => {
@@ -2051,8 +2020,7 @@ describe('Parser', () => {
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2065,7 +2033,6 @@ describe('Parser', () => {
     })
 
     it('should emit event with description', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           created: () => {
@@ -2080,7 +2047,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        defaultMethodVisibility
+        ignoredVisibilities: [ 'private' ]
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2093,7 +2060,6 @@ describe('Parser', () => {
     })
 
     it('should emit event with @event keyword', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           created () {
@@ -2107,8 +2073,7 @@ describe('Parser', () => {
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2122,7 +2087,6 @@ describe('Parser', () => {
     })
 
     it('should emit event with identifier name', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           beforeRouteEnter: (to, from, next) => {
@@ -2135,8 +2099,7 @@ describe('Parser', () => {
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2149,7 +2112,6 @@ describe('Parser', () => {
     })
 
     it('should emit event with recursive identifier name', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           mounted: () => {
@@ -2166,7 +2128,7 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        defaultMethodVisibility
+        ignoredVisibilities: [ 'private' ]
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2179,7 +2141,6 @@ describe('Parser', () => {
     })
 
     it('should emit event with external identifier name', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         const ppname = 'loading'
 
@@ -2195,8 +2156,7 @@ describe('Parser', () => {
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2209,7 +2169,6 @@ describe('Parser', () => {
     })
 
     it('should failed to found identifier name', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           created: () => {
@@ -2224,7 +2183,6 @@ describe('Parser', () => {
       `
       const options = {
         source: { script },
-        defaultMethodVisibility
       }
 
       new Parser(options).walk().on('event', (event) => {
@@ -2237,7 +2195,6 @@ describe('Parser', () => {
     })
 
     it('should skip already sent event', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           created () {
@@ -2249,8 +2206,7 @@ describe('Parser', () => {
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       let eventCount = 0
@@ -2269,7 +2225,6 @@ describe('Parser', () => {
     })
 
     it('should skip malformated event emission', (done) => {
-      const defaultMethodVisibility = 'private'
       const script = `
         export default {
           loading2: () => {
@@ -2278,8 +2233,7 @@ describe('Parser', () => {
         }
       `
       const options = {
-        source: { script },
-        defaultMethodVisibility
+        source: { script }
       }
 
       let eventCount = 0

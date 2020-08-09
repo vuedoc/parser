@@ -182,7 +182,7 @@ ComponentTestCase({
         type: 'string',
         category: null,
         description: 'data msg description',
-        initialValue: 'Hello',
+        initialValue: '"Hello"',
         keywords: [],
         visibility: 'public'
       },
@@ -283,7 +283,7 @@ ComponentTestCase({
         type: 'string',
         description: '',
         category: null,
-        initialValue: 'slide-left',
+        initialValue: '"slide-left"',
         keywords: [],
         visibility: 'public'
       },
@@ -293,7 +293,7 @@ ComponentTestCase({
         type: 'boolean',
         description: '',
         category: null,
-        initialValue: false,
+        initialValue: 'false',
         keywords: [],
         visibility: 'public'
       },

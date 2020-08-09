@@ -10,7 +10,7 @@ const { Parser } = require('../lib/parser/Parser')
  * Code samples from lukehoban/es6features
  * @see https://github.com/lukehoban/es6features
  */
-const Features = {
+const Feature = {
   'Arrows': `
     // Expression bodies
     var odds = evens.map(v => v + 1);
@@ -430,11 +430,11 @@ const Features = {
 function testPropertyFunction (property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: function () {
-              ${Features[feature]}
+              ${Feature[feature]}
 
               return {}
             }
@@ -450,11 +450,11 @@ function testPropertyFunction (property) {
     })
 
     describe('es6', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property} () {
-              ${Features[feature]}
+              ${Feature[feature]}
 
               return {}
             }
@@ -470,11 +470,11 @@ function testPropertyFunction (property) {
     })
 
     describe('arrow', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: () => {
-              ${Features[feature]}
+              ${Feature[feature]}
 
               return {}
             }
@@ -494,12 +494,12 @@ function testPropertyFunction (property) {
 function testPropertyObject (property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: {
               x: function () {
-                ${Features[feature]}
+                ${Feature[feature]}
 
                 return {}
               }
@@ -516,12 +516,12 @@ function testPropertyObject (property) {
     })
 
     describe('es6', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: {
               x () {
-                ${Features[feature]}
+                ${Feature[feature]}
 
                 return {}
               }
@@ -538,12 +538,12 @@ function testPropertyObject (property) {
     })
 
     describe('arrow', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: {
               x: () => {
-                ${Features[feature]}
+                ${Feature[feature]}
 
                 return {}
               }
@@ -561,10 +561,10 @@ function testPropertyObject (property) {
   })
 }
 
-describe('ECMAScript Features Parsing', () => {
+describe('ECMAScript Feature Parsing', () => {
   describe('should parse without errors', () => {
-    Object.keys(Features).forEach((feature) => it(feature, (done) => {
-      const script = Features[feature]
+    Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      const script = Feature[feature]
       const source = { script }
       const options = { source }
       const parser = new Parser(options)
@@ -612,7 +612,7 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      const options = { filecontent, features }
       const expected = [
         { kind: 'data',
           visibility: 'public',
@@ -741,7 +741,7 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      const options = { filecontent, features }
       const expected = [
         { kind: 'data',
           visibility: 'public',
@@ -785,7 +785,7 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      const options = { filecontent, features }
       const expected = [
         { kind: 'data',
           visibility: 'public',
@@ -873,7 +873,7 @@ describe('ECMAScript Features Parsing', () => {
           category: null,
           description: '',
           type: 'boolean',
-          initialValue: true,
+          initialValue: 'true',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
@@ -881,7 +881,7 @@ describe('ECMAScript Features Parsing', () => {
           category: null,
           description: '',
           type: 'boolean',
-          initialValue: false,
+          initialValue: 'false',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
@@ -945,7 +945,7 @@ describe('ECMAScript Features Parsing', () => {
         </script>
       `
       const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      const options = { filecontent, features }
       const expected = [
         { kind: 'data',
           visibility: 'public',

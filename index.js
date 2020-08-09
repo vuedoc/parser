@@ -7,7 +7,7 @@ const JavaScriptLoader = require('./loader/javascript')
 const TypeScriptLoader = require('./loader/typescript')
 
 const { Parser } = require('./lib/parser/Parser')
-const { Features, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } = require('./lib/Enum')
+const { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } = require('./lib/Enum')
 
 const DEFAULT_LOADERS = [
   Loader.extend('js', JavaScriptLoader),
@@ -82,17 +82,7 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
     component.errors.push(message)
   })
 
-  parser.on('end', () => {
-    parser.features.forEach((feature) => {
-      if (component[feature] instanceof Array) {
-        component[feature] = component[feature].filter((item) => {
-          return !options.ignoredVisibilities.includes(item.visibility)
-        })
-      }
-    })
-
-    resolve(component)
-  })
+  parser.on('end', () => resolve(component))
 
   parser.on('inheritAttrs', ({ value }) => {
     component.inheritAttrs = value
@@ -100,8 +90,8 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
 
   parser.features.forEach((feature) => {
     switch (feature) {
-      case Features.name:
-      case Features.description:
+      case Feature.name:
+      case Feature.description:
         component[feature] = ''
 
         parser.on(feature, ({ value }) => {
@@ -109,13 +99,13 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
         })
         break
 
-      case Features.model:
+      case Feature.model:
         parser.on(feature, (model) => {
           component[feature] = model
         })
         break
 
-      case Features.keywords:
+      case Feature.keywords:
         component[feature] = []
 
         parser.on(feature, ({ value }) => {

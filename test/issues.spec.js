@@ -34,7 +34,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Boolean',
-          default: undefined,
+          default: 'undefined',
           name: 'value',
           describeModel: true,
           required: false
@@ -107,7 +107,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Boolean',
-          default: false,
+          default: 'false',
           name: 'bool',
           describeModel: false,
           required: false
@@ -144,7 +144,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'String',
-          default: 'hello',
+          default: '"hello"',
           name: 'str',
           describeModel: false,
           required: false
@@ -181,7 +181,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Number',
-          default: 123,
+          default: '123',
           name: 'int',
           describeModel: false,
           required: false
@@ -218,7 +218,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'Object',
-          default: null,
+          default: 'null',
           name: 'null',
           describeModel: false,
           required: false
@@ -255,7 +255,7 @@ describe('issues', () => {
           description: '',
           keywords: [],
           type: 'BigInt',
-          default: 100n,
+          default: '100n',
           name: 'bigint',
           describeModel: false,
           required: false
@@ -998,7 +998,7 @@ describe('issues', () => {
           keywords: [],
           name: 'value',
           type: [ 'String', 'Number' ],
-          default: '',
+          default: '""',
           required: false,
           describeModel: true
         },
@@ -1022,7 +1022,7 @@ describe('issues', () => {
           keywords: [],
           name: 'icon-position',
           type: 'String',
-          default: 'left',
+          default: '"left"',
           required: false,
           describeModel: false
         },
@@ -1046,7 +1046,7 @@ describe('issues', () => {
           keywords: [],
           name: 'floating-label',
           type: 'Boolean',
-          default: false,
+          default: 'false',
           required: false,
           describeModel: false
         },
@@ -1082,7 +1082,7 @@ describe('issues', () => {
           keywords: [],
           name: 'readonly',
           type: 'Boolean',
-          default: false,
+          default: 'false',
           required: false,
           describeModel: false
         },
@@ -1094,7 +1094,7 @@ describe('issues', () => {
           keywords: [],
           name: 'disabled',
           type: 'Boolean',
-          default: false,
+          default: 'false',
           required: false,
           describeModel: false
         },
@@ -1106,7 +1106,7 @@ describe('issues', () => {
           keywords: [],
           name: 'type',
           type: 'String',
-          default: 'simple',
+          default: '"simple"',
           required: false,
           describeModel: false
         },
@@ -1130,7 +1130,7 @@ describe('issues', () => {
           keywords: [],
           name: 'limit',
           type: 'Number',
-          default: 8,
+          default: '8',
           required: false,
           describeModel: false
         },
@@ -1142,7 +1142,7 @@ describe('issues', () => {
           keywords: [],
           name: 'append',
           type: 'Boolean',
-          default: false,
+          default: 'false',
           required: false,
           describeModel: false
         },
@@ -1154,7 +1154,7 @@ describe('issues', () => {
           keywords: [],
           name: 'append-delimiter',
           type: 'String',
-          default: ', ',
+          default: '", "',
           required: false,
           describeModel: false
         },
@@ -1166,7 +1166,7 @@ describe('issues', () => {
           keywords: [],
           name: 'min-chars',
           type: 'Number',
-          default: 2,
+          default: '2',
           required: false,
           describeModel: false
         },
@@ -1178,7 +1178,7 @@ describe('issues', () => {
           keywords: [],
           name: 'show-on-up-down',
           type: 'Boolean',
-          default: true,
+          default: 'true',
           required: false,
           describeModel: false
         },
@@ -1190,7 +1190,7 @@ describe('issues', () => {
           keywords: [],
           name: 'autofocus',
           type: 'Boolean',
-          default: false,
+          default: 'false',
           required: false,
           describeModel: false
         },
@@ -1214,7 +1214,7 @@ describe('issues', () => {
           keywords: [],
           name: 'highlight-on-first-match',
           type: 'Boolean',
-          default: true,
+          default: 'true',
           required: false,
           describeModel: false
         },
@@ -1226,7 +1226,7 @@ describe('issues', () => {
           keywords: [],
           name: 'cycle-highlight',
           type: 'Boolean',
-          default: true,
+          default: 'true',
           required: false,
           describeModel: false
         },
@@ -1250,7 +1250,7 @@ describe('issues', () => {
           keywords: [],
           name: 'invalid',
           type: 'Boolean',
-          default: false,
+          default: 'false',
           required: false,
           describeModel: false
         }
@@ -1274,7 +1274,7 @@ describe('issues', () => {
           keywords: [],
           name: 'isActive',
           type: 'boolean',
-          initialValue: false
+          initialValue: 'false'
         },
         {
           kind: 'data',
@@ -1284,7 +1284,7 @@ describe('issues', () => {
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
-          initialValue: false
+          initialValue: 'false'
         },
         {
           kind: 'data',
@@ -1294,7 +1294,7 @@ describe('issues', () => {
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
-          initialValue: false
+          initialValue: 'false'
         },
         {
           kind: 'data',
@@ -1304,7 +1304,7 @@ describe('issues', () => {
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
-          initialValue: -1
+          initialValue: '-1'
         }
       ],
       computed: [
@@ -2322,7 +2322,7 @@ describe('issues', () => {
           keywords: [],
           name: 'a',
           type: 'any',
-          initialValue: undefined
+          initialValue: 'undefined'
         },
         {
           kind: 'data',
@@ -2332,7 +2332,7 @@ describe('issues', () => {
           keywords: [],
           name: 'b',
           type: 'any',
-          initialValue: undefined
+          initialValue: 'undefined'
         },
         {
           kind: 'data',
@@ -2342,7 +2342,7 @@ describe('issues', () => {
           keywords: [],
           name: 'c',
           type: 'number',
-          initialValue: 0
+          initialValue: '0'
         },
         {
           kind: 'data',
