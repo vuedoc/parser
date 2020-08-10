@@ -868,7 +868,6 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'value',
           category: undefined,
-          description: undefined,
           keywords: [],
           dependencies: []
         }
@@ -925,7 +924,6 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'value',
           category: undefined,
-          description: undefined,
           keywords: [],
           dependencies: []
         },
@@ -934,7 +932,6 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'id',
           category: undefined,
-          description: undefined,
           keywords: [],
           dependencies: []
         }
@@ -1062,14 +1059,9 @@ describe('Integration', () => {
           kind: 'event',
           name: '***unhandled***',
           category: undefined,
-          description: undefined,
           arguments: [],
           visibility: 'public',
-          keywords: [
-            {
-              name: 'event'
-            }
-          ]
+          keywords: []
         }
       ]
 
@@ -1357,4 +1349,183 @@ describe('Integration', () => {
       }
     })
   })
+
+  {
+    const dotlets = [
+      `
+        /**
+         * Multi
+         * line
+         *
+         * @description desc
+         * line 3
+         *
+         * @since 2.3.0
+         *
+         * @desc desc2
+         * line 4
+         */
+      `,
+      `
+        /**
+         * @description desc
+         * line 3
+         *
+         * @since 2.3.0
+         *
+         * @desc desc2
+         * line 4
+         */
+      `,
+      `
+        /**
+         * @description
+         *
+         * @since 2.3.0
+         * @desc
+         */
+      `
+    ]
+
+    const expectedDescriptions = [
+      'Multi\nline\n\ndesc\nline 3\n\ndesc2\nline 4',
+      'desc\nline 3\n\ndesc2\nline 4',
+      undefined
+    ]
+
+    dotlets.map((dotlet, index) => ComponentTestCase({
+      name: `@description #${index}`,
+      options: {
+        filecontent: `
+          <script>
+            ${dotlet}
+            export default {
+              props: {
+                ${dotlet}
+                prop: String,
+              },
+              data: () => ({
+                ${dotlet}
+                data: null,
+              }),
+              computed: {
+                ${dotlet}
+                computed() {
+                  return ''
+                },
+              },
+              methods: {
+                ${dotlet}
+                method() {
+                  ${dotlet}
+                  this.$emit('input')
+                },
+              },
+            };
+          </script>
+        `
+      },
+      expected: {
+        description: expectedDescriptions[index],
+        errors: [],
+        keywords: [
+          {
+            name: 'since',
+            description: '2.3.0',
+          }
+        ],
+        props: [
+          {
+            kind: 'prop',
+            name: 'prop',
+            type: 'String',
+            required: false,
+            default: undefined,
+            describeModel: false,
+            category: undefined,
+            description: expectedDescriptions[index],
+            keywords: [
+              {
+                name: 'since',
+                description: '2.3.0',
+              }
+            ],
+            visibility: 'public'
+          },
+        ],
+        data: [
+          {
+            kind: 'data',
+            name: 'data',
+            type: 'any',
+            category: undefined,
+            description: expectedDescriptions[index],
+            initialValue: 'null',
+            keywords: [
+              {
+                name: 'since',
+                description: '2.3.0',
+              }
+            ],
+            visibility: 'public'
+          },
+        ],
+        computed: [
+          {
+            kind: 'computed',
+            visibility: 'public',
+            name: 'computed',
+            category: undefined,
+            description: expectedDescriptions[index],
+            keywords: [
+              {
+                name: 'since',
+                description: '2.3.0',
+              }
+            ],
+            dependencies: []
+          },
+        ],
+        methods: [
+          {
+            kind: 'method',
+            syntax: [
+              'method(): void'
+            ],
+            name: 'method',
+            keywords: [
+              {
+                name: 'since',
+                description: '2.3.0',
+              }
+            ],
+            category: undefined,
+            description: expectedDescriptions[index],
+            params: [],
+            returns: {
+              type: 'void',
+              description: undefined
+            },
+            visibility: 'public'
+          },
+        ],
+        events: [
+          {
+            kind: 'event',
+            name: 'input',
+            category: undefined,
+            description: expectedDescriptions[index],
+            keywords: [
+              {
+                name: 'since',
+                description: '2.3.0',
+              }
+            ],
+            arguments: [],
+            visibility: 'public'
+          }
+        ]
+      }
+    }))
+  }
 })

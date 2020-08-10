@@ -18,7 +18,7 @@ Generate a JSON documentation for a Vue file component.
   * [Annotate props](#annotate-props)
     + [Annotate a `v-model` prop](#annotate-a-v-model-prop)
     + [Annotate Vue Array String Props](#annotate-vue-array-string-props)
-    + [Special tags for props](#special-keywords-for-props)
+    + [Special tags for props](#special-tags-for-props)
     + [Prop Entry Interface](#prop-entry-interface)
   * [Annotate data](#annotate-data)
   * [Annotate computed properties](#annotate-computed-properties)
@@ -63,9 +63,13 @@ npm install --save @vuedoc/parser
 - [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support
 - [Prop Types](https://github.com/znck/prop-types) support
 - [JSDoc](https://jsdoc.app/) support
-  ([`@type`](http://usejsdoc.org/tags-type.html), [`@param`](http://usejsdoc.org/tags-param.html) and [`@returns`](http://usejsdoc.org/tags-returns.html) tags)
+  ([`@type`](http://usejsdoc.org/tags-type.html),
+   [`@param`](http://usejsdoc.org/tags-param.html),
+   [`@returns`](http://usejsdoc.org/tags-returns.html),
+   [`@description`](http://usejsdoc.org/tags-description.html) and
+   [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
-  (`@param <param name>`, `@return(s)`, `@hidden`, `@ignore`, `@category`)
+  (`@param <param name>`, `@return(s)`, `@hidden`, `@category`)
 
 ## Options
 
@@ -113,8 +117,10 @@ This will print this JSON output:
 }
 ```
 
-See [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
-for the complete result.
+> Found the complete result here:
+  [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
+
+See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 
 ## Syntax
 
@@ -235,8 +241,7 @@ export default {
 
 - `@type {typeName}`: Commented prop will use provided type name as type
   instead of type in source code. This option may be helpful in case the
-  prop type is a complex object or a function, which you may want to further
-  detail with `@typedef` in another place
+  prop type is a complex object or a function
 - `@default {value}`: Commented prop will use the provided value as default
   prop value. This option may be helpful in case the prop type is a complex
   object or function
@@ -307,7 +312,7 @@ their initial value.
 - `@type {typeName}`<br>
   Commented data will use provided type name as type instead of type in source code.
   This option may be helpful in case the data type is a complex object or a
-  function, which you may want to further detail with `@typedef` in another place
+  function
 - `@initialValue {value}`<br>
   Commented data will use the provided value as initial data value. This option may
   be helpful in case the data type is a complex object or function
@@ -756,29 +761,32 @@ Parsing result:
 
 ## Supported tags
 
-| Keyword               | Scope                                         | Description                                                                               |
-| --------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `@type`               | `props`, `data`                               | Provide a type expression identifying the type of value that a prop or a data may contain |
-| `@default`            | `props`                                       | Provide a default value of a prop                                                         |
-| `@model`              | `props`                                       | Mark a prop as `v-model`                                                                  |
-| `@initialValue`       | `data`                                        | Provide an initial value of a data                                                        |
-| `@method`             | `methods`                                     | Force the name of a specific method                                                       |
-| `@syntax`             | `methods`                                     | Provide the custom method syntax                                                          |
-| `@param`              | `methods`                                     | Provide the name, type, and description of a function parameter                           |
-| `@returns`, `@return` | `methods`                                     | Document the value that a function returns                                                |
-| `@event`              | `events`                                      | Force the name of a specific event                                                        |
-| `@arg`, `@argument`   | `events`                                      | Provide the name, type, and description of an event argument                              |
-| `@slot`               | `slots`                                       | Document slot defined in render function                                                  |
-| `@prop`               | `slots`                                       | Provides the name, type, and description of a slot prop                                   |
-| `@mixin`              |                                               | Force parsing of the exported item as a mixin component                                   |
-| `@category`           | `props`, `data`, `methods`, `events`, `slots` | Attache a category to an element                                                          |
-| `@ignore`             | `props`, `data`, `methods`, `events`, `slots` | Keep the subsequent code from being documented                                            |
-| **TypeDoc**                                                                                                                                                       |
-| `@hidden`             | `props`, `data`, `methods`, `events`, `slots` | Keep the subsequent code from being documented                                            |
-| **Visibility**                                                                                                                                                    |
-| `@public`             | `props`, `data`, `methods`, `events`, `slots` | Mark a symbol as public                                                                   |
-| `@protected`          | `props`, `data`, `methods`, `events`, `slots` | Mark a symbol as private                                                                  |
-| `@private`            | `props`, `data`, `methods`, `events`, `slots` | Mark a symbol as protected                                                                |
+| Keyword                 | Scope           | Description                                                                               |
+| ----------------------- | --------------- | ----------------------------------------------------------------------------------------- |
+| `@type`                 | `props`, `data` | Provide a type expression identifying the type of value that a prop or a data may contain |
+| `@default`              | `props`         | Provide a default value of a prop                                                         |
+| `@model`                | `props`         | Mark a prop as `v-model`                                                                  |
+| `@initialValue`         | `data`          | Provide an initial value of a data                                                        |
+| `@method`               | `methods`       | Force the name of a specific method                                                       |
+| `@syntax`               | `methods`       | Provide the custom method syntax                                                          |
+| `@param`                | `methods`       | Provide the name, type, and description of a function parameter                           |
+| `@returns`, `@return`   | `methods`       | Document the value that a function returns                                                |
+| `@event`                | `events`        | Force the name of a specific event                                                        |
+| `@arg`, `@argument`     | `events`        | Provide the name, type, and description of an event argument                              |
+| `@slot`                 | `slots`         | Document slot defined in render function                                                  |
+| `@prop`                 | `slots`         | Provide the name, type, and description of a slot prop                                    |
+| `@mixin`                |                 | Force parsing of the exported item as a mixin component                                   |
+| `@description`, `@desc` | `*`             | Provide a general description of a symbol                                                 |
+| `@category`             | `*`             | Attache a category to an element                                                          |
+| `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
+| **TypeDoc**                                                                                                                           |
+| `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |
+| **Visibility**                                                                                                                        |
+| `@public`               | `*`             | Mark a symbol as public                                                                   |
+| `@protected`            | `*`             | Mark a symbol as private                                                                  |
+| `@private`              | `*`             | Mark a symbol as protected                                                                |
+
+> `*` stand for `props`, `data`, `methods`, `events`, `slots`
 
 ## Working with Mixins
 
