@@ -73,14 +73,15 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| name                | description                                                                                                                 |
-|---------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| filename            | The filename to parse. *Required* unless `filecontent` is passed                                                            |
-| filecontent         | The file content to parse. *Required* unless `filename` is passed                                                           |
-| features            | The component features to parse and extract.                                                                                |
-|                     | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
-| loaders             | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
-| ignoredVisibilities | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
+| Name                  | Description                                                                                                                 |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                            |
+| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                                           |
+| `encoding`            | The file encoding. Default is `'utf8'`                                                                                      |
+| `features`            | The component features to parse and extract.                                                                                |
+|                       | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
+| `loaders`             | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
+| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
 
 ## Usage
 
@@ -776,7 +777,7 @@ Parsing result:
 | `@arg`, `@argument`     | `events`        | Provide the name, type, and description of an event argument                              |
 | `@slot`                 | `slots`         | Document slot defined in render function                                                  |
 | `@prop`                 | `slots`         | Provide the name, type, and description of a slot prop                                    |
-| `@mixin`                |                 | Force parsing of the exported item as a mixin component                                   |
+| `@mixin`                | `component`     | Force parsing of the exported item as a mixin component                                   |
 | `@description`, `@desc` | `*`             | Provide a general description of a symbol                                                 |
 | `@category`             | `*`             | Attache a category to an element                                                          |
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |

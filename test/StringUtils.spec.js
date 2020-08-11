@@ -1,4 +1,4 @@
-const { StringUtils } = require('../lib/StringUtils')
+const { StringUtils } = require('../lib/utils/StringUtils')
 
 /* global describe it expect */
 

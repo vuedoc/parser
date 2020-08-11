@@ -1,15 +1,20 @@
-const { DEFAULT_IGNORED_VISIBILITIES, Features } = require('../lib/Enum');
+const { DEFAULT_IGNORED_VISIBILITIES, Features, DEFAULT_ENCODING } = require('../lib/Enum');
 
 module.exports = {
   type: 'object',
   properties: {
     filename: {
       type: 'string',
-      description: 'The filename to parse. *Required* unless `filecontent` is passed'
+      description: 'The filename to parse. Required unless `filecontent` is passed'
     },
     filecontent: {
       type: 'string',
-      description: 'The file content to parse. *Required* unless `filename` is passed'
+      description: 'The file content to parse. Required unless `filename` is passed'
+    },
+    encoding: {
+      type: 'string',
+      description: 'The file encoding',
+      default: DEFAULT_ENCODING
     },
     features: {
       type: 'array',
@@ -26,7 +31,7 @@ module.exports = {
     },
     ignoredVisibilities: {
       type: 'array',
-      description: 'List of ignored Visibility',
+      description: 'List of ignored visibilities',
       items: {
         type: 'string'
       },

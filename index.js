@@ -55,7 +55,9 @@ module.exports.parseOptions = (options) => {
       const ext = path.extname(options.filename)
       const loaderName = ext.substring(1)
       const LoaderClass = Loader.get(loaderName, options)
-      const source = Loader.getFileContent(options.filename, options)
+      const source = Loader.getFileContent(options.filename, {
+        encoding: options.encoding
+      })
 
       return new LoaderClass(options).load(source)
     }

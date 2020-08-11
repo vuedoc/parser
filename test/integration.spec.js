@@ -444,6 +444,7 @@ describe('Integration', () => {
       const options = { filecontent }
       const expected = {
         filecontent,
+        encoding: 'utf8',
         ignoredVisibilities: [ 'protected', 'private' ],
         source: {
           template: '',
@@ -469,6 +470,7 @@ describe('Integration', () => {
 
       const expected = {
         filecontent: options.filecontent,
+        encoding: 'utf8',
         ignoredVisibilities: [ ...options.ignoredVisibilities ],
         source: {
           template: '',
@@ -495,6 +497,7 @@ describe('Integration', () => {
 
       const expected = {
         filename: options.filename,
+        encoding: 'utf8',
         ignoredVisibilities: [ ...options.ignoredVisibilities ],
         source: {
           template: '',
@@ -518,6 +521,7 @@ describe('Integration', () => {
 
       const expected = {
         filecontent: options.filecontent,
+        encoding: 'utf8',
         ignoredVisibilities: [ ...options.ignoredVisibilities ],
         source: {
           template: '',
