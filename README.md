@@ -763,6 +763,7 @@ Parsing result:
 
 | Keyword                 | Scope           | Description                                                                               |
 | ----------------------- | --------------- | ----------------------------------------------------------------------------------------- |
+| `@name`                 | `component`     | Provide a custom name of the component                                                    |
 | `@type`                 | `props`, `data` | Provide a type expression identifying the type of value that a prop or a data may contain |
 | `@default`              | `props`         | Provide a default value of a prop                                                         |
 | `@model`                | `props`         | Mark a prop as `v-model`                                                                  |
@@ -781,7 +782,7 @@ Parsing result:
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
 | **TypeDoc**                                                                                                                           |
 | `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |
-| **Visibility**                                                                                                                        |
+| **Visibilities**                                                                                                                      |
 | `@public`               | `*`             | Mark a symbol as public                                                                   |
 | `@protected`            | `*`             | Mark a symbol as private                                                                  |
 | `@private`              | `*`             | Mark a symbol as protected                                                                |

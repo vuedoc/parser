@@ -1393,39 +1393,8 @@ describe('Integration', () => {
       undefined
     ]
 
-    dotlets.map((dotlet, index) => ComponentTestCase({
-      name: `@description #${index}`,
-      options: {
-        filecontent: `
-          <script>
-            ${dotlet}
-            export default {
-              props: {
-                ${dotlet}
-                prop: String,
-              },
-              data: () => ({
-                ${dotlet}
-                data: null,
-              }),
-              computed: {
-                ${dotlet}
-                computed() {
-                  return ''
-                },
-              },
-              methods: {
-                ${dotlet}
-                method() {
-                  ${dotlet}
-                  this.$emit('input')
-                },
-              },
-            };
-          </script>
-        `
-      },
-      expected: {
+    dotlets.forEach((dotlet, index) => {
+      const expectedOutput = {
         description: expectedDescriptions[index],
         errors: [],
         keywords: [
@@ -1526,6 +1495,113 @@ describe('Integration', () => {
           }
         ]
       }
-    }))
+
+      ComponentTestCase({
+        name: '@description',
+        description: `object definition #${index}`,
+        options: {
+          filecontent: `
+            <script>
+              ${dotlet}
+              export default {
+                props: {
+                  ${dotlet}
+                  prop: String,
+                },
+                data: () => ({
+                  ${dotlet}
+                  data: null,
+                }),
+                computed: {
+                  ${dotlet}
+                  computed() {
+                    return ''
+                  },
+                },
+                methods: {
+                  ${dotlet}
+                  method() {
+                    ${dotlet}
+                    this.$emit('input')
+                  },
+                },
+              };
+            </script>
+          `
+        },
+        expected: expectedOutput
+      })
+
+      ComponentTestCase({
+        name: '@description',
+        description: `class component definition #${index}`,
+        options: {
+          filecontent: `
+            <script>
+              ${dotlet}
+              @Component({
+                props: {
+                  ${dotlet}
+                  prop: String,
+                },
+                computed: {
+                  ${dotlet}
+                  computed() {
+                    return ''
+                  },
+                }
+              })
+              export default class App extends Vue {
+                constructor() {
+                  ${dotlet}
+                  this.data = null
+                }
+
+                ${dotlet}
+                method() {
+                  ${dotlet}
+                  this.$emit('input')
+                }
+              };
+            </script>
+          `
+        },
+        expected: expectedOutput
+      })
+
+      ComponentTestCase({
+        name: '@description',
+        description: `vue property decorator definition #${index}`,
+        options: {
+          filecontent: `
+            <script>
+              ${dotlet}
+              @Component
+              class App extends Vue {
+                ${dotlet}
+                @Prop(String) prop!: String
+
+                ${dotlet}
+                data = null
+
+                ${dotlet}
+                get computed() {
+                  return ''
+                }
+
+                ${dotlet}
+                method() {
+                  ${dotlet}
+                  this.$emit('input')
+                }
+              };
+
+              export default App
+            </script>
+          `
+        },
+        expected: expectedOutput
+      })
+    })
   }
 })
