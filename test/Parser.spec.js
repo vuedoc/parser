@@ -532,7 +532,7 @@ describe('Parser', () => {
            * @name my-checkbox
            * @mixin
            * @slot default slot
-           * @since 1.0.0
+           * @tagtest 1.0.0
            */
           export default {}
         `
@@ -540,7 +540,7 @@ describe('Parser', () => {
         const options = { source: { script } }
 
         new Parser(options).walk().on('keywords', ({ value }) => {
-          expect(value).toEqual([ { name: 'since', description: '1.0.0' } ])
+          expect(value).toEqual([ { name: 'tagtest', description: '1.0.0' } ])
           done()
         })
       })

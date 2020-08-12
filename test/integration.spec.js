@@ -303,7 +303,7 @@ describe('Integration', () => {
                   /**
                    * Testing
                    *
-                   * @since 2.5.0
+                   * @tagtest2.5.0
                    * @public
                    */
                   myFunction(test: Record<string, any>): Record<string, any> {
@@ -323,7 +323,7 @@ describe('Integration', () => {
                   /**
                    * Testing
                    *
-                   * @since 2.5.0
+                   * @tagtest2.5.0
                    * @public
                    */
                   myFunction0(test: Record<string, any>): Record<string, any> {
@@ -1385,7 +1385,7 @@ describe('Integration', () => {
          * @description desc
          * line 3
          *
-         * @since 2.3.0
+         * @tagtest 2.3.0
          *
          * @desc desc2
          * line 4
@@ -1396,7 +1396,7 @@ describe('Integration', () => {
          * @description desc
          * line 3
          *
-         * @since 2.3.0
+         * @tagtest 2.3.0
          *
          * @desc desc2
          * line 4
@@ -1406,7 +1406,7 @@ describe('Integration', () => {
         /**
          * @description
          *
-         * @since 2.3.0
+         * @tagtest 2.3.0
          * @desc
          */
       `
@@ -1424,7 +1424,7 @@ describe('Integration', () => {
         errors: [],
         keywords: [
           {
-            name: 'since',
+            name: 'tagtest',
             description: '2.3.0',
           }
         ],
@@ -1441,7 +1441,7 @@ describe('Integration', () => {
             description: expectedDescriptions[index],
             keywords: [
               {
-                name: 'since',
+                name: 'tagtest',
                 description: '2.3.0',
               }
             ],
@@ -1459,7 +1459,7 @@ describe('Integration', () => {
             initialValue: 'null',
             keywords: [
               {
-                name: 'since',
+                name: 'tagtest',
                 description: '2.3.0',
               }
             ],
@@ -1476,7 +1476,7 @@ describe('Integration', () => {
             description: expectedDescriptions[index],
             keywords: [
               {
-                name: 'since',
+                name: 'tagtest',
                 description: '2.3.0',
               }
             ],
@@ -1492,7 +1492,7 @@ describe('Integration', () => {
             name: 'method',
             keywords: [
               {
-                name: 'since',
+                name: 'tagtest',
                 description: '2.3.0',
               }
             ],
@@ -1516,7 +1516,7 @@ describe('Integration', () => {
             description: expectedDescriptions[index],
             keywords: [
               {
-                name: 'since',
+                name: 'tagtest',
                 description: '2.3.0',
               }
             ],
@@ -1635,14 +1635,19 @@ describe('Integration', () => {
     });
   }
 
-  // @version
+  // @version, @tag
   {
     const TagSpecs = [
       {
         tag: 'version',
         value: '1.2.3',
         expected: '1.2.3',
-      }
+      },
+      {
+        tag: 'since',
+        value: '1.2.3',
+        expected: '1.2.3',
+      },
     ]
 
     TagSpecs.forEach(({ tag, value, expected = value }, index) => {

@@ -67,6 +67,7 @@ npm install --save @vuedoc/parser
    [`@param`](http://usejsdoc.org/tags-param.html),
    [`@returns`](http://usejsdoc.org/tags-returns.html),
    [`@version`](http://usejsdoc.org/tags-version.html),
+   [`@since`](http://usejsdoc.org/tags-since.html),
    [`@description`](http://usejsdoc.org/tags-description.html) and
    [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
@@ -276,11 +277,12 @@ interface PropEntry {
   type: string | string[];
   default: string;
   required: boolean;
+  description?: string;
   describeModel: boolean;
+  keywords: Keyword[];
   category?: string;
   version?: string;
-  description?: string;
-  keywords: Keyword[];
+  since?: string;
   visibility: 'public' | 'protected' | 'private';
 }
 
@@ -328,10 +330,11 @@ interface DataEntry {
   name: string;
   type: string;
   initialValue: string;
-  category?: string;
-  version?: string;
   description?: string;
   keywords: Keyword[];
+  category?: string;
+  version?: string;
+  since?: string;
   visibility: 'public' | 'protected' | 'private';
 }
 
@@ -382,10 +385,11 @@ interface ComputedEntry {
   kind: 'computed';
   name: string;
   dependencies: string[];
-  category?: string;
-  version?: string;
   description?: string;
   keywords: Keyword[];
+  category?: string;
+  version?: string;
+  since?: string;
   visibility: 'public' | 'protected' | 'private';
 }
 
@@ -498,10 +502,11 @@ interface MethodEntry {
   params: MethodParam[];
   returns: MethodReturn;
   syntax: string[];
-  category?: string;
-  version?: string;
   description?: string;
   keywords: Keyword[];
+  category?: string;
+  version?: string;
+  since?: string;
   visibility: 'public' | 'protected' | 'private';
 }
 
@@ -603,11 +608,12 @@ You can use special keyword `@event` for non primitive name:
 interface EventEntry {
   kind: 'event';
   name: string;
+  description?: string;
   arguments: EventArgument[];
+  keywords: Keyword[];
   category?: string;
   version?: string;
-  description?: string;
-  keywords: Keyword[];
+  since?: string;
   visibility: 'public' | 'protected' | 'private';
 }
 
@@ -692,11 +698,12 @@ You can also use the keyword `@slot` to define dynamic slots on template:
 interface SlotEntry {
   kind: 'slot';
   name: string;
+  description?: string;
   props: SlotProp[];
+  keywords: Keyword[];
   category?: string;
   version?: string;
-  description?: string;
-  keywords: Keyword[];
+  since?: string;
   visibility: 'public' | 'protected' | 'private';
 }
 
@@ -789,6 +796,7 @@ Parsing result:
 | `@description`, `@desc` | `all`           | Provide a general description of a symbol                                                 |
 | `@category`             | `all`           | Attach a category to an item                                                              |
 | `@version`              | `all`           | Assign a version to an item                                                               |
+| `@since`                | `all`           | Indicate that an item was added in a specific version                                     |
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
 | **TypeDoc**                                                                                                                           |
 | `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |
@@ -1013,6 +1021,8 @@ Vuedoc.parse(options).then((component) => {
 type ParsingOutput = {
   name: string;               // Component name
   description?: string;       // Component description
+  version?: string;
+  since?: string;
   inheritAttrs: boolean;
   keywords: Keyword[];        // Attached component keywords
   model?: ModelEntry;         // Component model

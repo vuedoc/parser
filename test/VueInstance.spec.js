@@ -7,7 +7,7 @@ ComponentTestCase({
       <script>
         /**
          * A Vue App Component
-         * @tag 1.2
+         * @tagtest 1.2
          */
         export default new Vue({
           name: 'App',
@@ -34,7 +34,7 @@ ComponentTestCase({
     inheritAttrs: true,
     keywords: [
       {
-        name: 'tag',
+        name: 'tagtest',
         description: '1.2' }
     ],
     events: [],
