@@ -8,6 +8,7 @@ const assert = require('assert')
 const vuedoc = require('..')
 
 const { ComponentTestCase } = require('./lib/TestUtils')
+const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec')
 const { Fixture } = require('./lib/Fixture')
 
 const Loader = require('../lib/Loader')
@@ -15,7 +16,6 @@ const VueLoader = require('../loader/vue')
 const HtmlLoader = require('../loader/html')
 const JavaScriptLoader = require('../loader/javascript')
 const TypeScriptLoader = require('../loader/typescript')
-const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec')
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
@@ -268,6 +268,7 @@ function testComponentEvents (optionsToParse) {
       kind: 'event',
       name: 'change',
       category: undefined,
+      version: undefined,
       description: 'Fires when the card is changed.',
       keywords: [],
       arguments: [
@@ -586,38 +587,37 @@ describe('Integration', () => {
   })
 
   describe('component.data', () => {
-    const options = {
-      filecontent: `
-        <script>
-          export default {
-            name: 'test',
-            data: {
-              /**
-               * ID data
-               */
-              id: 'Hello'
-            }
-          }
-        </script>
-      `
-    }
-
     it('should successfully extract data', () => {
-      const expected = [
-        {
-          kind: 'data',
-          keywords: [],
-          visibility: 'public',
-          category: undefined,
-          description: 'ID data',
-          initialValue: '"Hello"',
-          type: 'string',
-          name: 'id'
-        }
-      ]
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              name: 'test',
+              data: {
+                /**
+                 * ID data
+                 */
+                id: 'Hello'
+              }
+            }
+          </script>
+        `
+      }
 
       return vuedoc.parse(options).then((component) => {
-        assert.deepEqual(component.data, expected)
+        expect(component.data).toEqual([
+          {
+            kind: 'data',
+            keywords: [],
+            visibility: 'public',
+            category: undefined,
+            version: undefined,
+            description: 'ID data',
+            initialValue: '"Hello"',
+            type: 'string',
+            name: 'id'
+          }
+        ])
       })
     })
   })
@@ -687,6 +687,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'default',
           category: undefined,
+          version: undefined,
           description: undefined,
           props: [
             { name: 'user',
@@ -729,6 +730,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'todo',
           category: undefined,
+          version: undefined,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -773,6 +775,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'todo',
           category: undefined,
+          version: undefined,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -817,6 +820,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'todo',
           category: undefined,
+          version: undefined,
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
@@ -872,6 +876,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'value',
           category: undefined,
+          version: undefined,
           keywords: [],
           dependencies: []
         }
@@ -928,6 +933,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'value',
           category: undefined,
+          version: undefined,
           keywords: [],
           dependencies: []
         },
@@ -936,6 +942,7 @@ describe('Integration', () => {
           visibility: 'public',
           name: 'id',
           category: undefined,
+          version: undefined,
           keywords: [],
           dependencies: []
         }
@@ -1063,6 +1070,7 @@ describe('Integration', () => {
           kind: 'event',
           name: '***unhandled***',
           category: undefined,
+          version: undefined,
           arguments: [],
           visibility: 'public',
           keywords: []
@@ -1106,6 +1114,7 @@ describe('Integration', () => {
           default: '{ last: \'keyword\' }',
           describeModel: false,
           category: undefined,
+          version: undefined,
           description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
           keywords: [],
           kind: 'prop',
@@ -1115,7 +1124,7 @@ describe('Integration', () => {
           visibility: 'public' }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Dynamic object key',
@@ -1159,6 +1168,7 @@ describe('Integration', () => {
           default: undefined,
           describeModel: false,
           category: undefined,
+          version: undefined,
           description: undefined,
           keywords: [],
           kind: 'prop',
@@ -1170,6 +1180,7 @@ describe('Integration', () => {
           default: 'true',
           describeModel: false,
           category: undefined,
+          version: undefined,
           description: undefined,
           keywords: [],
           kind: 'prop',
@@ -1187,6 +1198,7 @@ describe('Integration', () => {
           name: 'dynamic',
           keywords: [],
           category: undefined,
+          version: undefined,
           description: 'Make component dynamic',
           params: [],
           returns: {
@@ -1202,6 +1214,7 @@ describe('Integration', () => {
           name: 'dynamic2Value',
           keywords: [],
           category: undefined,
+          version: undefined,
           description: 'Enter to dynamic mode',
           params: [],
           returns: {
@@ -1211,10 +1224,10 @@ describe('Integration', () => {
           visibility: 'public' }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
-    name: 'Keyword @slot',
+    name: '@slot',
     options: {
       filecontent: `
         <script>
@@ -1233,6 +1246,7 @@ describe('Integration', () => {
           kind: 'slot',
           visibility: 'public',
           category: undefined,
+          version: undefined,
           description: 'Use this slot to define form inputs ontrols',
           keywords: [],
           name: 'inputs',
@@ -1242,6 +1256,7 @@ describe('Integration', () => {
           kind: 'slot',
           visibility: 'public',
           category: undefined,
+          version: undefined,
           description: 'Use this slot to define form action buttons controls',
           keywords: [],
           name: 'actions',
@@ -1251,6 +1266,7 @@ describe('Integration', () => {
           kind: 'slot',
           visibility: 'public',
           category: undefined,
+          version: undefined,
           description: 'Use this slot to define form footer content',
           keywords: [],
           name: 'footer',
@@ -1258,9 +1274,9 @@ describe('Integration', () => {
         }
       ]
     }
-  })
+  });
 
-  JSDocTypeSpec.forEach(({ name, values, expected = values }) => {
+  JSDocTypeSpec.forEach(({ name, values, expected }) => {
     const propsDeclaration = values.map((value, index) => `
       /**
        * @type {${value}}
@@ -1270,7 +1286,7 @@ describe('Integration', () => {
        * @type ${value}
        */
       propB${index}: String,
-    `).join('')
+    `).join('');
 
     const dataDeclaration = values.map((value, index) => `
       /**
@@ -1281,7 +1297,7 @@ describe('Integration', () => {
        * @type ${value}
        */
       dataB${index}: null,
-    `).join('')
+    `).join('');
 
     ComponentTestCase({
       name: '@type',
@@ -1311,6 +1327,7 @@ describe('Integration', () => {
             default: undefined,
             describeModel: false,
             category: undefined,
+            version: undefined,
             description: undefined,
             keywords: [],
             visibility: 'public'
@@ -1323,6 +1340,7 @@ describe('Integration', () => {
             default: undefined,
             describeModel: false,
             category: undefined,
+            version: undefined,
             description: undefined,
             keywords: [],
             visibility: 'public'
@@ -1334,6 +1352,7 @@ describe('Integration', () => {
             name: `dataA${index}`,
             type: value,
             category: undefined,
+            version: undefined,
             description: undefined,
             initialValue: 'null',
             keywords: [],
@@ -1344,6 +1363,7 @@ describe('Integration', () => {
             name: `dataB${index}`,
             type: value,
             category: undefined,
+            version: undefined,
             description: undefined,
             initialValue: 'null',
             keywords: [],
@@ -1351,9 +1371,10 @@ describe('Integration', () => {
           }
         ]).flat()
       }
-    })
-  })
+    });
+  });
 
+  // @description
   {
     const dotlets = [
       `
@@ -1389,13 +1410,13 @@ describe('Integration', () => {
          * @desc
          */
       `
-    ]
+    ];
 
     const expectedDescriptions = [
       'Multi\nline\n\ndesc\nline 3\n\ndesc2\nline 4',
       'desc\nline 3\n\ndesc2\nline 4',
       undefined
-    ]
+    ];
 
     dotlets.forEach((dotlet, index) => {
       const expectedOutput = {
@@ -1416,6 +1437,7 @@ describe('Integration', () => {
             default: undefined,
             describeModel: false,
             category: undefined,
+            version: undefined,
             description: expectedDescriptions[index],
             keywords: [
               {
@@ -1432,6 +1454,7 @@ describe('Integration', () => {
             name: 'data',
             type: 'any',
             category: undefined,
+            version: undefined,
             description: expectedDescriptions[index],
             initialValue: 'null',
             keywords: [
@@ -1449,6 +1472,7 @@ describe('Integration', () => {
             visibility: 'public',
             name: 'computed',
             category: undefined,
+            version: undefined,
             description: expectedDescriptions[index],
             keywords: [
               {
@@ -1473,6 +1497,7 @@ describe('Integration', () => {
               }
             ],
             category: undefined,
+            version: undefined,
             description: expectedDescriptions[index],
             params: [],
             returns: {
@@ -1487,6 +1512,7 @@ describe('Integration', () => {
             kind: 'event',
             name: 'input',
             category: undefined,
+            version: undefined,
             description: expectedDescriptions[index],
             keywords: [
               {
@@ -1498,7 +1524,7 @@ describe('Integration', () => {
             visibility: 'public'
           }
         ]
-      }
+      };
 
       ComponentTestCase({
         name: '@description',
@@ -1534,7 +1560,7 @@ describe('Integration', () => {
           `
         },
         expected: expectedOutput
-      })
+      });
 
       ComponentTestCase({
         name: '@description',
@@ -1571,11 +1597,218 @@ describe('Integration', () => {
           `
         },
         expected: expectedOutput
-      })
+      });
 
       ComponentTestCase({
         name: '@description',
         description: `vue property decorator definition #${index}`,
+        options: {
+          filecontent: `
+            <script>
+              ${dotlet}
+              @Component
+              class App extends Vue {
+                ${dotlet}
+                @Prop(String) prop!: String
+
+                ${dotlet}
+                data = null
+
+                ${dotlet}
+                get computed() {
+                  return ''
+                }
+
+                ${dotlet}
+                method() {
+                  ${dotlet}
+                  this.$emit('input')
+                }
+              };
+
+              export default App
+            </script>
+          `
+        },
+        expected: expectedOutput
+      });
+    });
+  }
+
+  // @version
+  {
+    const TagSpecs = [
+      {
+        tag: 'version',
+        value: '1.2.3',
+        expected: '1.2.3',
+      }
+    ]
+
+    TagSpecs.forEach(({ tag, value, expected = value }, index) => {
+      const dotlet = value
+        ? `/** @${tag} ${value} */`
+        : `/** @${tag} */`
+
+      const expectedOutput = {
+        description: undefined,
+        [tag]: expected,
+        errors: [],
+        keywords: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'prop',
+            type: 'String',
+            required: false,
+            default: undefined,
+            describeModel: false,
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            [tag]: expected,
+            keywords: [],
+            visibility: 'public'
+          },
+        ],
+        data: [
+          {
+            kind: 'data',
+            name: 'data',
+            type: 'any',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            [tag]: expected,
+            initialValue: 'null',
+            keywords: [],
+            visibility: 'public'
+          },
+        ],
+        computed: [
+          {
+            kind: 'computed',
+            visibility: 'public',
+            name: 'computed',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            [tag]: expected,
+            keywords: [],
+            dependencies: []
+          },
+        ],
+        methods: [
+          {
+            kind: 'method',
+            syntax: [
+              'method(): void'
+            ],
+            name: 'method',
+            keywords: [],
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            [tag]: expected,
+            params: [],
+            returns: {
+              type: 'void',
+              description: undefined
+            },
+            visibility: 'public'
+          },
+        ],
+        events: [
+          {
+            kind: 'event',
+            name: 'input',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            [tag]: expected,
+            keywords: [],
+            arguments: [],
+            visibility: 'public'
+          }
+        ]
+      }
+
+      ComponentTestCase({
+        name: '@description',
+        description: 'object definition',
+        options: {
+          filecontent: `
+            <script>
+              ${dotlet}
+              export default {
+                props: {
+                  ${dotlet}
+                  prop: String,
+                },
+                data: () => ({
+                  ${dotlet}
+                  data: null,
+                }),
+                computed: {
+                  ${dotlet}
+                  computed() {
+                    return ''
+                  },
+                },
+                methods: {
+                  ${dotlet}
+                  method() {
+                    ${dotlet}
+                    this.$emit('input')
+                  },
+                },
+              };
+            </script>
+          `
+        },
+        expected: expectedOutput
+      })
+
+      ComponentTestCase({
+        name: '@description',
+        description: 'class component definition',
+        options: {
+          filecontent: `
+            <script>
+              ${dotlet}
+              @Component({
+                props: {
+                  ${dotlet}
+                  prop: String,
+                },
+                computed: {
+                  ${dotlet}
+                  computed() {
+                    return ''
+                  },
+                }
+              })
+              export default class App extends Vue {
+                constructor() {
+                  ${dotlet}
+                  this.data = null
+                }
+
+                ${dotlet}
+                method() {
+                  ${dotlet}
+                  this.$emit('input')
+                }
+              };
+            </script>
+          `
+        },
+        expected: expectedOutput
+      })
+
+      ComponentTestCase({
+        name: '@description',
+        description: 'vue property decorator definition',
         options: {
           filecontent: `
             <script>

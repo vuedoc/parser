@@ -59,19 +59,28 @@ module.exports.JSDocTypeSpec = [
       'MyClass[]',
       'Object.<string, number>',
       'Object.<string, number>'
-    ]
+    ],
+    get expected() {
+      return this.values
+    }
   },
   {
     name: 'Closure syntax',
     values: [
       'function(string, boolean): number'
-    ]
+    ],
+    get expected() {
+      return this.values
+    }
   },
   {
     name: 'TypeScript syntax',
     values: [
       '(s: string, b: boolean) => number'
-    ]
+    ],
+    get expected() {
+      return this.values
+    }
   },
   {
     name: 'Nullable type ',

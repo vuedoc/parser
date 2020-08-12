@@ -91,6 +91,7 @@ ComponentTestCase({
         required: false,
         type: 'Number',
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -102,6 +103,7 @@ ComponentTestCase({
         required: false,
         type: 'string',
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -113,6 +115,7 @@ ComponentTestCase({
         required: false,
         type: [ 'String', 'Boolean' ],
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -124,6 +127,7 @@ ComponentTestCase({
         required: true,
         type: 'string',
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -135,6 +139,7 @@ ComponentTestCase({
         required: false,
         type: 'String',
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -146,6 +151,7 @@ ComponentTestCase({
         required: false,
         type: 'string',
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -157,6 +163,7 @@ ComponentTestCase({
         required: false,
         type: 'String',
         category: undefined,
+        version: undefined,
         visibility: 'public' },
       {
         kind: 'prop',
@@ -168,6 +175,7 @@ ComponentTestCase({
         required: false,
         type: 'Boolean',
         category: undefined,
+        version: undefined,
         visibility: 'public' }
     ],
     model: {
@@ -183,6 +191,7 @@ ComponentTestCase({
         name: 'syncedName',
         description: undefined,
         category: undefined,
+        version: undefined,
         keywords: [],
         dependencies: [
           'name'
@@ -195,6 +204,7 @@ ComponentTestCase({
         name: 'update:name',
         description: undefined,
         category: undefined,
+        version: undefined,
         arguments: [
           'name'
         ],
@@ -205,6 +215,7 @@ ComponentTestCase({
         name: 'add-to-count',
         description: undefined,
         category: undefined,
+        version: undefined,
         arguments: [
           {
             name: 'n',
@@ -220,6 +231,7 @@ ComponentTestCase({
         name: 'reset',
         description: undefined,
         category: undefined,
+        version: undefined,
         arguments: [],
         keywords: [],
         visibility: 'public' },
@@ -228,6 +240,7 @@ ComponentTestCase({
         name: 'return-value',
         description: undefined,
         category: undefined,
+        version: undefined,
         arguments: [],
         keywords: [],
         visibility: 'public' },
@@ -236,6 +249,7 @@ ComponentTestCase({
         name: 'on-input-change',
         description: undefined,
         category: undefined,
+        version: undefined,
         arguments: [
           {
             name: 'e',
@@ -251,6 +265,7 @@ ComponentTestCase({
         name: 'promise',
         description: undefined,
         category: undefined,
+        version: undefined,
         arguments: [],
         keywords: [],
         visibility: 'public' }
@@ -262,6 +277,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'onChildChanged',
         category: undefined,
+        version: undefined,
         syntax: [
           'onChildChanged(val: string, oldVal: string): void'
         ],
@@ -293,6 +309,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'onPersonChanged1',
         category: undefined,
+        version: undefined,
         syntax: [
           'onPersonChanged1(val: Person, oldVal: Person): void'
         ],
@@ -324,6 +341,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'addToCount',
         category: undefined,
+        version: undefined,
         syntax: [
           'addToCount(n: number): void'
         ],
@@ -348,6 +366,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'resetCount',
         category: undefined,
+        version: undefined,
         syntax: [
           'resetCount(): void'
         ],
@@ -364,6 +383,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'returnValue',
         category: undefined,
+        version: undefined,
         syntax: [
           'returnValue(): void'
         ],
@@ -380,6 +400,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'onInputChange',
         category: undefined,
+        version: undefined,
         syntax: [
           'onInputChange(e: unknow): void'
         ],
@@ -404,6 +425,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'promise',
         category: undefined,
+        version: undefined,
         syntax: [
           'promise(): void'
         ],
@@ -420,6 +442,7 @@ ComponentTestCase({
         kind: 'method',
         name: 'privateMethod',
         category: undefined,
+        version: undefined,
         syntax: [
           'privateMethod(): void'
         ],

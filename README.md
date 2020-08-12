@@ -66,6 +66,7 @@ npm install --save @vuedoc/parser
   ([`@type`](http://usejsdoc.org/tags-type.html),
    [`@param`](http://usejsdoc.org/tags-param.html),
    [`@returns`](http://usejsdoc.org/tags-returns.html),
+   [`@version`](http://usejsdoc.org/tags-version.html),
    [`@description`](http://usejsdoc.org/tags-description.html) and
    [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
@@ -73,15 +74,15 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| Name                  | Description                                                                                                                 |
-|-----------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                            |
-| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                                           |
-| `encoding`            | The file encoding. Default is `'utf8'`                                                                                      |
-| `features`            | The component features to parse and extract.                                                                                |
-|                       | Default features: `['name', 'description', 'keywords', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
-| `loaders`             | Use this option to define [custom loaders](#language-processing) for specific languages                                     |
-| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                                           |
+| Name                  | Description                                                                                                     |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------|
+| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                |
+| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                               |
+| `encoding`            | The file encoding. Default is `'utf8'`                                                                          |
+| `features`            | The component features to parse and extract.                                                                    |
+|                       | Default features: `['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
+| `loaders`             | Use this option to define [custom loaders](#language-processing) for specific languages                         |
+| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                               |
 
 ## Usage
 
@@ -277,6 +278,7 @@ interface PropEntry {
   required: boolean;
   describeModel: boolean;
   category?: string;
+  version?: string;
   description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
@@ -327,6 +329,7 @@ interface DataEntry {
   type: string;
   initialValue: string;
   category?: string;
+  version?: string;
   description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
@@ -380,6 +383,7 @@ interface ComputedEntry {
   name: string;
   dependencies: string[];
   category?: string;
+  version?: string;
   description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
@@ -462,6 +466,7 @@ export default {
       'closeModal(): void'
     ],
     category: undefined,
+    version: undefined,
     description: undefined,
     keywords: [],
     visibility: 'public'
@@ -494,6 +499,7 @@ interface MethodEntry {
   returns: MethodReturn;
   syntax: string[];
   category?: string;
+  version?: string;
   description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
@@ -599,6 +605,7 @@ interface EventEntry {
   name: string;
   arguments: EventArgument[];
   category?: string;
+  version?: string;
   description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
@@ -687,6 +694,7 @@ interface SlotEntry {
   name: string;
   props: SlotProp[];
   category?: string;
+  version?: string;
   description?: string;
   keywords: Keyword[];
   visibility: 'public' | 'protected' | 'private';
@@ -778,8 +786,9 @@ Parsing result:
 | `@slot`                 | `slots`         | Document slot defined in render function                                                  |
 | `@prop`                 | `slots`         | Provide the name, type, and description of a slot prop                                    |
 | `@mixin`                | `component`     | Force parsing of the exported item as a mixin component                                   |
-| `@description`, `@desc` | `*`             | Provide a general description of a symbol                                                 |
-| `@category`             | `*`             | Attache a category to an element                                                          |
+| `@description`, `@desc` | `all`           | Provide a general description of a symbol                                                 |
+| `@category`             | `all`           | Attach a category to an item                                                              |
+| `@version`              | `all`           | Assign a version to an item                                                               |
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
 | **TypeDoc**                                                                                                                           |
 | `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |

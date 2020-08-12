@@ -113,6 +113,7 @@ ComponentTestCase({
         arguments: [],
         description: 'event constructor description',
         category: undefined,
+        version: undefined,
         keywords: [],
         visibility: 'public'
       },
@@ -121,6 +122,7 @@ ComponentTestCase({
         arguments: [],
         description: 'event mounted description',
         category: undefined,
+        version: undefined,
         keywords: [],
         visibility: 'public'
       }
@@ -131,6 +133,7 @@ ComponentTestCase({
         params: [],
         description: 'method greet description',
         category: undefined,
+        version: undefined,
         keywords: [],
         syntax: [
           'greet(): void'
@@ -146,6 +149,7 @@ ComponentTestCase({
         params: [],
         description: 'method _protectedMethod description',
         category: undefined,
+        version: undefined,
         keywords: [],
         syntax: [
           '_protectedMethod(): void'
@@ -161,6 +165,7 @@ ComponentTestCase({
       { kind: 'computed',
         name: 'computedMsg',
         category: undefined,
+        version: undefined,
         dependencies: [ 'msg' ],
         description: 'computed computedMsg description',
         keywords: [],
@@ -169,6 +174,7 @@ ComponentTestCase({
       { kind: 'computed',
         name: '[Symbol.species]',
         category: undefined,
+        version: undefined,
         dependencies: [],
         description: 'computed [Symbol.species] description',
         keywords: [],
@@ -181,6 +187,7 @@ ComponentTestCase({
         name: 'msg',
         type: 'string',
         category: undefined,
+        version: undefined,
         description: 'data msg description',
         initialValue: '"Hello"',
         keywords: [],
@@ -191,6 +198,7 @@ ComponentTestCase({
         name: 'helloMsg',
         type: 'BinaryExpression',
         category: undefined,
+        version: undefined,
         description: 'data helloMsg with expression',
         initialValue: '\'Hello, \' + this.name',
         keywords: [],
@@ -202,6 +210,7 @@ ComponentTestCase({
         name: 'name',
         type: 'String',
         category: undefined,
+        version: undefined,
         required: false,
         default: undefined,
         describeModel: false,
@@ -263,6 +272,7 @@ ComponentTestCase({
         type: 'array',
         description: undefined,
         category: undefined,
+        version: undefined,
         initialValue: '[this.$router.currentRoute]',
         keywords: [],
         visibility: 'public'
@@ -273,6 +283,7 @@ ComponentTestCase({
         type: 'object',
         description: undefined,
         category: undefined,
+        version: undefined,
         initialValue: 'window.history.length',
         keywords: [],
         visibility: 'public'
@@ -283,6 +294,7 @@ ComponentTestCase({
         type: 'string',
         description: undefined,
         category: undefined,
+        version: undefined,
         initialValue: '"slide-left"',
         keywords: [],
         visibility: 'public'
@@ -293,6 +305,7 @@ ComponentTestCase({
         type: 'boolean',
         description: undefined,
         category: undefined,
+        version: undefined,
         initialValue: 'false',
         keywords: [],
         visibility: 'public'

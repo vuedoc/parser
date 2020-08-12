@@ -8,6 +8,7 @@ const TypeScriptLoader = require('./loader/typescript')
 
 const { Parser } = require('./lib/parser/Parser')
 const { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } = require('./lib/Enum')
+const { KeywordsUtils } = require('./lib/utils/KeywordsUtils')
 
 const DEFAULT_LOADERS = [
   Loader.extend('js', JavaScriptLoader),
@@ -71,7 +72,8 @@ module.exports.parseOptions = (options) => {
 module.exports.parse = (options) => this.parseOptions(options).then(() => new Promise((resolve) => {
   const component = {
     inheritAttrs: true,
-    errors: []
+    errors: [],
+    keywords: []
   }
 
   const parser = new Parser(options)
@@ -82,6 +84,11 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
 
   parser.on('error', ({ message }) => {
     component.errors.push(message)
+  })
+
+  parser.on('keywords', ({ value }) => {
+    component.keywords.push(...value)
+    KeywordsUtils.parseCommonEntryTags(component)
   })
 
   parser.on('end', () => resolve(component))
@@ -102,14 +109,6 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
       case Feature.model:
         parser.on(feature, (model) => {
           component[feature] = model
-        })
-        break
-
-      case Feature.keywords:
-        component[feature] = []
-
-        parser.on(feature, ({ value }) => {
-          component[feature] = value
         })
         break
 

@@ -7,7 +7,7 @@ ComponentTestCase({
       <script>
         /**
          * A Vue App Component
-         * @version 1.2
+         * @tag 1.2
          */
         export default new Vue({
           name: 'App',
@@ -34,7 +34,7 @@ ComponentTestCase({
     inheritAttrs: true,
     keywords: [
       {
-        name: 'version',
+        name: 'tag',
         description: '1.2' }
     ],
     events: [],
@@ -46,6 +46,7 @@ ComponentTestCase({
         name: 'url',
         type: 'object',
         category: undefined,
+        version: undefined,
         description: undefined,
         initialValue: 'context.url',
         keywords: [],
@@ -55,6 +56,7 @@ ComponentTestCase({
         name: 'contextUrl',
         type: 'object',
         category: undefined,
+        version: undefined,
         description: 'data contextUrl description',
         initialValue: 'context.url',
         keywords: [],
@@ -64,6 +66,7 @@ ComponentTestCase({
         name: 'contextNumber',
         type: 'number',
         category: undefined,
+        version: undefined,
         description: 'data contextNumber description',
         initialValue: '12',
         keywords: [],
@@ -74,6 +77,7 @@ ComponentTestCase({
         default: undefined,
         describeModel: false,
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         kind: 'prop',
@@ -86,6 +90,7 @@ ComponentTestCase({
       {
         description: undefined,
         category: undefined,
+        version: undefined,
         keywords: [],
         kind: 'slot',
         name: 'default',

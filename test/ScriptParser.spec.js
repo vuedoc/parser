@@ -84,6 +84,7 @@ describe('ScriptParser', () => {
         name: 'pages',
         dependencies: [ 'links', 'site' ],
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         visibility: 'public'
@@ -93,6 +94,7 @@ describe('ScriptParser', () => {
         name: 'currentYear',
         type: 'CallExpression',
         category: undefined,
+        version: undefined,
         description: undefined,
         initialValue: 'new Date().getFullYear()',
         keywords: [],
@@ -106,6 +108,7 @@ describe('ScriptParser', () => {
         default: undefined,
         describeModel: false,
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         visibility: 'public'
@@ -117,6 +120,7 @@ describe('ScriptParser', () => {
         default: undefined,
         describeModel: false,
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         visibility: 'public'
@@ -177,6 +181,7 @@ describe('ScriptParser', () => {
         name: 'pages',
         dependencies: [ 'links', 'site' ],
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         visibility: 'public'
@@ -186,6 +191,7 @@ describe('ScriptParser', () => {
         name: 'currentYear',
         type: 'CallExpression',
         category: undefined,
+        version: undefined,
         description: undefined,
         initialValue: 'new Date().getFullYear()',
         keywords: [],
@@ -199,6 +205,7 @@ describe('ScriptParser', () => {
         default: undefined,
         describeModel: false,
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         visibility: 'public'
@@ -210,6 +217,7 @@ describe('ScriptParser', () => {
         default: undefined,
         describeModel: false,
         category: undefined,
+        version: undefined,
         description: undefined,
         keywords: [],
         visibility: 'public'
@@ -237,17 +245,19 @@ describe('ScriptParser', () => {
   ComponentTestCase({
     name: 'parseComment() with disbaled description',
     options: {
-      features: [ 'keywords' ],
+      features: [ 'name' ],
       filecontent: `
         <script>
           /**
            * Disabled description
+           * @name InputText
            */
           export default {}
         </script>
       `
     },
     expected: {
+      name: 'InputText',
       description: undefined,
       keywords: [],
       errors: []
@@ -255,21 +265,23 @@ describe('ScriptParser', () => {
   })
 
   ComponentTestCase({
-    name: 'parseComment() with disabled keywords',
+    name: 'parseComment() with disabled name',
     options: {
       features: [ 'description' ],
       filecontent: `
         <script>
           /**
            * Component description
+           * @name InputText
            */
           export default {}
         </script>
       `
     },
     expected: {
+      name: undefined,
       description: 'Component description',
-      keywords: undefined,
+      keywords: [],
       errors: []
     }
   })

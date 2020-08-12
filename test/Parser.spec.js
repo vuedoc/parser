@@ -545,12 +545,11 @@ describe('Parser', () => {
         })
       })
 
-      it('should ignore the component keywords with missing `keywords` in options.features', (done) => {
+      it('should ignore the component keywords with missing `description` in options.features', (done) => {
         const filename = './fixtures/checkbox.vue'
         const script = `
           /**
-           * @name my-checkbox
-           * @since 1.0.0
+           * hello
            */
           export default {}
         `
@@ -561,7 +560,7 @@ describe('Parser', () => {
         }
 
         new Parser(options).walk()
-          .on('keywords', () => done(new Error('Should ignore the component keywords')))
+          .on('description', () => done(new Error('Should ignore the component description')))
           .on('end', done)
       })
     })
@@ -1683,6 +1682,7 @@ describe('Parser', () => {
         kind: 'data',
         keywords: [],
         category: undefined,
+        version: undefined,
         visibility: 'public',
         description: 'ID data',
         initialValue: '12',
@@ -1717,6 +1717,7 @@ describe('Parser', () => {
         kind: 'data',
         keywords: [],
         category: undefined,
+        version: undefined,
         visibility: 'public',
         description: 'Enabled data',
         initialValue: 'false',
@@ -1753,6 +1754,7 @@ describe('Parser', () => {
         kind: 'data',
         keywords: [],
         category: undefined,
+        version: undefined,
         visibility: 'public',
         description: 'ID data',
         initialValue: '"Hello"',
@@ -1789,6 +1791,7 @@ describe('Parser', () => {
         kind: 'data',
         keywords: [],
         category: undefined,
+        version: undefined,
         visibility: 'public',
         description: 'ID data',
         initialValue: '"Hello"',
@@ -1831,6 +1834,7 @@ describe('Parser', () => {
         visibility: 'private',
         description: 'ID computed prop',
         category: undefined,
+        version: undefined,
         dependencies: [ 'value', 'name' ]
       }
 
@@ -1870,6 +1874,7 @@ describe('Parser', () => {
         name: 'idGetter',
         kind: 'computed',
         category: undefined,
+        version: undefined,
         keywords: [],
         visibility: 'public',
         description: 'ID computed prop',
