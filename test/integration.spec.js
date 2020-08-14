@@ -1669,6 +1669,13 @@ describe('Integration', () => {
           return this.value
         }
       },
+      {
+        tag: 'see',
+        value: 'http://mdn.com',
+        get expected() {
+          return this.value
+        }
+      },
     ]
 
     TagSpecs.forEach(({ tag, value, expected }) => {

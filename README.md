@@ -70,6 +70,7 @@ npm install --save @vuedoc/parser
    [`@since`](http://usejsdoc.org/tags-since.html),
    [`@description`](http://usejsdoc.org/tags-description.html),
    [`@deprecated`](http://usejsdoc.org/tags-deprecated.html),
+   [`@see`](http://usejsdoc.org/tags-deprecated.html),
    [`@author`](http://usejsdoc.org/tags-author.html) and
    [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags)
@@ -791,13 +792,14 @@ Parsing result:
 | `@prop`                 | `slots`         | Provide the name, type, and description of a slot prop                                    |
 | `@mixin`                | `component`     | Force parsing of the exported item as a mixin component                                   |
 | `@description`, `@desc` | `all`           | Provide a general description of a symbol                                                 |
-| `@category`             | `all`           | Attach a category to an item                                                              |
 | `@version`              | `all`           | Assign a version to an item                                                               |
 | `@since`                | `all`           | Indicate that an item was added in a specific version                                     |
 | `@author`               | `all`           | Identify authors of an item                                                               |
 | `@deprecated`           | `all`           | Mark an item as being deprecated                                                          |
+| `@see`                  | `all`           | Allow to refer to a resource that may be related to the item being documented             |
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
 | **TypeDoc**                                                                                                                           |
+| `@category`             | `all`           | Attach a category to an item                                                              |
 | `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |
 | **Visibilities**                                                                                                                      |
 | `@public`               | `*`             | Mark a symbol as public                                                                   |
