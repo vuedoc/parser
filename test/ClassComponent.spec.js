@@ -14,7 +14,7 @@ ComponentTestCase({
         /**
          * A class component element
          *
-         * @author Jon Snow
+         * @contributor Jon Snow
          */
         @Component({
           inheritAttrs: false,
@@ -103,7 +103,7 @@ ComponentTestCase({
     errors: [],
     keywords: [
       {
-        name: 'author',
+        name: 'contributor',
         description: 'Jon Snow'
       }
     ],

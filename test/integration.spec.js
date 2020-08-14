@@ -107,7 +107,7 @@ function testComponent (optionsToParse) {
 
   it('should have keywords', () => {
     assert.deepEqual(component.keywords, [
-      { name: 'author', description: 'Sébastien' }
+      { name: 'contributor', description: 'Sébastien' }
     ])
   })
 
@@ -1639,21 +1639,35 @@ describe('Integration', () => {
   {
     const TagSpecs = [
       {
+        tag: 'author',
+        value: [
+          'Arya Stark',
+          'Jane Smith <jsmith@example.com>',
+        ],
+        get expected() {
+          return this.value
+        }
+      },
+      {
         tag: 'version',
         value: '1.2.3',
-        expected: '1.2.3',
+        get expected() {
+          return this.value
+        }
       },
       {
         tag: 'since',
         value: '1.2.3',
-        expected: '1.2.3',
+        get expected() {
+          return this.value
+        }
       },
     ]
 
-    TagSpecs.forEach(({ tag, value, expected = value }, index) => {
-      const dotlet = value
-        ? `/** @${tag} ${value} */`
-        : `/** @${tag} */`
+    TagSpecs.forEach(({ tag, value, expected }) => {
+      const dotlet = value instanceof Array
+        ? `/** \n${value.map((item) => '@' + tag + ' ' + item).join('\n')}\n **/`
+        : `/** @${tag} ${value}*/`
 
       const expectedOutput = {
         description: undefined,

@@ -68,10 +68,11 @@ npm install --save @vuedoc/parser
    [`@returns`](http://usejsdoc.org/tags-returns.html),
    [`@version`](http://usejsdoc.org/tags-version.html),
    [`@since`](http://usejsdoc.org/tags-since.html),
-   [`@description`](http://usejsdoc.org/tags-description.html) and
+   [`@description`](http://usejsdoc.org/tags-description.html),
+   [`@author`](http://usejsdoc.org/tags-author.html) and
    [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
-- [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags) support
-  (`@param <param name>`, `@return(s)`, `@hidden`, `@category`)
+- [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags)
+  support (`@param <param name>`, `@return(s)`, `@hidden`, `@category`)
 
 ## Options
 
@@ -109,7 +110,7 @@ This will print this JSON output:
   "description": "A simple checkbox component" // The component description
   // Attached component keywords
   "keywords": [
-    { "name": "author", "description": "Sébastien" }
+    { "name": "contributor", "description": "Sébastien" }
   ],
   "props": [ ... ],
   "data": [ ... ],
@@ -140,7 +141,7 @@ export default {
 }
 ```
 
-You can also use the `@name` keyword to set the component name:
+You can also use the `@name` tag to set the component name:
 
 ```js
 /**
@@ -748,7 +749,6 @@ You can attach keywords to any comment and then extract them using the parser.
 /**
  * Component description
  *
- * @author Arya Stark
  * @license MIT
  */
 export default { /* ... */ }
@@ -763,10 +763,6 @@ Parsing result:
   "name": "my-checkbox",
   "description": "Component description",
   "keywords": [
-    {
-      "name": "author",
-      "description": "Arya Stark"
-    },
     {
       "name": "license",
       "description": "MIT"
@@ -797,6 +793,7 @@ Parsing result:
 | `@category`             | `all`           | Attach a category to an item                                                              |
 | `@version`              | `all`           | Assign a version to an item                                                               |
 | `@since`                | `all`           | Indicate that an item was added in a specific version                                     |
+| `@author`               | `all`           | Identify authors of an item                                                               |
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
 | **TypeDoc**                                                                                                                           |
 | `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |

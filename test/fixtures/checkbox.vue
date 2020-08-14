@@ -5,7 +5,7 @@
     <slot></slot>
     <!-- Use this slot to set the checkbox label -->
     <slot name="label">Unamed checkbox</slot>
-    <!-- 
+    <!--
       This
       is multiline description
     -->
@@ -20,8 +20,8 @@ const dynamic2 = 'dynamicMode'
 
 /**
  * A simple checkbox component
- * 
- * @author Sébastien
+ *
+ * @contributor Sébastien
  */
 export default {
   name: 'checkbox',
