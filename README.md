@@ -69,6 +69,7 @@ npm install --save @vuedoc/parser
    [`@version`](http://usejsdoc.org/tags-version.html),
    [`@since`](http://usejsdoc.org/tags-since.html),
    [`@description`](http://usejsdoc.org/tags-description.html),
+   [`@deprecated`](http://usejsdoc.org/tags-deprecated.html),
    [`@author`](http://usejsdoc.org/tags-author.html) and
    [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags)
@@ -794,6 +795,7 @@ Parsing result:
 | `@version`              | `all`           | Assign a version to an item                                                               |
 | `@since`                | `all`           | Indicate that an item was added in a specific version                                     |
 | `@author`               | `all`           | Identify authors of an item                                                               |
+| `@deprecated`           | `all`           | Mark an item as being deprecated                                                          |
 | `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
 | **TypeDoc**                                                                                                                           |
 | `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |

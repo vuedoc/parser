@@ -1635,7 +1635,7 @@ describe('Integration', () => {
     });
   }
 
-  // @version, @tag
+  // @author, @version, @since, @deprecated
   {
     const TagSpecs = [
       {
@@ -1658,6 +1658,13 @@ describe('Integration', () => {
       {
         tag: 'since',
         value: '1.2.3',
+        get expected() {
+          return this.value
+        }
+      },
+      {
+        tag: 'deprecated',
+        value: 'since version 2.0',
         get expected() {
           return this.value
         }
