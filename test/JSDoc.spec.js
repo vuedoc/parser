@@ -160,11 +160,11 @@ describe('JSDoc', () => {
     })
   })
 
-  describe('parseReturnKeyword(text)', () => {
+  describe('parseReturnsKeyword(text)', () => {
     it('should parse with just a type', () => {
       const comment = '{number}'
       const expected = { type: 'number', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -172,7 +172,7 @@ describe('JSDoc', () => {
     it('should parse with just a template type', () => {
       const comment = '{Record<number>}'
       const expected = { type: 'Record<number>', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -180,7 +180,7 @@ describe('JSDoc', () => {
     it('should parse with just a complex template type', () => {
       const comment = '{Record<number,string>}'
       const expected = { type: 'Record<number,string>', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -188,7 +188,7 @@ describe('JSDoc', () => {
     it('should parse with just a complex template type (2)', () => {
       const comment = '{Record<number, string>}'
       const expected = { type: 'Record<number, string>', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -196,7 +196,7 @@ describe('JSDoc', () => {
     it('should parse with just a complex template type (3)', () => {
       const comment = '{Record<number, string[]>}'
       const expected = { type: 'Record<number, string[]>', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -204,7 +204,7 @@ describe('JSDoc', () => {
     it('should parse with just a complex template type (4)', () => {
       const comment = '{Record<T, K extends keyof T>}'
       const expected = { type: 'Record<T, K extends keyof T>', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -212,7 +212,7 @@ describe('JSDoc', () => {
     it('should parse with just a complex template type (5)', () => {
       const comment = '{{new(): T; }}'
       const expected = { type: '{new(): T; }', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -220,7 +220,7 @@ describe('JSDoc', () => {
     it('should parse with just a complex template type (6)', () => {
       const comment = '{new () => A}'
       const expected = { type: 'new () => A', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -228,7 +228,7 @@ describe('JSDoc', () => {
     it('should parse @return keyword', () => {
       const comment = '{number} The x+y value.'
       const expected = { type: 'number', description: 'The x+y value.' }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -236,7 +236,7 @@ describe('JSDoc', () => {
     it('should parse @return keyword with an empty retuning type', () => {
       const comment = '{} The x+y value.'
       const expected = { type: 'any', description: 'The x+y value.' }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -244,7 +244,7 @@ describe('JSDoc', () => {
     it('should parse @return keyword with missing retuning type', () => {
       const comment = 'The x+y value.'
       const expected = { type: 'any', description: 'The x+y value.' }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })
@@ -252,7 +252,7 @@ describe('JSDoc', () => {
     it('should parse @return keyword with malformated input', () => {
       const comment = ''
       const expected = { type: 'any', description: undefined }
-      const result = JSDoc.parseReturnKeyword(comment)
+      const result = JSDoc.parseReturnsKeyword(comment)
 
       expect(result).toEqual(expected)
     })

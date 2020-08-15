@@ -184,4 +184,111 @@ describe('PropParser', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '@kind function',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              /**
+               * @default identity function
+               * @kind function
+               * @syntax regexObj.exec(str: string): any[]
+               * @param {string} x - the x param description
+               * @returns the return value description
+               */
+              functionPropWithDefaultAsKeyword: {
+                type: Function,
+                default: (x) => x
+              },
+              /**
+               * The input validation function
+               * @kind function
+               * @param {any} value - User input value to validate
+               * @returns {boolean} - \`true\` if validation succeeds; \`false\` otherwise.
+               */
+              validator: {
+                type: Function,
+                default: (value) => !Number.isNaN(value)
+              },
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      props: [
+        {
+          default: 'identity function',
+          describeModel: false,
+          category: undefined,
+          description: undefined,
+          version: undefined,
+          keywords: [],
+          kind: 'prop',
+          name: 'function-prop-with-default-as-keyword',
+          required: false,
+          type: 'Function',
+          visibility: 'public',
+          function: {
+            name: 'functionPropWithDefaultAsKeyword',
+            description: undefined,
+            keywords: [],
+            syntax: [
+              'regexObj.exec(str: string): any[]'
+            ],
+            params: [
+              {
+                name: 'x',
+                type: 'string',
+                description: 'the x param description',
+                defaultValue: undefined,
+                rest: false
+              }
+            ],
+            returns: {
+              type: 'unknow',
+              description: 'the return value description'
+            }
+          },
+        },
+        {
+          default: '(value) => !Number.isNaN(value)',
+          describeModel: false,
+          category: undefined,
+          version: undefined,
+          description: 'The input validation function',
+          keywords: [],
+          kind: 'prop',
+          name: 'validator',
+          required: false,
+          type: 'Function',
+          visibility: 'public',
+          function: {
+            name: 'validator',
+            description: 'The input validation function',
+            keywords: [],
+            syntax: [
+              'function validator(value: any): boolean'
+            ],
+            params: [
+              {
+                name: 'value',
+                type: 'any',
+                description: 'User input value to validate',
+                defaultValue: undefined,
+                rest: false
+              }
+            ],
+            returns: {
+              type: 'boolean',
+              description: '`true` if validation succeeds; `false` otherwise.'
+            }
+          }
+        },
+      ]
+    }
+  })
 })

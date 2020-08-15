@@ -71,6 +71,7 @@ npm install --save @vuedoc/parser
    [`@description`](http://usejsdoc.org/tags-description.html),
    [`@deprecated`](http://usejsdoc.org/tags-deprecated.html),
    [`@see`](http://usejsdoc.org/tags-deprecated.html),
+   [`@kind`](http://usejsdoc.org/tags-kind.html),
    [`@author`](http://usejsdoc.org/tags-author.html) and
    [`@ignore`](http://usejsdoc.org/tags-ignore.html) tags)
 - [TypeDoc tags](https://typedoc.org/guides/doccomments/#supported-tags)
@@ -245,15 +246,19 @@ export default {
 
 #### Special tags for props
 
-- `@type {typeName}`: Commented prop will use provided type name as type
-  instead of type in source code. This option may be helpful in case the
-  prop type is a complex object or a function
-- `@default {value}`: Commented prop will use the provided value as default
-  prop value. This option may be helpful in case the prop type is a complex
-  object or function
+- `@type {typeName}`<br>
+  Commented prop will use provided type name as type instead of type in source
+  code. This option may be helpful in case the prop type is a complex object or
+  a function
+- `@default {value}`<br>
+  Commented prop will use the provided value as default prop value. This option
+  may be helpful in case the prop type is a complex object or function
+- `@kind {kindName}`<br>
+  Force parsing of a prop as a function
 
 ```js
 export default {
+  name: 'NumberInput',
   props: {
     /**
      * Custom default value
@@ -266,9 +271,19 @@ export default {
         // complex code
         return anythingExpression()
       }
-    }
-  }
-}
+    },
+    /**
+     * The input validation function
+     * @kind function
+     * @param {any} value - User input value to validate
+     * @returns {boolean} - `true` if validation succeeds; `false` otherwise.
+     */
+    validator: {
+      type: Function,
+      default: (value) => !Number.isNaN(value)
+    },
+  },
+};
 ```
 
 #### Prop Entry Interface
@@ -781,6 +796,7 @@ Parsing result:
 | `@type`                 | `props`, `data` | Provide a type expression identifying the type of value that a prop or a data may contain |
 | `@default`              | `props`         | Provide a default value of a prop                                                         |
 | `@model`                | `props`         | Mark a prop as `v-model`                                                                  |
+| `@kind`                 | `props`         | Used to document what kind of symbol is being documented                                  |
 | `@initialValue`         | `data`          | Provide an initial value of a data                                                        |
 | `@method`               | `methods`       | Force the name of a specific method                                                       |
 | `@syntax`               | `methods`       | Provide the custom method syntax                                                          |
