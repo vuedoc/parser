@@ -1,4 +1,4 @@
-const JavaScriptLoader = require('./javascript')
+const JavaScriptLoader = require('./javascript');
 
 /**
  * @note Don't fotget to install `typescript` and `@types/node` dependencies
@@ -6,4 +6,4 @@ const JavaScriptLoader = require('./javascript')
  */
 class TypeScriptLoader extends JavaScriptLoader {}
 
-module.exports = TypeScriptLoader
+module.exports = TypeScriptLoader;

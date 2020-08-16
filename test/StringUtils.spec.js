@@ -1,4 +1,4 @@
-const { StringUtils } = require('../lib/utils/StringUtils')
+const { StringUtils } = require('../lib/utils/StringUtils');
 
 /* global describe it expect */
 
@@ -9,7 +9,7 @@ describe('StringUtils', () => {
       [ 'HelloWorld', 'hello-world' ],
       [ 'HelloWorldItsMe', 'hello-world-its-me' ],
     ].forEach(([ camelCase, kebabCase ]) => it(`${camelCase} -> ${kebabCase}`, () => {
-      expect(StringUtils.toKebabCase(camelCase)).toEqual(kebabCase)
+      expect(StringUtils.toKebabCase(camelCase)).toEqual(kebabCase);
     }));
-  })
-})
+  });
+});

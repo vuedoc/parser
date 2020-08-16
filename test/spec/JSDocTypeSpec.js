@@ -61,7 +61,7 @@ module.exports.JSDocTypeSpec = [
       'Object.<string, number>'
     ],
     get expected() {
-      return this.values
+      return this.values;
     }
   },
   {
@@ -70,7 +70,7 @@ module.exports.JSDocTypeSpec = [
       'function(string, boolean): number'
     ],
     get expected() {
-      return this.values
+      return this.values;
     }
   },
   {
@@ -79,7 +79,7 @@ module.exports.JSDocTypeSpec = [
       '(s: string, b: boolean) => number'
     ],
     get expected() {
-      return this.values
+      return this.values;
     }
   },
   {
@@ -100,4 +100,4 @@ module.exports.JSDocTypeSpec = [
       'number'
     ]
   },
-]
+];

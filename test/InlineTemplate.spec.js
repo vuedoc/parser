@@ -1,4 +1,4 @@
-const parser = require('..')
+const parser = require('..');
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -14,7 +14,7 @@ describe('#44 - Inline Template', () => {
           })
         </script>
       `
-    }
+    };
 
     return parser.parse(options).then(({ slots }) => {
       expect(slots).toEqual([
@@ -27,9 +27,9 @@ describe('#44 - Inline Template', () => {
           name: 'default',
           props: []
         }
-      ])
-    })
-  })
+      ]);
+    });
+  });
 
   it('should successfully parse component with inline litteral template', () => {
     const options = {
@@ -46,7 +46,7 @@ describe('#44 - Inline Template', () => {
           })
         </script>
       `
-    }
+    };
 
     return parser.parse(options).then((component) => {
       expect(component).toEqual({
@@ -77,7 +77,7 @@ describe('#44 - Inline Template', () => {
               name: 'input',
               arguments: [] } ],
         methods: []
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

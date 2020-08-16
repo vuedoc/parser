@@ -1,5 +1,5 @@
-const assert = require('assert')
-const { Parser } = require('../lib/parser/Parser')
+const assert = require('assert');
+const { Parser } = require('../lib/parser/Parser');
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -28,7 +28,7 @@ const template = `
       <template></template>
     </label>
   </div>
-`
+`;
 
 const script = `
   const componentName = 'checkboxPointer'
@@ -359,131 +359,131 @@ const script = `
       this.$emit('render-event', this.value)
     }
   })
-`
+`;
 
 const events = [
   'name', 'description', 'keywords',
   'prop', 'data', 'computed', 'method',
   'event', 'slot'
-]
+];
 
 describe('Parser', () => {
   describe('validateOptions(options)', () => {
     it('should failed with missing options.source', () => {
-      const options = {}
+      const options = {};
 
-      assert.throws(() => Parser.validateOptions(options), /options.source is required/)
-    })
+      assert.throws(() => Parser.validateOptions(options), /options.source is required/);
+    });
 
     it('should successfully parse options', () => {
-      const options = { source: {} }
+      const options = { source: {} };
 
-      assert.doesNotThrow(() => Parser.validateOptions(options))
-    })
+      assert.doesNotThrow(() => Parser.validateOptions(options));
+    });
 
     it('should parse with an invalid type of options.features', () => {
-      const options = { source: {}, features: 'events' }
+      const options = { source: {}, features: 'events' };
 
       assert.throws(() => Parser.validateOptions(options),
-        /options\.features must be an array/)
-    })
+        /options\.features must be an array/);
+    });
 
     it('should parse with an invalid options.features', () => {
-      const options = { source: {}, features: [ 'invalid-feature' ] }
+      const options = { source: {}, features: [ 'invalid-feature' ] };
 
       assert.throws(() => Parser.validateOptions(options),
-        /Unknow 'invalid-feature' feature\. Supported features:/)
-    })
+        /Unknow 'invalid-feature' feature\. Supported features:/);
+    });
 
     it('should parse with a valid options.features', () => {
-      const options = { source: {}, features: [ 'name', 'events' ] }
+      const options = { source: {}, features: [ 'name', 'events' ] };
 
-      assert.doesNotThrow(() => Parser.validateOptions(options))
-    })
-  })
+      assert.doesNotThrow(() => Parser.validateOptions(options));
+    });
+  });
 
   describe('getEventName(feature)', () => {
     it('should succed with a singular name', () => {
-      const feature = 'name'
-      const expected = feature
+      const feature = 'name';
+      const expected = feature;
 
-      assert.equal(Parser.getEventName(feature), expected)
-    })
+      assert.equal(Parser.getEventName(feature), expected);
+    });
 
     it('should succed with a plural name', () => {
-      const feature = 'methods'
-      const expected = 'method'
+      const feature = 'methods';
+      const expected = 'method';
 
-      assert.equal(Parser.getEventName(feature), expected)
-    })
-  })
+      assert.equal(Parser.getEventName(feature), expected);
+    });
+  });
 
   describe('constructor(options)', () => {
     it('should successfully create new object', () => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const options = {
         source: { script, template },
         filename
-      }
+      };
 
-      const parser = new Parser(options)
+      const parser = new Parser(options);
 
-      expect(parser.options.source.template).toBe(template)
-      expect(parser.options.source.script).toBe(script)
-      expect(parser.scope).toEqual({})
-    })
+      expect(parser.options.source.template).toBe(template);
+      expect(parser.options.source.script).toBe(script);
+      expect(parser.scope).toEqual({});
+    });
 
     it('should successfully create new object with missing script', () => {
       const options = {
         source: { template }
-      }
+      };
 
-      const parser = new Parser(options)
+      const parser = new Parser(options);
 
-      assert.equal(parser.options.source.script, null)
-      assert.equal(parser.options.source.template, template)
-    })
+      assert.equal(parser.options.source.script, null);
+      assert.equal(parser.options.source.template, template);
+    });
 
     it('should successfully create new object with empty script', () => {
       const options = {
         source: { template, script: '' }
-      }
+      };
 
-      const parser = new Parser(options)
+      const parser = new Parser(options);
 
-      assert.equal(parser.options.source.script, '')
-      assert.equal(parser.options.source.template, template)
-    })
-  })
+      assert.equal(parser.options.source.script, '');
+      assert.equal(parser.options.source.template, template);
+    });
+  });
 
   describe('walk()', () => {
     it('should successfully create new object', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const options = {
         source: { script, template },
         filename
-      }
+      };
 
-      const parser = new Parser(options)
+      const parser = new Parser(options);
 
-      parser.on('end', done)
-      parser.walk()
-    })
+      parser.on('end', done);
+      parser.walk();
+    });
 
     describe('features.length === 0', () => {
       it('should ignore all features', (done) => {
-        const options = { source: { script }, features: [] }
-        const parser = new Parser(options)
+        const options = { source: { script }, features: [] };
+        const parser = new Parser(options);
 
-        const walker = parser.walk().on('end', done)
+        const walker = parser.walk().on('end', done);
 
         Parser.SUPPORTED_FEATURES.forEach((feature) => {
           walker.on(feature, () => {
-            throw new Error(`Should ignore the component '${feature}' feature`)
-          })
-        })
-      })
-    })
+            throw new Error(`Should ignore the component '${feature}' feature`);
+          });
+        });
+      });
+    });
 
     describe('description', () => {
       const script = `
@@ -497,33 +497,33 @@ describe('Parser', () => {
          * whitespaces
          */
         export default {}
-      `
+      `;
 
       it('should successfully emit component description', (done) => {
-        const options = { source: { script } }
+        const options = { source: { script } };
 
         new Parser(options).walk().on('description', ({ value }) => {
-          assert.equal(value, 'Component description\non multiline\n\nwith preserve\n\n\nwhitespaces')
+          assert.equal(value, 'Component description\non multiline\n\nwith preserve\n\n\nwhitespaces');
 
-          done()
-        })
-      })
+          done();
+        });
+      });
 
       it('should ignore the component description with missing `description` in options.features', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const options = {
           source: { script },
           filename,
           features: [ 'name' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('description', () => {
-            throw new Error('Should ignore the component description')
+            throw new Error('Should ignore the component description');
           })
-          .on('end', done)
-      })
-    })
+          .on('end', done);
+      });
+    });
 
     describe('keywords', () => {
       it('should successfully emit component keywords by ignoring name, slot and mixin', (done) => {
@@ -535,35 +535,35 @@ describe('Parser', () => {
            * @tagtest 1.0.0
            */
           export default {}
-        `
+        `;
 
-        const options = { source: { script } }
+        const options = { source: { script } };
 
         new Parser(options).walk().on('keywords', ({ value }) => {
-          expect(value).toEqual([ { name: 'tagtest', description: '1.0.0' } ])
-          done()
-        })
-      })
+          expect(value).toEqual([ { name: 'tagtest', description: '1.0.0' } ]);
+          done();
+        });
+      });
 
       it('should ignore the component keywords with missing `description` in options.features', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           /**
            * hello
            */
           export default {}
-        `
+        `;
         const options = {
           source: { script },
           filename,
           features: [ 'name' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('description', () => done(new Error('Should ignore the component description')))
-          .on('end', done)
-      })
-    })
+          .on('end', done);
+      });
+    });
 
     describe('export default expression', () => {
       it('should successfully emit component name', (done) => {
@@ -575,23 +575,23 @@ describe('Parser', () => {
           }
 
           export default component
-        `
-        const options = { source: { script } }
+        `;
+        const options = { source: { script } };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'hello')
-          done()
-        })
-      })
+          assert.equal(value, 'hello');
+          done();
+        });
+      });
 
       it('should failed with missing exporting identifier', (done) => {
         const script = `
           export default component
-        `
-        const options = { source: { script } }
+        `;
+        const options = { source: { script } };
 
-        new Parser(options).walk().on('end', () => done())
-      })
+        new Parser(options).walk().on('end', () => done());
+      });
 
       it('should not fail when there is a top-level non-assignment expression', (done) => {
         const script = `
@@ -604,34 +604,34 @@ describe('Parser', () => {
           }
 
           export default component
-        `
-        const options = { source: { script } }
+        `;
+        const options = { source: { script } };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'hello')
-          done()
-        })
-      })
-    })
+          assert.equal(value, 'hello');
+          done();
+        });
+      });
+    });
 
     describe('parseTemplate()', () => {
       it('should successfully emit default slot', (done) => {
-        const filename = './fixtures/checkbox.vue'
-        const template = '<slot/>'
+        const filename = './fixtures/checkbox.vue';
+        const template = '<slot/>';
         const options = {
           source: { template },
           filename
-        }
+        };
 
         new Parser(options).walk().on('slot', (slot) => {
-          assert.equal(slot.name, 'default')
-          assert.equal(slot.description, undefined)
-          done()
-        })
-      })
+          assert.equal(slot.name, 'default');
+          assert.equal(slot.description, undefined);
+          done();
+        });
+      });
 
       it('should successfully emit default slot with description', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
             <!-- a comment -->
@@ -640,21 +640,21 @@ describe('Parser', () => {
             <!-- default slot -->
             <slot/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename
-        }
+        };
 
         new Parser(options).walk().on('slot', (slot) => {
-          assert.equal(slot.name, 'default')
-          assert.equal(slot.description, 'default slot')
-          done()
-        })
-      })
+          assert.equal(slot.name, 'default');
+          assert.equal(slot.description, 'default slot');
+          done();
+        });
+      });
 
       it('should ignore the component slots with missing `slots` in options.features', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
             <!-- a comment -->
@@ -662,19 +662,19 @@ describe('Parser', () => {
             <!-- default slot -->
             <slot/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename,
           features: [ 'name' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('slot', () => {
-            throw new Error('Should ignore the component slots')
+            throw new Error('Should ignore the component slots');
           })
-          .on('end', done)
-      })
+          .on('end', done);
+      });
 
       it('should successfully emit defining template event with v-on: prefix', (done) => {
         const template = `
@@ -683,22 +683,22 @@ describe('Parser', () => {
               type="text"
               v-on:input="$emit('input', $event)"/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input')
-            assert.equal(event.description, undefined)
-            assert.equal(event.visibility, 'public')
-            assert.deepEqual(event.keywords, [])
-            done()
-          })
-      })
+            assert.equal(event.name, 'input');
+            assert.equal(event.description, undefined);
+            assert.equal(event.visibility, 'public');
+            assert.deepEqual(event.keywords, []);
+            done();
+          });
+      });
 
       it('should successfully emit defining template event with v-on: prefix and a description', (done) => {
         const template = `
@@ -708,22 +708,22 @@ describe('Parser', () => {
               type="text"
               v-on:input="$emit('input', $event)"/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input')
-            assert.equal(event.description, 'Emit the input event')
-            assert.equal(event.visibility, 'public')
-            assert.deepEqual(event.keywords, [])
-            done()
-          })
-      })
+            assert.equal(event.name, 'input');
+            assert.equal(event.description, 'Emit the input event');
+            assert.equal(event.visibility, 'public');
+            assert.deepEqual(event.keywords, []);
+            done();
+          });
+      });
 
       it('should successfully emit defining template event with v-on: prefix and a visibility', (done) => {
         const template = `
@@ -733,23 +733,23 @@ describe('Parser', () => {
               type="text"
               v-on:input="$emit('input', $event)"/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ],
           ignoredVisibilities: [ 'protected' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input')
-            assert.equal(event.description, undefined)
-            assert.equal(event.visibility, 'private')
-            assert.deepEqual(event.keywords, [])
-            done()
-          })
-      })
+            assert.equal(event.name, 'input');
+            assert.equal(event.description, undefined);
+            assert.equal(event.visibility, 'private');
+            assert.deepEqual(event.keywords, []);
+            done();
+          });
+      });
 
       it('should successfully emit defining template event with v-on: prefix and meta info', (done) => {
         const template = `
@@ -764,25 +764,25 @@ describe('Parser', () => {
               type="text"
               v-on:input="$emit('input', $event)"/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ],
           ignoredVisibilities: [ 'private' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input')
-            assert.equal(event.description, 'Emit the input event')
-            assert.equal(event.visibility, 'protected')
+            assert.equal(event.name, 'input');
+            assert.equal(event.description, 'Emit the input event');
+            assert.equal(event.visibility, 'protected');
             assert.deepEqual(event.keywords, [
               { name: 'value', description: 'A input value' }
-            ])
-            done()
-          })
-      })
+            ]);
+            done();
+          });
+      });
 
       it('should successfully emit defining template event with the @ prefix and meta info', (done) => {
         const template = `
@@ -797,25 +797,25 @@ describe('Parser', () => {
               type="text"
               @input="$emit('input', $event)"/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ],
           ignoredVisibilities: [ 'private' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input')
-            assert.equal(event.description, 'Emit the input event')
-            assert.equal(event.visibility, 'protected')
+            assert.equal(event.name, 'input');
+            assert.equal(event.description, 'Emit the input event');
+            assert.equal(event.visibility, 'protected');
             assert.deepEqual(event.keywords, [
               { name: 'value', description: 'A input value' }
-            ])
-            done()
-          })
-      })
+            ]);
+            done();
+          });
+      });
 
       it('should successfully emit defining template events with both v-on: and @ prefixes', (done) => {
         const template = `
@@ -831,13 +831,13 @@ describe('Parser', () => {
               @input="$emit('input', $event)"
               v-on:change="$emit('change', $event)"/>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
           features: [ 'events' ],
           ignoredVisibilities: [ 'private' ]
-        }
+        };
 
         const expected = [
           { kind: 'event',
@@ -856,23 +856,23 @@ describe('Parser', () => {
             description: 'Emit the input event',
             keywords:
             [ { name: 'value', description: 'A input value' } ] }
-        ]
+        ];
 
-        const result = []
+        const result = [];
 
         new Parser(options).walk()
           .on('event', (event) => result.push(event))
           .on('end', () => {
-            expect(result).toEqual(expected)
-            done()
-          })
-      })
-    })
+            expect(result).toEqual(expected);
+            done();
+          });
+      });
+    });
 
     describe('parseKeywords()', () => {
       [ 'arg', 'prop', 'param', 'argument' ].forEach((tag) => {
         it(`should successfully emit param with @${tag}`, (done) => {
-          const filename = './fixtures/checkbox.vue'
+          const filename = './fixtures/checkbox.vue';
           const script = `
             export default {
               methods: {
@@ -883,8 +883,8 @@ describe('Parser', () => {
                 getX (x) {}
               }
             }
-          `
-          const options = { source: { script }, filename }
+          `;
+          const options = { source: { script }, filename };
           const expected = [
             {
               type: 'number',
@@ -893,19 +893,19 @@ describe('Parser', () => {
               defaultValue: undefined,
               rest: false
             }
-          ]
+          ];
 
           new Parser(options).walk().on('method', (method) => {
-            assert.equal(method.name, 'getX')
-            assert.equal(method.description, 'Get the x value.')
-            assert.deepEqual(method.params, expected)
-            done()
-          })
-        })
+            assert.equal(method.name, 'getX');
+            assert.equal(method.description, 'Get the x value.');
+            assert.deepEqual(method.params, expected);
+            done();
+          });
+        });
       });
 
       it('should successfully emit param with parameter\'s properties', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -918,8 +918,8 @@ describe('Parser', () => {
               assign (employee) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: 'Object',
@@ -939,18 +939,18 @@ describe('Parser', () => {
             description: 'The employee\'s department.',
             defaultValue: undefined,
             rest: false }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'assign')
-          assert.equal(method.description, 'Assign the project to an employee.')
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'assign');
+          assert.equal(method.description, 'Assign the project to an employee.');
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit param with array type', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -961,8 +961,8 @@ describe('Parser', () => {
               assign (employees) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: 'Object[]',
@@ -970,18 +970,18 @@ describe('Parser', () => {
             description: 'The employees who are responsible for the project.',
             defaultValue: undefined,
             rest: false }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'assign')
-          assert.equal(method.description, 'Assign the project to a list of employees.')
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'assign');
+          assert.equal(method.description, 'Assign the project to a list of employees.');
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit param with properties of values in an array', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -994,8 +994,8 @@ describe('Parser', () => {
               assign (employees) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: 'Object[]',
@@ -1015,18 +1015,18 @@ describe('Parser', () => {
             description: 'The employee\'s department.',
             defaultValue: undefined,
             rest: false }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'assign')
-          assert.equal(method.description, 'Assign the project to a list of employees.')
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'assign');
+          assert.equal(method.description, 'Assign the project to a list of employees.');
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit optional param', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1036,8 +1036,8 @@ describe('Parser', () => {
               sayHello (somebody) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: 'string',
@@ -1047,18 +1047,18 @@ describe('Parser', () => {
             defaultValue: undefined,
             rest: false
           }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, undefined)
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'sayHello');
+          assert.equal(method.description, undefined);
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit optional parameter (using Google Closure Compiler syntax)', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1068,8 +1068,8 @@ describe('Parser', () => {
               sayHello (somebody) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: 'string',
@@ -1079,18 +1079,18 @@ describe('Parser', () => {
             optional: true,
             rest: false
           }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, undefined)
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'sayHello');
+          assert.equal(method.description, undefined);
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit optional param and one type OR another type (type union)', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1100,8 +1100,8 @@ describe('Parser', () => {
               sayHello (somebody) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: [ 'string', 'string[]' ],
@@ -1111,18 +1111,18 @@ describe('Parser', () => {
             defaultValue: 'John Doe',
             rest: false
           }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, undefined)
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'sayHello');
+          assert.equal(method.description, undefined);
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit optional param and default value', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1132,8 +1132,8 @@ describe('Parser', () => {
               sayHello (somebody) {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           {
             type: 'string',
@@ -1143,18 +1143,18 @@ describe('Parser', () => {
             defaultValue: 'John Doe',
             rest: false
           }
-        ]
+        ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello')
-          assert.equal(method.description, undefined)
-          assert.deepEqual(method.params, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'sayHello');
+          assert.equal(method.description, undefined);
+          assert.deepEqual(method.params, expected);
+          done();
+        });
+      });
 
       it('should successfully emit param in a event', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1167,25 +1167,25 @@ describe('Parser', () => {
               }
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = [
           { type: 'number',
             name: 'x',
             description: 'The x value.',
             rest: false }
-        ]
+        ];
 
         new Parser(options).walk().on('event', (event) => {
-          assert.equal(event.name, 'input')
-          assert.equal(event.description, 'Emit the x value.')
-          assert.deepEqual(event.arguments, expected)
-          done()
-        })
-      })
+          assert.equal(event.name, 'input');
+          assert.equal(event.description, 'Emit the x value.');
+          assert.deepEqual(event.arguments, expected);
+          done();
+        });
+      });
 
       it('should successfully emit return', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1196,23 +1196,23 @@ describe('Parser', () => {
               getX () {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = {
           type: 'number',
           description: 'The x value.'
-        }
+        };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.returns, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'getX');
+          assert.equal(method.description, 'Get the x value.');
+          assert.deepEqual(method.returns, expected);
+          done();
+        });
+      });
 
       it('should successfully emit alias @returns', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1223,23 +1223,23 @@ describe('Parser', () => {
               getX () {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = {
           type: 'number',
           description: 'The x value.'
-        }
+        };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.equal(method.description, 'Get the x value.')
-          assert.deepEqual(method.returns, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'getX');
+          assert.equal(method.description, 'Get the x value.');
+          assert.deepEqual(method.returns, expected);
+          done();
+        });
+      });
 
       it('should successfully emit return with array type', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1250,23 +1250,23 @@ describe('Parser', () => {
               getX () {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = {
           type: 'number[]',
           description: 'The x values.'
-        }
+        };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.equal(method.description, 'Get the x values.')
-          assert.deepEqual(method.returns, expected)
-          done()
-        })
-      })
+          assert.equal(method.name, 'getX');
+          assert.equal(method.description, 'Get the x values.');
+          assert.deepEqual(method.returns, expected);
+          done();
+        });
+      });
 
       it('should successfully emit return with one type OR another returning type (type union)', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             methods: {
@@ -1276,100 +1276,100 @@ describe('Parser', () => {
               getX () {}
             }
           }
-        `
-        const options = { source: { script }, filename }
+        `;
+        const options = { source: { script }, filename };
         const expected = {
           type: [ 'string', 'string[]' ],
           description: 'The x values.'
-        }
+        };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX')
-          assert.deepEqual(method.returns, expected)
-          done()
-        })
-      })
-    })
+          assert.equal(method.name, 'getX');
+          assert.deepEqual(method.returns, expected);
+          done();
+        });
+      });
+    });
 
     describe('parseComponentName()', () => {
       it('should successfully emit component name with only template', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
             <!-- a comment -->
             <p>Hello</p>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename
-        }
+        };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'checkbox')
-          done()
-        })
-      })
+          assert.equal(value, 'checkbox');
+          done();
+        });
+      });
 
       it('should successfully emit component name with explicit name', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             name: 'myInput'
           }
-        `
+        `;
         const options = {
           source: { script },
           filename
-        }
+        };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'myInput')
-          done()
-        })
-      })
+          assert.equal(value, 'myInput');
+          done();
+        });
+      });
 
       it('should ignore the component name with missing `name` in options.features', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
             name: 'myInput'
           }
-        `
+        `;
         const options = {
           source: { script },
           filename,
           features: [ 'description' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('name', () => {
-            throw new Error('Should ignore the component name')
+            throw new Error('Should ignore the component name');
           })
-          .on('end', done)
-      })
+          .on('end', done);
+      });
 
       it('should ignore the component name with missing `name` in options.features and options.source.script', (done) => {
-        const filename = './fixtures/checkbox.vue'
+        const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
             <!-- a comment -->
             <p>Hello</p>
           </div>
-        `
+        `;
         const options = {
           source: { template },
           filename,
           features: [ 'description' ]
-        }
+        };
 
         new Parser(options).walk()
           .on('name', () => {
-            throw new Error('Should ignore the component name')
+            throw new Error('Should ignore the component name');
           })
-          .on('end', done)
-      })
-    })
+          .on('end', done);
+      });
+    });
 
     describe('should successfully emit model', () => {
       it('with all fields set', (done) => {
@@ -1380,10 +1380,10 @@ describe('Parser', () => {
               event: 'change'
             }
           }
-        `
+        `;
         const options = {
           source: { script }
-        }
+        };
 
         new Parser(options).walk().on('model', (model) => {
           expect(model).toEqual({
@@ -1393,10 +1393,10 @@ describe('Parser', () => {
             description: undefined,
             visibility: 'public',
             keywords: []
-          })
-          done()
-        })
-      })
+          });
+          done();
+        });
+      });
 
       it('with only model.prop', (done) => {
         const script = `
@@ -1405,10 +1405,10 @@ describe('Parser', () => {
               prop: 'model'
             }
           }
-        `
+        `;
         const options = {
           source: { script }
-        }
+        };
 
         new Parser(options).walk().on('model', (model) => {
           expect(model).toEqual({
@@ -1418,10 +1418,10 @@ describe('Parser', () => {
             description: undefined,
             visibility: 'public',
             keywords: []
-          })
-          done()
-        })
-      })
+          });
+          done();
+        });
+      });
 
       it('with only model.event', (done) => {
         const script = `
@@ -1430,10 +1430,10 @@ describe('Parser', () => {
               event: 'change'
             }
           }
-        `
+        `;
         const options = {
           source: { script }
-        }
+        };
 
         new Parser(options).walk().on('model', (model) => {
           expect(model).toEqual({
@@ -1443,20 +1443,20 @@ describe('Parser', () => {
             description: undefined,
             visibility: 'public',
             keywords: []
-          })
-          done()
-        })
-      })
+          });
+          done();
+        });
+      });
 
       it('with empty object', (done) => {
         const script = `
           export default {
             model: {}
           }
-        `
+        `;
         const options = {
           source: { script }
-        }
+        };
 
         new Parser(options).walk().on('model', (model) => {
           expect(model).toEqual({
@@ -1466,40 +1466,40 @@ describe('Parser', () => {
             description: undefined,
             visibility: 'public',
             keywords: []
-          })
-          done()
-        })
-      })
-    })
+          });
+          done();
+        });
+      });
+    });
 
     it('should successfully emit generic prop', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           props: {
             id: { type: String, default: '$id' }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public')
-        assert.equal(prop.name, 'id')
-        assert.equal(prop.default, '"$id"')
-        assert.equal(prop.type, 'String')
-        expect(prop.description).toBeUndefined()
-        assert.equal(prop.required, false)
-        assert.deepEqual(prop.keywords, [])
-        done()
-      })
-    })
+        assert.equal(prop.visibility, 'public');
+        assert.equal(prop.name, 'id');
+        assert.equal(prop.default, '"$id"');
+        assert.equal(prop.type, 'String');
+        expect(prop.description).toBeUndefined();
+        assert.equal(prop.required, false);
+        assert.deepEqual(prop.keywords, []);
+        done();
+      });
+    });
 
     it('should successfully emit v-model prop', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           props: {
@@ -1509,25 +1509,25 @@ describe('Parser', () => {
             value: { type: String }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public')
-        assert.equal(prop.name, 'value')
-        assert.equal(prop.describeModel, true)
-        expect(prop.description).toBeUndefined()
-        assert.deepEqual(prop.keywords, [])
-        assert.deepEqual(prop.type, 'String')
-        done()
-      })
-    })
+        assert.equal(prop.visibility, 'public');
+        assert.equal(prop.name, 'value');
+        assert.equal(prop.describeModel, true);
+        expect(prop.description).toBeUndefined();
+        assert.deepEqual(prop.keywords, []);
+        assert.deepEqual(prop.type, 'String');
+        done();
+      });
+    });
 
     it('should successfully emit v-model prop with the model field', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           model: {
@@ -1537,67 +1537,67 @@ describe('Parser', () => {
              checked: { type: String }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public')
-        assert.equal(prop.name, 'checked')
-        expect(prop.description).toBeUndefined()
-        assert.equal(prop.describeModel, true)
-        assert.equal(prop.type, 'String')
-        assert.deepEqual(prop.keywords, [])
-        done()
-      })
-    })
+        assert.equal(prop.visibility, 'public');
+        assert.equal(prop.name, 'checked');
+        expect(prop.description).toBeUndefined();
+        assert.equal(prop.describeModel, true);
+        assert.equal(prop.type, 'String');
+        assert.deepEqual(prop.keywords, []);
+        done();
+      });
+    });
 
     it('should successfully emit prop with truthy describeModel for prop.name === "value"', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           props: {
             value: { type: String }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.name, 'value')
-        assert.equal(prop.describeModel, true)
-        done()
-      })
-    })
+        assert.equal(prop.name, 'value');
+        assert.equal(prop.describeModel, true);
+        done();
+      });
+    });
 
     it('should successfully emit generic prop declared in array', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           props: ['id']
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public')
-        assert.equal(prop.name, 'id')
-        assert.equal(prop.type, 'any')
-        expect(prop.description).toBeUndefined()
-        assert.deepEqual(prop.keywords, [])
-        assert.deepEqual(prop.value, null)
-        assert.deepEqual(prop.describeModel, false)
-        done()
-      })
-    })
+        assert.equal(prop.visibility, 'public');
+        assert.equal(prop.name, 'id');
+        assert.equal(prop.type, 'any');
+        expect(prop.description).toBeUndefined();
+        assert.deepEqual(prop.keywords, []);
+        assert.deepEqual(prop.value, null);
+        assert.deepEqual(prop.describeModel, false);
+        done();
+      });
+    });
 
     it('should successfully emit prop with multiple types (array syntax)', (done) => {
       const script = `
@@ -1606,10 +1606,10 @@ describe('Parser', () => {
             opacityA: [Boolean, Number]
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop).toEqual({
@@ -1623,11 +1623,11 @@ describe('Parser', () => {
           describeModel: false,
           keywords: [],
           default: undefined
-        })
+        });
 
-        done()
-      })
-    })
+        done();
+      });
+    });
 
     it('should successfully emit prop with multiple types (object syntax)', (done) => {
       const script = `
@@ -1638,10 +1638,10 @@ describe('Parser', () => {
             }
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop).toEqual({
@@ -1655,14 +1655,14 @@ describe('Parser', () => {
           describeModel: false,
           keywords: [],
           default: undefined
-        })
+        });
 
-        done()
-      })
-    })
+        done();
+      });
+    });
 
     it('should successfully emit a data item from an component.data object', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           data: {
@@ -1672,11 +1672,11 @@ describe('Parser', () => {
             id: 12
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       const expected = {
         kind: 'data',
@@ -1688,16 +1688,16 @@ describe('Parser', () => {
         initialValue: '12',
         type: 'number',
         name: 'id'
-      }
+      };
 
       new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected)
-        done()
-      })
-    })
+        assert.deepEqual(prop, expected);
+        done();
+      });
+    });
 
     it('should successfully emit a data item from an component.data arrow function', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           data: () => ({
@@ -1707,11 +1707,11 @@ describe('Parser', () => {
             enabled: false
           })
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       const expected = {
         kind: 'data',
@@ -1723,16 +1723,16 @@ describe('Parser', () => {
         initialValue: 'false',
         type: 'boolean',
         name: 'enabled'
-      }
+      };
 
       new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected)
-        done()
-      })
-    })
+        assert.deepEqual(prop, expected);
+        done();
+      });
+    });
 
     it('should successfully emit a data item from an component.data es5 function', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           data: function () {
@@ -1744,11 +1744,11 @@ describe('Parser', () => {
             }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       const expected = {
         kind: 'data',
@@ -1760,16 +1760,16 @@ describe('Parser', () => {
         initialValue: '"Hello"',
         type: 'string',
         name: 'id'
-      }
+      };
 
       new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected)
-        done()
-      })
-    })
+        assert.deepEqual(prop, expected);
+        done();
+      });
+    });
 
     it('should successfully emit a data item from an component.data es6 function', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           data () {
@@ -1781,11 +1781,11 @@ describe('Parser', () => {
             }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       const expected = {
         kind: 'data',
@@ -1797,16 +1797,16 @@ describe('Parser', () => {
         initialValue: '"Hello"',
         type: 'string',
         name: 'id'
-      }
+      };
 
       new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected)
-        done()
-      })
-    })
+        assert.deepEqual(prop, expected);
+        done();
+      });
+    });
 
     it('should successfully emit a computed property item', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           computed: {
@@ -1821,12 +1821,12 @@ describe('Parser', () => {
             }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename,
         ignoredVisibilities: [ 'protected' ]
-      }
+      };
 
       const expected = {
         name: 'id',
@@ -1836,21 +1836,21 @@ describe('Parser', () => {
         category: undefined,
         version: undefined,
         dependencies: [ 'value', 'name' ]
-      }
+      };
 
       new Parser(options).walk().on('computed', (prop) => {
-        assert.equal(prop.name, expected.name)
-        assert.deepEqual(prop.keywords, expected.keywords)
-        assert.equal(prop.visibility, expected.visibility)
-        assert.equal(prop.description, expected.description)
-        assert.equal(prop.value, undefined)
-        assert.deepEqual(prop.dependencies, expected.dependencies)
-        done()
-      })
-    })
+        assert.equal(prop.name, expected.name);
+        assert.deepEqual(prop.keywords, expected.keywords);
+        assert.equal(prop.visibility, expected.visibility);
+        assert.equal(prop.description, expected.description);
+        assert.equal(prop.value, undefined);
+        assert.deepEqual(prop.dependencies, expected.dependencies);
+        done();
+      });
+    });
 
     it('should successfully emit a computed property item with a getter', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           computed: {
@@ -1865,11 +1865,11 @@ describe('Parser', () => {
             }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
       const expected = {
         name: 'idGetter',
         kind: 'computed',
@@ -1879,16 +1879,16 @@ describe('Parser', () => {
         visibility: 'public',
         description: 'ID computed prop',
         dependencies: [ 'value', 'name' ]
-      }
+      };
 
       new Parser(options).walk().on('computed', (prop) => {
-        expect(prop).toEqual(expected)
-        done()
-      })
-    })
+        expect(prop).toEqual(expected);
+        done();
+      });
+    });
 
     it('should ignore functions other than get on computed property', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           computed: {
@@ -1903,20 +1903,20 @@ describe('Parser', () => {
             }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('computed', (prop) => {
-        assert.deepEqual(prop.dependencies, [])
-        done()
-      })
-    })
+        assert.deepEqual(prop.dependencies, []);
+        done();
+      });
+    });
 
     it('shouldn\'t emit an unknow item (object)', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           unknow: {
@@ -1926,22 +1926,22 @@ describe('Parser', () => {
             value: { type: String }
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       /* eslint-disable no-unused-vars */
       new Parser(options).walk()
         .on('unknow', (prop) => {
-          throw new Error('Should ignore unknow entry')
+          throw new Error('Should ignore unknow entry');
         })
-        .on('end', done)
-    })
+        .on('end', done);
+    });
 
     it('shouldn\'t emit an unknow item (array)', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           unknow: [
@@ -1951,38 +1951,38 @@ describe('Parser', () => {
             'id'
           ]
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk()
         .on('unknow', (prop) => {
-          throw new Error('Should ignore unknow entry')
+          throw new Error('Should ignore unknow entry');
         })
-        .on('end', done)
-    })
+        .on('end', done);
+    });
 
     it('should successfully emit methods', (done) => {
-      const filename = './fixtures/checkbox.vue'
+      const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
           methods: {
             getValue: (ctx) => {}
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         filename
-      }
+      };
 
       new Parser(options).walk().on('method', (prop) => {
-        expect(prop.visibility).toBe('public')
-        assert.equal(prop.name, 'getValue')
-        expect(prop.description).toBeUndefined()
-        assert.deepEqual(prop.keywords, [])
+        expect(prop.visibility).toBe('public');
+        assert.equal(prop.name, 'getValue');
+        expect(prop.description).toBeUndefined();
+        assert.deepEqual(prop.keywords, []);
         assert.deepEqual(prop.params, [
             {
               name: 'ctx',
@@ -1991,30 +1991,30 @@ describe('Parser', () => {
               description: undefined,
               rest: false
             }
-        ])
+        ]);
 
-        done()
-      })
-    })
+        done();
+      });
+    });
 
     it('should emit nothing', (done) => {
       const script = `
         export default {
           description: 'desc-v'
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
-      const parser = new Parser(options)
+      const parser = new Parser(options);
 
       events.forEach((event) => parser.on(event, () => {
-        done(new Error(`should not emit ${event} event`))
-      }))
+        done(new Error(`should not emit ${event} event`));
+      }));
 
-      parser.walk().on('end', () => done())
-    })
+      parser.walk().on('end', () => done());
+    });
 
     it('should emit event without description', (done) => {
       const script = `
@@ -2023,19 +2023,19 @@ describe('Parser', () => {
             this.$emit('loading', true)
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading')
-        assert.equal(event.description, undefined)
-        assert.equal(event.visibility, 'public')
-        assert.deepEqual(event.keywords, [])
-        done()
-      })
-    })
+        assert.equal(event.name, 'loading');
+        assert.equal(event.description, undefined);
+        assert.equal(event.visibility, 'public');
+        assert.deepEqual(event.keywords, []);
+        done();
+      });
+    });
 
     it('should emit event with description', (done) => {
       const script = `
@@ -2049,20 +2049,20 @@ describe('Parser', () => {
             this.$emit('loading', true)
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         ignoredVisibilities: [ 'private' ]
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading')
-        assert.equal(event.description, 'loading event')
-        assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [])
-        done()
-      })
-    })
+        assert.equal(event.name, 'loading');
+        assert.equal(event.description, 'loading event');
+        assert.equal(event.visibility, 'protected');
+        assert.deepEqual(event.keywords, []);
+        done();
+      });
+    });
 
     it('should emit event with @event keyword', (done) => {
       const script = `
@@ -2076,20 +2076,20 @@ describe('Parser', () => {
             this.$emit(name, true)
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading')
-        assert.equal(event.description, 'Event description')
-        assert.equal(event.visibility, 'public')
-        assert.deepEqual(event.keywords, [])
+        assert.equal(event.name, 'loading');
+        assert.equal(event.description, 'Event description');
+        assert.equal(event.visibility, 'public');
+        assert.deepEqual(event.keywords, []);
 
-        done()
-      })
-    })
+        done();
+      });
+    });
 
     it('should emit event with identifier name', (done) => {
       const script = `
@@ -2102,19 +2102,19 @@ describe('Parser', () => {
             this.$emit(name, true)
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading')
-        assert.equal(event.description, 'loading event')
-        assert.equal(event.visibility, 'public')
-        assert.deepEqual(event.keywords, [])
-        done()
-      })
-    })
+        assert.equal(event.name, 'loading');
+        assert.equal(event.description, 'loading event');
+        assert.equal(event.visibility, 'public');
+        assert.deepEqual(event.keywords, []);
+        done();
+      });
+    });
 
     it('should emit event with recursive identifier name', (done) => {
       const script = `
@@ -2130,20 +2130,20 @@ describe('Parser', () => {
             this.$emit(name, true)
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         ignoredVisibilities: [ 'private' ]
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading')
-        assert.equal(event.description, 'loading event')
-        assert.equal(event.visibility, 'protected')
-        assert.deepEqual(event.keywords, [])
-        done()
-      })
-    })
+        assert.equal(event.name, 'loading');
+        assert.equal(event.description, 'loading event');
+        assert.equal(event.visibility, 'protected');
+        assert.deepEqual(event.keywords, []);
+        done();
+      });
+    });
 
     it('should emit event with external identifier name', (done) => {
       const script = `
@@ -2159,19 +2159,19 @@ describe('Parser', () => {
             this.$emit(name, true)
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading')
-        assert.equal(event.description, 'loading event')
-        assert.equal(event.visibility, 'public')
-        assert.deepEqual(event.keywords, [])
-        done()
-      })
-    })
+        assert.equal(event.name, 'loading');
+        assert.equal(event.description, 'loading event');
+        assert.equal(event.visibility, 'public');
+        assert.deepEqual(event.keywords, []);
+        done();
+      });
+    });
 
     it('should failed to found identifier name', (done) => {
       const script = `
@@ -2185,19 +2185,19 @@ describe('Parser', () => {
             this.$emit(name, true)
           }
         }
-      `
+      `;
       const options = {
         source: { script },
-      }
+      };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, '***unhandled***')
-        assert.equal(event.description, 'loading event')
-        assert.equal(event.visibility, 'public')
-        assert.deepEqual(event.keywords, [])
-        done()
-      })
-    })
+        assert.equal(event.name, '***unhandled***');
+        assert.equal(event.description, 'loading event');
+        assert.equal(event.visibility, 'public');
+        assert.deepEqual(event.keywords, []);
+        done();
+      });
+    });
 
     it('should skip already sent event', (done) => {
       const script = `
@@ -2209,25 +2209,25 @@ describe('Parser', () => {
             this.$emit('loading', true)
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
-      let eventCount = 0
+      let eventCount = 0;
 
       new Parser(options).walk()
         .on('event', (event) => {
-          assert.equal(event.name, 'loading')
+          assert.equal(event.name, 'loading');
 
-          eventCount++
+          eventCount++;
         })
         .on('end', () => {
-          assert.equal(eventCount, 1)
+          assert.equal(eventCount, 1);
 
-          done()
-        })
-    })
+          done();
+        });
+    });
 
     it('should skip malformated event emission', (done) => {
       const script = `
@@ -2236,21 +2236,21 @@ describe('Parser', () => {
             this.$emit
           }
         }
-      `
+      `;
       const options = {
         source: { script }
-      }
+      };
 
-      let eventCount = 0
+      let eventCount = 0;
 
       new Parser(options).walk()
         .on('event', () => eventCount++)
         .on('end', () => {
-          assert.equal(eventCount, 0)
+          assert.equal(eventCount, 0);
 
-          done()
-        })
-    })
+          done();
+        });
+    });
 
     it('should ignore the component events with missing `events` in options.features', (done) => {
       const script = `
@@ -2262,17 +2262,17 @@ describe('Parser', () => {
             this.$emit('loading', true)
           }
         }
-      `
+      `;
       const options = {
         source: { script },
         features: [ 'name' ]
-      }
+      };
 
       new Parser(options).walk()
         .on('event', (e) => {
-          throw new Error('Should ignore the component events')
+          throw new Error('Should ignore the component events');
         })
-        .on('end', done)
-    })
-  })
-})
+        .on('end', done);
+    });
+  });
+});

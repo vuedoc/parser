@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 /* eslint-disable max-len */
 /* eslint-disable indent */
@@ -221,7 +221,7 @@ ComponentTestCase({
     ],
     slots: []
   }
-})
+});
 
 ComponentTestCase({
   name: 'vuedoc.md#25 - Class Component',
@@ -314,4 +314,4 @@ ComponentTestCase({
     props: [],
     slots: []
   }
-})
+});

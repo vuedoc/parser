@@ -1,4 +1,4 @@
-const parser = require('..')
+const parser = require('..');
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -14,14 +14,14 @@ describe('#43 - InheritAttrs Field', () => {
           })
         </script>
       `
-    }
+    };
 
-    const expected = true
+    const expected = true;
 
     return parser.parse(options).then(({ inheritAttrs }) => {
-      expect(inheritAttrs).toEqual(expected)
-    })
-  })
+      expect(inheritAttrs).toEqual(expected);
+    });
+  });
 
   it('should successfully parse inheritAttrs === false', () => {
     const options = {
@@ -32,14 +32,14 @@ describe('#43 - InheritAttrs Field', () => {
           })
         </script>
       `
-    }
+    };
 
-    const expected = false
+    const expected = false;
 
     return parser.parse(options).then(({ inheritAttrs }) => {
-      expect(inheritAttrs).toEqual(expected)
-    })
-  })
+      expect(inheritAttrs).toEqual(expected);
+    });
+  });
 
   it('should successfully parse inheritAttrs === true', () => {
     const options = {
@@ -50,14 +50,14 @@ describe('#43 - InheritAttrs Field', () => {
           })
         </script>
       `
-    }
+    };
 
-    const expected = true
+    const expected = true;
 
     return parser.parse(options).then(({ inheritAttrs }) => {
-      expect(inheritAttrs).toEqual(expected)
-    })
-  })
+      expect(inheritAttrs).toEqual(expected);
+    });
+  });
 
   it('should successfully parse inheritAttrs === false', () => {
     const options = {
@@ -68,14 +68,14 @@ describe('#43 - InheritAttrs Field', () => {
           })
         </script>
       `
-    }
+    };
 
-    const expected = false
+    const expected = false;
 
     return parser.parse(options).then(({ inheritAttrs }) => {
-      expect(inheritAttrs).toEqual(expected)
-    })
-  })
+      expect(inheritAttrs).toEqual(expected);
+    });
+  });
 
   it('should successfully parse missing inheritAttrs', () => {
     const options = {
@@ -84,12 +84,12 @@ describe('#43 - InheritAttrs Field', () => {
           export default Vue.extends({})
         </script>
       `
-    }
+    };
 
-    const expected = true
+    const expected = true;
 
     return parser.parse(options).then(({ inheritAttrs }) => {
-      expect(inheritAttrs).toEqual(expected)
-    })
-  })
-})
+      expect(inheritAttrs).toEqual(expected);
+    });
+  });
+});

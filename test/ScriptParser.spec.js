@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 /* global describe */
 
@@ -30,7 +30,7 @@ describe('ScriptParser', () => {
       events: [],
       methods: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Syntax',
@@ -127,7 +127,7 @@ describe('ScriptParser', () => {
       } ],
       slots: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Syntax',
@@ -224,7 +224,7 @@ describe('ScriptParser', () => {
       } ],
       slots: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Parsing error',
@@ -240,7 +240,7 @@ describe('ScriptParser', () => {
         'Unexpected token (2:4)'
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'parseComment() with disbaled description',
@@ -262,7 +262,7 @@ describe('ScriptParser', () => {
       keywords: [],
       errors: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'parseComment() with disabled name',
@@ -284,7 +284,7 @@ describe('ScriptParser', () => {
       keywords: [],
       errors: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Handle keyword @name prior than the component name',
@@ -303,7 +303,7 @@ describe('ScriptParser', () => {
     expected: {
       name: 'my-checkbox'
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'with undefined references',
@@ -387,7 +387,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Mixin exported as default',
@@ -427,7 +427,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported with custom name',
@@ -469,7 +469,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as object',
@@ -510,7 +510,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function',
@@ -554,7 +554,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as default factory function with arguments and Vue.extend',
@@ -597,7 +597,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as default factory function with arguments and TypeScript',
@@ -656,7 +656,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and Vue.extend (es6',
@@ -699,7 +699,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and Vue.extend',
@@ -742,7 +742,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and referenced Vue.extend',
@@ -787,7 +787,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function and @name',
@@ -859,7 +859,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory arrow function with arguments and referenced Vue.extend',
@@ -929,7 +929,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and ObjectExpression',
@@ -972,7 +972,7 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory function with arguments and referenced ObjectExpression',
@@ -1017,5 +1017,5 @@ describe('ScriptParser', () => {
         }
       ]
     }
-  })
-})
+  });
+});

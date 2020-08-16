@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 /* global describe */
 
@@ -22,7 +22,7 @@ describe('EventParser', () => {
       errors: [],
       events: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: '$emit without arguments',
@@ -53,7 +53,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Rest argument',
@@ -91,7 +91,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Rest argument with JSDoc',
@@ -133,7 +133,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Destructuring object argument',
@@ -174,7 +174,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Destructuring object argument with JSDoc',
@@ -216,7 +216,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Destructuring array argument',
@@ -257,7 +257,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Destructuring array argument with JSDoc',
@@ -299,7 +299,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Assignment argument',
@@ -340,7 +340,7 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: 'Assignment argument with unhandled name',
@@ -381,5 +381,5 @@ describe('EventParser', () => {
         }
       ]
     }
-  })
-})
+  });
+});

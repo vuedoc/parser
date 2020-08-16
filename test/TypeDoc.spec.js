@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 describe('TypeDoc', () => {
   ComponentTestCase({
@@ -55,7 +55,7 @@ describe('TypeDoc', () => {
           visibility: 'public' },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@return(s)',
@@ -108,7 +108,7 @@ describe('TypeDoc', () => {
           visibility: 'public' },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@hidden and @ignore',
@@ -134,7 +134,7 @@ describe('TypeDoc', () => {
       errors: [],
       methods: []
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@category',
@@ -176,5 +176,5 @@ describe('TypeDoc', () => {
         },
       ]
     }
-  })
-})
+  });
+});

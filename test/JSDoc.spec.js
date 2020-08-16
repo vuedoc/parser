@@ -1,279 +1,279 @@
-const { JSDoc } = require('../lib/JSDoc')
-const { ComponentTestCase } = require('./lib/TestUtils')
-const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec')
+const { JSDoc } = require('../lib/JSDoc');
+const { ComponentTestCase } = require('./lib/TestUtils');
+const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec');
 
 /* global describe it expect */
 
 describe('JSDoc', () => {
   describe('parseTypeParam(type)', () => {
     it('should parse JSDoc type', () => {
-      const type = 'string'
-      const expected = { type: 'string' }
-      const result = {}
+      const type = 'string';
+      const expected = { type: 'string' };
+      const result = {};
 
-      JSDoc.parseTypeParam(type, result)
-      expect(result).toEqual(expected)
-    })
+      JSDoc.parseTypeParam(type, result);
+      expect(result).toEqual(expected);
+    });
 
     it('should parse JSDoc type with pipe char', () => {
-      const type = 'string|string[]'
-      const expected = { type: [ 'string', 'string[]' ] }
-      const result = {}
+      const type = 'string|string[]';
+      const expected = { type: [ 'string', 'string[]' ] };
+      const result = {};
 
-      JSDoc.parseTypeParam(type, result)
-      expect(result).toEqual(expected)
-    })
+      JSDoc.parseTypeParam(type, result);
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with repeated parameter', () => {
-      const type = '...number'
-      const expected = { type: 'number', rest: true }
-      const result = {}
+      const type = '...number';
+      const expected = { type: 'number', rest: true };
+      const result = {};
 
-      JSDoc.parseTypeParam(type, result)
-      expect(result).toEqual(expected)
-    })
+      JSDoc.parseTypeParam(type, result);
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with * as type', () => {
-      const type = '*'
-      const expected = { type: 'any' }
-      const result = {}
+      const type = '*';
+      const expected = { type: 'any' };
+      const result = {};
 
-      JSDoc.parseTypeParam(type, result)
-      expect(result).toEqual(expected)
-    })
-  })
+      JSDoc.parseTypeParam(type, result);
+      expect(result).toEqual(expected);
+    });
+  });
 
   describe('parseParamKeyword(text)', () => {
     it('should parse @param keyword', () => {
-      const comment = '{number} x - The x value.'
+      const comment = '{number} x - The x value.';
       const expected = {
         type: 'number',
         name: 'x',
         description: 'The x value.'
-      }
-      const result = JSDoc.parseParamKeyword(comment)
+      };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with custom param generator', () => {
       function* customParamGenerator() {
-        yield { name: null, type: 'void', description: undefined, kind: 'param' }
+        yield { name: null, type: 'void', description: undefined, kind: 'param' };
       }
 
-      const comment = '{number} x - The x value.'
+      const comment = '{number} x - The x value.';
       const expected = {
         type: 'number',
         name: 'x',
         description: 'The x value.',
         kind: 'param'
-      }
+      };
 
-      const result = JSDoc.parseParamKeyword(comment, customParamGenerator())
+      const result = JSDoc.parseParamKeyword(comment, customParamGenerator());
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with template type', () => {
-      const comment = '{Record<number>} x - The x value.'
+      const comment = '{Record<number>} x - The x value.';
       const expected = {
         type: 'Record<number>',
         name: 'x',
         description: 'The x value.'
-      }
-      const result = JSDoc.parseParamKeyword(comment)
+      };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with missing dash separator', () => {
-      const comment = '{number} x  The x value.'
+      const comment = '{number} x  The x value.';
       const expected = {
         type: 'number',
         name: 'x',
         description: 'The x value.'
-      }
-      const result = JSDoc.parseParamKeyword(comment)
+      };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with an empty type', () => {
-      const comment = '{} x - The x value.'
-      const expected = { type: 'any', name: 'x', description: 'The x value.' }
-      const result = JSDoc.parseParamKeyword(comment)
+      const comment = '{} x - The x value.';
+      const expected = { type: 'any', name: 'x', description: 'The x value.' };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with missing type', () => {
-      const comment = 'x - The x value.'
-      const expected = { type: 'any', name: 'x', description: 'The x value.' }
-      const result = JSDoc.parseParamKeyword(comment)
+      const comment = 'x - The x value.';
+      const expected = { type: 'any', name: 'x', description: 'The x value.' };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with malformated input', () => {
-      const comment = '{ !x=> The x value.'
-      const expected = { type: 'any', name: null, description: undefined }
-      const result = JSDoc.parseParamKeyword(comment)
+      const comment = '{ !x=> The x value.';
+      const expected = { type: 'any', name: null, description: undefined };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with rest parameter', () => {
-      const comment = '{...number} num - A positive or negative number.'
+      const comment = '{...number} num - A positive or negative number.';
       const expected = {
         type: 'number',
         name: 'num',
         description: 'A positive or negative number.',
         rest: true
-      }
-      const result = JSDoc.parseParamKeyword(comment)
+      };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param keyword with any type', () => {
-      const comment = '{*} somebody - Whatever you want.'
+      const comment = '{*} somebody - Whatever you want.';
       const expected = {
         type: 'any',
         name: 'somebody',
         description: 'Whatever you want.'
-      }
-      const result = JSDoc.parseParamKeyword(comment)
+      };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @param with no descriptions', () => {
-      const comment = '{any} somebody'
+      const comment = '{any} somebody';
       const expected = {
         type: 'any',
         name: 'somebody',
         description: undefined
-      }
-      const result = JSDoc.parseParamKeyword(comment)
+      };
+      const result = JSDoc.parseParamKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
-  })
+      expect(result).toEqual(expected);
+    });
+  });
 
   describe('parseReturnsKeyword(text)', () => {
     it('should parse with just a type', () => {
-      const comment = '{number}'
-      const expected = { type: 'number', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{number}';
+      const expected = { type: 'number', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a template type', () => {
-      const comment = '{Record<number>}'
-      const expected = { type: 'Record<number>', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{Record<number>}';
+      const expected = { type: 'Record<number>', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a complex template type', () => {
-      const comment = '{Record<number,string>}'
-      const expected = { type: 'Record<number,string>', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{Record<number,string>}';
+      const expected = { type: 'Record<number,string>', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a complex template type (2)', () => {
-      const comment = '{Record<number, string>}'
-      const expected = { type: 'Record<number, string>', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{Record<number, string>}';
+      const expected = { type: 'Record<number, string>', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a complex template type (3)', () => {
-      const comment = '{Record<number, string[]>}'
-      const expected = { type: 'Record<number, string[]>', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{Record<number, string[]>}';
+      const expected = { type: 'Record<number, string[]>', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a complex template type (4)', () => {
-      const comment = '{Record<T, K extends keyof T>}'
-      const expected = { type: 'Record<T, K extends keyof T>', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{Record<T, K extends keyof T>}';
+      const expected = { type: 'Record<T, K extends keyof T>', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a complex template type (5)', () => {
-      const comment = '{{new(): T; }}'
-      const expected = { type: '{new(): T; }', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{{new(): T; }}';
+      const expected = { type: '{new(): T; }', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse with just a complex template type (6)', () => {
-      const comment = '{new () => A}'
-      const expected = { type: 'new () => A', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{new () => A}';
+      const expected = { type: 'new () => A', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @return keyword', () => {
-      const comment = '{number} The x+y value.'
-      const expected = { type: 'number', description: 'The x+y value.' }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{number} The x+y value.';
+      const expected = { type: 'number', description: 'The x+y value.' };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @return keyword with an empty retuning type', () => {
-      const comment = '{} The x+y value.'
-      const expected = { type: 'any', description: 'The x+y value.' }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '{} The x+y value.';
+      const expected = { type: 'any', description: 'The x+y value.' };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @return keyword with missing retuning type', () => {
-      const comment = 'The x+y value.'
-      const expected = { type: 'any', description: 'The x+y value.' }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = 'The x+y value.';
+      const expected = { type: 'any', description: 'The x+y value.' };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
 
     it('should parse @return keyword with malformated input', () => {
-      const comment = ''
-      const expected = { type: 'any', description: undefined }
-      const result = JSDoc.parseReturnsKeyword(comment)
+      const comment = '';
+      const expected = { type: 'any', description: undefined };
+      const result = JSDoc.parseReturnsKeyword(comment);
 
-      expect(result).toEqual(expected)
-    })
+      expect(result).toEqual(expected);
+    });
   });
 
   JSDocTypeSpec.forEach(({ name, values, expected = values }) => {
     describe(`@type: ${name}`, () => {
       values.forEach((value, index) => {
-        const description1 = `{${value}}`
-        const description2 = `${value}`
+        const description1 = `{${value}}`;
+        const description2 = `${value}`;
 
         it(`JSDoc.parseType('${description1}')`, () => {
-          expect(JSDoc.parseType(description1)).toEqual(expected[index])
-        })
+          expect(JSDoc.parseType(description1)).toEqual(expected[index]);
+        });
 
         it(`JSDoc.parseType('${description2}')`, () => {
-          expect(JSDoc.parseType(description2)).toEqual(expected[index])
-        })
-      })
-    })
-  })
+          expect(JSDoc.parseType(description2)).toEqual(expected[index]);
+        });
+      });
+    });
+  });
 
   ComponentTestCase({
     name: '@param and @return',
@@ -370,7 +370,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   // Names, types, and descriptions
   // The following examples show how to include names, types, and
@@ -424,7 +424,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -475,7 +475,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -526,7 +526,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -577,7 +577,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   // Documenting a parameter's properties
   // If a parameter is expected to have a specific property, you can
@@ -649,7 +649,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -716,7 +716,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -783,7 +783,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -839,7 +839,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -894,7 +894,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   // Multiple types and repeatable parameters
   // The following examples show how to use type expressions to indicate
@@ -961,7 +961,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -1012,7 +1012,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@param',
@@ -1068,7 +1068,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   // Callback functions
   // If a parameter accepts a callback function, you can use the @callback
@@ -1131,7 +1131,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@returns',
@@ -1191,7 +1191,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@returns',
@@ -1265,7 +1265,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@returns',
@@ -1327,7 +1327,7 @@ describe('JSDoc', () => {
         },
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '@returns',
@@ -1389,5 +1389,5 @@ describe('JSDoc', () => {
         }
       ]
     }
-  })
-})
+  });
+});

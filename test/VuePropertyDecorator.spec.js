@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 /* eslint-disable max-len */
 /* eslint-disable indent */
@@ -68,7 +68,7 @@ const script = `
     #privateMethod() {}
   }
   </script>
-`
+`;
 
 ComponentTestCase({
   name: '#47 - Vue Property Decorator',
@@ -455,7 +455,7 @@ ComponentTestCase({
       }
     ]
   }
-})
+});
 
 ComponentTestCase({
   name: '#47 - Vue Property Decorator with disabled features',
@@ -473,4 +473,4 @@ ComponentTestCase({
     events: undefined,
     methods: undefined
   }
-})
+});

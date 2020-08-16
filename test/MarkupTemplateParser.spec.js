@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 /* global describe */
 
@@ -43,7 +43,7 @@ describe('MarkupTemplateParser', () => {
         }
       ]
     }
-  })
+  });
 
   ComponentTestCase({
     name: '#81 - Slot comment not parsed correctly',
@@ -89,5 +89,5 @@ describe('MarkupTemplateParser', () => {
         }
       ]
     }
-  })
-})
+  });
+});

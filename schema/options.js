@@ -38,4 +38,4 @@ module.exports = {
       default: DEFAULT_IGNORED_VISIBILITIES
     }
   }
-}
+};

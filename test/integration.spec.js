@@ -3,246 +3,246 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
 
-const assert = require('assert')
+const assert = require('assert');
 
-const vuedoc = require('..')
+const vuedoc = require('..');
 
-const { ComponentTestCase } = require('./lib/TestUtils')
-const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec')
-const { Fixture } = require('./lib/Fixture')
+const { ComponentTestCase } = require('./lib/TestUtils');
+const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec');
+const { Fixture } = require('./lib/Fixture');
 
-const Loader = require('../lib/Loader')
-const VueLoader = require('../loader/vue')
-const HtmlLoader = require('../loader/html')
-const JavaScriptLoader = require('../loader/javascript')
-const TypeScriptLoader = require('../loader/typescript')
+const Loader = require('../lib/Loader');
+const VueLoader = require('../loader/vue');
+const HtmlLoader = require('../loader/html');
+const JavaScriptLoader = require('../loader/javascript');
+const TypeScriptLoader = require('../loader/typescript');
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
   Loader.extend('ts', TypeScriptLoader),
   Loader.extend('html', HtmlLoader),
   Loader.extend('vue', VueLoader)
-]
+];
 
 const options = {
   filename: Fixture.resolve('checkbox.vue'),
   ignoredVisibilities: []
-}
+};
 
 const optionsForModuleExports = {
   filename: Fixture.resolve('checkboxModuleExports.vue'),
   ignoredVisibilities: []
-}
+};
 
 const optionsForVueExtend = {
   filename: Fixture.resolve('checkboxVueExtend.vue'),
   ignoredVisibilities: []
-}
+};
 
 const optionsNoTopLevelConstant = {
   filename: Fixture.resolve('checkboxNoTopLevelConstant.vue'),
   ignoredVisibilities: []
-}
+};
 
 const optionsWithFileSource = {
   filecontent: Fixture.get('checkbox.vue'),
   ignoredVisibilities: []
-}
+};
 
 const optionsForPropsArray = {
   filename: Fixture.resolve('checkboxPropsArray.vue'),
   ignoredVisibilities: []
-}
+};
 
 /* eslint-disable no-unused-vars */
 function testComponentMethods (optionsToParse) {
-  let component = {}
+  let component = {};
 
   vuedoc.parse(options)
     .then((_component) => (component = _component))
     .catch((err) => {
-      throw err
-    })
+      throw err;
+    });
 
   it('should contain a method', () => {
     const item = component.methods.find(
       (item) => item.name === 'check'
-    )
+    );
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Check the checkbox')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Check the checkbox');
+  });
 
   it('should contain a protected method', () => {
-    const item = component.methods.find((item) => item.visibility === 'protected')
+    const item = component.methods.find((item) => item.visibility === 'protected');
 
-    expect(item).toBeDefined()
-  })
+    expect(item).toBeDefined();
+  });
 
   it('should contain a private method', () => {
-    const item = component.methods.find((item) => item.visibility === 'private')
+    const item = component.methods.find((item) => item.visibility === 'private');
 
-    expect(item).toBeDefined()
-  })
+    expect(item).toBeDefined();
+  });
 
   it('should contain un uncommented method', () => {
-    const item = component.methods.find((item) => !item.description)
+    const item = component.methods.find((item) => !item.description);
 
-    expect(item).toBeDefined()
-  })
+    expect(item).toBeDefined();
+  });
 }
 
 function testComponent (optionsToParse) {
-  let component = {}
+  let component = {};
 
   it('should parse without error', () => {
     return vuedoc.parse(optionsToParse).then((_component) => {
-      component = _component
-    })
-  })
+      component = _component;
+    });
+  });
 
   it('should have a name', () => {
-    assert.equal(component.name, 'checkbox')
-  })
+    assert.equal(component.name, 'checkbox');
+  });
 
   it('should have keywords', () => {
     assert.deepEqual(component.keywords, [
       { name: 'contributor', description: 'Sébastien' }
-    ])
-  })
+    ]);
+  });
 
   it('should guess the component name using the filename', () => {
     return vuedoc.parse({ filename: Fixture.resolve('UnNamedInput.vue') })
       .then((component) => {
-        assert.equal(component.name, 'UnNamedInput')
-      })
-  })
+        assert.equal(component.name, 'UnNamedInput');
+      });
+  });
 
   it('should have a description', () => {
-    assert.equal(component.description, 'A simple checkbox component')
-  })
+    assert.equal(component.description, 'A simple checkbox component');
+  });
 }
 
 function testComponentProps (optionsToParse) {
-  let component = {}
+  let component = {};
 
   it('should parse without error', () => {
     return vuedoc.parse(optionsToParse).then((_component) => {
-      component = _component
-    })
-  })
+      component = _component;
+    });
+  });
 
   it('should contain a v-model prop with a description', () => {
-    const item = component.props.find((item) => item.describeModel)
+    const item = component.props.find((item) => item.describeModel);
 
-    expect(item).toBeDefined()
-    assert.equal(item.type, 'Array')
-    assert.equal(item.required, true)
-    assert.equal(item.twoWay, undefined)
-    expect(item.description).toBe('The checkbox model')
-  })
+    expect(item).toBeDefined();
+    assert.equal(item.type, 'Array');
+    assert.equal(item.required, true);
+    assert.equal(item.twoWay, undefined);
+    expect(item.description).toBe('The checkbox model');
+  });
 
   it('should contain a disabled prop with comments', () => {
-    const item = component.props.find((item) => item.name === 'disabled')
+    const item = component.props.find((item) => item.name === 'disabled');
 
-    expect(item).toBeDefined()
-    assert.equal(item.type, 'Boolean')
-    expect(item.description).toBe('Initial checkbox state')
-  })
+    expect(item).toBeDefined();
+    assert.equal(item.type, 'Boolean');
+    expect(item.description).toBe('Initial checkbox state');
+  });
 
   it('should contain a checked prop with default value and comments', () => {
-    const item = component.props.find((item) => item.name === 'checked')
+    const item = component.props.find((item) => item.name === 'checked');
 
-    expect(item).toBeDefined()
-    assert.equal(item.type, 'Boolean')
-    assert.equal(item.default, 'true')
-    expect(item.description).toBe('Initial checkbox value')
-  })
+    expect(item).toBeDefined();
+    assert.equal(item.type, 'Boolean');
+    assert.equal(item.default, 'true');
+    expect(item.description).toBe('Initial checkbox value');
+  });
 
   it('should contain a checked prop with camel name', () => {
-    const item = component.props.find((item) => item.name === 'prop-with-camel')
+    const item = component.props.find((item) => item.name === 'prop-with-camel');
 
-    expect(item).toBeDefined()
-    assert.equal(item.type, 'Object')
-    assert.equal(item.default, '() => ({ name: \'X\'})')
-    expect(item.description).toBe('Prop with camel name')
-  })
+    expect(item).toBeDefined();
+    assert.equal(item.type, 'Object');
+    assert.equal(item.default, '() => ({ name: \'X\'})');
+    expect(item.description).toBe('Prop with camel name');
+  });
 }
 
 function testComponentSlots (optionsToParse) {
-  let component = {}
+  let component = {};
 
   it('should parse without error', () => {
     return vuedoc.parse(optionsToParse).then((_component) => {
-      component = _component
-    })
-  })
+      component = _component;
+    });
+  });
 
   it('should contain a default slot', () => {
-    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'default')
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'default');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Default slot')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Default slot');
+  });
 
   it('should contain a named slot', () => {
-    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'label')
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'label');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Use this slot to set the checkbox label')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Use this slot to set the checkbox label');
+  });
 
   it('should contain a named slot with multiline description', () => {
-    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline')
+    const item = component.slots.find((item) => item.hasOwnProperty('name') && item.name === 'multiline');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('This\nis multiline description')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('This\nis multiline description');
+  });
 
   it('should contain a named slot without description', () => {
-    const item = component.slots.find((item) => item.name === 'undescribed')
+    const item = component.slots.find((item) => item.name === 'undescribed');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBeUndefined()
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBeUndefined();
+  });
 }
 
 function testComponentEvents (optionsToParse) {
-  let component = {}
+  let component = {};
 
   it('should parse without error', () => {
     return vuedoc.parse(optionsToParse).then((_component) => {
-      component = _component
-    })
-  })
+      component = _component;
+    });
+  });
 
   it('should contain event with literal name', () => {
-    const item = component.events.find((item) => item.name === 'loaded')
+    const item = component.events.find((item) => item.name === 'loaded');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Emit when the component has been loaded')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Emit when the component has been loaded');
+  });
 
   it('should contain event with identifier name', () => {
-    const item = component.events.find((item) => item.name === 'check')
+    const item = component.events.find((item) => item.name === 'check');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Event with identifier name')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Event with identifier name');
+  });
 
   it('should contain event with renamed identifier name', () => {
-    const item = component.events.find((item) => item.name === 'renamed')
+    const item = component.events.find((item) => item.name === 'renamed');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Event with renamed identifier name')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Event with renamed identifier name');
+  });
 
   it('should contain event with recursive identifier name', () => {
-    const item = component.events.find((item) => item.name === 'recursive')
+    const item = component.events.find((item) => item.name === 'recursive');
 
-    expect(item).toBeDefined()
-    expect(item.description).toBe('Event with recursive identifier name')
-  })
+    expect(item).toBeDefined();
+    expect(item.description).toBe('Event with recursive identifier name');
+  });
 
   it('should contain event with spread syntax', () => {
     const options = {
@@ -262,7 +262,7 @@ function testComponentEvents (optionsToParse) {
           }
         </script>
       `
-    }
+    };
 
     const event = {
       kind: 'event',
@@ -280,12 +280,12 @@ function testComponentEvents (optionsToParse) {
         }
       ],
       visibility: 'public'
-    }
+    };
 
     return vuedoc.parse(options).then((component) => {
-      assert.deepEqual(component.events, [ event ])
-    })
-  })
+      assert.deepEqual(component.events, [ event ]);
+    });
+  });
 }
 
 describe('Integration', () => {
@@ -423,26 +423,26 @@ describe('Integration', () => {
             }
           </script>
         `
-      }
+      };
 
-      return vuedoc.parse(options)
-    })
-  })
+      return vuedoc.parse(options);
+    });
+  });
 
   describe('options', () => {
     it('should fail to parse with missing options', () => {
       assert.throws(() => vuedoc.parseOptions(),
-        /Missing options argument/)
-    })
+        /Missing options argument/);
+    });
 
     it('should fail to parse with missing minimum required options', () => {
       assert.throws(() => vuedoc.parseOptions({}),
-        /One of options.filename or options.filecontent is required/)
-    })
+        /One of options.filename or options.filecontent is required/);
+    });
 
     it('should parse with minimum required options', () => {
-      const filecontent = ' '
-      const options = { filecontent }
+      const filecontent = ' ';
+      const options = { filecontent };
       const expected = {
         filecontent,
         encoding: 'utf8',
@@ -453,12 +453,12 @@ describe('Integration', () => {
           errors: []
         },
         loaders: [ ...DefaultLoaders ]
-      }
+      };
 
       return vuedoc.parseOptions(options).then(() => {
-        expect(options).toEqual(expected)
-      })
-    })
+        expect(options).toEqual(expected);
+      });
+    });
 
     it('should parse with user options', () => {
       const options = {
@@ -467,7 +467,7 @@ describe('Integration', () => {
         loaders: [
           Loader.extend('coffee', JavaScriptLoader)
         ]
-      }
+      };
 
       const expected = {
         filecontent: options.filecontent,
@@ -482,19 +482,19 @@ describe('Integration', () => {
           Loader.extend('coffee', JavaScriptLoader),
           ...DefaultLoaders
         ]
-      }
+      };
 
       return vuedoc.parseOptions(options).then(() => {
-        expect(options).toEqual(expected)
-      })
-    })
+        expect(options).toEqual(expected);
+      });
+    });
 
     it('should parse with options.filename', () => {
       const options = {
         filename: Fixture.resolve('checkbox.js'),
         ignoredVisibilities: [ 'private' ],
         loaders: []
-      }
+      };
 
       const expected = {
         filename: options.filename,
@@ -506,19 +506,19 @@ describe('Integration', () => {
           errors: []
         },
         loaders: [ ...DefaultLoaders ]
-      }
+      };
 
       return vuedoc.parseOptions(options).then(() => {
-        expect(options).toEqual(expected)
-      })
-    })
+        expect(options).toEqual(expected);
+      });
+    });
 
     it('should parse with options.filecontent', () => {
       const options = {
         filecontent: ' ',
         ignoredVisibilities: [ 'private' ],
         loaders: []
-      }
+      };
 
       const expected = {
         filecontent: options.filecontent,
@@ -530,61 +530,61 @@ describe('Integration', () => {
           errors: []
         },
         loaders: [ ...DefaultLoaders ]
-      }
+      };
 
       return vuedoc.parseOptions(options).then(() => {
-        expect(options).toEqual(expected)
-      })
-    })
-  })
+        expect(options).toEqual(expected);
+      });
+    });
+  });
 
-  describe('component (es6)', () => testComponent(options))
+  describe('component (es6)', () => testComponent(options));
 
-  describe('component (commonjs)', () => testComponent(optionsForModuleExports))
+  describe('component (commonjs)', () => testComponent(optionsForModuleExports));
 
-  describe('component no-top-level-constant', () => testComponent(optionsNoTopLevelConstant))
+  describe('component no-top-level-constant', () => testComponent(optionsNoTopLevelConstant));
 
-  describe('component filesource', () => testComponent(optionsWithFileSource))
+  describe('component filesource', () => testComponent(optionsWithFileSource));
 
-  describe('component with Vue.extend', () => testComponent(optionsForVueExtend, true))
+  describe('component with Vue.extend', () => testComponent(optionsForVueExtend, true));
 
-  describe('component.props (es6)', () => testComponentProps(options))
+  describe('component.props (es6)', () => testComponentProps(options));
 
-  describe('component.props (commonjs)', () => testComponentProps(optionsForModuleExports))
+  describe('component.props (commonjs)', () => testComponentProps(optionsForModuleExports));
 
-  describe('component.props filesource', () => testComponentProps(optionsWithFileSource))
+  describe('component.props filesource', () => testComponentProps(optionsWithFileSource));
 
   describe('component.props (es6 Array)', () => {
-    let component = {}
+    let component = {};
 
     it('should parse without error', () => {
       return vuedoc.parse(optionsForPropsArray).then((_component) => {
-        component = _component
-      })
-    })
+        component = _component;
+      });
+    });
 
     it('should list props from string array', () => {
-      const propsNames = component.props.map((item) => item.name)
+      const propsNames = component.props.map((item) => item.name);
 
       assert.deepEqual(propsNames, [
         'model', 'disabled', 'checked', 'prop-with-camel'
-      ])
-    })
+      ]);
+    });
 
     it('should contain a model prop with a description', () => {
-      const item = component.props.find((item) => item.describeModel)
+      const item = component.props.find((item) => item.describeModel);
 
-      assert.equal(item.type, 'any')
-      expect(item.description).toBe('The checkbox model')
-    })
+      assert.equal(item.type, 'any');
+      expect(item.description).toBe('The checkbox model');
+    });
 
     it('should contain a checked prop with a description', () => {
-      const item = component.props.find((item) => item.name === 'checked')
+      const item = component.props.find((item) => item.name === 'checked');
 
-      assert.equal(item.type, 'any')
-      expect(item.description).toBe('Initial checkbox value')
-    })
-  })
+      assert.equal(item.type, 'any');
+      expect(item.description).toBe('Initial checkbox value');
+    });
+  });
 
   describe('component.data', () => {
     it('should successfully extract data', () => {
@@ -602,7 +602,7 @@ describe('Integration', () => {
             }
           </script>
         `
-      }
+      };
 
       return vuedoc.parse(options).then((component) => {
         expect(component.data).toEqual([
@@ -617,10 +617,10 @@ describe('Integration', () => {
             type: 'string',
             name: 'id'
           }
-        ])
-      })
-    })
-  })
+        ]);
+      });
+    });
+  });
 
   describe('component.computed', () => {
     const options = {
@@ -645,29 +645,29 @@ describe('Integration', () => {
           }
         </script>
       `
-    }
+    };
 
     it('should successfully extract computed properties', () => vuedoc.parse(options).then((component) => {
-      const { computed } = component
+      const { computed } = component;
 
-      assert.equal(computed.length, 3)
+      assert.equal(computed.length, 3);
 
-      assert.equal(computed[0].name, 'id')
-      assert.deepEqual(computed[0].dependencies, [ 'value', 'name' ])
+      assert.equal(computed[0].name, 'id');
+      assert.deepEqual(computed[0].dependencies, [ 'value', 'name' ]);
 
-      assert.equal(computed[1].name, 'type')
-      assert.deepEqual(computed[1].dependencies, [])
+      assert.equal(computed[1].name, 'type');
+      assert.deepEqual(computed[1].dependencies, []);
 
-      assert.equal(computed[2].name, 'getter')
-      assert.deepEqual(computed[2].dependencies, [ 'value', 'name' ])
-    }))
-  })
+      assert.equal(computed[2].name, 'getter');
+      assert.deepEqual(computed[2].dependencies, [ 'value', 'name' ]);
+    }));
+  });
 
-  describe('component.slots (es6)', () => testComponentSlots(options))
+  describe('component.slots (es6)', () => testComponentSlots(options));
 
-  describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports))
+  describe('component.slots (commonjs)', () => testComponentSlots(optionsForModuleExports));
 
-  describe('component.slots filesource', () => testComponentSlots(optionsWithFileSource))
+  describe('component.slots filesource', () => testComponentSlots(optionsWithFileSource));
 
   describe('component.slots scoped', () => {
     it('should successfully parse scoped slot', () => {
@@ -679,9 +679,9 @@ describe('Integration', () => {
             </slot>
           </span>
         </template>
-      `
-      const features = [ 'slots' ]
-      const options = { filecontent, features }
+      `;
+      const features = [ 'slots' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'slot',
           visibility: 'public',
@@ -696,12 +696,12 @@ describe('Integration', () => {
           ],
           keywords: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ slots }) => {
-        expect(slots).toEqual(expected)
-      })
-    })
+        expect(slots).toEqual(expected);
+      });
+    });
 
     it('should successfully parse scoped slot with description', () => {
       const filecontent = `
@@ -722,9 +722,9 @@ describe('Integration', () => {
             </li>
           </ul>
         </template>
-      `
-      const features = [ 'slots' ]
-      const options = { filecontent, features }
+      `;
+      const features = [ 'slots' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'slot',
           visibility: 'public',
@@ -739,12 +739,12 @@ describe('Integration', () => {
           ],
           keywords: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ slots }) => {
-        expect(slots).toEqual(expected)
-      })
-    })
+        expect(slots).toEqual(expected);
+      });
+    });
 
     it('should successfully parse scoped slot with description and props', () => {
       const filecontent = `
@@ -767,9 +767,9 @@ describe('Integration', () => {
             </li>
           </ul>
         </template>
-      `
-      const features = [ 'slots' ]
-      const options = { filecontent, features }
+      `;
+      const features = [ 'slots' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'slot',
           visibility: 'public',
@@ -784,12 +784,12 @@ describe('Integration', () => {
           ],
           keywords: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ slots }) => {
-        expect(slots).toEqual(expected)
-      })
-    })
+        expect(slots).toEqual(expected);
+      });
+    });
 
     it('should successfully parse scoped slot with @prop and undescribed prop', () => {
       const filecontent = `
@@ -812,9 +812,9 @@ describe('Integration', () => {
             </li>
           </ul>
         </template>
-      `
-      const features = [ 'slots' ]
-      const options = { filecontent, features }
+      `;
+      const features = [ 'slots' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'slot',
           visibility: 'public',
@@ -832,25 +832,25 @@ describe('Integration', () => {
           ],
           keywords: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ slots }) => {
-        expect(slots).toEqual(expected)
-      })
-    })
-  })
+        expect(slots).toEqual(expected);
+      });
+    });
+  });
 
-  describe('component.events (es6)', () => testComponentEvents(options))
+  describe('component.events (es6)', () => testComponentEvents(options));
 
-  describe('component.events (commonjs)', () => testComponentEvents(optionsForModuleExports))
+  describe('component.events (commonjs)', () => testComponentEvents(optionsForModuleExports));
 
-  describe('component.events filesource', () => testComponentEvents(optionsWithFileSource))
+  describe('component.events filesource', () => testComponentEvents(optionsWithFileSource));
 
-  describe('component.methods (es6)', () => testComponentMethods(options))
+  describe('component.methods (es6)', () => testComponentMethods(options));
 
-  describe('component.methods (commonjs)', () => testComponentMethods(optionsForModuleExports))
+  describe('component.methods (commonjs)', () => testComponentMethods(optionsForModuleExports));
 
-  describe('component.methods filesource', () => testComponentMethods(optionsWithFileSource))
+  describe('component.methods filesource', () => testComponentMethods(optionsWithFileSource));
 
   describe('spread operators', () => {
     it('should successfully parse', () => {
@@ -868,8 +868,8 @@ describe('Integration', () => {
             }
           }
         </script>
-      `
-      const options = { filecontent }
+      `;
+      const options = { filecontent };
       const expected = [
         {
           kind: 'computed',
@@ -880,12 +880,12 @@ describe('Integration', () => {
           keywords: [],
           dependencies: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ computed }) => {
-        assert.deepEqual(computed, expected)
-      })
-    })
+        assert.deepEqual(computed, expected);
+      });
+    });
 
     it('should successfully parse with missing identifier', () => {
       const filecontent = `
@@ -896,14 +896,14 @@ describe('Integration', () => {
             }
           }
         </script>
-      `
-      const options = { filecontent }
-      const expected = []
+      `;
+      const options = { filecontent };
+      const expected = [];
 
       return vuedoc.parse(options).then(({ computed }) => {
-        assert.deepEqual(computed, expected)
-      })
-    })
+        assert.deepEqual(computed, expected);
+      });
+    });
 
     it('should successfully parse with external identifier', () => {
       const filecontent = `
@@ -925,8 +925,8 @@ describe('Integration', () => {
             }
           }
         </script>
-      `
-      const options = { filecontent }
+      `;
+      const options = { filecontent };
       const expected = [
         {
           kind: 'computed',
@@ -946,12 +946,12 @@ describe('Integration', () => {
           keywords: [],
           dependencies: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ computed }) => {
-        assert.deepEqual(computed, expected)
-      })
-    })
+        assert.deepEqual(computed, expected);
+      });
+    });
 
     it('should successfully parse with identifier function call', () => {
       const filecontent = `
@@ -964,8 +964,8 @@ describe('Integration', () => {
             }
           }
         </script>
-      `
-      const options = { filecontent }
+      `;
+      const options = { filecontent };
       const expected = {
         name: undefined,
         description: undefined,
@@ -978,13 +978,13 @@ describe('Integration', () => {
         computed: [],
         events: [],
         methods: []
-      }
+      };
 
       return vuedoc.parse(options).then((component) => {
-        expect(component).toEqual(expected)
-      })
-    })
-  })
+        expect(component).toEqual(expected);
+      });
+    });
+  });
 
   describe('errors', () => {
     it('should throw error for non html template', (done) => {
@@ -993,15 +993,15 @@ describe('Integration', () => {
           div
             p {{ gretting }} World!
         </template>
-      `
-      const options = { filecontent }
+      `;
+      const options = { filecontent };
 
       vuedoc.parse(options)
         .then(() => {
-          done(new Error('should throw an error for non html script'))
+          done(new Error('should throw an error for non html script'));
         })
-        .catch(() => done())
-    })
+        .catch(() => done());
+    });
 
     it('should throw error for non javascript script', (done) => {
       const filecontent = `
@@ -1014,42 +1014,42 @@ describe('Integration', () => {
             }
           }
         </script>
-      `
-      const options = { filecontent }
+      `;
+      const options = { filecontent };
 
       vuedoc.parse(options)
         .then(() => {
-          done(new Error('should throw an error for non js script'))
+          done(new Error('should throw an error for non js script'));
         })
-        .catch(() => done())
-    })
+        .catch(() => done());
+    });
 
     it('should throw error for non js files', (done) => {
-      const filename = Fixture.resolve('checkbox.coffee')
-      const options = { filename }
+      const filename = Fixture.resolve('checkbox.coffee');
+      const options = { filename };
 
       vuedoc.parse(options)
         .then(() => {
-          done(new Error('should throw an error for non js file'))
+          done(new Error('should throw an error for non js file'));
         })
-        .catch(() => done())
-    })
+        .catch(() => done());
+    });
 
     it('should return component syntax error', () => {
       const filecontent = `
           <template>
             <input>
           </template>
-        `
-      const options = { filecontent }
+        `;
+      const options = { filecontent };
       const expected = [
         'tag <input> has no matching end tag.'
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ errors }) => {
-        assert.deepEqual(errors, expected)
-      })
-    })
+        assert.deepEqual(errors, expected);
+      });
+    });
 
     it('should emit event with @event and no description', () => {
       const filecontent = `
@@ -1063,8 +1063,8 @@ describe('Integration', () => {
               }
             }
           </script>
-        `
-      const options = { filecontent }
+        `;
+      const options = { filecontent };
       const expected = [
         {
           kind: 'event',
@@ -1075,13 +1075,13 @@ describe('Integration', () => {
           visibility: 'public',
           keywords: []
         }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ events }) => {
-        assert.deepEqual(events, expected)
-      })
-    })
-  })
+        assert.deepEqual(events, expected);
+      });
+    });
+  });
 
   ComponentTestCase({
     name: '#50 - @default keyword in props',
@@ -1645,43 +1645,43 @@ describe('Integration', () => {
           'Jane Smith <jsmith@example.com>',
         ],
         get expected() {
-          return this.value
+          return this.value;
         }
       },
       {
         tag: 'version',
         value: '1.2.3',
         get expected() {
-          return this.value
+          return this.value;
         }
       },
       {
         tag: 'since',
         value: '1.2.3',
         get expected() {
-          return this.value
+          return this.value;
         }
       },
       {
         tag: 'deprecated',
         value: 'since version 2.0',
         get expected() {
-          return this.value
+          return this.value;
         }
       },
       {
         tag: 'see',
         value: 'http://mdn.com',
         get expected() {
-          return this.value
+          return this.value;
         }
       },
-    ]
+    ];
 
     TagSpecs.forEach(({ tag, value, expected }) => {
       const dotlet = value instanceof Array
         ? `/** \n${value.map((item) => '@' + tag + ' ' + item).join('\n')}\n **/`
-        : `/** @${tag} ${value}*/`
+        : `/** @${tag} ${value}*/`;
 
       const expectedOutput = {
         description: undefined,
@@ -1764,7 +1764,7 @@ describe('Integration', () => {
             visibility: 'public'
           }
         ]
-      }
+      };
 
       ComponentTestCase({
         name: '@description',
@@ -1800,7 +1800,7 @@ describe('Integration', () => {
           `
         },
         expected: expectedOutput
-      })
+      });
 
       ComponentTestCase({
         name: '@description',
@@ -1837,7 +1837,7 @@ describe('Integration', () => {
           `
         },
         expected: expectedOutput
-      })
+      });
 
       ComponentTestCase({
         name: '@description',
@@ -1871,7 +1871,7 @@ describe('Integration', () => {
           `
         },
         expected: expectedOutput
-      })
-    })
+      });
+    });
   }
-})
+});

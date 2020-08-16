@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 ComponentTestCase({
   name: '#48 - Vue Instance',
@@ -98,4 +98,4 @@ ComponentTestCase({
         visibility: 'public' }
     ]
   }
-})
+});
