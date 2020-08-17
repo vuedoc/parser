@@ -253,7 +253,7 @@ export default {
 - `@default {value}`<br>
   Commented prop will use the provided value as default prop value. This option
   may be helpful in case the prop type is a complex object or function
-- `@kind {kindName}`<br>
+- `@kind function`<br>
   Force parsing of a prop as a function
 
 ```js

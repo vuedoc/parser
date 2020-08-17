@@ -548,4 +548,57 @@ describe('MethodParser', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '@param with mutiline',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            name: 'NumericInput',
+            methods: {
+              /**
+               * @param {number} value - Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+               *                         Curabitur suscipit odio nisi, vel pellentesque augue tempor sed.
+               *                         Quisque tempus tortor metus, sit amet vehicula nisi tempus sit amet.
+               */
+              check(value) {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'check(value: number): void'
+          ],
+          name: 'check',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          version: undefined,
+          keywords: [],
+          params: [
+            {
+              name: 'value',
+              type: 'number',
+              defaultValue: undefined,
+              rest: false,
+              description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n'
+                + 'Curabitur suscipit odio nisi, vel pellentesque augue tempor sed.\n'
+                + 'Quisque tempus tortor metus, sit amet vehicula nisi tempus sit amet.'
+            }
+          ],
+          returns: {
+            type: 'void',
+            description: undefined
+          }
+        }
+      ]
+    }
+  });
 })
