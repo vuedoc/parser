@@ -327,18 +327,33 @@ export default {
 }
 ```
 
-Vuedoc Parser will automatically detect type for each defined data field and catch
-their initial value.
+Vuedoc Parser will automatically detect type for each defined data field and
+catch their initial value.
 
 **Special tags for data**
 
 - `@type {typeName}`<br>
-  Commented data will use provided type name as type instead of type in source code.
-  This option may be helpful in case the data type is a complex object or a
-  function
+  Commented data will use provided type name as type instead of type in source
+  code. This option may be helpful in case the data type is a complex object or
+  a function
 - `@initialValue {value}`<br>
-  Commented data will use the provided value as initial data value. This option may
-  be helpful in case the data type is a complex object or function
+  Commented data will use the provided value as initial data value. This option
+  may be helpful in case the data type is a complex object or function
+
+```js
+export default {
+  data () {
+    return {
+      /**
+       * A data with a complex expression
+       * @type boolean
+       * @initialValue false
+       */
+      isChecked: !(a || b || c)
+    }
+  }
+}
+```
 
 **Data Entry Interface**
 
@@ -381,21 +396,6 @@ export default {
 
 Vuedoc Parser will automatically extract computed properties dependencies.
 
-```js
-export default {
-  data () {
-    return {
-      /**
-       * A data with a complex expression
-       * @type boolean
-       * @initialValue false
-       */
-      isChecked: !(a || b || c)
-    }
-  }
-}
-```
-
 **Computed Property Entry Interface**
 
 ```ts
@@ -433,8 +433,8 @@ export default {
 ```
 
 Use the JSDoc [`@param`](http://usejsdoc.org/tags-param.html) and
-[`@returns`](http://usejsdoc.org/tags-returns.html) tags to define parameters and
-returning type:
+[`@returns`](http://usejsdoc.org/tags-returns.html) tags to define parameters
+and returning type:
 
 ```js
 export default {
@@ -650,8 +650,8 @@ type EventArgument = {
 
 ### Annotate slots
 
-Vuedoc Parser automatically extracts slots from template. You must use `@prop` tag
-to define properties of a slot:
+Vuedoc Parser automatically extracts slots from template. You must use `@prop`
+tag to define properties of a slot:
 
 ```html
 <template>
@@ -829,8 +829,8 @@ Parsing result:
 Since Vuedoc Parser don't perform I/O operations, it completely ignores the
 `mixins` property.
 
-To parse a mixin, you need to parse its file as a standalone component and
-then merge the parsing result with the result of the initial component:
+To parse a mixin, you need to parse its file as a standalone component and then
+merge the parsing result with the result of the initial component:
 
 ```js
 const Vuedoc = require('@vuedoc/parser')
@@ -960,8 +960,9 @@ You no longer need to load a specific loader or install additional packages.
 ### Create a custom loader
 
 The example below uses the abstract `Vuedoc.Loader` class to create a
-specialized class to handle a template with the [CoffeeScript](https://www.npmjs.com/package/coffeescript)
-language. It uses the built-in `PugLoader` to load Pug template:
+specialized class to handle a template with the
+[CoffeeScript](https://www.npmjs.com/package/coffeescript) language.
+It uses the built-in `PugLoader` to load Pug template:
 
 ```js
 const Vuedoc = require('@vuedoc/parser')
