@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "2.4.0",
+  "version": "3.0.0-beta1",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
