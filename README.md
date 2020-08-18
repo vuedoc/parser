@@ -68,7 +68,6 @@ npm install --save @vuedoc/parser
    [`@returns`](http://usejsdoc.org/tags-returns.html),
    [`@version`](http://usejsdoc.org/tags-version.html),
    [`@since`](http://usejsdoc.org/tags-since.html),
-   [`@description`](http://usejsdoc.org/tags-description.html),
    [`@deprecated`](http://usejsdoc.org/tags-deprecated.html),
    [`@see`](http://usejsdoc.org/tags-deprecated.html),
    [`@kind`](http://usejsdoc.org/tags-kind.html),
@@ -790,37 +789,36 @@ Parsing result:
 
 ## Supported tags
 
-| Keyword                 | Scope           | Description                                                                               |
-| ----------------------- | --------------- | ----------------------------------------------------------------------------------------- |
-| `@name`                 | `component`     | Provide a custom name of the component                                                    |
-| `@type`                 | `props`, `data` | Provide a type expression identifying the type of value that a prop or a data may contain |
-| `@default`              | `props`         | Provide a default value of a prop                                                         |
-| `@model`                | `props`         | Mark a prop as `v-model`                                                                  |
-| `@kind`                 | `props`         | Used to document what kind of symbol is being documented                                  |
-| `@initialValue`         | `data`          | Provide an initial value of a data                                                        |
-| `@method`               | `methods`       | Force the name of a specific method                                                       |
-| `@syntax`               | `methods`       | Provide the custom method syntax                                                          |
-| `@param`                | `methods`       | Provide the name, type, and description of a function parameter                           |
-| `@returns`, `@return`   | `methods`       | Document the value that a function returns                                                |
-| `@event`                | `events`        | Force the name of a specific event                                                        |
-| `@arg`, `@argument`     | `events`        | Provide the name, type, and description of an event argument                              |
-| `@slot`                 | `slots`         | Document slot defined in render function                                                  |
-| `@prop`                 | `slots`         | Provide the name, type, and description of a slot prop                                    |
-| `@mixin`                | `component`     | Force parsing of the exported item as a mixin component                                   |
-| `@description`, `@desc` | `all`           | Provide a general description of a symbol                                                 |
-| `@version`              | `all`           | Assign a version to an item                                                               |
-| `@since`                | `all`           | Indicate that an item was added in a specific version                                     |
-| `@author`               | `all`           | Identify authors of an item                                                               |
-| `@deprecated`           | `all`           | Mark an item as being deprecated                                                          |
-| `@see`                  | `all`           | Allow to refer to a resource that may be related to the item being documented             |
-| `@ignore`               | `*`             | Keep the subsequent code from being documented                                            |
-| **TypeDoc**                                                                                                                           |
-| `@category`             | `all`           | Attach a category to an item                                                              |
-| `@hidden`               | `*`             | Keep the subsequent code from being documented                                            |
-| **Visibilities**                                                                                                                      |
-| `@public`               | `*`             | Mark a symbol as public                                                                   |
-| `@protected`            | `*`             | Mark a symbol as private                                                                  |
-| `@private`              | `*`             | Mark a symbol as protected                                                                |
+| Keyword               | Scope           | Description                                                                               |
+| --------------------- | --------------- | ----------------------------------------------------------------------------------------- |
+| `@name`               | `component`     | Provide a custom name of the component                                                    |
+| `@type`               | `props`, `data` | Provide a type expression identifying the type of value that a prop or a data may contain |
+| `@default`            | `props`         | Provide a default value of a prop                                                         |
+| `@model`              | `props`         | Mark a prop as `v-model`                                                                  |
+| `@kind`               | `props`         | Used to document what kind of symbol is being documented                                  |
+| `@initialValue`       | `data`          | Provide an initial value of a data                                                        |
+| `@method`             | `methods`       | Force the name of a specific method                                                       |
+| `@syntax`             | `methods`       | Provide the custom method syntax                                                          |
+| `@param`              | `methods`       | Provide the name, type, and description of a function parameter                           |
+| `@returns`, `@return` | `methods`       | Document the value that a function returns                                                |
+| `@event`              | `events`        | Force the name of a specific event                                                        |
+| `@arg`, `@argument`   | `events`        | Provide the name, type, and description of an event argument                              |
+| `@slot`               | `slots`         | Document slot defined in render function                                                  |
+| `@prop`               | `slots`         | Provide the name, type, and description of a slot prop                                    |
+| `@mixin`              | `component`     | Force parsing of the exported item as a mixin component                                   |
+| `@version`            | `all`           | Assign a version to an item                                                               |
+| `@since`              | `all`           | Indicate that an item was added in a specific version                                     |
+| `@author`             | `all`           | Identify authors of an item                                                               |
+| `@deprecated`         | `all`           | Mark an item as being deprecated                                                          |
+| `@see`                | `all`           | Allow to refer to a resource that may be related to the item being documented             |
+| `@ignore`             | `*`             | Keep the subsequent code from being documented                                            |
+| **TypeDoc**                                                                                                                         |
+| `@category`           | `all`           | Attach a category to an item                                                              |
+| `@hidden`             | `*`             | Keep the subsequent code from being documented                                            |
+| **Visibilities**                                                                                                                    |
+| `@public`             | `*`             | Mark a symbol as public                                                                   |
+| `@protected`          | `*`             | Mark a symbol as private                                                                  |
+| `@private`            | `*`             | Mark a symbol as protected                                                                |
 
 > `*` stand for `props`, `data`, `methods`, `events`, `slots`
 
@@ -1039,6 +1037,7 @@ Vuedoc.parse(options).then((component) => {
 type ParsingOutput = {
   name: string;               // Component name
   description?: string;       // Component description
+  category?: string;
   version?: string;
   since?: string;
   inheritAttrs: boolean;

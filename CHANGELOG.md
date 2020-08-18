@@ -51,6 +51,7 @@ written with TypeScript.
 type ParsingOutput = {
   name: string;               // Component name
   description?: string;       // Component description
++  category?: string;
 +  version?: string;
 +  since?: string;
   inheritAttrs: boolean;
