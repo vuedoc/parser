@@ -1,13 +1,13 @@
 {
   "name": "@vuedoc/parser",
-  "version": "2.4.0",
+  "version": "3.0.0-beta1",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
     "preversion": "npm test",
     "test": "jest --coverage",
-    "lint": "eslint index.js lib test",
-    "lint:fix": "eslint --fix index.js lib test",
+    "lint": "eslint index.js lib loader schema test",
+    "lint:fix": "eslint --fix index.js lib loader schema test",
     "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },
   "repository": {
@@ -36,21 +36,16 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
-    "acorn": "^7.3.1",
-    "acorn-bigint": "^1.0.0",
-    "acorn-export-ns-from": "^0.2.0",
-    "acorn-import-meta": "^1.1.0",
-    "acorn-private-class-elements": "^0.2.6",
-    "acorn-stage3": "^3.0.0",
+    "@babel/parser": "^7.11.3",
     "vue-template-compiler": "^2.6.11"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
+    "eslint": "^7.7.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "gimtoc": "^1.3.3",
-    "jest": "^26.1.0"
+    "jest": "^26.4.0"
   },
   "engines": {
     "node": ">=8"

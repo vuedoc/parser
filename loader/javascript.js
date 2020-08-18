@@ -1,9 +1,9 @@
-const Loader = require('../lib/Loader')
+const Loader = require('../lib/Loader');
 
 class JavaScriptLoader extends Loader {
   load (source) {
-    return this.emitScript(source)
+    return this.emitScript(source);
   }
 }
 
-module.exports = JavaScriptLoader
+module.exports = JavaScriptLoader;

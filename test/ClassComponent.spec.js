@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 /* eslint-disable max-len */
 /* eslint-disable indent */
@@ -8,25 +8,28 @@ ComponentTestCase({
   options: {
     filecontent: `
       <script>
-        var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-            var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-            if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-            else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-            return c > 3 && r && Object.defineProperty(target, key, r), r;
-        };
         import Vue from 'vue';
         import Component from 'vue-class-component';
+
         /**
          * A class component element
          *
-         * @author Jon Snow
+         * @contributor Jon Snow
          */
-        let App = class App extends Vue {
-          /**
-           * A class component element
-           *
-           * @author Jon Snow
-           */
+        @Component({
+          inheritAttrs: false,
+          props: {
+            /**
+             * prop name description
+             */
+            name: String
+          }
+        })
+        class App extends Vue {
+          static staticVar = 123;
+
+          static ignoredMethod() {}
+
           constructor() {
             super(...arguments);
 
@@ -86,21 +89,8 @@ ComponentTestCase({
            * @private
            */
           _ignoredMethod() {}
-
-          static ignoredMethod() {}
         };
-        App.staticVar = 123;
-        App = __decorate([
-          Component({
-            inheritAttrs: false,
-            props: {
-              /**
-               * prop name description
-               */
-              name: String
-            }
-          })
-        ], App);
+
         export default App;
       </script>
     `,
@@ -113,111 +103,145 @@ ComponentTestCase({
     errors: [],
     keywords: [
       {
-        name: 'author',
-        description: 'Jon Snow' }
+        name: 'contributor',
+        description: 'Jon Snow'
+      }
     ],
     events: [
       { kind: 'event',
         name: 'created',
         arguments: [],
         description: 'event constructor description',
+        category: undefined,
+        version: undefined,
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       { kind: 'event',
         name: 'mounted',
         arguments: [],
         description: 'event mounted description',
+        category: undefined,
+        version: undefined,
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     methods: [
       { kind: 'method',
         name: 'greet',
         params: [],
         description: 'method greet description',
+        category: undefined,
+        version: undefined,
         keywords: [],
+        syntax: [
+          'greet(): void'
+        ],
         visibility: 'public',
-        return: {
-          description: '',
+        returns: {
+          description: undefined,
           type: 'void'
-        } },
+        }
+      },
       { kind: 'method',
         name: '_protectedMethod',
         params: [],
         description: 'method _protectedMethod description',
-        keywords: [
-          {
-            name: 'protected',
-            description: '' }
+        category: undefined,
+        version: undefined,
+        keywords: [],
+        syntax: [
+          '_protectedMethod(): void'
         ],
         visibility: 'protected',
-        return: {
-          description: '',
+        returns: {
+          description: undefined,
           type: 'void'
-        } }
+        }
+      }
     ],
     computed: [
       { kind: 'computed',
         name: 'computedMsg',
+        category: undefined,
+        version: undefined,
         dependencies: [ 'msg' ],
         description: 'computed computedMsg description',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       { kind: 'computed',
         name: '[Symbol.species]',
+        category: undefined,
+        version: undefined,
         dependencies: [],
         description: 'computed [Symbol.species] description',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     data: [
       {
         kind: 'data',
         name: 'msg',
         type: 'string',
+        category: undefined,
+        version: undefined,
         description: 'data msg description',
-        initial: 'Hello',
+        initialValue: '"Hello"',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'helloMsg',
         type: 'BinaryExpression',
+        category: undefined,
+        version: undefined,
         description: 'data helloMsg with expression',
-        initial: '\'Hello, \' + this.name',
+        initialValue: '\'Hello, \' + this.name',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     props: [
       { kind: 'prop',
         name: 'name',
         type: 'String',
-        nativeType: 'string',
+        category: undefined,
+        version: undefined,
         required: false,
         default: undefined,
         describeModel: false,
         description: 'prop name description',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public'
+      }
     ],
     slots: []
   }
-})
+});
 
 ComponentTestCase({
   name: 'vuedoc.md#25 - Class Component',
   options: {
     filecontent: `
       <script>
-        var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-          var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-          if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-          else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-          return c > 3 && r && Object.defineProperty(target, key, r), r;
-        };
         import Vue from 'vue';
         import Component from 'vue-class-component';
-        let App = class App extends Vue {
+
+        /**
+         * MyComponent description
+         */
+        @Component({
+          name: 'MyComponent',
+          router,
+          components: {
+            XHeader,
+          },
+        })
+        class App extends Vue {
           data() {
             return {
               routeQueue: [this.$router.currentRoute],
@@ -227,22 +251,14 @@ ComponentTestCase({
             };
           }
         };
-        App = __decorate([
-          Component({
-            name: 'MyComponent',
-            router,
-            components: {
-              XHeader,
-            },
-          })
-        ], App);
+
         export default App
       </script>
     `
   },
   expected: {
     name: 'MyComponent',
-    description: '',
+    description: 'MyComponent description',
     inheritAttrs: true,
     errors: [],
     keywords: [],
@@ -253,37 +269,49 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'routeQueue',
-        type: 'ArrayExpression',
-        description: '',
-        initial: '[this.$router.currentRoute]',
+        type: 'array',
+        description: undefined,
+        category: undefined,
+        version: undefined,
+        initialValue: '[this.$router.currentRoute]',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'historyLength',
         type: 'object',
-        description: '',
-        initial: 'window.history.length',
+        description: undefined,
+        category: undefined,
+        version: undefined,
+        initialValue: 'window.history.length',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'transitionName',
         type: 'string',
-        description: '',
-        initial: 'slide-left',
+        description: undefined,
+        category: undefined,
+        version: undefined,
+        initialValue: '"slide-left"',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
       {
         kind: 'data',
         name: 'init',
         type: 'boolean',
-        description: '',
-        initial: false,
+        description: undefined,
+        category: undefined,
+        version: undefined,
+        initialValue: 'false',
         keywords: [],
-        visibility: 'public' },
+        visibility: 'public'
+      },
     ],
     props: [],
     slots: []
   }
-})
+});

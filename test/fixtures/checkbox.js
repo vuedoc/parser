@@ -1,4 +1,4 @@
 /**
  * A js component
  */
-export default {}
+export default {};

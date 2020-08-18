@@ -19,8 +19,8 @@
 
 /**
  * A simple checkbox component
- * 
- * @author Sébastien
+ *
+ * @contributor Sébastien
  */
 export default {
   name: 'checkbox',

@@ -1,6 +1,6 @@
-const vuedoc = require('..')
+const vuedoc = require('..');
 
-const { Parser } = require('../lib/parser/Parser')
+const { Parser } = require('../lib/parser/Parser');
 
 /* global describe it expect */
 /* eslint-disable quote-props */
@@ -10,7 +10,7 @@ const { Parser } = require('../lib/parser/Parser')
  * Code samples from lukehoban/es6features
  * @see https://github.com/lukehoban/es6features
  */
-const Features = {
+const Feature = {
   'Arrows': `
     // Expression bodies
     var odds = evens.map(v => v + 1);
@@ -425,171 +425,171 @@ const Features = {
         amount2 = 123_4500,   // 123.45 (4-fixed financial)
         amount3 = 1_234_500;  // 1,234,500
   `
-}
+};
 
 function testPropertyFunction (property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: function () {
-              ${Features[feature]}
+              ${Feature[feature]}
 
               return {}
             }
           }
-        `
-        const source = { script }
-        const options = { source }
-        const parser = new Parser(options)
+        `;
+        const source = { script };
+        const options = { source };
+        const parser = new Parser(options);
 
-        parser.on('end', done)
-        parser.walk()
-      }))
-    })
+        parser.on('end', done);
+        parser.walk();
+      }));
+    });
 
     describe('es6', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property} () {
-              ${Features[feature]}
+              ${Feature[feature]}
 
               return {}
             }
           }
-        `
-        const source = { script }
-        const options = { source }
-        const parser = new Parser(options)
+        `;
+        const source = { script };
+        const options = { source };
+        const parser = new Parser(options);
 
-        parser.on('end', done)
-        parser.walk()
-      }))
-    })
+        parser.on('end', done);
+        parser.walk();
+      }));
+    });
 
     describe('arrow', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: () => {
-              ${Features[feature]}
+              ${Feature[feature]}
 
               return {}
             }
           }
-        `
-        const source = { script }
-        const options = { source }
-        const parser = new Parser(options)
+        `;
+        const source = { script };
+        const options = { source };
+        const parser = new Parser(options);
 
-        parser.on('end', done)
-        parser.walk()
-      }))
-    })
-  })
+        parser.on('end', done);
+        parser.walk();
+      }));
+    });
+  });
 }
 
 function testPropertyObject (property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: {
               x: function () {
-                ${Features[feature]}
+                ${Feature[feature]}
 
                 return {}
               }
             }
           }
-        `
-        const source = { script }
-        const options = { source }
-        const parser = new Parser(options)
+        `;
+        const source = { script };
+        const options = { source };
+        const parser = new Parser(options);
 
-        parser.on('end', done)
-        parser.walk()
-      }))
-    })
+        parser.on('end', done);
+        parser.walk();
+      }));
+    });
 
     describe('es6', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: {
               x () {
-                ${Features[feature]}
+                ${Feature[feature]}
 
                 return {}
               }
             }
           }
-        `
-        const source = { script }
-        const options = { source }
-        const parser = new Parser(options)
+        `;
+        const source = { script };
+        const options = { source };
+        const parser = new Parser(options);
 
-        parser.on('end', done)
-        parser.walk()
-      }))
-    })
+        parser.on('end', done);
+        parser.walk();
+      }));
+    });
 
     describe('arrow', () => {
-      Object.keys(Features).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
         const script = `
           export default {
             ${property}: {
               x: () => {
-                ${Features[feature]}
+                ${Feature[feature]}
 
                 return {}
               }
             }
           }
-        `
-        const source = { script }
-        const options = { source }
-        const parser = new Parser(options)
+        `;
+        const source = { script };
+        const options = { source };
+        const parser = new Parser(options);
 
-        parser.on('end', done)
-        parser.walk()
-      }))
-    })
-  })
+        parser.on('end', done);
+        parser.walk();
+      }));
+    });
+  });
 }
 
-describe('ECMAScript Features Parsing', () => {
+describe('ECMAScript Feature Parsing', () => {
   describe('should parse without errors', () => {
-    Object.keys(Features).forEach((feature) => it(feature, (done) => {
-      const script = Features[feature]
-      const source = { script }
-      const options = { source }
-      const parser = new Parser(options)
+    Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      const script = Feature[feature];
+      const source = { script };
+      const options = { source };
+      const parser = new Parser(options);
 
-      parser.on('end', done)
-      parser.walk()
-    }))
-  })
+      parser.on('end', done);
+      parser.walk();
+    }));
+  });
 
-  testPropertyFunction('name')
-  testPropertyFunction('beforeRouteEnter')
-  testPropertyFunction('beforeRouteUpdate')
-  testPropertyFunction('beforeRouteLeave')
-  testPropertyFunction('beforeCreate')
-  testPropertyFunction('created')
-  testPropertyFunction('beforeMount')
-  testPropertyFunction('mounted')
-  testPropertyFunction('beforeUpdate')
-  testPropertyFunction('updated')
-  testPropertyFunction('beforeDestroy')
-  testPropertyFunction('destroyed')
-  testPropertyFunction('render')
-  testPropertyObject('props')
-  testPropertyObject('methods')
-  testPropertyObject('computed')
+  testPropertyFunction('name');
+  testPropertyFunction('beforeRouteEnter');
+  testPropertyFunction('beforeRouteUpdate');
+  testPropertyFunction('beforeRouteLeave');
+  testPropertyFunction('beforeCreate');
+  testPropertyFunction('created');
+  testPropertyFunction('beforeMount');
+  testPropertyFunction('mounted');
+  testPropertyFunction('beforeUpdate');
+  testPropertyFunction('updated');
+  testPropertyFunction('beforeDestroy');
+  testPropertyFunction('destroyed');
+  testPropertyFunction('render');
+  testPropertyObject('props');
+  testPropertyObject('methods');
+  testPropertyObject('computed');
 
   describe('Destructuring', () => {
     it('should successfully extract destructuring vars', () => {
@@ -610,80 +610,89 @@ describe('ECMAScript Features Parsing', () => {
             }
           }
         </script>
-      `
-      const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      `;
+      const features = [ 'data' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '1',
+          initialValue: '1',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '3',
+          initialValue: '3',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'any',
-          initial: 'undefined',
+          initialValue: 'undefined',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '4',
+          initialValue: '4',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '5',
+          initialValue: '5',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'f',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'any',
-          initial: 'undefined',
+          initialValue: 'undefined',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'g',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '6',
+          initialValue: '6',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'h',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'any',
-          initial: 'undefined',
+          initialValue: 'undefined',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'i',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'any',
-          initial: 'undefined',
+          initialValue: 'undefined',
           keywords: [] }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ data }) => {
-        expect(data).toEqual(expected)
-      })
-    })
-  })
+        expect(data).toEqual(expected);
+      });
+    });
+  });
 
   describe('Symbols', () => {
     it('should successfully extract Symbols vars', () => {
@@ -697,24 +706,25 @@ describe('ECMAScript Features Parsing', () => {
             }
           }
         </script>
-      `
-      const features = [ 'data' ]
-      const options = { filecontent, features }
+      `;
+      const features = [ 'data' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'symbol',
-          initial: 'Symbol("key")',
+          initialValue: 'Symbol("key")',
           keywords: [] }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ data }) => {
-        expect(data).toEqual(expected)
-      })
-    })
-  })
+        expect(data).toEqual(expected);
+      });
+    });
+  });
 
   describe('Binary and Octal Literals', () => {
     it('should successfully extract Binary and Octal Literals vars', () => {
@@ -729,31 +739,33 @@ describe('ECMAScript Features Parsing', () => {
             }
           }
         </script>
-      `
-      const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      `;
+      const features = [ 'data' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '0b111110111',
+          initialValue: '0b111110111',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '0o767',
+          initialValue: '0o767',
           keywords: [] }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ data }) => {
-        expect(data).toEqual(expected)
-      })
-    })
-  })
+        expect(data).toEqual(expected);
+      });
+    });
+  });
 
   describe('BigInt', () => {
     it('should successfully extract BigInt vars', () => {
@@ -771,59 +783,65 @@ describe('ECMAScript Features Parsing', () => {
             }
           }
         </script>
-      `
-      const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      `;
+      const features = [ 'data' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'bigint',
-          initial: '9007199254740991n',
+          initialValue: '9007199254740991n',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'bigint',
-          initial: 'BigInt(9007199254740991)',
+          initialValue: 'BigInt(9007199254740991)',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'bigint',
-          initial: 'BigInt("9007199254740991")',
+          initialValue: 'BigInt("9007199254740991")',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'bigint',
-          initial: 'BigInt("9007199254740992")',
+          initialValue: 'BigInt("9007199254740992")',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'bigint',
-          initial: 'BigInt("0x1fffffffffffff")',
+          initialValue: 'BigInt("0x1fffffffffffff")',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'f',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'bigint',
-          initial: 'BigInt("0b11111111111111111111111111111111111111111111111111111")',
+          initialValue: 'BigInt("0b11111111111111111111111111111111111111111111111111111")',
           keywords: [] }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ data }) => {
-        expect(data).toEqual(expected)
-      })
-    })
-  })
+        expect(data).toEqual(expected);
+      });
+    });
+  });
 
   describe('Logical Operators and Assignment Expressions', () => {
     it('should successfully parse Logical Operators and Assignment Expressions', () => {
@@ -845,59 +863,65 @@ describe('ECMAScript Features Parsing', () => {
             }
           }
         </script>
-      `
-      const features = [ 'data' ]
-      const options = { filecontent, features }
+      `;
+      const features = [ 'data' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'boolean',
-          initial: true,
+          initialValue: 'true',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'boolean',
-          initial: false,
+          initialValue: 'false',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'AssignmentExpression',
-          initial: 'a ||= b',
+          initialValue: 'a ||= b',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'LogicalExpression',
-          initial: 'a || (a = b)',
+          initialValue: 'a || (a = b)',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'AssignmentExpression',
-          initial: 'a &&= b',
+          initialValue: 'a &&= b',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'f',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'LogicalExpression',
-          initial: 'a && (a = b)',
+          initialValue: 'a && (a = b)',
           keywords: [] }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ data }) => {
-        expect(data).toEqual(expected)
-      })
-    })
-  })
+        expect(data).toEqual(expected);
+      });
+    });
+  });
 
   describe('Numeric Separators', () => {
     it('should successfully parse Numeric Separators', () => {
@@ -913,69 +937,85 @@ describe('ECMAScript Features Parsing', () => {
               let c = 12345_00;
               let d = 123_4500;
               let e = 1_234_500;
+              let f = /azerty/;
 
-              return { x, y, a, b, c, d, e }
+              return { x, y, a, b, c, d, e, f }
             }
           }
         </script>
-      `
-      const features = [ 'data' ]
-      const options = { filecontent, features, stringify: true }
+      `;
+      const features = [ 'data' ];
+      const options = { filecontent, features };
       const expected = [
         { kind: 'data',
           visibility: 'public',
           name: 'x',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '1_000_000_000',
+          initialValue: '1_000_000_000',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'y',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '101_475_938.38',
+          initialValue: '101_475_938.38',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'a',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '123_00',
+          initialValue: '123_00',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'b',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '12_300',
+          initialValue: '12_300',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'c',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '12345_00',
+          initialValue: '12345_00',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'd',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '123_4500',
+          initialValue: '123_4500',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
           name: 'e',
-          description: '',
+          category: undefined,
+          description: undefined,
           type: 'number',
-          initial: '1_234_500',
+          initialValue: '1_234_500',
+          keywords: [] },
+        { kind: 'data',
+          visibility: 'public',
+          name: 'f',
+          category: undefined,
+          description: undefined,
+          type: 'regexp',
+          initialValue: '/azerty/',
           keywords: [] }
-      ]
+      ];
 
       return vuedoc.parse(options).then(({ data }) => {
-        expect(data).toEqual(expected)
-      })
-    })
-  })
-})
+        expect(data).toEqual(expected);
+      });
+    });
+  });
+});

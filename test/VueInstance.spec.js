@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils')
+const { ComponentTestCase } = require('./lib/TestUtils');
 
 ComponentTestCase({
   name: '#48 - Vue Instance',
@@ -7,7 +7,7 @@ ComponentTestCase({
       <script>
         /**
          * A Vue App Component
-         * @version 1.2
+         * @tagtest 1.2
          */
         export default new Vue({
           name: 'App',
@@ -34,7 +34,7 @@ ComponentTestCase({
     inheritAttrs: true,
     keywords: [
       {
-        name: 'version',
+        name: 'tagtest',
         description: '1.2' }
     ],
     events: [],
@@ -45,24 +45,30 @@ ComponentTestCase({
         kind: 'data',
         name: 'url',
         type: 'object',
-        description: '',
-        initial: 'context.url',
+        category: undefined,
+        version: undefined,
+        description: undefined,
+        initialValue: 'context.url',
         keywords: [],
         visibility: 'public' },
       {
         kind: 'data',
         name: 'contextUrl',
         type: 'object',
+        category: undefined,
+        version: undefined,
         description: 'data contextUrl description',
-        initial: 'context.url',
+        initialValue: 'context.url',
         keywords: [],
         visibility: 'public' },
       {
         kind: 'data',
         name: 'contextNumber',
         type: 'number',
+        category: undefined,
+        version: undefined,
         description: 'data contextNumber description',
-        initial: 12,
+        initialValue: '12',
         keywords: [],
         visibility: 'public' }
     ],
@@ -70,18 +76,21 @@ ComponentTestCase({
       {
         default: undefined,
         describeModel: false,
-        description: '',
+        category: undefined,
+        version: undefined,
+        description: undefined,
         keywords: [],
         kind: 'prop',
         name: 'todo',
-        nativeType: 'any',
         required: false,
         type: 'any',
         visibility: 'public' }
     ],
     slots: [
       {
-        description: '',
+        description: undefined,
+        category: undefined,
+        version: undefined,
         keywords: [],
         kind: 'slot',
         name: 'default',
@@ -89,4 +98,4 @@ ComponentTestCase({
         visibility: 'public' }
     ]
   }
-})
+});

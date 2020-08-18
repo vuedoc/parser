@@ -1,4 +1,4 @@
-const parser = require('..')
+const parser = require('..');
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -14,22 +14,22 @@ describe('#44 - Inline Template', () => {
           })
         </script>
       `
-    }
-
-    const expected = [
-      {
-        kind: 'slot',
-        visibility: 'public',
-        description: '',
-        keywords: [],
-        name: 'default',
-        props: [] }
-    ]
+    };
 
     return parser.parse(options).then(({ slots }) => {
-      expect(slots).toEqual(expected)
-    })
-  })
+      expect(slots).toEqual([
+        {
+          kind: 'slot',
+          visibility: 'public',
+          description: undefined,
+          category: undefined,
+          keywords: [],
+          name: 'default',
+          props: []
+        }
+      ]);
+    });
+  });
 
   it('should successfully parse component with inline litteral template', () => {
     const options = {
@@ -46,38 +46,38 @@ describe('#44 - Inline Template', () => {
           })
         </script>
       `
-    }
-
-    const expected = {
-      name: '',
-      inheritAttrs: true,
-      description: '',
-      keywords: [],
-      errors: [],
-      slots:
-        [ {
-            kind: 'slot',
-            visibility: 'public',
-            description: 'Use this slot to set the content',
-            keywords: [],
-            name: 'content',
-            props: [] } ],
-      props: [],
-      data: [],
-      computed: [],
-      events:
-        [ {
-            kind: 'event',
-            visibility: 'public',
-            description: '',
-            keywords: [],
-            name: 'input',
-            arguments: [] } ],
-      methods: []
-    }
+    };
 
     return parser.parse(options).then((component) => {
-      expect(component).toEqual(expected)
-    })
-  })
-})
+      expect(component).toEqual({
+        name: undefined,
+        inheritAttrs: true,
+        description: undefined,
+        keywords: [],
+        errors: [],
+        slots:
+          [ {
+              kind: 'slot',
+              visibility: 'public',
+              description: 'Use this slot to set the content',
+              category: undefined,
+              keywords: [],
+              name: 'content',
+              props: [] } ],
+        props: [],
+        data: [],
+        computed: [],
+        events:
+          [ {
+              kind: 'event',
+              visibility: 'public',
+              description: undefined,
+              category: undefined,
+              keywords: [],
+              name: 'input',
+              arguments: [] } ],
+        methods: []
+      });
+    });
+  });
+});
