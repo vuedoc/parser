@@ -2665,4 +2665,62 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#84 - Method parameters not parsed correctly (typescript)',
+    options: {
+      filecontent: `
+        <template>
+            <div>
+
+            </div>
+        </template>
+
+        <script lang='ts'>
+            import {extend, pick} from 'lodash'
+            import mixins   from 'vue-typed-mixins'
+
+            const Vue = mixins()
+            export default Vue.extend({
+                name: "TestComponent",
+                methods: {
+                    test(a: string): boolean {
+                        return true
+                    }
+                }
+            })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      name: 'TestComponent',
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'test(a: string): boolean'
+          ],
+          name: 'test',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          params: [
+            {
+              name: 'a',
+              type: 'string',
+              description: undefined,
+              defaultValue: undefined,
+              rest: false
+            },
+          ],
+          returns: {
+            type: 'boolean',
+            description: undefined
+          }
+        },
+      ]
+    }
+  })
 })
