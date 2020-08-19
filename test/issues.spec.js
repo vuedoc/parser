@@ -2665,4 +2665,127 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#84 - Method parameters not parsed correctly (typescript)',
+    options: {
+      filecontent: `
+        <template>
+            <div>
+
+            </div>
+        </template>
+
+        <script lang='ts'>
+            import {extend, pick} from 'lodash'
+            import mixins   from 'vue-typed-mixins'
+
+            const Vue = mixins()
+            export default Vue.extend({
+                name: "TestComponent",
+                methods: {
+                    test(a: string): boolean {
+                        return true
+                    }
+                }
+            })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      name: 'TestComponent',
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'test(a: string): boolean'
+          ],
+          name: 'test',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          params: [
+            {
+              name: 'a',
+              type: 'string',
+              description: undefined,
+              defaultValue: undefined,
+              rest: false
+            },
+          ],
+          returns: {
+            type: 'boolean',
+            description: undefined
+          }
+        },
+      ]
+    }
+  })
+
+  ComponentTestCase({
+    name: 'vuedoc/md#84 - Multiline default breaks table',
+    options: {
+      filecontent: `
+        <template>
+            <div>
+
+            </div>
+        </template>
+
+        <script lang='ts'>
+            import mixins         from 'vue-typed-mixins'
+            import {PropOptions}  from 'vue'
+
+            const Vue = mixins()
+            export default Vue.extend({
+                name: "TestComponent",
+                props: {
+                    testProp: {
+                        type: Object,
+                        default: () => ({
+                            a: 1,
+                            b: 2,
+                        })
+                    } as PropOptions<Record<string, any>>,
+                    testProp2: String,
+                }
+            })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      name: 'TestComponent',
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'Record<string, any>',
+          default: '() => ({ a: 1, b: 2, })',
+          name: 'test-prop',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'String',
+          default: undefined,
+          name: 'test-prop2',
+          describeModel: false,
+          required: false
+        },
+      ]
+    }
+  })
 })
