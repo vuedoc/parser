@@ -1,4 +1,10 @@
+## Vuedoc Parser v3.0.0-beta2
+
+This release improves parsing of props and data by handling `TSAsExpression`.
+
 ## Vuedoc Parser v3.0.0-beta1
+
+This release comes with breaking changes and important new features.
 
 **Native TypeScript support**
 
