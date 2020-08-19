@@ -31,4 +31,35 @@ describe('DataParser', () => {
       ]
     }
   });
+
+  ComponentTestCase({
+    name: 'TSAsExpression',
+    options: {
+      filecontent: `
+        <script lang='ts'>
+          export default Vue.extend({
+            data: () => ({
+              x: {} as Record<string, number>
+            })
+          })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      data: [
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'Record<string, number>',
+          initialValue: '{}',
+          name: 'x',
+        },
+      ]
+    }
+  });
 });

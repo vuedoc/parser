@@ -291,4 +291,89 @@ describe('PropParser', () => {
       ]
     }
   });
+
+  ComponentTestCase({
+    name: 'TSAsExpression',
+    options: {
+      filecontent: `
+        <script lang='ts'>
+            import mixins         from 'vue-typed-mixins'
+            import {PropOptions}  from 'vue'
+
+            const Vue = mixins()
+            export default Vue.extend({
+                name: "TestComponent",
+                props: {
+                  testProp: {
+                      type: Object,
+                      default: () => ({
+                          a: 1,
+                          b: 2,
+                      })
+                  } as PropOptions<Record<string, any>>,
+                  testProp2: {
+                      type: Object,
+                      default: () => ({
+                          a: 1,
+                          b: 2,
+                      })
+                  } as Record<string, any>,
+                  testProp3: {
+                      type: Object,
+                      default: () => ({
+                          a: 1,
+                          b: 2,
+                      })
+                  } as PropOptions<>,
+                }
+            })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      name: 'TestComponent',
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'Record<string, any>',
+          default: '() => ({ a: 1, b: 2, })',
+          name: 'test-prop',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'Record<string, any>',
+          default: '() => ({ a: 1, b: 2, })',
+          name: 'test-prop2',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'any',
+          default: '() => ({ a: 1, b: 2, })',
+          name: 'test-prop3',
+          describeModel: false,
+          required: false
+        },
+      ]
+    }
+  });
 });

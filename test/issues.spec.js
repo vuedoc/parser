@@ -2723,4 +2723,69 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: 'vuedoc/md#84 - Multiline default breaks table',
+    options: {
+      filecontent: `
+        <template>
+            <div>
+
+            </div>
+        </template>
+
+        <script lang='ts'>
+            import mixins         from 'vue-typed-mixins'
+            import {PropOptions}  from 'vue'
+
+            const Vue = mixins()
+            export default Vue.extend({
+                name: "TestComponent",
+                props: {
+                    testProp: {
+                        type: Object,
+                        default: () => ({
+                            a: 1,
+                            b: 2,
+                        })
+                    } as PropOptions<Record<string, any>>,
+                    testProp2: String,
+                }
+            })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      name: 'TestComponent',
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'Record<string, any>',
+          default: '() => ({ a: 1, b: 2, })',
+          name: 'test-prop',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'String',
+          default: undefined,
+          name: 'test-prop2',
+          describeModel: false,
+          required: false
+        },
+      ]
+    }
+  })
 })
