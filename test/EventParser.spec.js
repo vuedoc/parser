@@ -382,4 +382,64 @@ describe('EventParser', () => {
       ]
     }
   });
+
+  ComponentTestCase({
+    name: 'Assignment argument with unhandled name',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            computed: {
+              oven: {
+                get() {
+                  return this.value
+                },
+
+                set(oven) {
+                  /**
+                   * Emitted when an oven is selected.
+                   *
+                   * @param {Oven} oven = The selected oven
+                   */
+                  this.$emit('input', oven)
+                }
+              }
+            }
+          };
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      computed: [
+        {
+          kind: 'computed',
+          name: 'oven',
+          dependencies: [ 'value' ],
+          keywords: [],
+          category: undefined,
+          version: undefined,
+          visibility: 'public',
+        }
+      ],
+      events: [
+        {
+          kind: 'event',
+          name: 'input',
+          keywords: [],
+          category: undefined,
+          description: 'Emitted when an oven is selected.',
+          visibility: 'public',
+          arguments: [
+            {
+              name: 'oven',
+              type: 'Oven',
+              description: '= The selected oven',
+              rest: false,
+            },
+          ],
+        }
+      ]
+    }
+  });
 });

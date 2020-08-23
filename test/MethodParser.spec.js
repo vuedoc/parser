@@ -601,4 +601,84 @@ describe('MethodParser', () => {
       ]
     }
   });
+
+  ComponentTestCase({
+    name: 'TypeScript: Labeled Tuple Elements',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              foo(...args: [string, number]): void {
+                // ...
+              },
+              bar(x: [first: string, second: number]) {
+                // ...
+
+                // note: we didn't need to name these 'first' and 'second'
+                let [a, b] = x;
+
+                // ...
+              },
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'foo(...args: [string, number]): void'
+          ],
+          name: 'foo',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          version: undefined,
+          keywords: [],
+          params: [
+            {
+              name: 'args',
+              type: '[string, number]',
+              defaultValue: undefined,
+              rest: true,
+              description: undefined
+            }
+          ],
+          returns: {
+            type: 'void',
+            description: undefined
+          }
+        },
+        {
+          kind: 'method',
+          syntax: [
+            'bar(x: [first: string, second: number]): void'
+          ],
+          name: 'bar',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          version: undefined,
+          keywords: [],
+          params: [
+            {
+              name: 'x',
+              type: '[first: string, second: number]',
+              defaultValue: undefined,
+              rest: false,
+              description: undefined
+            }
+          ],
+          returns: {
+            type: 'void',
+            description: undefined
+          }
+        },
+      ]
+    }
+  });
 })

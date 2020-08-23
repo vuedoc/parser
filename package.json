@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "3.0.0-beta2",
+  "version": "3.0.0-beta3",
   "description": "Generate a JSON documentation for a Vue file",
   "main": "index.js",
   "scripts": {
@@ -36,8 +36,8 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
-    "@babel/parser": "^7.11.3",
-    "vue-template-compiler": "^2.6.11"
+    "@babel/parser": "^7.11.4",
+    "vue-template-compiler": "^2.6.12"
   },
   "devDependencies": {
     "eslint": "^7.7.0",
@@ -45,7 +45,7 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "gimtoc": "^1.3.3",
-    "jest": "^26.4.0"
+    "jest": "^26.4.2"
   },
   "engines": {
     "node": ">=8"
