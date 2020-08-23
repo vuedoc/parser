@@ -1,3 +1,9 @@
+## Vuedoc Parser v3.0.0-beta3
+
+This release improves parsing of TypeScript Labeled Tuple Elements.
+It also upgrades dependencies to `@babel/parser@7.11.4` and
+`vue-template-compiler@2.6.12`.
+
 ## Vuedoc Parser v3.0.0-beta2
 
 This release improves parsing of props and data by handling `TSAsExpression`.
