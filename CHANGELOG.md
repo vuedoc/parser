@@ -1,3 +1,8 @@
+## Vuedoc Parser v3.0.0-beta4
+
+This release adds an initial JSX support.
+It also fixes an issue related to TSX (#87).
+
 ## Vuedoc Parser v3.0.0-beta3
 
 This release improves parsing of TypeScript Labeled Tuple Elements.
