@@ -2788,4 +2788,56 @@ describe('issues', () => {
       ]
     }
   })
+
+  ComponentTestCase({
+    name: '#87 - Typescript Parser Error',
+    options: {
+      filecontent: `
+        <template>
+            <div>
+
+            </div>
+        </template>
+
+        <script lang='ts'>
+          interface test {
+              a: string
+          }
+
+          let x = <test>{
+              a: 'a',
+          }
+
+          import mixins             from 'vue-typed-mixins'
+          //import {ComponentOptions} from 'vue'
+
+          interface ComponentOptions<T> {
+              render(e: (a: any, b: any) => void): void
+          }
+
+          const Vue = mixins()
+          export default Vue.extend({
+              name: "TestComponent",
+              components: {
+                  "css-style": <ComponentOptions<any>>{
+                      render: function (createElement) {
+                          return createElement("style", (this as any).$slots.default)
+                      },
+                  } as any,
+              },
+          })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      name: 'TestComponent',
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: [],
+      slots: [],
+    }
+  })
 })

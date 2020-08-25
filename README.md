@@ -59,6 +59,7 @@ npm install --save @vuedoc/parser
 - Extract component events
 - Extract component slots
 - Extract component methods
+- JSX support
 - [Class Component](https://www.npmjs.com/package/vue-class-component) support
 - [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support
 - [Prop Types](https://github.com/znck/prop-types) support
@@ -87,6 +88,7 @@ npm install --save @vuedoc/parser
 |                       | Default features: `['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
 | `loaders`             | Use this option to define [custom loaders](#language-processing) for specific languages                         |
 | `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                               |
+| `jsx`                 | Set to `true` to enable JSX parsing. Default `false`                                                            |
 
 ## Usage
 
