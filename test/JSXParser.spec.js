@@ -4,6 +4,60 @@ const { ComponentTestCase } = require('./lib/TestUtils');
 
 describe('JSXParser', () => {
   ComponentTestCase({
+    name: 'JSX with no slot',
+    options: {
+      jsx: true,
+      filecontent: `
+        <script type="ts">
+          export default new Vue({
+            el: '#demo',
+            render() {
+              return <p>hello</p>
+            }
+          })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      keywords: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: [],
+      slots: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: 'JSX with dynamic content',
+    options: {
+      jsx: true,
+      filecontent: `
+        <script type="ts">
+          export default new Vue({
+            el: '#demo',
+            render() {
+              return <p>hello { this.message }</p>
+            }
+          })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      keywords: [],
+      props: [],
+      data: [],
+      computed: [],
+      events: [],
+      methods: [],
+      slots: [],
+    }
+  });
+
+  ComponentTestCase({
     name: 'JSX',
     options: {
       jsx: true,

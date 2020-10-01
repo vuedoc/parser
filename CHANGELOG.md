@@ -1,3 +1,12 @@
+## Vuedoc Parser v3.0.0
+
+This is the official release of Vuedoc Parser 3.0.0.
+The only change with the previous beta 4 is the upgrade to
+`@babel/parser@7.11.5`.
+
+Please see [release notes of previous betas](https://gitlab.com/vuedoc/parser/-/blob/v3.0.0/CHANGELOG.md)
+for all changes on Vuedoc Parser 3.0.0.
+
 ## Vuedoc Parser v3.0.0-beta4
 
 This release adds an initial JSX support.

@@ -1,5 +1,8 @@
 image: node:current-alpine
 
+include:
+  - template: SAST.gitlab-ci.yml
+
 stages:
   - test
   - publish
