@@ -55,12 +55,14 @@ describe('#44 - Inline Template', () => {
         description: undefined,
         keywords: [],
         errors: [],
+        warnings: [],
         slots:
           [ {
               kind: 'slot',
               visibility: 'public',
               description: 'Use this slot to set the content',
               category: undefined,
+              version: undefined,
               keywords: [],
               name: 'content',
               props: [] } ],
@@ -73,6 +75,7 @@ describe('#44 - Inline Template', () => {
               visibility: 'public',
               description: undefined,
               category: undefined,
+              version: undefined,
               keywords: [],
               name: 'input',
               arguments: [] } ],

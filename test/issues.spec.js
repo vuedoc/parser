@@ -2840,4 +2840,67 @@ describe('issues', () => {
       slots: [],
     }
   })
+
+  ComponentTestCase({
+    name: '#91 - crash when parsing event with anonymous object as value',
+    options: {
+      filecontent: `
+        <template>
+          <i>foo</i>
+        </template>
+
+        <script>
+          /**
+           * Test component
+           */
+          export default {
+            methods: {
+              /**
+               * @private
+               */
+              sendEvent2() {
+                /**
+                 * Foo event description
+                 *
+                 * @arg {Object} {name, val} - foo event param description
+                 */
+                this.$emit("foo-event", { name: "foo-name", val: "voo-val" })
+              }
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      warnings: [
+        "Invalid JSDoc syntax: '{Object} {name, val} - foo event param description'",
+      ],
+      errors: [],
+      name: undefined,
+      props: [],
+      data: [],
+      computed: [],
+      events: [
+        {
+          arguments: [
+            {
+              description: undefined,
+              name: '{ name: "foo-name", val: "voo-val" }',
+              rest: false,
+              type: 'object',
+            },
+          ],
+          category: undefined,
+          description: 'Foo event description',
+          keywords: [],
+          kind: 'event',
+          name: 'foo-event',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+      methods: [],
+      slots: [],
+    }
+  });
 })

@@ -1052,6 +1052,7 @@ type ParsingOutput = {
   events: EventEntry[];       // Events
   methods: MethodEntry[];     // Component methods
   errors: string[];           // Syntax and parsing errors
+  warnings: string[];         // Syntax and parsing warnings
 };
 
 interface NameEntry {

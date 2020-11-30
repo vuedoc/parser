@@ -972,6 +972,7 @@ describe('Integration', () => {
         inheritAttrs: true,
         keywords: [],
         errors: [],
+        warnings: [],
         slots: [],
         props: [],
         data: [],

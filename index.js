@@ -73,6 +73,7 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
   const component = {
     inheritAttrs: true,
     errors: [],
+    warnings: [],
     keywords: []
   };
 
@@ -84,6 +85,10 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
 
   parser.on('error', ({ message }) => {
     component.errors.push(message);
+  });
+
+  parser.on('warning', (message) => {
+    component.warnings.push(message);
   });
 
   parser.on('keywords', ({ value }) => {
