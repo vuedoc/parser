@@ -442,4 +442,93 @@ describe('EventParser', () => {
       ]
     }
   });
+
+  ComponentTestCase({
+    name: 'Event in watchers',
+    options: {
+      filecontent: `
+        <template>
+          <button @click="fooProp = !fooProp">click me</button>
+        </template>
+
+        <script>
+        /**
+         * Test component
+         */
+        export default {
+          data() {
+            return {
+              fooProp: false
+            }
+          },
+          watch: {
+            fooProp(newVal) {
+              /**
+               * Emitted when fooProp changes
+               *
+               * @arg {Boolean} newVal - The new value
+               */
+              this.$emit("foo-changed", newVal)
+              this.sendEvent2(newVal)
+            }
+          },
+          methods: {
+            /**
+             * @private
+             */
+            sendEvent2(val) {
+              /**
+               * Also emitted when fooProp changes
+               *
+               * @arg {Boolean} newVal - The new value
+               */
+              this.$emit("event2", newVal)
+            }
+          }
+        }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      warnings: [],
+      computed: [],
+      events: [
+        {
+          kind: 'event',
+          name: 'foo-changed',
+          keywords: [],
+          category: undefined,
+          version: undefined,
+          description: 'Emitted when fooProp changes',
+          visibility: 'public',
+          arguments: [
+            {
+              name: 'newVal',
+              type: 'Boolean',
+              description: 'The new value',
+              rest: false,
+            },
+          ],
+        },
+        {
+          kind: 'event',
+          name: 'event2',
+          keywords: [],
+          category: undefined,
+          version: undefined,
+          description: 'Also emitted when fooProp changes',
+          visibility: 'public',
+          arguments: [
+            {
+              name: 'newVal',
+              type: 'Boolean',
+              description: 'The new value',
+              rest: false,
+            },
+          ],
+        },
+      ]
+    }
+  });
 });
