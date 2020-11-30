@@ -470,7 +470,34 @@ describe('EventParser', () => {
                */
               this.$emit("foo-changed", newVal)
               this.sendEvent2(newVal)
-            }
+            },
+            fooProp2: (newVal) => {
+              /**
+               * Emitted when fooProp changes
+               *
+               * @arg {Boolean} newVal - The new value
+               */
+              this.$emit("foo-changed2", newVal)
+              this.sendEvent2(newVal)
+            },
+            fooProp3: function (newVal) {
+              /**
+               * Emitted when fooProp changes
+               *
+               * @arg {Boolean} newVal - The new value
+               */
+              this.$emit("foo-changed3", newVal)
+              this.sendEvent2(newVal)
+            },
+            ['fooProp4']: function (newVal) {
+              /**
+               * Emitted when fooProp changes
+               *
+               * @arg {Boolean} newVal - The new value
+               */
+              this.$emit("foo-changed4", newVal)
+              this.sendEvent2(newVal)
+            },
           },
           methods: {
             /**
@@ -497,6 +524,57 @@ describe('EventParser', () => {
         {
           kind: 'event',
           name: 'foo-changed',
+          keywords: [],
+          category: undefined,
+          version: undefined,
+          description: 'Emitted when fooProp changes',
+          visibility: 'public',
+          arguments: [
+            {
+              name: 'newVal',
+              type: 'Boolean',
+              description: 'The new value',
+              rest: false,
+            },
+          ],
+        },
+        {
+          kind: 'event',
+          name: 'foo-changed2',
+          keywords: [],
+          category: undefined,
+          version: undefined,
+          description: 'Emitted when fooProp changes',
+          visibility: 'public',
+          arguments: [
+            {
+              name: 'newVal',
+              type: 'Boolean',
+              description: 'The new value',
+              rest: false,
+            },
+          ],
+        },
+        {
+          kind: 'event',
+          name: 'foo-changed3',
+          keywords: [],
+          category: undefined,
+          version: undefined,
+          description: 'Emitted when fooProp changes',
+          visibility: 'public',
+          arguments: [
+            {
+              name: 'newVal',
+              type: 'Boolean',
+              description: 'The new value',
+              rest: false,
+            },
+          ],
+        },
+        {
+          kind: 'event',
+          name: 'foo-changed4',
           keywords: [],
           category: undefined,
           version: undefined,
