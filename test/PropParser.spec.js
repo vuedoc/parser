@@ -324,7 +324,7 @@ describe('PropParser', () => {
                           a: 1,
                           b: 2,
                       })
-                  } as PropOptions<>,
+                  } as PropOptions<any>,
                 }
             })
         </script>

@@ -90,4 +90,81 @@ describe('MarkupTemplateParser', () => {
       ]
     }
   });
+
+  ComponentTestCase({
+    name: '#89 - dynamic slot names aren\'t supported',
+    options: {
+      filecontent: `
+        <template>
+          <table>
+            <tr>
+                <th>Property name</th>
+                <th>Property value</th>
+            </tr>
+            <tr v-for="(item, index) in items" :key="index">
+              <td>
+              {{ item.label }}
+              </td>
+              <td>
+                <!--
+                    @slot prop-value:xxxx - a slot description
+                -->
+                <slot
+                :item="item"
+                :name="'prop-value:' + item.key"
+                >{{ item.value }}</slot>
+              </td>
+            </tr>
+          </table>
+          <slot name="this-works'">hi</slot>
+          <slot :name="'this-does-not'">hi</slot>
+          <slot v-bind:name="'this-does-not2'">hi</slot>
+        </template>
+      `
+    },
+    expected: {
+      slots: [
+        {
+          kind: 'slot',
+          name: 'prop-value:xxxx',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: 'a slot description',
+          keywords: [],
+          props: [],
+        },
+        {
+          kind: 'slot',
+          name: 'this-works\'',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          props: [],
+        },
+        {
+          kind: 'slot',
+          name: '\'this-does-not\'',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          props: [],
+        },
+        {
+          kind: 'slot',
+          name: '\'this-does-not2\'',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          props: [],
+        },
+      ],
+    }
+  });
 });

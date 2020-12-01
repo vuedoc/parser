@@ -1,3 +1,13 @@
+## Vuedoc Parser v3.1.0
+
+This release fixes some bugs and introduces a new event `warning` to emit JSDoc
+syntax issue.
+
+- Now use `@babel/parser@7.12.7`
+- Emit warning for invalid JSDoc syntax (#91)
+- Parse watch property to handle events (#90)
+- Improve parsing of dynamic slot (#89)
+
 ## Vuedoc Parser v3.0.0
 
 This is the official release of Vuedoc Parser 3.0.0.
