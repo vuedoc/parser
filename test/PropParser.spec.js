@@ -406,6 +406,7 @@ describe('PropParser', () => {
                 type: Function as (
                   selectedItemsData: Array<any>
                 ) => Array<IContextMenuItem<any>>,
+                default: new Function(),
               },
             }
           })
@@ -464,7 +465,7 @@ describe('PropParser', () => {
           description: undefined,
           keywords: [],
           type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
-          default: undefined,
+          default: 'new Function()',
           name: 'menu-factory-multiline',
           describeModel: false,
           required: false
