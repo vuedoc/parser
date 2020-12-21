@@ -332,6 +332,7 @@ describe('PropParser', () => {
     },
     expected: {
       errors: [],
+      warnings: [],
       name: 'TestComponent',
       props: [
         {
@@ -370,6 +371,101 @@ describe('PropParser', () => {
           type: 'any',
           default: '() => ({ a: 1, b: 2, })',
           name: 'test-prop3',
+          describeModel: false,
+          required: false
+        },
+      ]
+    }
+  });
+
+  ComponentTestCase({
+    name: 'Multiline type',
+    options: {
+      filecontent: `
+        <script lang="ts">
+          import mixins         from 'vue-typed-mixins'
+          import {PropOptions}  from 'vue'
+
+          const Vue = mixins()
+          export default Vue.extend({
+            name: "TestComponent",
+            props: {
+              /**
+               * private get context(): void {}
+               */
+              contextFactory: {
+                type: Function as (selectedItemsData: Array<any>) => Array<any>,
+              },
+              contextFactory2: {
+                type: Function as (selectedItemsData: Array<any>) => Array<any>,
+              } as PropOptions<FactoryFunction>,
+              menuFactory: {
+                type: Function as (selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>,
+              },
+              menuFactoryMultiline: {
+                type: Function as (
+                  selectedItemsData: Array<any>
+                ) => Array<IContextMenuItem<any>>,
+              },
+            }
+          })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      warnings: [],
+      name: 'TestComponent',
+      props: [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: 'private get context(): void {}',
+          keywords: [],
+          type: '(selectedItemsData: Array<any>) => Array<any>',
+          default: undefined,
+          name: 'context-factory',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'FactoryFunction',
+          default: undefined,
+          name: 'context-factory2',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
+          default: undefined,
+          name: 'menu-factory',
+          describeModel: false,
+          required: false
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
+          default: undefined,
+          name: 'menu-factory-multiline',
           describeModel: false,
           required: false
         },
