@@ -474,3 +474,60 @@ ComponentTestCase({
     methods: undefined
   }
 });
+
+ComponentTestCase({
+  name: '#92 - Multiline type with vue-property-decorator',
+  options: {
+    filecontent: `
+      <script lang='ts'>
+        import { Vue, Component, Prop } from 'vue-property-decorator';
+        import { Observer } from 'mobx-vue';
+        import { IContextMenuItem } from '../../contextmenus/IContextMenuItem';
+
+        @Observer
+        @Component
+        export default class SelectableList extends Vue {
+          // private get context(): void {}
+          @Prop({ default: () => [] }) public contextFactory!: (selectedItemsData: Array<any>) => Array<any>;
+
+          @Prop({ default: () => [] }) public menuFactory!: (
+            selectedItemsData: Array<any>
+          ) => Array<IContextMenuItem<any>>;
+        }
+      </script>
+    `
+  },
+  expected: {
+    errors: [],
+    warnings: [],
+    name: 'SelectableList',
+    props: [
+      {
+        kind: 'prop',
+        visibility: 'public',
+        category: undefined,
+        version: undefined,
+        description: 'private get context(): void {}',
+        keywords: [],
+        type: '(selectedItemsData: Array<any>) => Array<any>',
+        default: undefined,
+        name: 'context-factory',
+        describeModel: false,
+        required: false
+      },
+      {
+        kind: 'prop',
+        visibility: 'public',
+        category: undefined,
+        version: undefined,
+        description: undefined,
+        keywords: [],
+        type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
+        default: undefined,
+        name: 'menu-factory',
+        describeModel: false,
+        required: false
+      },
+    ]
+  }
+});
