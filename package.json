@@ -36,7 +36,7 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
-    "@babel/parser": "^7.12.7",
+    "@babel/parser": "^7.12.11",
     "vue-template-compiler": "^2.6.12"
   },
   "devDependencies": {
