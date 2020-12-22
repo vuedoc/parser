@@ -1,7 +1,19 @@
+## Vuedoc Parser v3.1.1
+
+This release fixes some bugs and upgrades to `@babel/parser@7.12.11`.
+
+**Changes**
+
+- Now use `@babel/parser@7.12.11`
+- Fix multi-line type value (#92)
+- Improve parsing of data as `TSAsExpression` (1ab77fd)
+
 ## Vuedoc Parser v3.1.0
 
 This release fixes some bugs and introduces a new event `warning` to emit JSDoc
 syntax issue.
+
+**Changes**
 
 - Now use `@babel/parser@7.12.7`
 - Emit warning for invalid JSDoc syntax (#91)

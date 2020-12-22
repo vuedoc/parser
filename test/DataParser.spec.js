@@ -39,8 +39,9 @@ describe('DataParser', () => {
         <script lang='ts'>
           export default Vue.extend({
             data: () => ({
+              // data x
               x: {} as Record<string, number>
-            })
+            } as any)
           })
         </script>
       `
@@ -53,7 +54,7 @@ describe('DataParser', () => {
           visibility: 'public',
           category: undefined,
           version: undefined,
-          description: undefined,
+          description: 'data x',
           keywords: [],
           type: 'Record<string, number>',
           initialValue: '{}',
