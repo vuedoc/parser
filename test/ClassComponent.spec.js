@@ -73,6 +73,10 @@ describe('Class Component', () => {
              */
             get [Symbol.species]() { return Array; }
 
+            public get something(): Array<any> {
+              return [];
+            }
+
             /**
              * method greet description
              */
@@ -166,6 +170,7 @@ describe('Class Component', () => {
       computed: [
         { kind: 'computed',
           name: 'computedMsg',
+          type: 'unknow',
           category: undefined,
           version: undefined,
           dependencies: [ 'msg' ],
@@ -175,10 +180,21 @@ describe('Class Component', () => {
         },
         { kind: 'computed',
           name: '[Symbol.species]',
+          type: 'unknow',
           category: undefined,
           version: undefined,
           dependencies: [],
           description: 'computed [Symbol.species] description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'something',
+          type: 'Array<any>',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: undefined,
           keywords: [],
           visibility: 'public'
         }

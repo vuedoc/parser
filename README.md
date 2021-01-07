@@ -404,6 +404,7 @@ Vuedoc Parser will automatically extract computed properties dependencies.
 interface ComputedEntry {
   kind: 'computed';
   name: string;
+  type: string;
   dependencies: string[];
   description?: string;
   keywords: Keyword[];

@@ -82,6 +82,7 @@ describe('ScriptParser', () => {
       computed: [ {
         kind: 'computed',
         name: 'pages',
+        type: 'unknow',
         dependencies: [ 'links', 'site' ],
         category: undefined,
         version: undefined,
@@ -179,6 +180,7 @@ describe('ScriptParser', () => {
       computed: [ {
         kind: 'computed',
         name: 'pages',
+        type: 'unknow',
         dependencies: [ 'links', 'site' ],
         category: undefined,
         version: undefined,
