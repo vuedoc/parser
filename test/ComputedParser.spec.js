@@ -181,7 +181,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'computedProp1',
-          type: 'unknow',
+          type: 'number',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -190,7 +190,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'computedProp2Value',
-          type: 'unknow',
+          type: 'number',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -281,7 +281,7 @@ describe('ComputedParser', () => {
           description: undefined,
           keywords: [],
           name: 'classes',
-          type: 'unknow',
+          type: 'array',
           dependencies: [
             'type',
             'iconPosition',
@@ -296,7 +296,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'object',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -309,7 +309,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -322,7 +322,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -335,7 +335,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -360,7 +360,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -374,7 +374,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -388,7 +388,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],

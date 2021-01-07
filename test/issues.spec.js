@@ -766,7 +766,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           name: 'bidule',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           dependencies: [ 'docs', 'name' ],
@@ -1312,7 +1312,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'array',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1331,7 +1331,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'object',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1344,7 +1344,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1357,7 +1357,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1370,7 +1370,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1395,7 +1395,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1409,7 +1409,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1423,7 +1423,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'boolean',
           category: undefined,
           description: undefined,
           keywords: [],
