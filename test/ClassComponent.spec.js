@@ -164,6 +164,11 @@ describe('Class Component', () => {
              */
             get [Symbol.species]() { return Array; }
 
+            /**
+             * computed [Symbol.species] description
+             */
+            get empty() {}
+
             public get something(): Array<any> {
               return [];
             }
@@ -401,6 +406,16 @@ describe('Class Component', () => {
         },
         { kind: 'computed',
           name: '[Symbol.species]',
+          type: 'unknow',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed [Symbol.species] description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'empty',
           type: 'unknow',
           category: undefined,
           version: undefined,
