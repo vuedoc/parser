@@ -265,7 +265,11 @@ describe('ComputedParser', () => {
                           return this.defaultFilter(suggestion, index);
                       })
                       .slice(0, this.limit);
-              }
+              },
+
+              nullx() {
+                  return null;
+              },
             }
           }
         </script>
@@ -414,7 +418,17 @@ describe('ComputedParser', () => {
             'defaultFilter',
             'limit'
           ]
-        }
+        },
+        {
+          kind: 'computed',
+          visibility: 'public',
+          type: 'unknow',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          name: 'nullx',
+          dependencies: []
+        },
       ],
     }
   });

@@ -1451,7 +1451,7 @@ describe('Integration', () => {
           {
             kind: 'data',
             name: 'data',
-            type: 'any',
+            type: 'unknow',
             category: undefined,
             version: undefined,
             description: undefined,

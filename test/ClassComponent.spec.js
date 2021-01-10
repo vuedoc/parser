@@ -296,7 +296,7 @@ describe('Class Component', () => {
         },
         { kind: 'computed',
           name: 'computedNull',
-          type: 'null',
+          type: 'unknow',
           category: undefined,
           version: undefined,
           dependencies: [],
