@@ -69,9 +69,116 @@ describe('Class Component', () => {
             }
 
             /**
+             * computed computedString description
+             */
+            get computedString() {
+              return \`computed \` + this.msg;
+            }
+
+            /**
+             * computed computedString description
+             */
+            get computedString2() {
+              return 'computed';
+            }
+
+            /**
+             * computed computedNull description
+             */
+            get computedNull() {
+              return null;
+            }
+
+            /**
+             * computed computedBool description
+             */
+            get computedBool() {
+              return true;
+            }
+
+            /**
+             * computed computedArray description
+             */
+            get computedArray() {
+              return [1, 2];
+            }
+
+            /**
+             * computed computedObject description
+             */
+            get computedObject() {
+              return {};
+            }
+
+            /**
+             * computed computedNewObject description
+             */
+            get computedNewObject() {
+              return new Array();
+            }
+
+            /**
+             * computed CustomeObject description
+             */
+            get computedCustomeObject() {
+              return new CustomeObject();
+            }
+
+            /**
+             * computed computedNewObject2 description
+             */
+            get computedNewObject2() {
+              return new hash.val();
+            }
+
+            /**
+             * computed computedRegExpLiteral description
+             */
+            get computedRegExpLiteral() {
+              return /[a-z]/;
+            }
+
+            /**
+             * computed computedBigIntLiteral description
+             */
+            get computedBigIntLiteral() {
+              return 100n;
+            }
+
+            /**
+             * computed computedNumber description
+             */
+            get computedNumber() {
+              return 12;
+            }
+
+            /**
+             * computed computedNumber description
+             */
+            get computedNumber1() {
+              return !12;
+            }
+
+            /**
+             * computed computedNumber description
+             */
+            get computedNumber2() {
+              return 12 + this.msg;
+            }
+
+            /**
              * computed [Symbol.species] description
              */
             get [Symbol.species]() { return Array; }
+
+            /**
+             * computed [Symbol.species] description
+             */
+            get empty() {}
+
+            public get something(): Array<any> {
+              return [];
+            }
 
             /**
              * method greet description
@@ -166,6 +273,7 @@ describe('Class Component', () => {
       computed: [
         { kind: 'computed',
           name: 'computedMsg',
+          type: 'string',
           category: undefined,
           version: undefined,
           dependencies: [ 'msg' ],
@@ -174,11 +282,172 @@ describe('Class Component', () => {
           visibility: 'public'
         },
         { kind: 'computed',
+          name: 'computedString',
+          type: 'string',
+          category: undefined,
+          version: undefined,
+          dependencies: [ 'msg' ],
+          description: 'computed computedString description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedString2',
+          type: 'string',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedString description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedNull',
+          type: 'unknow',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedNull description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedBool',
+          type: 'boolean',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedBool description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedArray',
+          type: 'array',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedArray description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedObject',
+          type: 'object',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedObject description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedNewObject',
+          type: 'array',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedNewObject description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedCustomeObject',
+          type: 'CustomeObject',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed CustomeObject description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedNewObject2',
+          type: 'object',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedNewObject2 description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedRegExpLiteral',
+          type: 'regexp',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedRegExpLiteral description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedBigIntLiteral',
+          type: 'bigint',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedBigIntLiteral description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedNumber',
+          type: 'number',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedNumber description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedNumber1',
+          type: 'boolean',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed computedNumber description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedNumber2',
+          type: 'number',
+          category: undefined,
+          version: undefined,
+          dependencies: [ 'msg' ],
+          description: 'computed computedNumber description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
           name: '[Symbol.species]',
+          type: 'unknow',
           category: undefined,
           version: undefined,
           dependencies: [],
           description: 'computed [Symbol.species] description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'empty',
+          type: 'unknow',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed [Symbol.species] description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'something',
+          type: 'Array<any>',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: undefined,
           keywords: [],
           visibility: 'public'
         }
@@ -198,7 +467,7 @@ describe('Class Component', () => {
         {
           kind: 'data',
           name: 'helloMsg',
-          type: 'BinaryExpression',
+          type: 'string',
           category: undefined,
           version: undefined,
           description: 'data helloMsg with expression',

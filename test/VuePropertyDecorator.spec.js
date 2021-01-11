@@ -191,6 +191,7 @@ describe('Vue Property Decorator', () => {
         {
           kind: 'computed',
           name: 'syncedName',
+          type: 'unknow',
           description: undefined,
           category: undefined,
           version: undefined,

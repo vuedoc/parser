@@ -875,6 +875,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'value',
+          type: 'number',
           category: undefined,
           version: undefined,
           keywords: [],
@@ -883,7 +884,7 @@ describe('Integration', () => {
       ];
 
       return vuedoc.parse(options).then(({ computed }) => {
-        assert.deepEqual(computed, expected);
+        expect(computed).toEqual(expected);
       });
     });
 
@@ -901,7 +902,7 @@ describe('Integration', () => {
       const expected = [];
 
       return vuedoc.parse(options).then(({ computed }) => {
-        assert.deepEqual(computed, expected);
+        expect(computed).toEqual(expected);
       });
     });
 
@@ -932,6 +933,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'value',
+          type: 'number',
           category: undefined,
           version: undefined,
           keywords: [],
@@ -941,6 +943,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'id',
+          type: 'unknow',
           category: undefined,
           version: undefined,
           keywords: [],
@@ -949,7 +952,7 @@ describe('Integration', () => {
       ];
 
       return vuedoc.parse(options).then(({ computed }) => {
-        assert.deepEqual(computed, expected);
+        expect(computed).toEqual(expected);
       });
     });
 
@@ -1448,7 +1451,7 @@ describe('Integration', () => {
           {
             kind: 'data',
             name: 'data',
-            type: 'any',
+            type: 'unknow',
             category: undefined,
             version: undefined,
             description: undefined,
@@ -1463,6 +1466,7 @@ describe('Integration', () => {
             kind: 'computed',
             visibility: 'public',
             name: 'computed',
+            type: 'string',
             category: undefined,
             version: undefined,
             description: undefined,

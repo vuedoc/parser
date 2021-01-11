@@ -33,6 +33,121 @@ describe('DataParser', () => {
   });
 
   ComponentTestCase({
+    name: 'Automatic type detection',
+    options: {
+      filecontent: `
+        <script>
+          export default Vue.extend({
+            data: () => ({
+              a: 1,
+              b: true,
+              c: null,
+              d: 'hello',
+              e: \`hello\`,
+              f: /ab/,
+              g: 100n,
+              h: ~1,
+            })
+          })
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      data: [
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'number',
+          initialValue: '1',
+          name: 'a',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'boolean',
+          initialValue: 'true',
+          name: 'b',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'unknow',
+          initialValue: 'null',
+          name: 'c',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'string',
+          initialValue: '"hello"',
+          name: 'd',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'string',
+          initialValue: '`hello`',
+          name: 'e',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'regexp',
+          initialValue: '/ab/',
+          name: 'f',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'bigint',
+          initialValue: '100n',
+          name: 'g',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'binary',
+          initialValue: '~1',
+          name: 'h',
+        },
+      ]
+    }
+  });
+
+  ComponentTestCase({
     name: 'TSAsExpression',
     options: {
       filecontent: `
