@@ -46,6 +46,7 @@ describe('DataParser', () => {
               e: \`hello\`,
               f: /ab/,
               g: 100n,
+              h: ~1,
             })
           })
         </script>
@@ -130,6 +131,17 @@ describe('DataParser', () => {
           type: 'bigint',
           initialValue: '100n',
           name: 'g',
+        },
+        {
+          kind: 'data',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'binary',
+          initialValue: '~1',
+          name: 'h',
         },
       ]
     }
