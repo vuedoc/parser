@@ -36,7 +36,7 @@ describe('DataParser', () => {
     name: 'Automatic type detection',
     options: {
       filecontent: `
-        <script lang='ts'>
+        <script>
           export default Vue.extend({
             data: () => ({
               a: 1,
