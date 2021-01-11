@@ -118,6 +118,13 @@ describe('Class Component', () => {
             }
 
             /**
+             * computed CustomeObject description
+             */
+            get computedCustomeObject() {
+              return new CustomeObject();
+            }
+
+            /**
              * computed computedNewObject2 description
              */
             get computedNewObject2() {
@@ -336,11 +343,21 @@ describe('Class Component', () => {
         },
         { kind: 'computed',
           name: 'computedNewObject',
-          type: 'Array',
+          type: 'array',
           category: undefined,
           version: undefined,
           dependencies: [],
           description: 'computed computedNewObject description',
+          keywords: [],
+          visibility: 'public'
+        },
+        { kind: 'computed',
+          name: 'computedCustomeObject',
+          type: 'CustomeObject',
+          category: undefined,
+          version: undefined,
+          dependencies: [],
+          description: 'computed CustomeObject description',
           keywords: [],
           visibility: 'public'
         },
@@ -450,7 +467,7 @@ describe('Class Component', () => {
         {
           kind: 'data',
           name: 'helloMsg',
-          type: 'BinaryExpression',
+          type: 'string',
           category: undefined,
           version: undefined,
           description: 'data helloMsg with expression',
