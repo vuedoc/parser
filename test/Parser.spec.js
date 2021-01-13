@@ -407,14 +407,14 @@ describe('Parser', () => {
       const feature = 'name';
       const expected = feature;
 
-      assert.equal(Parser.getEventName(feature), expected);
+      expect(Parser.getEventName(feature)).toBe(expected);
     });
 
     it('should succed with a plural name', () => {
       const feature = 'methods';
       const expected = 'method';
 
-      assert.equal(Parser.getEventName(feature), expected);
+      expect(Parser.getEventName(feature)).toBe(expected);
     });
   });
 
@@ -440,8 +440,8 @@ describe('Parser', () => {
 
       const parser = new Parser(options);
 
-      assert.equal(parser.options.source.script, null);
-      assert.equal(parser.options.source.template, template);
+      expect(parser.options.source.script).toBeUndefined();
+      expect(parser.options.source.template).toBe(template);
     });
 
     it('should successfully create new object with empty script', () => {
@@ -451,8 +451,8 @@ describe('Parser', () => {
 
       const parser = new Parser(options);
 
-      assert.equal(parser.options.source.script, '');
-      assert.equal(parser.options.source.template, template);
+      expect(parser.options.source.script).toBe('');
+      expect(parser.options.source.template).toBe(template);
     });
   });
 
@@ -503,7 +503,7 @@ describe('Parser', () => {
         const options = { source: { script } };
 
         new Parser(options).walk().on('description', ({ value }) => {
-          assert.equal(value, 'Component description\non multiline\n\nwith preserve\n\n\nwhitespaces');
+          expect(value).toBe('Component description\non multiline\n\nwith preserve\n\n\nwhitespaces');
 
           done();
         });
@@ -579,7 +579,7 @@ describe('Parser', () => {
         const options = { source: { script } };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'hello');
+          expect(value).toBe('hello');
           done();
         });
       });
@@ -608,7 +608,7 @@ describe('Parser', () => {
         const options = { source: { script } };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'hello');
+          expect(value).toBe('hello');
           done();
         });
       });
@@ -624,8 +624,8 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('slot', (slot) => {
-          assert.equal(slot.name, 'default');
-          assert.equal(slot.description, undefined);
+          expect(slot.name).toBe('default');
+          expect(slot.description).toBeUndefined();
           done();
         });
       });
@@ -647,8 +647,8 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('slot', (slot) => {
-          assert.equal(slot.name, 'default');
-          assert.equal(slot.description, 'default slot');
+          expect(slot.name).toBe('default');
+          expect(slot.description).toBe('default slot');
           done();
         });
       });
@@ -692,10 +692,10 @@ describe('Parser', () => {
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input');
-            assert.equal(event.description, undefined);
-            assert.equal(event.visibility, 'public');
-            assert.deepEqual(event.keywords, []);
+            expect(event.name).toBe('input');
+            expect(event.description).toBeUndefined();
+            expect(event.visibility).toBe('public');
+            expect(event.keywords).toEqual([]);
             done();
           });
       });
@@ -717,10 +717,10 @@ describe('Parser', () => {
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input');
-            assert.equal(event.description, 'Emit the input event');
-            assert.equal(event.visibility, 'public');
-            assert.deepEqual(event.keywords, []);
+            expect(event.name).toBe('input');
+            expect(event.description).toBe('Emit the input event');
+            expect(event.visibility).toBe('public');
+            expect(event.keywords).toEqual([]);
             done();
           });
       });
@@ -743,10 +743,10 @@ describe('Parser', () => {
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input');
-            assert.equal(event.description, undefined);
-            assert.equal(event.visibility, 'private');
-            assert.deepEqual(event.keywords, []);
+            expect(event.name).toBe('input');
+            expect(event.description).toBe(undefined);
+            expect(event.visibility).toBe('private');
+            expect(event.keywords).toEqual([]);
             done();
           });
       });
@@ -774,10 +774,10 @@ describe('Parser', () => {
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input');
-            assert.equal(event.description, 'Emit the input event');
-            assert.equal(event.visibility, 'protected');
-            assert.deepEqual(event.keywords, [
+            expect(event.name).toBe('input');
+            expect(event.description).toBe('Emit the input event');
+            expect(event.visibility).toBe('protected');
+            expect(event.keywords).toEqual([
               { name: 'value', description: 'A input value' }
             ]);
             done();
@@ -807,10 +807,10 @@ describe('Parser', () => {
 
         new Parser(options).walk()
           .on('event', (event) => {
-            assert.equal(event.name, 'input');
-            assert.equal(event.description, 'Emit the input event');
-            assert.equal(event.visibility, 'protected');
-            assert.deepEqual(event.keywords, [
+            expect(event.name).toBe('input');
+            expect(event.description).toBe('Emit the input event');
+            expect(event.visibility).toBe('protected');
+            expect(event.keywords).toEqual([
               { name: 'value', description: 'A input value' }
             ]);
             done();
@@ -896,9 +896,9 @@ describe('Parser', () => {
           ];
 
           new Parser(options).walk().on('method', (method) => {
-            assert.equal(method.name, 'getX');
-            assert.equal(method.description, 'Get the x value.');
-            assert.deepEqual(method.params, expected);
+            expect(method.name).toBe('getX');
+            expect(method.description).toBe('Get the x value.');
+            expect(method.params).toEqual(expected);
             done();
           });
         });
@@ -942,9 +942,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'assign');
-          assert.equal(method.description, 'Assign the project to an employee.');
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('assign');
+          expect(method.description).toBe('Assign the project to an employee.');
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -973,9 +973,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'assign');
-          assert.equal(method.description, 'Assign the project to a list of employees.');
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('assign');
+          expect(method.description).toBe('Assign the project to a list of employees.');
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -1018,9 +1018,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'assign');
-          assert.equal(method.description, 'Assign the project to a list of employees.');
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('assign');
+          expect(method.description).toBe('Assign the project to a list of employees.');
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -1050,9 +1050,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello');
-          assert.equal(method.description, undefined);
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('sayHello');
+          expect(method.description).toBe(undefined);
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -1082,9 +1082,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello');
-          assert.equal(method.description, undefined);
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('sayHello');
+          expect(method.description).toBe(undefined);
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -1114,9 +1114,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello');
-          assert.equal(method.description, undefined);
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('sayHello');
+          expect(method.description).toBe(undefined);
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -1146,9 +1146,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'sayHello');
-          assert.equal(method.description, undefined);
-          assert.deepEqual(method.params, expected);
+          expect(method.name).toBe('sayHello');
+          expect(method.description).toBe(undefined);
+          expect(method.params).toEqual(expected);
           done();
         });
       });
@@ -1177,9 +1177,9 @@ describe('Parser', () => {
         ];
 
         new Parser(options).walk().on('event', (event) => {
-          assert.equal(event.name, 'input');
-          assert.equal(event.description, 'Emit the x value.');
-          assert.deepEqual(event.arguments, expected);
+          expect(event.name).toBe('input');
+          expect(event.description).toBe('Emit the x value.');
+          expect(event.arguments).toEqual(expected);
           done();
         });
       });
@@ -1204,9 +1204,9 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX');
-          assert.equal(method.description, 'Get the x value.');
-          assert.deepEqual(method.returns, expected);
+          expect(method.name).toBe('getX');
+          expect(method.description).toBe('Get the x value.');
+          expect(method.returns).toEqual(expected);
           done();
         });
       });
@@ -1231,9 +1231,9 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX');
-          assert.equal(method.description, 'Get the x value.');
-          assert.deepEqual(method.returns, expected);
+          expect(method.name).toBe('getX');
+          expect(method.description).toBe('Get the x value.');
+          expect(method.returns).toEqual(expected);
           done();
         });
       });
@@ -1258,9 +1258,9 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX');
-          assert.equal(method.description, 'Get the x values.');
-          assert.deepEqual(method.returns, expected);
+          expect(method.name).toBe('getX');
+          expect(method.description).toBe('Get the x values.');
+          expect(method.returns).toEqual(expected);
           done();
         });
       });
@@ -1284,8 +1284,8 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('method', (method) => {
-          assert.equal(method.name, 'getX');
-          assert.deepEqual(method.returns, expected);
+          expect(method.name).toBe('getX');
+          expect(method.returns).toEqual(expected);
           done();
         });
       });
@@ -1306,7 +1306,7 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'checkbox');
+          expect(value).toBe('checkbox');
           done();
         });
       });
@@ -1324,7 +1324,7 @@ describe('Parser', () => {
         };
 
         new Parser(options).walk().on('name', ({ value }) => {
-          assert.equal(value, 'myInput');
+          expect(value).toBe('myInput');
           done();
         });
       });
@@ -1487,13 +1487,13 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public');
-        assert.equal(prop.name, 'id');
-        assert.equal(prop.default, '"$id"');
-        assert.equal(prop.type, 'String');
+        expect(prop.visibility).toBe('public');
+        expect(prop.name).toBe('id');
+        expect(prop.default).toBe('"$id"');
+        expect(prop.type).toBe('String');
         expect(prop.description).toBeUndefined();
-        assert.equal(prop.required, false);
-        assert.deepEqual(prop.keywords, []);
+        expect(prop.required).toBeFalsy();
+        expect(prop.keywords).toEqual([]);
         done();
       });
     });
@@ -1516,12 +1516,12 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public');
-        assert.equal(prop.name, 'value');
-        assert.equal(prop.describeModel, true);
+        expect(prop.visibility).toBe('public');
+        expect(prop.name).toBe('value');
+        expect(prop.describeModel).toBe(true);
         expect(prop.description).toBeUndefined();
-        assert.deepEqual(prop.keywords, []);
-        assert.deepEqual(prop.type, 'String');
+        expect(prop.keywords).toEqual([]);
+        expect(prop.type).toBe('String');
         done();
       });
     });
@@ -1544,12 +1544,12 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public');
-        assert.equal(prop.name, 'checked');
+        expect(prop.visibility).toBe('public');
+        expect(prop.name).toBe('checked');
         expect(prop.description).toBeUndefined();
-        assert.equal(prop.describeModel, true);
-        assert.equal(prop.type, 'String');
-        assert.deepEqual(prop.keywords, []);
+        expect(prop.describeModel).toBeTruthy();
+        expect(prop.type).toBe('String');
+        expect(prop.keywords).toEqual([]);
         done();
       });
     });
@@ -1569,8 +1569,8 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.name, 'value');
-        assert.equal(prop.describeModel, true);
+        expect(prop.name).toBe('value');
+        expect(prop.describeModel).toBeTruthy();
         done();
       });
     });
@@ -1588,13 +1588,13 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('prop', (prop) => {
-        assert.equal(prop.visibility, 'public');
-        assert.equal(prop.name, 'id');
-        assert.equal(prop.type, 'any');
+        expect(prop.visibility).toBe('public');
+        expect(prop.name).toBe('id');
+        expect(prop.type).toBe('any');
         expect(prop.description).toBeUndefined();
-        assert.deepEqual(prop.keywords, []);
-        assert.deepEqual(prop.value, null);
-        assert.deepEqual(prop.describeModel, false);
+        expect(prop.keywords).toEqual([]);
+        expect(prop.value).toBeUndefined();
+        expect(prop.describeModel).toBeFalsy();
         done();
       });
     });
@@ -1690,8 +1690,8 @@ describe('Parser', () => {
         name: 'id'
       };
 
-      new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected);
+      new Parser(options).walk().on('data', (entry) => {
+        expect(entry).toEqual(expected);
         done();
       });
     });
@@ -1725,8 +1725,8 @@ describe('Parser', () => {
         name: 'enabled'
       };
 
-      new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected);
+      new Parser(options).walk().on('data', (entry) => {
+        expect(entry).toEqual(expected);
         done();
       });
     });
@@ -1762,8 +1762,8 @@ describe('Parser', () => {
         name: 'id'
       };
 
-      new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected);
+      new Parser(options).walk().on('data', (entry) => {
+        expect(entry).toEqual(expected);
         done();
       });
     });
@@ -1799,8 +1799,8 @@ describe('Parser', () => {
         name: 'id'
       };
 
-      new Parser(options).walk().on('data', (prop) => {
-        assert.deepEqual(prop, expected);
+      new Parser(options).walk().on('data', (entry) => {
+        expect(entry).toEqual(expected);
         done();
       });
     });
@@ -1830,6 +1830,7 @@ describe('Parser', () => {
 
       const expected = {
         name: 'id',
+        type: 'unknow',
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
@@ -1839,12 +1840,12 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('computed', (prop) => {
-        assert.equal(prop.name, expected.name);
-        assert.deepEqual(prop.keywords, expected.keywords);
-        assert.equal(prop.visibility, expected.visibility);
-        assert.equal(prop.description, expected.description);
-        assert.equal(prop.value, undefined);
-        assert.deepEqual(prop.dependencies, expected.dependencies);
+        expect(prop.name).toBe(expected.name);
+        expect(prop.keywords).toEqual(expected.keywords);
+        expect(prop.visibility).toBe(expected.visibility);
+        expect(prop.description).toBe(expected.description);
+        expect(prop.value).toBeUndefined();
+        expect(prop.dependencies).toEqual(expected.dependencies);
         done();
       });
     });
@@ -1873,6 +1874,7 @@ describe('Parser', () => {
       const expected = {
         name: 'idGetter',
         kind: 'computed',
+        type: 'unknow',
         category: undefined,
         version: undefined,
         keywords: [],
@@ -1910,7 +1912,7 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('computed', (prop) => {
-        assert.deepEqual(prop.dependencies, []);
+        expect(prop.dependencies).toEqual([]);
         done();
       });
     });
@@ -1980,17 +1982,17 @@ describe('Parser', () => {
 
       new Parser(options).walk().on('method', (prop) => {
         expect(prop.visibility).toBe('public');
-        assert.equal(prop.name, 'getValue');
+        expect(prop.name).toBe('getValue');
         expect(prop.description).toBeUndefined();
-        assert.deepEqual(prop.keywords, []);
-        assert.deepEqual(prop.params, [
-            {
-              name: 'ctx',
-              type: 'unknow',
-              defaultValue: undefined,
-              description: undefined,
-              rest: false
-            }
+        expect(prop.keywords).toEqual([]);
+        expect(prop.params).toEqual([
+          {
+            name: 'ctx',
+            type: 'unknow',
+            defaultValue: undefined,
+            description: undefined,
+            rest: false
+          }
         ]);
 
         done();
@@ -2029,10 +2031,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading');
-        assert.equal(event.description, undefined);
-        assert.equal(event.visibility, 'public');
-        assert.deepEqual(event.keywords, []);
+        expect(event.name).toBe('loading');
+        expect(event.description).toBeUndefined();
+        expect(event.visibility).toBe('public');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2056,10 +2058,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading');
-        assert.equal(event.description, 'loading event');
-        assert.equal(event.visibility, 'protected');
-        assert.deepEqual(event.keywords, []);
+        expect(event.name).toBe('loading');
+        expect(event.description).toBe('loading event');
+        expect(event.visibility).toBe('protected');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2082,11 +2084,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading');
-        assert.equal(event.description, 'Event description');
-        assert.equal(event.visibility, 'public');
-        assert.deepEqual(event.keywords, []);
-
+        expect(event.name).toBe('loading');
+        expect(event.description).toBe('Event description');
+        expect(event.visibility).toBe('public');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2108,10 +2109,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading');
-        assert.equal(event.description, 'loading event');
-        assert.equal(event.visibility, 'public');
-        assert.deepEqual(event.keywords, []);
+        expect(event.name).toBe('loading');
+        expect(event.description).toBe('loading event');
+        expect(event.visibility).toBe('public');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2137,10 +2138,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading');
-        assert.equal(event.description, 'loading event');
-        assert.equal(event.visibility, 'protected');
-        assert.deepEqual(event.keywords, []);
+        expect(event.name).toBe('loading');
+        expect(event.description).toBe('loading event');
+        expect(event.visibility).toBe('protected');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2165,10 +2166,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, 'loading');
-        assert.equal(event.description, 'loading event');
-        assert.equal(event.visibility, 'public');
-        assert.deepEqual(event.keywords, []);
+        expect(event.name).toBe('loading');
+        expect(event.description).toBe('loading event');
+        expect(event.visibility).toBe('public');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2191,10 +2192,10 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        assert.equal(event.name, '***unhandled***');
-        assert.equal(event.description, 'loading event');
-        assert.equal(event.visibility, 'public');
-        assert.deepEqual(event.keywords, []);
+        expect(event.name).toBe('***unhandled***');
+        expect(event.description).toBe('loading event');
+        expect(event.visibility).toBe('public');
+        expect(event.keywords).toEqual([]);
         done();
       });
     });
@@ -2218,12 +2219,12 @@ describe('Parser', () => {
 
       new Parser(options).walk()
         .on('event', (event) => {
-          assert.equal(event.name, 'loading');
+          expect(event.name).toBe('loading');
 
           eventCount++;
         })
         .on('end', () => {
-          assert.equal(eventCount, 1);
+          expect(eventCount).toBe(1);
 
           done();
         });
@@ -2246,7 +2247,7 @@ describe('Parser', () => {
       new Parser(options).walk()
         .on('event', () => eventCount++)
         .on('end', () => {
-          assert.equal(eventCount, 0);
+          expect(eventCount).toBe(0);
 
           done();
         });

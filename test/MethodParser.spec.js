@@ -28,7 +28,7 @@ const defaultParams = [
   [ 'number', 'Number.MAX_VALUE', 'number' ],
   [ 'number', 'Number.blabla', 'number' ],
   [ 'obj', 'Bool.TRUE', 'object' ],
-  [ 'nully', 'null', 'any' ],
+  [ 'nully', 'null', 'unknow' ],
   [ 'symbol', 'Symbol(2)', 'symbol' ],
   [ 'bigint', '9007199254740991n', 'bigint' ],
   [ 'bigint', 'BigInt(9007199254740991)', 'bigint' ]
