@@ -1,3 +1,12 @@
+## Vuedoc Parser v3.2.0
+
+This release adds some improvements.
+
+**Changes**
+
+- Handle TypeScript and JavaScript access visibility (#93, bb714299)
+- Automatic type detection for computed properties (#94, 04611b4d)
+
 ## Vuedoc Parser v3.1.1
 
 This release fixes some bugs and upgrades to `@babel/parser@7.12.11`.
