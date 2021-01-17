@@ -4,7 +4,7 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
-  [ 'unset', undefined, [ 'unknow', 'any' ] ],
+  [ 'unset', undefined, [ 'unknown', 'any' ] ],
   [ 'undefine', 'undefined', 'any' ],
   [ 'negativeNumber', '-1', 'number' ],
   [ 'positiveNumber', '1', 'number' ],
@@ -28,7 +28,7 @@ const defaultParams = [
   [ 'number', 'Number.MAX_VALUE', 'number' ],
   [ 'number', 'Number.blabla', 'number' ],
   [ 'obj', 'Bool.TRUE', 'object' ],
-  [ 'nully', 'null', 'unknow' ],
+  [ 'nully', 'null', 'unknown' ],
   [ 'symbol', 'Symbol(2)', 'symbol' ],
   [ 'bigint', '9007199254740991n', 'bigint' ],
   [ 'bigint', 'BigInt(9007199254740991)', 'bigint' ]
@@ -146,7 +146,7 @@ describe('MethodParser', () => {
           name: 'nameOnly',
           params: [
             {
-              type: 'unknow',
+              type: 'unknown',
               name: 'somebody',
               description: undefined,
               defaultValue: undefined,
@@ -185,7 +185,7 @@ describe('MethodParser', () => {
         {
           kind: 'method',
           syntax: [
-            'nameOnly(...somebody: string[]): unknow'
+            'nameOnly(...somebody: string[]): unknown'
           ],
           visibility: 'public',
           category: undefined,
@@ -202,7 +202,7 @@ describe('MethodParser', () => {
             }
           ],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         },
@@ -278,7 +278,7 @@ describe('MethodParser', () => {
         {
           kind: 'method',
           syntax: [
-            'nameOnly(): unknow'
+            'nameOnly(): unknown'
           ],
           visibility: 'public',
           category: undefined,
@@ -287,7 +287,7 @@ describe('MethodParser', () => {
           name: 'nameOnly',
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         },
@@ -388,7 +388,7 @@ describe('MethodParser', () => {
         {
           kind: 'method',
           syntax: [
-            'async nameOnly(): Promise<unknow>'
+            'async nameOnly(): Promise<unknown>'
           ],
           visibility: 'public',
           category: undefined,
@@ -397,7 +397,7 @@ describe('MethodParser', () => {
           name: 'nameOnly',
           params: [],
           returns: {
-            type: 'Promise<unknow>',
+            type: 'Promise<unknown>',
             description: undefined
           }
         },

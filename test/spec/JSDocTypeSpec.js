@@ -14,7 +14,7 @@ module.exports.JSDocTypeSpec = [
       '?'
     ],
     expected: [
-      'unknow'
+      'unknown'
     ]
   },
   {

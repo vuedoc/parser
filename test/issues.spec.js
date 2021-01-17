@@ -1383,7 +1383,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'unknown',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1437,7 +1437,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'unknown',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -1586,7 +1586,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'defaultFilter(suggestion: unknow): unknow'
+            'defaultFilter(suggestion: unknown): unknown'
           ],
           visibility: 'public',
           category: undefined,
@@ -1596,21 +1596,21 @@ describe('issues', () => {
           params: [
             {
               name: 'suggestion',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
             }
           ],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         },
         {
           kind: 'method',
           syntax: [
-            'selectSuggestion(suggestion: unknow): void'
+            'selectSuggestion(suggestion: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1620,7 +1620,7 @@ describe('issues', () => {
           params: [
             {
               name: 'suggestion',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1634,7 +1634,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'highlightSuggestion(index: unknow): void'
+            'highlightSuggestion(index: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1644,7 +1644,7 @@ describe('issues', () => {
           params: [
             {
               name: 'index',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1658,7 +1658,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'selectHighlighted(index: unknow, e: unknow): void'
+            'selectHighlighted(index: unknown, e: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1668,14 +1668,14 @@ describe('issues', () => {
           params: [
             {
               name: 'index',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
             },
             {
               name: 'e',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1721,7 +1721,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'updateValue(value: unknow): void'
+            'updateValue(value: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1731,7 +1731,7 @@ describe('issues', () => {
           params: [
             {
               name: 'value',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1745,7 +1745,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'onFocus(e: unknow): void'
+            'onFocus(e: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1755,7 +1755,7 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1769,7 +1769,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'onChange(e: unknow): void'
+            'onChange(e: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1779,7 +1779,7 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1793,7 +1793,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'onBlur(e: unknow): void'
+            'onBlur(e: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1803,7 +1803,7 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1817,7 +1817,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'onExternalClick(e: unknow): void'
+            'onExternalClick(e: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -1827,7 +1827,7 @@ describe('issues', () => {
           params: [
             {
               name: 'e',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1873,13 +1873,13 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           syntax: [
-            'selectSuggestion(suggestion: unknow): void'
+            'selectSuggestion(suggestion: unknown): void'
           ],
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -1927,13 +1927,13 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           syntax: [
-            'selectSuggestion(suggestion: unknow): void'
+            'selectSuggestion(suggestion: unknown): void'
           ],
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
-              type: 'unknow',
+              type: 'unknown',
               defaultValue: undefined,
               description: undefined,
               rest: false
@@ -2612,7 +2612,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'withImplicitUndefinedReturn(schema: object): unknow'
+            'withImplicitUndefinedReturn(schema: object): unknown'
           ],
           name: 'withImplicitUndefinedReturn',
           visibility: 'public',
@@ -2629,7 +2629,7 @@ describe('issues', () => {
             }
           ],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         },

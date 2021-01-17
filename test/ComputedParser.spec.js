@@ -28,7 +28,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'pages',
-          type: 'unknow',
+          type: 'unknown',
           dependencies: [ 'links', 'site' ],
           category: undefined,
           description: undefined,
@@ -70,7 +70,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'pages',
-          type: 'unknow',
+          type: 'unknown',
           dependencies: [ 'links', 'site' ],
           category: undefined,
           description: undefined,
@@ -130,7 +130,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           name: 'pages',
-          type: 'unknow',
+          type: 'unknown',
           dependencies: [ 'links', 'site' ],
           category: undefined,
           description: undefined,
@@ -352,7 +352,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'unknown',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -406,7 +406,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'unknown',
           category: undefined,
           description: undefined,
           keywords: [],
@@ -422,7 +422,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknow',
+          type: 'unknown',
           category: undefined,
           description: undefined,
           keywords: [],

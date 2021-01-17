@@ -1830,7 +1830,7 @@ describe('Parser', () => {
 
       const expected = {
         name: 'id',
-        type: 'unknow',
+        type: 'unknown',
         keywords: [],
         visibility: 'private',
         description: 'ID computed prop',
@@ -1874,7 +1874,7 @@ describe('Parser', () => {
       const expected = {
         name: 'idGetter',
         kind: 'computed',
-        type: 'unknow',
+        type: 'unknown',
         category: undefined,
         version: undefined,
         keywords: [],
@@ -1936,7 +1936,7 @@ describe('Parser', () => {
 
       /* eslint-disable no-unused-vars */
       new Parser(options).walk()
-        .on('unknow', (prop) => {
+        .on('unknown', (prop) => {
           throw new Error('Should ignore unknow entry');
         })
         .on('end', done);
@@ -1960,7 +1960,7 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk()
-        .on('unknow', (prop) => {
+        .on('unknown', (prop) => {
           throw new Error('Should ignore unknow entry');
         })
         .on('end', done);
@@ -1988,7 +1988,7 @@ describe('Parser', () => {
         expect(prop.params).toEqual([
           {
             name: 'ctx',
-            type: 'unknow',
+            type: 'unknown',
             defaultValue: undefined,
             description: undefined,
             rest: false

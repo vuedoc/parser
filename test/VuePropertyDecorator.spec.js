@@ -191,7 +191,7 @@ describe('Vue Property Decorator', () => {
         {
           kind: 'computed',
           name: 'syncedName',
-          type: 'unknow',
+          type: 'unknown',
           description: undefined,
           category: undefined,
           version: undefined,
@@ -405,12 +405,12 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'onInputChange(e: unknow): void'
+            'onInputChange(e: unknown): void'
           ],
           params: [
             {
               name: 'e',
-              type: 'unknow',
+              type: 'unknown',
               description: undefined,
               defaultValue: undefined,
               rest: false
