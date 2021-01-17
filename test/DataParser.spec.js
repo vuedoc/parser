@@ -84,7 +84,7 @@ describe('DataParser', () => {
           version: undefined,
           description: undefined,
           keywords: [],
-          type: 'unknow',
+          type: 'unknown',
           initialValue: 'null',
           name: 'c',
         },

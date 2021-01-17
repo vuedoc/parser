@@ -249,7 +249,7 @@ describe('PropParser', () => {
               }
             ],
             returns: {
-              type: 'unknow',
+              type: 'unknown',
               description: 'the return value description'
             }
           },

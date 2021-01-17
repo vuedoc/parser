@@ -401,7 +401,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'nameOnly(somebody: unknow): void'
+            'nameOnly(somebody: unknown): void'
           ],
           visibility: 'public',
           category: undefined,
@@ -410,7 +410,7 @@ describe('JSDoc', () => {
           name: 'nameOnly',
           params: [
             {
-              type: 'unknow',
+              type: 'unknown',
               name: 'somebody',
               description: undefined,
               defaultValue: undefined,
@@ -1045,7 +1045,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withSpreadNotation(...num: number[]): unknow'
+            'withSpreadNotation(...num: number[]): unknown'
           ],
           visibility: 'public',
           category: undefined,
@@ -1062,7 +1062,7 @@ describe('JSDoc', () => {
             }
           ],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         },
