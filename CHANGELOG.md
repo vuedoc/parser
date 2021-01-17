@@ -1,3 +1,7 @@
+## Vuedoc Parser v3.2.1
+
+This release fixes typo of type `unknow` to `unknown` (#97, 6d83e495)
+
 ## Vuedoc Parser v3.2.0
 
 This release adds some improvements.
