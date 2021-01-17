@@ -415,7 +415,7 @@ describe('EventParser', () => {
         {
           kind: 'computed',
           name: 'oven',
-          type: 'unknow',
+          type: 'unknown',
           dependencies: [ 'value' ],
           keywords: [],
           category: undefined,

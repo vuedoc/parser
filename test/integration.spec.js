@@ -943,7 +943,7 @@ describe('Integration', () => {
           kind: 'computed',
           visibility: 'public',
           name: 'id',
-          type: 'unknow',
+          type: 'unknown',
           category: undefined,
           version: undefined,
           keywords: [],
@@ -1451,7 +1451,7 @@ describe('Integration', () => {
           {
             kind: 'data',
             name: 'data',
-            type: 'unknow',
+            type: 'unknown',
             category: undefined,
             version: undefined,
             description: undefined,

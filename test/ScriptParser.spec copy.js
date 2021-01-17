@@ -82,7 +82,7 @@ describe('ScriptParser', () => {
       computed: [ {
         kind: 'computed',
         name: 'pages',
-        type: 'unknow',
+        type: 'unknown',
         dependencies: [ 'links', 'site' ],
         category: undefined,
         version: undefined,
@@ -180,7 +180,7 @@ describe('ScriptParser', () => {
       computed: [ {
         kind: 'computed',
         name: 'pages',
-        type: 'unknow',
+        type: 'unknown',
         dependencies: [ 'links', 'site' ],
         category: undefined,
         version: undefined,
@@ -358,7 +358,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'someMethodCall(): unknow'
+            'someMethodCall(): unknown'
           ],
           name: 'someMethodCall',
           visibility: 'public',
@@ -367,14 +367,14 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         },
         {
           kind: 'method',
           syntax: [
-            'someMethodRef(): unknow'
+            'someMethodRef(): unknown'
           ],
           name: 'someMethodRef',
           visibility: 'public',
@@ -383,7 +383,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -414,7 +414,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknow'
+            'route(): unknown'
           ],
           name: 'route',
           visibility: 'public',
@@ -423,7 +423,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -456,7 +456,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknow'
+            'route(): unknown'
           ],
           name: 'route',
           visibility: 'public',
@@ -465,7 +465,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -497,7 +497,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknow'
+            'route(): unknown'
           ],
           name: 'route',
           visibility: 'public',
@@ -506,7 +506,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -541,7 +541,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknow'
+            'route(): unknown'
           ],
           name: 'route',
           visibility: 'public',
@@ -550,7 +550,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -584,7 +584,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknow'
+            'myFunction(): unknown'
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -593,7 +593,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -686,7 +686,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknow'
+            'myFunction(): unknown'
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -695,7 +695,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -729,7 +729,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknow'
+            'myFunction(): unknown'
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -738,7 +738,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -774,7 +774,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknow'
+            'myFunction(): unknown'
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -783,7 +783,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -846,7 +846,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknow'
+            'route(): unknown'
           ],
           name: 'route',
           category: undefined,
@@ -855,7 +855,7 @@ describe('ScriptParser', () => {
           visibility: 'public',
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -916,7 +916,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknow'
+            'route(): unknown'
           ],
           name: 'route',
           category: undefined,
@@ -925,7 +925,7 @@ describe('ScriptParser', () => {
           visibility: 'public',
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -959,7 +959,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknow'
+            'myFunction(): unknown'
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -968,7 +968,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
@@ -1004,7 +1004,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknow'
+            'myFunction(): unknown'
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -1013,7 +1013,7 @@ describe('ScriptParser', () => {
           keywords: [],
           params: [],
           returns: {
-            type: 'unknow',
+            type: 'unknown',
             description: undefined
           }
         }
