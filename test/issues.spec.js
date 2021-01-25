@@ -2964,6 +2964,26 @@ describe('issues', () => {
       data: [
         {
           category: undefined,
+          initialValue: 'null',
+          keywords: [],
+          kind: 'data',
+          name: 'pageItemList',
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+        {
+          category: undefined,
+          initialValue: 'null',
+          keywords: [],
+          kind: 'data',
+          name: 'pageTreeList',
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+        {
+          category: undefined,
           initialValue: 'localStorage.getItem(\'devToken\')',
           keywords: [],
           kind: 'data',

@@ -6,7 +6,8 @@ const { ComponentTestCase } = require('./lib/TestUtils');
 
 const script = `
   <script>
-  import { Vue, Component, Prop, Model, Watch, Emit } from 'vue-property-decorator'
+  import { Vue, Component, Prop, PropSync, Model, ModelSync, Watch, Ref, Emit } from 'vue-property-decorator'
+  import AnotherComponent from '@/path/to/another-component.vue';
 
   class MyClass {}
 
@@ -31,6 +32,9 @@ const script = `
 
     @Model('change', { type: Boolean }) readonly checked!: boolean
     @ModelSync('checked', 'change', { type: Boolean }) readonly checkedValue!: boolean
+
+    @Ref() readonly anotherComponent!: AnotherComponent;
+    @Ref('aButton') readonly button!: HTMLButtonElement;
 
     @Watch('child')
     onChildChanged(val: string, oldVal: string) { }
@@ -191,6 +195,41 @@ describe('Vue Property Decorator', () => {
           type: 'Boolean',
           version: undefined,
           visibility: 'public' },
+      ],
+      data: [
+        {
+          kind: 'data',
+          name: 'count',
+          type: 'number',
+          initialValue: '0',
+          visibility: 'public',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+        },
+        {
+          kind: 'data',
+          name: 'anotherComponent',
+          type: 'AnotherComponent',
+          visibility: 'public',
+          initialValue: 'null',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+        },
+        {
+          kind: 'data',
+          name: 'button',
+          type: 'HTMLButtonElement',
+          visibility: 'public',
+          initialValue: 'null',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+        },
       ],
       model: {
         kind: 'model',
