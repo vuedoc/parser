@@ -2914,4 +2914,69 @@ describe('issues', () => {
       slots: [],
     }
   });
-})
+
+  ComponentTestCase({
+    name: '#97 - @vuedoc/parser parse class component with error',
+    options: {
+      filecontent: `
+        <template>
+          <div>test code</div>
+        </template>
+        <script lang="ts">
+        import { Component, Vue, Prop } from 'vue-property-decorator';
+        import { State } from 'vuex-class';
+        @Component({
+          name: 'create-menu-list',
+          components: {
+          },
+        })
+        export default class createMenuList extends Vue {
+
+          @State('pageItemList') pageItemList!: any;
+
+          @State('pageTreeList') pageTreeList!: any;
+
+          @Prop() groups!: any;
+
+          token: any = localStorage.getItem('devToken');
+        }
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      name: 'create-menu-list',
+      props: [
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: false,
+          keywords: [],
+          kind: 'prop',
+          name: 'groups',
+          required: false,
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+      data: [
+        {
+          category: undefined,
+          initialValue: 'localStorage.getItem(\'devToken\')',
+          keywords: [],
+          kind: 'data',
+          name: 'token',
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+      computed: [],
+      events: [],
+      methods: [],
+      slots: [],
+    }
+  });
+});

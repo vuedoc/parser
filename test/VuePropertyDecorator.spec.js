@@ -30,6 +30,7 @@ const script = `
     @PropSync('name', { type: String }) syncedName!: string
 
     @Model('change', { type: Boolean }) readonly checked!: boolean
+    @ModelSync('checked', 'change', { type: Boolean }) readonly checkedValue!: boolean
 
     @Watch('child')
     onChildChanged(val: string, oldVal: string) { }
@@ -178,7 +179,18 @@ describe('Vue Property Decorator', () => {
           type: 'Boolean',
           category: undefined,
           version: undefined,
-          visibility: 'public' }
+          visibility: 'public' },
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          keywords: [],
+          kind: 'prop',
+          name: 'checked',
+          required: false,
+          type: 'Boolean',
+          version: undefined,
+          visibility: 'public' },
       ],
       model: {
         kind: 'model',
@@ -199,6 +211,18 @@ describe('Vue Property Decorator', () => {
           dependencies: [
             'name'
           ],
+          visibility: 'public' },
+        {
+          kind: 'computed',
+          name: 'checkedValue',
+          type: 'boolean',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+          dependencies: [
+            'checked'
+          ],
           visibility: 'public' }
       ],
       events: [
@@ -210,6 +234,22 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           arguments: [
             'name'
+          ],
+          keywords: [],
+          visibility: 'public' },
+        {
+          kind: 'event',
+          name: 'change',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          arguments: [
+            {
+              name: 'value',
+              description: undefined,
+              type: 'any',
+              rest: false
+            },
           ],
           keywords: [],
           visibility: 'public' },
@@ -271,7 +311,7 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           arguments: [],
           keywords: [],
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       methods: [
         {
