@@ -373,7 +373,7 @@ describe('EventParser', () => {
           arguments: [
             {
               description: undefined,
-              name: '***unhandled***',
+              name: 'value',
               rest: false,
               type: 'any',
             },

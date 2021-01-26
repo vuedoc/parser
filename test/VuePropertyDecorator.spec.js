@@ -286,7 +286,7 @@ describe('Vue Property Decorator', () => {
             {
               name: 'value',
               description: undefined,
-              type: 'any',
+              type: 'boolean',
               rest: false
             },
           ],
@@ -554,6 +554,82 @@ describe('Vue Property Decorator', () => {
       computed: undefined,
       events: undefined,
       methods: undefined
+    }
+  });
+
+  ComponentTestCase({
+    name: '@VModel(propsArgs?: PropOptions) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, VModel } from 'vue-property-decorator'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @VModel({ type: String }) name!: string
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          keywords: [],
+          kind: 'prop',
+          name: 'value',
+          required: false,
+          type: 'String',
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: {
+        kind: 'model',
+        prop: 'value',
+        event: 'input',
+        description: undefined,
+        keywords: []
+      },
+      computed: [
+        {
+          kind: 'computed',
+          name: 'name',
+          type: 'string',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+          dependencies: [
+            'value'
+          ],
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          kind: 'event',
+          name: 'input',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          arguments: [
+            {
+              name: 'value',
+              description: undefined,
+              type: 'string',
+              rest: false
+            }
+          ],
+          keywords: [],
+          visibility: 'public' },
+      ],
+      methods: [],
     }
   });
 
