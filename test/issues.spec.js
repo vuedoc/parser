@@ -925,6 +925,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'icon',
           props: []
@@ -934,6 +935,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'default',
           props: []
@@ -943,6 +945,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'suggestion',
           props: []
@@ -952,6 +955,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'error',
           props: []
@@ -961,6 +965,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'help',
           props: []
@@ -972,6 +977,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'name',
           type: 'String',
@@ -984,6 +990,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'placeholder',
           type: 'String',
@@ -996,6 +1003,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'value',
           type: [ 'String', 'Number' ],
@@ -1008,6 +1016,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'icon',
           type: 'String',
@@ -1020,6 +1029,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'icon-position',
           type: 'String',
@@ -1032,6 +1042,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'label',
           type: 'String',
@@ -1044,6 +1055,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'floating-label',
           type: 'Boolean',
@@ -1056,6 +1068,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'help',
           type: 'String',
@@ -1068,6 +1081,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'error',
           type: 'String',
@@ -1080,6 +1094,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'readonly',
           type: 'Boolean',
@@ -1092,6 +1107,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'disabled',
           type: 'Boolean',
@@ -1104,6 +1120,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'type',
           type: 'String',
@@ -1116,6 +1133,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'suggestions',
           type: 'Array',
@@ -1128,6 +1146,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'limit',
           type: 'Number',
@@ -1140,6 +1159,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'append',
           type: 'Boolean',
@@ -1152,6 +1172,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'append-delimiter',
           type: 'String',
@@ -1164,6 +1185,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'min-chars',
           type: 'Number',
@@ -1176,6 +1198,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'show-on-up-down',
           type: 'Boolean',
@@ -1188,6 +1211,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'autofocus',
           type: 'Boolean',
@@ -1200,6 +1224,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'filter',
           type: 'Function',
@@ -1212,6 +1237,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'highlight-on-first-match',
           type: 'Boolean',
@@ -1224,6 +1250,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'cycle-highlight',
           type: 'Boolean',
@@ -1236,6 +1263,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'keys',
           type: 'Object',
@@ -1248,6 +1276,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'invalid',
           type: 'Boolean',
@@ -1262,6 +1291,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'initialValue',
           type: 'object',
@@ -1272,6 +1302,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'isActive',
           type: 'boolean',
@@ -1282,6 +1313,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
@@ -1292,6 +1324,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
@@ -1302,6 +1335,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
@@ -1315,6 +1349,7 @@ describe('issues', () => {
           type: 'array',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'classes',
           dependencies: [
@@ -1334,6 +1369,7 @@ describe('issues', () => {
           type: 'object',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'labelClasses',
           dependencies: [
@@ -1347,6 +1383,7 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'hasLabel',
           dependencies: [
@@ -1360,6 +1397,7 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'hasFloatingLabel',
           dependencies: [
@@ -1373,6 +1411,7 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'isLabelInline',
           dependencies: [
@@ -1386,6 +1425,7 @@ describe('issues', () => {
           type: 'unknown',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'valueLength',
           dependencies: [
@@ -1398,6 +1438,7 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'hasFeedback',
           dependencies: [
@@ -1412,6 +1453,7 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'showError',
           dependencies: [
@@ -1426,6 +1468,7 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'showHelp',
           dependencies: [
@@ -1440,6 +1483,7 @@ describe('issues', () => {
           type: 'unknown',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'matchingSuggestions',
           dependencies: [
@@ -1457,6 +1501,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'select',
           arguments: [
@@ -1473,11 +1518,12 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'highlight-overflow',
           arguments: [
             {
-              name: 'index',
+              name: 'this.$refs.suggestions.length - 1',
               type: 'any',
               description: undefined,
               rest: false
@@ -1489,6 +1535,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'dropdown-open',
           arguments: []
@@ -1498,6 +1545,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'dropdown-close',
           arguments: []
@@ -1507,6 +1555,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'input',
           arguments: [
@@ -1523,6 +1572,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'focus',
           arguments: [
@@ -1539,6 +1589,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'change',
           arguments: [
@@ -1561,6 +1612,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'blur',
           arguments: [
@@ -1577,6 +1629,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'touch',
           arguments: []
@@ -1591,6 +1644,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'defaultFilter',
           params: [
@@ -1615,6 +1669,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'selectSuggestion',
           params: [
@@ -1639,6 +1694,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'highlightSuggestion',
           params: [
@@ -1663,6 +1719,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'selectHighlighted',
           params: [
@@ -1694,6 +1751,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'openDropdown',
           params: [],
@@ -1710,6 +1768,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'closeDropdown',
           params: [],
@@ -1726,6 +1785,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'updateValue',
           params: [
@@ -1750,6 +1810,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'onFocus',
           params: [
@@ -1774,6 +1835,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'onChange',
           params: [
@@ -1798,6 +1860,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'onBlur',
           params: [
@@ -1822,6 +1885,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'onExternalClick',
           params: [
@@ -1846,6 +1910,7 @@ describe('issues', () => {
           visibility: 'public',
           category: undefined,
           description: undefined,
+          version: undefined,
           keywords: [],
           name: 'reset',
           params: [],
@@ -2914,4 +2979,89 @@ describe('issues', () => {
       slots: [],
     }
   });
-})
+
+  ComponentTestCase({
+    name: '#97 - @vuedoc/parser parse class component with error',
+    options: {
+      filecontent: `
+        <template>
+          <div>test code</div>
+        </template>
+        <script lang="ts">
+        import { Component, Vue, Prop } from 'vue-property-decorator';
+        import { State } from 'vuex-class';
+        @Component({
+          name: 'create-menu-list',
+          components: {
+          },
+        })
+        export default class createMenuList extends Vue {
+
+          @State('pageItemList') pageItemList!: any;
+
+          @State('pageTreeList') pageTreeList!: any;
+
+          @Prop() groups!: any;
+
+          token: any = localStorage.getItem('devToken');
+        }
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      name: 'create-menu-list',
+      props: [
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: false,
+          keywords: [],
+          kind: 'prop',
+          name: 'groups',
+          required: false,
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+      data: [
+        {
+          category: undefined,
+          initialValue: 'null',
+          keywords: [],
+          kind: 'data',
+          name: 'pageItemList',
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+        {
+          category: undefined,
+          initialValue: 'null',
+          keywords: [],
+          kind: 'data',
+          name: 'pageTreeList',
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+        {
+          category: undefined,
+          initialValue: 'localStorage.getItem(\'devToken\')',
+          keywords: [],
+          kind: 'data',
+          name: 'token',
+          type: 'any',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+      computed: [],
+      events: [],
+      methods: [],
+      slots: [],
+    }
+  });
+});

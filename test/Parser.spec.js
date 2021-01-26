@@ -2192,7 +2192,7 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk().on('event', (event) => {
-        expect(event.name).toBe('***unhandled***');
+        expect(event.name).toBe('ppname');
         expect(event.description).toBe('loading event');
         expect(event.visibility).toBe('public');
         expect(event.keywords).toEqual([]);
