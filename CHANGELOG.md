@@ -1,3 +1,8 @@
+## Vuedoc Parser v3.3.0
+
+This release adds a partial support of Vue Property Decorator 9.1.2 by
+parsing `@ModelSync`, `@ref` and `@VModel`.
+
 ## Vuedoc Parser v3.2.1
 
 This release fixes typo of type `unknow` to `unknown` (#97, 6d83e495)
