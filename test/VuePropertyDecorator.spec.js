@@ -6,7 +6,7 @@ const { ComponentTestCase } = require('./lib/TestUtils');
 
 const script = `
   <script>
-  import { Vue, Component, Prop, Model, Watch, Emit } from 'vue-property-decorator'
+  import { Vue, Component, Prop, Model, ModelSync, Watch, Emit } from 'vue-property-decorator'
 
   class MyClass {}
 
@@ -19,17 +19,14 @@ const script = `
     count = 0
 
     /**
-     * description of propA
+     * description of propD
      */
-    @Prop(Number) readonly propA!: number
-    @Prop({ default: 'default value' }) readonly propB!: string
-    @Prop([String, Boolean]) readonly propC!: string | boolean
     @Prop({ default: 'default value', required: true }) readonly propD!: string
     @Prop({ type: String, default: 'default value', required: false }) readonly propE!: any
     @Prop({ default: 'default value', required: false }) readonly propF!: any
-    @PropSync('name', { type: String }) syncedName!: string
 
     @Model('change', { type: Boolean }) readonly checked!: boolean
+    @ModelSync('checked', 'change', { type: Boolean }) readonly checkedValue!: boolean
 
     @Watch('child')
     onChildChanged(val: string, oldVal: string) { }
@@ -85,45 +82,9 @@ describe('Vue Property Decorator', () => {
       props: [
         {
           kind: 'prop',
-          name: 'prop-a',
-          describeModel: false,
-          description: 'description of propA',
-          keywords: [],
-          default: undefined,
-          required: false,
-          type: 'Number',
-          category: undefined,
-          version: undefined,
-          visibility: 'public' },
-        {
-          kind: 'prop',
-          name: 'prop-b',
-          describeModel: false,
-          description: undefined,
-          keywords: [],
-          default: 'default value',
-          required: false,
-          type: 'string',
-          category: undefined,
-          version: undefined,
-          visibility: 'public' },
-        {
-          kind: 'prop',
-          name: 'prop-c',
-          describeModel: false,
-          description: undefined,
-          keywords: [],
-          default: undefined,
-          required: false,
-          type: [ 'String', 'Boolean' ],
-          category: undefined,
-          version: undefined,
-          visibility: 'public' },
-        {
-          kind: 'prop',
           name: 'prop-d',
           describeModel: false,
-          description: undefined,
+          description: 'description of propD',
           keywords: [],
           default: 'default value',
           required: true,
@@ -157,18 +118,6 @@ describe('Vue Property Decorator', () => {
           visibility: 'public' },
         {
           kind: 'prop',
-          name: 'name',
-          describeModel: false,
-          description: undefined,
-          keywords: [],
-          default: undefined,
-          required: false,
-          type: 'String',
-          category: undefined,
-          version: undefined,
-          visibility: 'public' },
-        {
-          kind: 'prop',
           name: 'checked',
           describeModel: true,
           description: undefined,
@@ -178,7 +127,31 @@ describe('Vue Property Decorator', () => {
           type: 'Boolean',
           category: undefined,
           version: undefined,
-          visibility: 'public' }
+          visibility: 'public' },
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          keywords: [],
+          kind: 'prop',
+          name: 'checked',
+          required: false,
+          type: 'Boolean',
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [
+        {
+          kind: 'data',
+          name: 'count',
+          type: 'number',
+          initialValue: '0',
+          visibility: 'public',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+        },
       ],
       model: {
         kind: 'model',
@@ -190,26 +163,31 @@ describe('Vue Property Decorator', () => {
       computed: [
         {
           kind: 'computed',
-          name: 'syncedName',
-          type: 'unknown',
+          name: 'checkedValue',
+          type: 'boolean',
           description: undefined,
           category: undefined,
           version: undefined,
           keywords: [],
           dependencies: [
-            'name'
+            'checked'
           ],
           visibility: 'public' }
       ],
       events: [
         {
           kind: 'event',
-          name: 'update:name',
+          name: 'change',
           description: undefined,
           category: undefined,
           version: undefined,
           arguments: [
-            'name'
+            {
+              name: 'value',
+              description: undefined,
+              type: 'boolean',
+              rest: false
+            },
           ],
           keywords: [],
           visibility: 'public' },
@@ -271,7 +249,7 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           arguments: [],
           keywords: [],
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       methods: [
         {
@@ -475,6 +453,439 @@ describe('Vue Property Decorator', () => {
       computed: undefined,
       events: undefined,
       methods: undefined
+    }
+  });
+
+  ComponentTestCase({
+    name: '@Model(event?: string, options: (PropOptions | Constructor[] | Constructor) = {}) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, Model } from 'vue-property-decorator'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @Model('change', { type: Boolean }) readonly checked!: boolean
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          keywords: [],
+          kind: 'prop',
+          name: 'checked',
+          required: false,
+          type: 'Boolean',
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: {
+        kind: 'model',
+        prop: 'checked',
+        event: 'change',
+        description: undefined,
+        keywords: []
+      },
+      computed: [],
+      events: [],
+      methods: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '@ModelSync(propName: string, event?: string, options: (PropOptions | Constructor[] | Constructor) = {}) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, ModelSync } from 'vue-property-decorator'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @ModelSync('checked', 'change', { type: Boolean })
+            readonly checkedValue!: boolean
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          keywords: [],
+          kind: 'prop',
+          name: 'checked',
+          required: false,
+          type: 'Boolean',
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: {
+        kind: 'model',
+        prop: 'checked',
+        event: 'change',
+        description: undefined,
+        keywords: []
+      },
+      computed: [
+        {
+          kind: 'computed',
+          name: 'checkedValue',
+          type: 'boolean',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+          dependencies: [
+            'checked'
+          ],
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          kind: 'event',
+          name: 'change',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          arguments: [
+            {
+              name: 'value',
+              description: undefined,
+              type: 'boolean',
+              rest: false
+            }
+          ],
+          keywords: [],
+          visibility: 'public' },
+      ],
+      methods: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '@VModel(propsArgs?: PropOptions) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, VModel } from 'vue-property-decorator'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @VModel({ type: String }) name!: string
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          keywords: [],
+          kind: 'prop',
+          name: 'value',
+          required: false,
+          type: 'String',
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: {
+        kind: 'model',
+        prop: 'value',
+        event: 'input',
+        description: undefined,
+        keywords: []
+      },
+      computed: [
+        {
+          kind: 'computed',
+          name: 'name',
+          type: 'string',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+          dependencies: [
+            'value'
+          ],
+          visibility: 'public' }
+      ],
+      events: [
+        {
+          kind: 'event',
+          name: 'input',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          arguments: [
+            {
+              name: 'value',
+              description: undefined,
+              type: 'string',
+              rest: false
+            }
+          ],
+          keywords: [],
+          visibility: 'public' },
+      ],
+      methods: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '@Ref(refKey?: string) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, Ref } from 'vue-property-decorator'
+
+          import AnotherComponent from '@/path/to/another-component.vue'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @Ref() readonly anotherComponent!: AnotherComponent
+            @Ref('aButton') readonly button!: HTMLButtonElement
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [],
+      data: [
+        {
+          kind: 'data',
+          name: 'anotherComponent',
+          type: 'AnotherComponent',
+          visibility: 'public',
+          initialValue: 'null',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+        },
+        {
+          kind: 'data',
+          name: 'button',
+          type: 'HTMLButtonElement',
+          visibility: 'public',
+          initialValue: 'null',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+        },
+      ],
+      model: undefined,
+      computed: [],
+      events: [],
+      methods: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '@Prop(options: (PropOptions | Constructor[] | Constructor) = {}) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, Prop } from 'vue-property-decorator'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @Prop(Number) readonly propA: number | undefined
+            @Prop({ default: 'default value' }) readonly propB!: string
+            @Prop([String, Boolean]) readonly propC: string | boolean | undefined
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'prop-a',
+          describeModel: false,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          type: 'Number',
+          category: undefined,
+          version: undefined,
+          visibility: 'public' },
+        {
+          kind: 'prop',
+          name: 'prop-b',
+          describeModel: false,
+          description: undefined,
+          keywords: [],
+          default: 'default value',
+          required: false,
+          type: 'string',
+          category: undefined,
+          version: undefined,
+          visibility: 'public' },
+        {
+          kind: 'prop',
+          name: 'prop-c',
+          describeModel: false,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          type: [ 'String', 'Boolean' ],
+          category: undefined,
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: undefined,
+      computed: [],
+      events: [],
+      methods: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '@Prop(options: (PropOptions | Constructor[] | Constructor) = {}) decorator with reflect-metadata',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import 'reflect-metadata'
+          import { Vue, Component, Prop } from 'vue-property-decorator'
+
+          @Component
+          export default class MyComponent extends Vue {
+            @Prop() age!: number
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'MyComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'age',
+          describeModel: false,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          type: 'number',
+          category: undefined,
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: undefined,
+      computed: [],
+      events: [],
+      methods: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '@PropSync(propName: string, options: (PropOptions | Constructor[] | Constructor) = {}) decorator',
+    options: {
+      filecontent: `
+        <script type="ts">
+          import { Vue, Component, PropSync } from 'vue-property-decorator'
+
+          @Component
+          export default class YourComponent extends Vue {
+            @PropSync('name', { type: String }) syncedName!: string
+          }
+        </script>
+      `
+    },
+    expected: {
+      name: 'YourComponent',
+      description: undefined,
+      errors: [],
+      warnings: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'name',
+          describeModel: false,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          type: 'String',
+          category: undefined,
+          version: undefined,
+          visibility: 'public' },
+      ],
+      data: [],
+      model: undefined,
+      computed: [
+        {
+          kind: 'computed',
+          name: 'syncedName',
+          type: 'string',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          keywords: [],
+          dependencies: [
+            'name'
+          ],
+          visibility: 'public' },
+        ],
+      events: [
+        {
+          kind: 'event',
+          name: 'update:name',
+          description: undefined,
+          category: undefined,
+          version: undefined,
+          arguments: [
+            {
+              name: 'name',
+              description: undefined,
+              type: 'string',
+              rest: false
+            }
+          ],
+          keywords: [],
+          visibility: 'public' },
+        ],
+      methods: [],
     }
   });
 
