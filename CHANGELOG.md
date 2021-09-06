@@ -1,3 +1,13 @@
+## Vuedoc Parser v3.3.1
+
+This release fixes a parsing data regression and upgrade `@babel/parser` to
+`7.15.5`.
+
+**Changes**
+
+- Fix regression parsing of data value (#101, #102, 5bc42df)
+- Upgrade to @babel/parser@7.15.5 (1408b1e)
+
 ## Vuedoc Parser v3.3.0
 
 This release adds a partial support of Vue Property Decorator 9.1.2 by
