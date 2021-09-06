@@ -3064,4 +3064,411 @@ describe('issues', () => {
       slots: [],
     }
   });
+
+  ComponentTestCase({
+    name: '#101 - rest operator is not supported?',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            data() {
+              return {
+                test: "123",
+                cWidth: "200px"
+              };
+            },
+            created() {
+              const { test, ...rest } = this;
+            },
+          };
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      events: [],
+      data: [
+        {
+          "category": undefined,
+          "initialValue": "\"123\"",
+          "keywords": [],
+          "kind": "data",
+          "name": "test",
+          "type": "string",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "initialValue": "\"200px\"",
+          "keywords": [],
+          "kind": "data",
+          "name": "cWidth",
+          "type": "string",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      props: [],
+      methods: [],
+      slots: [],
+    }
+  });
+
+  ComponentTestCase({
+    name: '#102 - EventParser.js:33 Uncaught TypeError: Cannot read property \'raw\' of undefined',
+    options: {
+      filecontent: `
+        <template>
+          <div class="input-div">
+            <div class="input-title" v-if="title" :style="{width: labelWidth + 'px'}">{{ title }}:</div>
+            <!-- <label :width="labelWidth">{{ title }}:</label> -->
+            <div class="ant-input-class">
+              <a-input
+                class="hm-ant-input"
+                :addonAfter="addonAfter"
+                :addonBefore="addonBefore"
+                v-model:value="cValue"
+                allowClear
+                @change="onChange"
+                @pressEnter="onPressEnter"
+              >
+              <template #prefix>
+                  <i :class="prefixicon"></i>
+                <!-- <user-outlined type="user" /> -->
+              </template>
+              <template #suffix>
+                <i :class="suffixicon"></i>
+              </template>
+              </a-input>
+            </div>
+          </div>
+        </template>
+
+        <script>
+          export default {
+            name: "HmAntInput",
+            props: {
+            /**
+               * 值
+               * @v-model
+               */
+              value: {
+                type: String,
+              },
+              /**
+               * 前缀图标
+               * @type Icon
+               */
+              prefixicon: {
+                type: String,
+              },
+              /**
+               * 后缀图标
+               * @type Icon
+               *
+               */
+              suffixicon: {
+                type: String,
+              },
+
+              /**
+               * 标题
+               */
+              title: {
+                type: String,
+                default: "输入框",
+              },
+
+              /**
+               * 输入框宽度
+               */
+              width: {
+                type: String,
+                default: "200",
+              },
+              /**
+               * 标题宽度
+               */
+              labelWidth:{
+                type:Number
+              }
+            },
+            watch: {
+              value(value) {
+                this.cValue = value;
+              },
+              width(value) {
+                this.cWidth = this.getCssUnit(value);
+              },
+            },
+            mounted() {
+              this.cValue = this.value;
+              this.cWidth = this.getCssUnit(this.width);
+            },
+            data() {
+              return {
+                cValue: "",
+                cWidth: "200px"
+              };
+            },
+            methods: {
+              onChange: function (e) {
+                console.log('onChange: ', e);
+
+                this.$emit("update:value", cValue);
+                this.$emit("change", e);
+              },
+              onPressEnter: function (e) {
+                this.$emit("pressEnter",e);
+              },
+              getCssUnit(value) {
+                if (isNaN(Number(value))) {
+                  return value;
+                }
+                return \`\${value}px\`;
+              },
+            },
+          };
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      name: 'HmAntInput',
+      events: [
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": "cValue",
+              "rest": false,
+              "type": "any",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "update:value",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": "e",
+              "rest": false,
+              "type": "any",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "change",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": "e",
+              "rest": false,
+              "type": "any",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "pressEnter",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      data: [
+        {
+          "category": undefined,
+          "initialValue": "\"\"",
+          "keywords": [],
+          "kind": "data",
+          "name": "cValue",
+          "type": "string",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "initialValue": "\"200px\"",
+          "keywords": [],
+          "kind": "data",
+          "name": "cWidth",
+          "type": "string",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      props: [
+        {
+          "category": undefined,
+          "default": undefined,
+          "describeModel": true,
+          "description": "值",
+          "keywords": [
+            {
+              "name": "v-model",
+            },
+          ],
+          "kind": "prop",
+          "name": "value",
+          "required": false,
+          "type": "String",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "default": undefined,
+          "describeModel": false,
+          "description": "前缀图标",
+          "keywords": [],
+          "kind": "prop",
+          "name": "prefixicon",
+          "required": false,
+          "type": "Icon",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "default": undefined,
+          "describeModel": false,
+          "description": "后缀图标",
+          "keywords": [],
+          "kind": "prop",
+          "name": "suffixicon",
+          "required": false,
+          "type": "Icon",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "default": "\"输入框\"",
+          "describeModel": false,
+          "description": "标题",
+          "keywords": [],
+          "kind": "prop",
+          "name": "title",
+          "required": false,
+          "type": "String",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "default": "\"200\"",
+          "describeModel": false,
+          "description": "输入框宽度",
+          "keywords": [],
+          "kind": "prop",
+          "name": "width",
+          "required": false,
+          "type": "String",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "default": undefined,
+          "describeModel": false,
+          "description": "标题宽度",
+          "keywords": [],
+          "kind": "prop",
+          "name": "label-width",
+          "required": false,
+          "type": "Number",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      methods: [
+        {
+          "category": undefined,
+          "keywords": [],
+          "kind": "method",
+          "name": "onChange",
+          "params": [
+            {
+              "defaultValue": undefined,
+              "description": undefined,
+              "name": "e",
+              "rest": false,
+              "type": "unknown",
+            },
+          ],
+          "returns": {
+            "description": undefined,
+            "type": "void",
+          },
+          "syntax": [
+            "onChange(e: unknown): void",
+          ],
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "keywords": [],
+          "kind": "method",
+          "name": "onPressEnter",
+          "params": [
+            {
+              "defaultValue": undefined,
+              "description": undefined,
+              "name": "e",
+              "rest": false,
+              "type": "unknown",
+            },
+          ],
+          "returns": {
+            "description": undefined,
+            "type": "void",
+          },
+          "syntax": [
+            "onPressEnter(e: unknown): void",
+          ],
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "keywords": [],
+          "kind": "method",
+          "name": "getCssUnit",
+          "params": [
+            {
+              "defaultValue": undefined,
+              "description": undefined,
+              "name": "value",
+              "rest": false,
+              "type": "unknown",
+            },
+          ],
+          "returns": {
+            "description": undefined,
+            "type": "unknown",
+          },
+          "syntax": [
+            "getCssUnit(value: unknown): unknown",
+          ],
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      slots: [],
+    }
+  });
 });
