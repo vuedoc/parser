@@ -3471,4 +3471,45 @@ describe('issues', () => {
       slots: [],
     }
   });
+
+  ComponentTestCase({
+    name: '#103 - "...rest" as return value causes error',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            computed: {
+              test() {
+                const { something, ...rest } = this;
+                return {
+                  something,
+                };
+              },
+            },
+          }
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      events: [],
+      data: [],
+      computed: [
+        {
+          "category": undefined,
+          "dependencies": ['something'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      props: [],
+      methods: [],
+      slots: [],
+    }
+  });
 });
