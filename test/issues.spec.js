@@ -3478,12 +3478,31 @@ describe('issues', () => {
       filecontent: `
         <script>
           export default {
+            data: () => ({
+              something: '',
+              name: '',
+              city: '',
+            }),
             computed: {
               test() {
                 const { something, ...rest } = this;
-                return {
-                  something,
-                };
+                return { something, ...rest };
+              },
+              test2() {
+                const { something: hello, name, ...rest } = this;
+                return { hello, name, ...rest };
+              },
+              test3() {
+                const { something = 'hello', name, ...rest } = this;
+                return { hello, name, ...rest };
+              },
+              test4() {
+                const { something = 'hello', name, ...rest } = this;
+                return { hello, [name]: 'hello', ...rest };
+              },
+              test5() {
+                const { something = 'hello', name = something, ...rest } = this;
+                return { hello, name, ...rest };
               },
             },
           }
@@ -3493,8 +3512,6 @@ describe('issues', () => {
     expected: {
       warnings: [],
       errors: [],
-      events: [],
-      data: [],
       computed: [
         {
           "category": undefined,
@@ -3506,10 +3523,47 @@ describe('issues', () => {
           "version": undefined,
           "visibility": "public",
         },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test2",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test3",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test4",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test5",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
       ],
-      props: [],
-      methods: [],
-      slots: [],
     }
   });
 });
