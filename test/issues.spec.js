@@ -3471,4 +3471,99 @@ describe('issues', () => {
       slots: [],
     }
   });
+
+  ComponentTestCase({
+    name: '#103 - "...rest" as return value causes error',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            data: () => ({
+              something: '',
+              name: '',
+              city: '',
+            }),
+            computed: {
+              test() {
+                const { something, ...rest } = this;
+                return { something, ...rest };
+              },
+              test2() {
+                const { something: hello, name, ...rest } = this;
+                return { hello, name, ...rest };
+              },
+              test3() {
+                const { something = 'hello', name, ...rest } = this;
+                return { hello, name, ...rest };
+              },
+              test4() {
+                const { something = 'hello', name, ...rest } = this;
+                return { hello, [name]: 'hello', ...rest };
+              },
+              test5() {
+                const { something = 'hello', name = something, ...rest } = this;
+                return { hello, name, ...rest };
+              },
+            },
+          }
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      computed: [
+        {
+          "category": undefined,
+          "dependencies": ['something'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test2",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test3",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test4",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "category": undefined,
+          "dependencies": ['something', 'name'],
+          "keywords": [],
+          "kind": "computed",
+          "name": "test5",
+          "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+    }
+  });
 });

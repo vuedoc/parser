@@ -1,6 +1,11 @@
+## Vuedoc Parser v3.3.2
+
+This release fixes a parsing of spread syntaxt on computed properties (#103,
+9b3d1e57).
+
 ## Vuedoc Parser v3.3.1
 
-This release fixes a parsing data regression and upgrade `@babel/parser` to
+This release fixes a parsing data regression and upgrades `@babel/parser` to
 `7.15.5`.
 
 **Changes**
