@@ -1,6 +1,17 @@
+## Vuedoc Parser v3.4.0
+
+This release fixes some parsing issues and upgrades `@babel/parser` to
+`7.15.6`.
+
+**Changes**
+
+- Fix invalid scoped variable reference issue (#104, fed8cbc)
+- Use `unknown` as the default implicit type (fed8cbc)
+- Upgrade to `@babel/parser@7.15.6`
+
 ## Vuedoc Parser v3.3.2
 
-This release fixes a parsing of spread syntaxt on computed properties (#103,
+This release fixes a parsing of spread syntax on computed properties (#103,
 9b3d1e57).
 
 ## Vuedoc Parser v3.3.1

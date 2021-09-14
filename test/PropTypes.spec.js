@@ -249,7 +249,7 @@ describe('@znck/prop-types', () => {
           kind: 'prop',
           name: 'custom-array-prop',
           required: false,
-          type: 'any',
+          type: 'unknown',
           visibility: 'public' },
       ]
     }

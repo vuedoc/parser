@@ -1507,7 +1507,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -1524,7 +1524,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'this.$refs.suggestions.length - 1',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -1561,7 +1561,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'value',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -1578,7 +1578,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'e',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -1595,13 +1595,16 @@ describe('issues', () => {
           arguments: [
             {
               name: 'value',
-              type: 'any',
+              type: [
+                'String',
+                'Number'
+              ],
               description: undefined,
               rest: false
             },
             {
               name: 'e',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -1618,7 +1621,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'e',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -1965,7 +1968,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -2019,7 +2022,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'suggestion',
-              type: 'any',
+              type: 'unknown',
               description: undefined,
               rest: false
             }
@@ -3150,7 +3153,7 @@ describe('issues', () => {
           export default {
             name: "HmAntInput",
             props: {
-            /**
+              /**
                * 值
                * @v-model
                */
@@ -3217,7 +3220,8 @@ describe('issues', () => {
               onChange: function (e) {
                 console.log('onChange: ', e);
 
-                this.$emit("update:value", cValue);
+                this.$emit("update:valuex", cValue);
+                this.$emit("update:value", this.cValue);
                 this.$emit("change", e);
               },
               onPressEnter: function (e) {
@@ -3245,7 +3249,23 @@ describe('issues', () => {
               "description": undefined,
               "name": "cValue",
               "rest": false,
-              "type": "any",
+              "type": "unknown",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "update:valuex",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": "cValue",
+              "rest": false,
+              "type": "string",
             },
           ],
           "category": undefined,
@@ -3261,7 +3281,7 @@ describe('issues', () => {
               "description": undefined,
               "name": "e",
               "rest": false,
-              "type": "any",
+              "type": "unknown",
             },
           ],
           "category": undefined,
@@ -3277,7 +3297,7 @@ describe('issues', () => {
               "description": undefined,
               "name": "e",
               "rest": false,
-              "type": "any",
+              "type": "unknown",
             },
           ],
           "category": undefined,
@@ -3560,6 +3580,103 @@ describe('issues', () => {
           "kind": "computed",
           "name": "test5",
           "type": "object",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+    }
+  });
+
+  ComponentTestCase({
+    name: '#104 - error if $emit param has the same name as a prop',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              something: {
+                type: String,
+                required: true,
+              },
+            },
+            methods: {
+              test(something) {
+                this.$emit('update:test', something);
+              },
+              test2() {
+                this.$emit('update:test2', this.something);
+              },
+              test3(something = 'hello') {
+                this.$emit('update:test3', something);
+              },
+            },
+          };
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      props: [
+        {
+          "category": undefined,
+          "default": undefined,
+          "describeModel": false,
+          "keywords": [],
+          "kind": "prop",
+          "name": "something",
+          "required": true,
+          "type": "String",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+      events: [
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": "something",
+              "rest": false,
+              "type": "unknown",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "update:test",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": "something",
+              "rest": false,
+              "type": "string",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "update:test2",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": '"hello"',
+              "rest": false,
+              "type": "string",
+            },
+          ],
+          "category": undefined,
+          "keywords": [],
+          "kind": "event",
+          "name": "update:test3",
           "version": undefined,
           "visibility": "public",
         },

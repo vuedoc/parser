@@ -574,14 +574,14 @@ describe('Integration', () => {
     it('should contain a model prop with a description', () => {
       const item = component.props.find((item) => item.describeModel);
 
-      assert.equal(item.type, 'any');
+      assert.equal(item.type, 'unknown');
       expect(item.description).toBe('The checkbox model');
     });
 
     it('should contain a checked prop with a description', () => {
       const item = component.props.find((item) => item.name === 'checked');
 
-      assert.equal(item.type, 'any');
+      assert.equal(item.type, 'unknown');
       expect(item.description).toBe('Initial checkbox value');
     });
   });
@@ -691,7 +691,7 @@ describe('Integration', () => {
           description: undefined,
           props: [
             { name: 'user',
-              type: 'any',
+              type: 'unknown',
               description: undefined }
           ],
           keywords: []
@@ -734,7 +734,7 @@ describe('Integration', () => {
           description: 'We have a slot for each todo, passing it the\n`todo` object as a slot prop.',
           props: [
             { name: 'todo',
-              type: 'any',
+              type: 'unknown',
               description: undefined }
           ],
           keywords: []
@@ -827,7 +827,7 @@ describe('Integration', () => {
               type: 'TodoItem',
               description: 'Todo item' },
             { name: 'actions',
-              type: 'any',
+              type: 'unknown',
               description: undefined }
           ],
           keywords: []
