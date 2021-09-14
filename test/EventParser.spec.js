@@ -85,7 +85,7 @@ describe('EventParser', () => {
               description: undefined,
               name: 'this.values',
               rest: true,
-              type: 'any',
+              type: 'unknown',
             },
           ],
         }
@@ -334,7 +334,7 @@ describe('EventParser', () => {
               description: undefined,
               name: 'this.cache',
               rest: false,
-              type: 'any',
+              type: 'unknown',
             },
           ],
         }
@@ -375,7 +375,7 @@ describe('EventParser', () => {
               description: undefined,
               name: 'value',
               rest: false,
-              type: 'any',
+              type: 'unknown',
             },
           ],
         }

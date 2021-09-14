@@ -201,7 +201,7 @@ describe('Vue Property Decorator', () => {
             {
               name: 'n',
               description: undefined,
-              type: 'any',
+              type: 'unknown',
               rest: false
             }
           ],
@@ -235,7 +235,7 @@ describe('Vue Property Decorator', () => {
             {
               name: 'e',
               description: undefined,
-              type: 'any',
+              type: 'unknown',
               rest: false
             }
           ],

@@ -1590,7 +1590,7 @@ describe('Parser', () => {
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('id');
-        expect(prop.type).toBe('any');
+        expect(prop.type).toBe('unknown');
         expect(prop.description).toBeUndefined();
         expect(prop.keywords).toEqual([]);
         expect(prop.value).toBeUndefined();

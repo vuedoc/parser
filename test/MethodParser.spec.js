@@ -5,7 +5,7 @@ const { ComponentTestCase } = require('./lib/TestUtils')
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
   [ 'unset', undefined, [ 'unknown', 'any' ] ],
-  [ 'undefine', 'undefined', 'any' ],
+  [ 'undefine', 'undefined', 'unknown' ],
   [ 'negativeNumber', '-1', 'number' ],
   [ 'positiveNumber', '1', 'number' ],
   [ 'zeroNumber', '0', 'number' ],
@@ -39,7 +39,7 @@ describe('MethodParser', () => {
     const [ expectedType, expectedType2 = expectedType ] = expectedTypes instanceof Array ? expectedTypes : [ expectedTypes ]
     const args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}`
     const argsWithTyping = paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}`
-    const expectedArgs = paramValue ? `${paramName}: ${expectedType2} = ${paramValue}` : `${paramName}: ${expectedType}`
+    const expectedArgs = paramValue && paramValue !== 'undefined' ? `${paramName}: ${expectedType2} = ${paramValue}` : `${paramName}: ${expectedType}`
 
     ComponentTestCase({
       name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
@@ -260,7 +260,7 @@ describe('MethodParser', () => {
 
   ComponentTestCase({
     name: '@syntax',
-    description: 'with rest param and unknow identifier method',
+    description: 'with an unknow identifier method',
     options: {
       filecontent: `
         <script>

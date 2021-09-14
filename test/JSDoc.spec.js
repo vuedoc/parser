@@ -100,7 +100,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with an empty type', () => {
       const comment = '{} x - The x value.';
-      const expected = { type: 'any', name: 'x', description: 'The x value.' };
+      const expected = { type: 'unknown', name: 'x', description: 'The x value.' };
       const result = JSDoc.parseParamKeyword(comment);
 
       expect(result).toEqual(expected);
@@ -108,7 +108,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with missing type', () => {
       const comment = 'x - The x value.';
-      const expected = { type: 'any', name: 'x', description: 'The x value.' };
+      const expected = { type: 'unknown', name: 'x', description: 'The x value.' };
       const result = JSDoc.parseParamKeyword(comment);
 
       expect(result).toEqual(expected);
@@ -116,7 +116,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with malformated input', () => {
       const comment = '{ !x=> The x value.';
-      const expected = { type: 'any', name: null, description: undefined };
+      const expected = { type: 'unknown', name: null, description: undefined };
       const result = JSDoc.parseParamKeyword(comment);
 
       expect(result).toEqual(expected);
@@ -235,7 +235,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with an empty retuning type', () => {
       const comment = '{} The x+y value.';
-      const expected = { type: 'any', description: 'The x+y value.' };
+      const expected = { type: 'unknown', description: 'The x+y value.' };
       const result = JSDoc.parseReturnsKeyword(comment);
 
       expect(result).toEqual(expected);
@@ -243,7 +243,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with missing retuning type', () => {
       const comment = 'The x+y value.';
-      const expected = { type: 'any', description: 'The x+y value.' };
+      const expected = { type: 'unknown', description: 'The x+y value.' };
       const result = JSDoc.parseReturnsKeyword(comment);
 
       expect(result).toEqual(expected);
@@ -251,7 +251,7 @@ describe('JSDoc', () => {
 
     it('should parse @return keyword with malformated input', () => {
       const comment = '';
-      const expected = { type: 'any', description: undefined };
+      const expected = { type: 'unknown', description: undefined };
       const result = JSDoc.parseReturnsKeyword(comment);
 
       expect(result).toEqual(expected);

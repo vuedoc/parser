@@ -683,7 +683,7 @@ describe('ECMAScript Feature Parsing', () => {
           name: 'i',
           category: undefined,
           description: undefined,
-          type: 'any',
+          type: 'unknown',
           initialValue: 'undefined',
           keywords: [] }
       ];

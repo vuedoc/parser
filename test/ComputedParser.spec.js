@@ -91,7 +91,7 @@ describe('ComputedParser', () => {
               description: undefined,
               name: 'value',
               rest: false,
-              type: 'any',
+              type: 'unknown',
             },
           ],
         }
@@ -151,7 +151,7 @@ describe('ComputedParser', () => {
               description: undefined,
               name: 'value',
               rest: false,
-              type: 'any',
+              type: 'unknown',
             },
           ],
         }

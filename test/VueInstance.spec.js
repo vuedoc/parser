@@ -83,7 +83,7 @@ ComponentTestCase({
         kind: 'prop',
         name: 'todo',
         required: false,
-        type: 'any',
+        type: 'unknown',
         visibility: 'public' }
     ],
     slots: [
