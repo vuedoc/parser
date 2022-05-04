@@ -49,7 +49,10 @@ sast:
 pages:
   stage: publish
   needs: &security-jobs
-    - sast
+    - dependencies check
+    - eslint-sast
+    - nodejs-scan-sast
+    - semgrep-sast
   dependencies: *security-jobs
   script:
     - mv coverage/lcov-report/ public/
