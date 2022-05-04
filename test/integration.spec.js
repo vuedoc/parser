@@ -430,13 +430,17 @@ describe('Integration', () => {
 
   describe('options', () => {
     it('should fail to parse with missing options', () => {
-      assert.throws(() => vuedoc.parseOptions(),
-        /Missing options argument/);
+      assert.throws(
+        () => vuedoc.parseOptions(),
+        /Missing options argument/
+      );
     });
 
     it('should fail to parse with missing minimum required options', () => {
-      assert.throws(() => vuedoc.parseOptions({}),
-        /One of options.filename or options.filecontent is required/);
+      assert.throws(
+        () => vuedoc.parseOptions({}),
+        /One of options.filename or options.filecontent is required/
+      );
     });
 
     it('should parse with minimum required options', () => {

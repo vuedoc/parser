@@ -8,7 +8,6 @@
     "preversion": "yarn test",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
     "lint": "eslint index.js lib loader schema test",
-    "lint:fix": "eslint --fix index.js lib loader schema test",
     "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },
   "repository": {

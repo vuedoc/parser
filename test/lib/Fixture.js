@@ -2,6 +2,7 @@ import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 
+// eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const Fixture = {

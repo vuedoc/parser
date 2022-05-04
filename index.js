@@ -2,14 +2,15 @@ import path from 'path';
 
 import { Loader } from './lib/Loader';
 import { Parser } from './lib/parser/Parser';
-export { Loader } from './lib/Loader';
-export { Parser } from './lib/parser/Parser';
 import { VueLoader } from './loader/vue';
 import { HtmlLoader } from './loader/html';
 import { JavaScriptLoader } from './loader/javascript';
 import { TypeScriptLoader } from './loader/typescript';
 import { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } from './lib/Enum';
 import { KeywordsUtils } from './lib/utils/KeywordsUtils';
+
+export { Loader } from './lib/Loader';
+export { Parser } from './lib/parser/Parser';
 
 const DEFAULT_LOADERS = [
   Loader.extend('js', JavaScriptLoader),
