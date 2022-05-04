@@ -1,14 +1,15 @@
-const path = require('path');
+import path from 'path';
 
-const Loader = require('./lib/Loader');
-const VueLoader = require('./loader/vue');
-const HtmlLoader = require('./loader/html');
-const JavaScriptLoader = require('./loader/javascript');
-const TypeScriptLoader = require('./loader/typescript');
-
-const { Parser } = require('./lib/parser/Parser');
-const { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } = require('./lib/Enum');
-const { KeywordsUtils } = require('./lib/utils/KeywordsUtils');
+import { Loader } from './lib/Loader';
+import { Parser } from './lib/parser/Parser';
+export { Loader } from './lib/Loader';
+export { Parser } from './lib/parser/Parser';
+import { VueLoader } from './loader/vue';
+import { HtmlLoader } from './loader/html';
+import { JavaScriptLoader } from './loader/javascript';
+import { TypeScriptLoader } from './loader/typescript';
+import { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } from './lib/Enum';
+import { KeywordsUtils } from './lib/utils/KeywordsUtils';
 
 const DEFAULT_LOADERS = [
   Loader.extend('js', JavaScriptLoader),
@@ -17,10 +18,7 @@ const DEFAULT_LOADERS = [
   Loader.extend('vue', VueLoader)
 ];
 
-module.exports.Loader = Loader;
-module.exports.Parser = Parser;
-
-module.exports.parseOptions = (options) => {
+export function parseOptions(options) {
   if (!options) {
     /* eslint-disable max-len */
     throw new Error('Missing options argument');
@@ -67,9 +65,9 @@ module.exports.parseOptions = (options) => {
   } catch (e) {
     return Promise.reject(e);
   }
-};
+}
 
-module.exports.parse = (options) => this.parseOptions(options).then(() => new Promise((resolve) => {
+export const parse = (options) => parseOptions(options).then(() => new Promise((resolve) => {
   const component = {
     inheritAttrs: true,
     errors: [],
@@ -122,7 +120,15 @@ module.exports.parse = (options) => this.parseOptions(options).then(() => new Pr
 
         component[feature] = [];
 
-        parser.on(eventName, (entry) => component[feature].push(entry));
+        parser.on(eventName, (entry) => {
+          const index = component[feature].findIndex((item) => item.name === entry.name);
+
+          if (index > -1) {
+            component[feature].splice(index, 1, entry);
+          } else {
+            component[feature].push(entry);
+          }
+        });
       }
     }
   });

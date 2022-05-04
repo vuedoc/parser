@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils');
+import { ComponentTestCase } from './lib/TestUtils';
 
 /* eslint-disable max-len */
 /* eslint-disable indent */

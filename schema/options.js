@@ -1,6 +1,6 @@
-const { DEFAULT_IGNORED_VISIBILITIES, Features, DEFAULT_ENCODING } = require('../lib/Enum');
+import { DEFAULT_IGNORED_VISIBILITIES, Features, DEFAULT_ENCODING } from '../lib/Enum';
 
-module.exports = {
+export default {
   type: 'object',
   properties: {
     filename: {

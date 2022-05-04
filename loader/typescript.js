@@ -1,9 +1,7 @@
-const JavaScriptLoader = require('./javascript');
+import { JavaScriptLoader } from './javascript';
 
 /**
  * @note Don't fotget to install `typescript` and `@types/node` dependencies
  * according the [official documentation](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API)
  */
-class TypeScriptLoader extends JavaScriptLoader {}
-
-module.exports = TypeScriptLoader;
+export class TypeScriptLoader extends JavaScriptLoader {}

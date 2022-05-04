@@ -1,8 +1,8 @@
-const parser = require('../..');
+import * as parser from '../..';
 
 /* global describe beforeAll it expect */
 
-module.exports.ComponentTestCase = ({ name, description, expected, options }) => {
+export const ComponentTestCase = ({ name, description, expected, options }) => {
   describe(description ? `${name}: ${description}` : name, () => {
     let component = null;
 

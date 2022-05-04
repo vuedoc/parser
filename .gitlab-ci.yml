@@ -4,47 +4,53 @@ include:
   - template: SAST.gitlab-ci.yml
 
 stages:
-  - test
+  - tests
+  - security
   - publish
 
 code quality:
-  stage: test
+  stage: tests
   script:
-    - npm ci
-    - npm run lint
+    - yarn install
+    - yarn run lint
 
-npm outdated:
-  stage: test
+dependencies outdated:
+  stage: tests
   script:
-    - npm ci
-    - npm outdated
+    - yarn install
+    - yarn outdated
   allow_failure: true
 
-security scan:
-  stage: test
+tests & coverage:
+  stage: tests
   script:
-    - npm audit --production
-
-test on nodejs lts:
-  stage: test
-  image: node:lts-alpine
-  script:
-    - npm it
-  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
-
-test & coverage:
-  stage: test
-  script:
-    - npm it
+    - yarn install
+    - yarn test
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   artifacts:
     paths:
       - coverage/
 
+dependencies check:
+  stage: security
+  needs: &tests-jobs
+    - code quality
+    - dependencies outdated
+    - tests & coverage
+  dependencies: *tests-jobs
+  script:
+    - yarn audit --production
+
+sast:
+  stage: security
+  needs: *tests-jobs
+  dependencies: *tests-jobs
+
 pages:
   stage: publish
-  dependencies:
-    - test & coverage
+  needs: &security-jobs
+    - sast
+  dependencies: *security-jobs
   script:
     - mv coverage/lcov-report/ public/
   artifacts:
@@ -58,20 +64,24 @@ pages:
 
 package:
   stage: publish
+  needs: *security-jobs
+  dependencies: *security-jobs
   script:
-    - npm pack
+    - yarn pack
   artifacts:
     paths:
       - ./*.tgz
 
 publish:
   stage: publish
+  needs: *security-jobs
+  dependencies: *security-jobs
   only:
     - tags
     - triggers
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
-    - npm publish
+    - yarn publish
   environment:
     name: npm
     url: https://www.npmjs.com/package/@vuedoc/parser

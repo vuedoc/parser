@@ -2,10 +2,10 @@
 /* eslint-disable max-len */
 /* eslint-disable indent */
 
-const parser = require('..')
+import * as parser from '..';
 
-const { ComponentTestCase } = require('./lib/TestUtils')
-const { Fixture } = require('./lib/Fixture')
+import { ComponentTestCase } from './lib/TestUtils';
+import { Fixture } from './lib/Fixture';
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
@@ -3683,4 +3683,77 @@ describe('issues', () => {
       ],
     }
   });
+
+  // ComponentTestCase({
+  //   name: '#107 - Arguments length for event is wrong',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         export default {
+  //           mounted() {
+  //               /**
+  //                * Wrong arguments length
+  //                *
+  //                * @arg {string} 'accepts' Hello
+  //                */
+  //               this.$emit('work', 'accepts');
+  //           },
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     warnings: [],
+  //     errors: [],
+  //     events: [
+  //       {
+  //         "arguments": [
+  //           {
+  //             "description": undefined,
+  //             "name": '"accepts"',
+  //             "rest": false,
+  //             "type": "string",
+  //           },
+  //         ],
+  //         "category": undefined,
+  //         "description": "Wrong arguments length",
+  //         "keywords": [],
+  //         "kind": "event",
+  //         "name": "work",
+  //         "version": undefined,
+  //         "visibility": "public",
+  //       },
+  //     ],
+  //   }
+  // });
+
+  // ComponentTestCase({
+  //   name: '#107 - Arguments length for event is wrong',
+  //   options: {
+  //     filecontent: `
+  //       <script>
+  //         export default {
+  //           methods: {
+  //             /**
+  //              * Load the given \`schema\` with initial filled \`value\`
+  //              * Use this to load async schema.
+  //              *
+  //              * @param {object} schema - The JSON Schema object to load
+  //              * @param {Number|String|Array|Object|Boolean} model - The initial data for the schema.
+  //              *
+  //              * @Note \`model\` is not a two-way data bindings.
+  //              * To get the form data, use the \`v-model\` directive.
+  //              */
+  //             load (schema, model = undefined) {}
+  //           }
+  //         }
+  //       </script>
+  //     `
+  //   },
+  //   expected: {
+  //     warnings: [],
+  //     errors: [],
+  //     methods: [],
+  //   }
+  // });
 });

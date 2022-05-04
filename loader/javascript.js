@@ -1,9 +1,7 @@
-const Loader = require('../lib/Loader');
+import { Loader } from '../lib/Loader';
 
-class JavaScriptLoader extends Loader {
+export class JavaScriptLoader extends Loader {
   load (source) {
     return this.emitScript(source);
   }
 }
-
-module.exports = JavaScriptLoader;

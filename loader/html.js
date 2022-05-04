@@ -1,9 +1,7 @@
-const Loader = require('../lib/Loader');
+import { Loader } from '../lib/Loader';
 
-class HtmlLoader extends Loader {
+export class HtmlLoader extends Loader {
   load (source) {
     return this.emitTemplate(source);
   }
 }
-
-module.exports = HtmlLoader;

@@ -1,4 +1,4 @@
-const { CommentParser } = require('../lib/parser/CommentParser');
+import { CommentParser } from '../lib/parser/CommentParser';
 
 /* global describe it expect */
 /* eslint-disable max-len */

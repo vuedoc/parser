@@ -1,5 +1,5 @@
-const assert = require('assert');
-const { Parser } = require('../lib/parser/Parser');
+import assert from 'assert';
+import { Parser } from '../lib/parser/Parser';
 
 /* global describe it expect */
 /* eslint-disable max-len */

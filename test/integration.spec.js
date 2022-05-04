@@ -3,19 +3,18 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-return-assign */
 
-const assert = require('assert');
+import assert from 'assert';
 
-const vuedoc = require('..');
+import * as vuedoc from '..';
 
-const { ComponentTestCase } = require('./lib/TestUtils');
-const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec');
-const { Fixture } = require('./lib/Fixture');
-
-const Loader = require('../lib/Loader');
-const VueLoader = require('../loader/vue');
-const HtmlLoader = require('../loader/html');
-const JavaScriptLoader = require('../loader/javascript');
-const TypeScriptLoader = require('../loader/typescript');
+import { ComponentTestCase } from './lib/TestUtils';
+import { JSDocTypeSpec } from './spec/JSDocTypeSpec';
+import { Fixture } from './lib/Fixture';
+import { Loader } from '../lib/Loader';
+import { VueLoader } from '../loader/vue';
+import { HtmlLoader } from '../loader/html';
+import { JavaScriptLoader } from '../loader/javascript';
+import { TypeScriptLoader } from '../loader/typescript';
 
 const DefaultLoaders = [
   Loader.extend('js', JavaScriptLoader),
