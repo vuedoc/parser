@@ -23,12 +23,30 @@
   ],
   "author": "Sébastien Demanou",
   "contributors": [
-    "Sébastien Demanou (https://gitlab.com/demsking)",
-    "Patrick Schmiedel (https://github.com/pschmiedel)",
-    "Devon Rueckner (https://github.com/indirectlylit)",
-    "Hello Deadline (https://github.com/HelloDeadline)",
-    "Magali Boizot-Roche (https://github.com/magali-br)",
-    "Rmaiy (https://github.com/ljwrer)"
+    {
+      "name": "Sébastien Demanou",
+      "url": "https://gitlab.com/demsking"
+    },
+    {
+      "name": "Patrick Schmiedel",
+      "url": "https://github.com/pschmiedel"
+    },
+    {
+      "name": "Devon Rueckner",
+      "url": "https://github.com/indirectlylit"
+    },
+    {
+      "name": "Hello Deadline",
+      "url": "https://github.com/HelloDeadline"
+    },
+    {
+      "name": "Magali Boizot-Roche",
+      "url": "https://github.com/magali-br"
+    },
+    {
+      "name": "Rmaiy",
+      "url": "https://github.com/ljwrer"
+    }
   ],
   "license": "MIT",
   "bugs": {
