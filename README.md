@@ -38,6 +38,7 @@ Generate a JSON documentation for a Vue file component.
   * [Create a custom loader](#create-a-custom-loader)
 - [Parsing Output Interface](#parsing-output-interface)
 - [Related projects](#related-projects)
+- [Development Setup](#development-setup)
 - [Contribute](#contribute)
 - [Versioning](#versioning)
 - [License](#license)
@@ -1097,18 +1098,26 @@ type Keyword = {
 - [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation
   Generator for Vue Components
 
+## Development Setup
+
+1. [Install Nix Package Manager](https://nixos.org/manual/nix/stable/installation/installing-binary.html)
+
+2. [Install `direnv` with your OS package manager](https://direnv.net/docs/installation.html#from-system-packages)
+
+3. [Hook it `direnv` into your shell](https://direnv.net/docs/hook.html)
+
+4. At the top-level of your project run:
+
+   ```sh
+   direnv allow
+   ```
+
+   > The next time your launch your terminal and enter the top-level of your
+   > project, `direnv` will check for changes.
+
 ## Contribute
 
-Contributions to Vuedoc Parser are welcome. Here is how you can contribute:
-
-1. [Submit bugs or a feature request](https://gitlab.com/vuedoc/md/issues) and
-   help us verify fixes as they are checked in
-2. Create your working branch from the `dev` branch:
-   `git checkout dev -b feature/my-awesome-feature`
-3. Write code for a bug fix or for your new awesome feature
-4. Write test cases for your changes
-5. [Submit merge requests](https://gitlab.com/vuedoc/md/merge_requests) for bug
-   fixes and features and discuss existing proposals
+Please follow [CONTRIBUTING.md](https://gitlab.com/vuedoc/parser/blob/master/CONTRIBUTING.md).
 
 ## Versioning
 
