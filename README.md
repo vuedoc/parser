@@ -3,8 +3,8 @@
 Generate a JSON documentation for a Vue file component.
 
 [![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser)
-[![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=master)
-[![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+[![Build status](https://gitlab.com/vuedoc/parser/badges/main/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=main)
+[![Test coverage](https://gitlab.com/vuedoc/parser/badges/main/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
 [![Buy me a beer](https://img.shields.io/badge/Buy%20me-a%20beer-1f425f.svg)](https://www.buymeacoffee.com/demsking)
 
 ## Table of Contents
@@ -94,7 +94,7 @@ npm install --save @vuedoc/parser
 
 ## Usage
 
-See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox.vue)
+See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/main/test/fixtures/checkbox.vue)
 for an Vue Component decoration example.
 
 ```js
@@ -130,7 +130,7 @@ This will print this JSON output:
 
 > Found the complete result here:
 
-[test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
+[test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/main/test/fixtures/checkbox-result.json)
 
 See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 
@@ -1118,7 +1118,7 @@ type Keyword = {
 
 ## Contribute
 
-Please follow [CONTRIBUTING.md](https://gitlab.com/vuedoc/parser/blob/master/CONTRIBUTING.md).
+Please follow [CONTRIBUTING.md](https://gitlab.com/vuedoc/parser/blob/main/CONTRIBUTING.md).
 
 ## Versioning
 
@@ -1137,5 +1137,5 @@ See [SemVer.org](https://semver.org/) for more details.
 ## License
 
 Under the MIT license.
-See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for
+See [LICENSE](https://gitlab.com/vuedoc/parser/blob/main/LICENSE) file for
 more details.
