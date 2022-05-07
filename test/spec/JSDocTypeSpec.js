@@ -1,4 +1,4 @@
-module.exports.JSDocTypeSpec = [
+export const JSDocTypeSpec = [
   {
     name: 'Any type',
     values: [

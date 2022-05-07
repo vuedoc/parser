@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils');
+import { ComponentTestCase } from './lib/TestUtils';
 
 ComponentTestCase({
   name: '#48 - Vue Instance',

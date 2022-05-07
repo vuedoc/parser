@@ -1,5 +1,5 @@
-const assert = require('assert');
-const { Parser } = require('../lib/parser/Parser');
+import assert from 'assert';
+import { Parser } from '../lib/parser/Parser';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -384,15 +384,19 @@ describe('Parser', () => {
     it('should parse with an invalid type of options.features', () => {
       const options = { source: {}, features: 'events' };
 
-      assert.throws(() => Parser.validateOptions(options),
-        /options\.features must be an array/);
+      assert.throws(
+        () => Parser.validateOptions(options),
+        /options\.features must be an array/
+      );
     });
 
     it('should parse with an invalid options.features', () => {
       const options = { source: {}, features: [ 'invalid-feature' ] };
 
-      assert.throws(() => Parser.validateOptions(options),
-        /Unknow 'invalid-feature' feature\. Supported features:/);
+      assert.throws(
+        () => Parser.validateOptions(options),
+        /Unknow 'invalid-feature' feature\. Supported features:/
+      );
     });
 
     it('should parse with a valid options.features', () => {

@@ -1,6 +1,6 @@
-const { JSDoc } = require('../lib/JSDoc');
-const { ComponentTestCase } = require('./lib/TestUtils');
-const { JSDocTypeSpec } = require('./spec/JSDocTypeSpec');
+import { JSDoc } from '../lib/JSDoc';
+import { ComponentTestCase } from './lib/TestUtils';
+import { JSDocTypeSpec } from './spec/JSDocTypeSpec';
 
 /* global describe it expect */
 

@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils');
+import { ComponentTestCase } from './lib/TestUtils';
 
 /* global describe */
 

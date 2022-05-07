@@ -1,6 +1,6 @@
-const vuedoc = require('..');
+import * as vuedoc from '..';
 
-const { Parser } = require('../lib/parser/Parser');
+import { Parser } from '../lib/parser/Parser';
 
 /* global describe it expect */
 /* eslint-disable quote-props */

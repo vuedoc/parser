@@ -3,5 +3,7 @@ coverage
 .*
 sample.js
 result.json
-yarn.lock
 *.tgz
+*.nix
+*.yml
+*.yaml

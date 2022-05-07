@@ -1,7 +1,11 @@
-const { join } = require('path');
-const { readFileSync } = require('fs');
+import { dirname, join } from 'path';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
 
-module.exports.Fixture = {
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export const Fixture = {
   resolve (filename) {
     return join(__dirname, `../fixtures/${filename}`);
   },

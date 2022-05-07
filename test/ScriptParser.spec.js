@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils');
+import { ComponentTestCase } from './lib/TestUtils';
 
 /* global describe */
 
@@ -93,7 +93,7 @@ describe('ScriptParser', () => {
       data: [ {
         kind: 'data',
         name: 'currentYear',
-        type: 'CallExpression',
+        type: 'unknown',
         category: undefined,
         version: undefined,
         description: undefined,
@@ -191,7 +191,7 @@ describe('ScriptParser', () => {
       data: [ {
         kind: 'data',
         name: 'currentYear',
-        type: 'CallExpression',
+        type: 'unknown',
         category: undefined,
         version: undefined,
         description: undefined,
@@ -332,7 +332,7 @@ describe('ScriptParser', () => {
         {
           kind: 'prop',
           name: 'some-prop-call',
-          type: 'any',
+          type: 'unknown',
           visibility: 'public',
           category: undefined,
           description: undefined,

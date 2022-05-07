@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-const { ComponentTestCase } = require('./lib/TestUtils');
+import { ComponentTestCase } from './lib/TestUtils';
 
 describe('@znck/prop-types', () => {
   ComponentTestCase({

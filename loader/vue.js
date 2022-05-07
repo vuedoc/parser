@@ -1,11 +1,10 @@
-const { parseComponent } = require('vue-template-compiler');
-
-const Loader = require('../lib/Loader');
+import { parseComponent } from 'vue-template-compiler';
+import { Loader } from '../lib/Loader';
 
 const DEFAULT_TEMPLATE_LANG = 'html';
 const DEFAULT_SCRIPT_LANG = 'js';
 
-class VueLoader extends Loader {
+export class VueLoader extends Loader {
   load (source) {
     const result = parseComponent(source);
 
@@ -39,5 +38,3 @@ class VueLoader extends Loader {
     ]);
   }
 }
-
-module.exports = VueLoader;

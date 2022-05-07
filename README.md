@@ -3,8 +3,8 @@
 Generate a JSON documentation for a Vue file component.
 
 [![npm](https://img.shields.io/npm/v/@vuedoc/parser.svg)](https://www.npmjs.com/package/@vuedoc/parser)
-[![Build status](https://gitlab.com/vuedoc/parser/badges/master/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=master)
-[![Test coverage](https://gitlab.com/vuedoc/parser/badges/master/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
+[![Build status](https://gitlab.com/vuedoc/parser/badges/main/pipeline.svg)](https://gitlab.com/vuedoc/parser/pipelines?ref=main)
+[![Test coverage](https://gitlab.com/vuedoc/parser/badges/main/coverage.svg)](https://gitlab.com/vuedoc/parser/-/jobs)
 [![Buy me a beer](https://img.shields.io/badge/Buy%20me-a%20beer-1f425f.svg)](https://www.buymeacoffee.com/demsking)
 
 ## Table of Contents
@@ -38,11 +38,15 @@ Generate a JSON documentation for a Vue file component.
   * [Create a custom loader](#create-a-custom-loader)
 - [Parsing Output Interface](#parsing-output-interface)
 - [Related projects](#related-projects)
+- [Development Setup](#development-setup)
 - [Contribute](#contribute)
 - [Versioning](#versioning)
 - [License](#license)
 
 ## Install
+
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
+: Node 16+ is needed to use it and it must be imported instead of required.
 
 ```sh
 npm install --save @vuedoc/parser
@@ -93,16 +97,17 @@ npm install --save @vuedoc/parser
 
 ## Usage
 
-See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox.vue)
+See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/main/test/fixtures/checkbox.vue)
 for an Vue Component decoration example.
 
 ```js
-const Vuedoc = require('@vuedoc/parser')
+import { parse } from '@vuedoc/parser';
+
 const options = {
   filename: 'test/fixtures/checkbox.vue'
-}
+};
 
-Vuedoc.parse(options)
+parse(options)
   .then((component) => console.log(component))
   .catch((err) => console.error(err))
 ```
@@ -127,7 +132,8 @@ This will print this JSON output:
 ```
 
 > Found the complete result here:
-  [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
+
+[test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/main/test/fixtures/checkbox-result.json)
 
 See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 
@@ -835,12 +841,12 @@ To parse a mixin, you need to parse its file as a standalone component and then
 merge the parsing result with the result of the initial component:
 
 ```js
-const Vuedoc = require('@vuedoc/parser')
-const merge = require('deepmerge')
+import { parse } from '@vuedoc/parser';
+import merge from 'deepmerge';
 
 const parsers = [
-  Vuedoc.parse({ filename: 'mixinFile.js' })
-  Vuedoc.parse({ filename: 'componentUsingMixin.vue' })
+  parse({ filename: 'mixinFile.js' })
+  parse({ filename: 'componentUsingMixin.vue' })
 ]
 
 Promise.all(parsers)
@@ -899,14 +905,14 @@ The default value is defined by `Vuedoc.Parser.SUPPORTED_FEATURES` array.
 Only parse `name`, `props`, `computed properties`, `slots` and `events`:
 
 ```js
-const Vuedoc = require('@vuedoc/parser')
+import { parse } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
   features: [ 'name', 'props', 'computed', 'slots', 'events' ]
 }
 
-Vuedoc.parse(options)
+parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'props', 'computed', 'slots', 'events' ]
@@ -915,14 +921,14 @@ Vuedoc.parse(options)
 Parse all features except `data`:
 
 ```js
-const Vuedoc = require('@vuedoc/parser')
+import { parse } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
   features: Vuedoc.Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data')
 }
 
-Vuedoc.parse(options)
+parse(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'description', 'keywords', 'model',
@@ -967,9 +973,9 @@ specialized class to handle a template with the
 It uses the built-in `PugLoader` to load Pug template:
 
 ```js
-const Vuedoc = require('@vuedoc/parser')
-const PugLoader = require('@vuedoc/parser/loader/pug')
-const CoffeeScript = require('coffeescript')
+import { parse } from '@vuedoc/parser';
+import { PugLoader } from '@vuedoc/parser/loader/pug';
+import CoffeeScript from 'coffeescript';
 
 class CoffeeScriptLoader extends Vuedoc.Loader {
   load (source) {
@@ -1010,7 +1016,7 @@ const options = {
   ]
 }
 
-Vuedoc.parse(options).then((component) => {
+parse(options).then((component) => {
   console.log(component)
 })
 ```
@@ -1096,18 +1102,26 @@ type Keyword = {
 - [@vuedoc/md](https://gitlab.com/vuedoc/md) - A Markdown Documentation
   Generator for Vue Components
 
+## Development Setup
+
+1. [Install Nix Package Manager](https://nixos.org/manual/nix/stable/installation/installing-binary.html)
+
+2. [Install `direnv` with your OS package manager](https://direnv.net/docs/installation.html#from-system-packages)
+
+3. [Hook it `direnv` into your shell](https://direnv.net/docs/hook.html)
+
+4. At the top-level of your project run:
+
+   ```sh
+   direnv allow
+   ```
+
+   > The next time your launch your terminal and enter the top-level of your
+   > project, `direnv` will check for changes.
+
 ## Contribute
 
-Contributions to Vuedoc Parser are welcome. Here is how you can contribute:
-
-1. [Submit bugs or a feature request](https://gitlab.com/vuedoc/md/issues) and
-   help us verify fixes as they are checked in
-2. Create your working branch from the `dev` branch:
-   `git checkout dev -b feature/my-awesome-feature`
-3. Write code for a bug fix or for your new awesome feature
-4. Write test cases for your changes
-5. [Submit merge requests](https://gitlab.com/vuedoc/md/merge_requests) for bug
-   fixes and features and discuss existing proposals
+Please follow [CONTRIBUTING.md](https://gitlab.com/vuedoc/parser/blob/main/CONTRIBUTING.md).
 
 ## Versioning
 
@@ -1126,5 +1140,5 @@ See [SemVer.org](https://semver.org/) for more details.
 ## License
 
 Under the MIT license.
-See [LICENSE](https://gitlab.com/vuedoc/parser/blob/master/LICENSE) file for
+See [LICENSE](https://gitlab.com/vuedoc/parser/blob/main/LICENSE) file for
 more details.

@@ -1,4 +1,4 @@
-const parser = require('..');
+import * as parser from '..';
 
 /* global describe it expect */
 /* eslint-disable max-len */

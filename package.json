@@ -1,13 +1,13 @@
 {
   "name": "@vuedoc/parser",
-  "version": "3.4.0",
+  "version": "4.0.0-beta1",
   "description": "Generate a JSON documentation for a Vue file",
-  "main": "index.js",
+  "type": "module",
+  "exports": "./index.js",
   "scripts": {
-    "preversion": "npm test",
-    "test": "jest --coverage",
+    "preversion": "yarn test",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
     "lint": "eslint index.js lib loader schema test",
-    "lint:fix": "eslint --fix index.js lib loader schema test",
     "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },
   "repository": {
@@ -23,12 +23,30 @@
   ],
   "author": "Sébastien Demanou",
   "contributors": [
-    "Sébastien Demanou (https://gitlab.com/demsking)",
-    "Patrick Schmiedel (https://github.com/pschmiedel)",
-    "Devon Rueckner (https://github.com/indirectlylit)",
-    "Hello Deadline (https://github.com/HelloDeadline)",
-    "Magali Boizot-Roche (https://github.com/magali-br)",
-    "Rmaiy (https://github.com/ljwrer)"
+    {
+      "name": "Sébastien Demanou",
+      "url": "https://gitlab.com/demsking"
+    },
+    {
+      "name": "Patrick Schmiedel",
+      "url": "https://github.com/pschmiedel"
+    },
+    {
+      "name": "Devon Rueckner",
+      "url": "https://github.com/indirectlylit"
+    },
+    {
+      "name": "Hello Deadline",
+      "url": "https://github.com/HelloDeadline"
+    },
+    {
+      "name": "Magali Boizot-Roche",
+      "url": "https://github.com/magali-br"
+    },
+    {
+      "name": "Rmaiy",
+      "url": "https://github.com/ljwrer"
+    }
   ],
   "license": "MIT",
   "bugs": {
@@ -36,18 +54,19 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
+    "@b613/utils": "^1.0.0-beta2",
     "@babel/parser": "^7.15.5",
     "vue-template-compiler": "^2.6.14"
   },
   "devDependencies": {
-    "eslint": "^7.18.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.22.1",
-    "gimtoc": "^1.3.3",
-    "jest": "^27.2.0"
+    "gimtoc": "^2.0.0",
+    "jest": "^28.0.3"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=16.6"
   }
 }

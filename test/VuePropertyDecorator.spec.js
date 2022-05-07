@@ -1,4 +1,4 @@
-const { ComponentTestCase } = require('./lib/TestUtils');
+import { ComponentTestCase } from './lib/TestUtils';
 
 /* eslint-disable max-len */
 /* eslint-disable indent */
@@ -6,65 +6,65 @@ const { ComponentTestCase } = require('./lib/TestUtils');
 
 const script = `
   <script>
-  import { Vue, Component, Prop, Model, ModelSync, Watch, Emit } from 'vue-property-decorator'
+    import { Vue, Component, Prop, Model, ModelSync, Watch, Emit } from 'vue-property-decorator'
 
-  class MyClass {}
-
-  /**
-   * Component defined with Vue Property Decorator
-   * @prop propA -
-   */
-  @Component
-  export default class YourComponent extends Vue {
-    count = 0
+    class MyClass {}
 
     /**
-     * description of propD
+     * Component defined with Vue Property Decorator
+     * @prop propA -
      */
-    @Prop({ default: 'default value', required: true }) readonly propD!: string
-    @Prop({ type: String, default: 'default value', required: false }) readonly propE!: any
-    @Prop({ default: 'default value', required: false }) readonly propF!: any
+    @Component
+    export default class YourComponent extends Vue {
+      count = 0
 
-    @Model('change', { type: Boolean }) readonly checked!: boolean
-    @ModelSync('checked', 'change', { type: Boolean }) readonly checkedValue!: boolean
+      /**
+       * description of propD
+       */
+      @Prop({ default: 'default value', required: true }) readonly propD!: string
+      @Prop({ type: String, default: 'default value', required: false }) readonly propE!: any
+      @Prop({ default: 'default value', required: false }) readonly propF!: any
 
-    @Watch('child')
-    onChildChanged(val: string, oldVal: string) { }
+      @Model('change', { type: Boolean }) readonly checked!: boolean
+      @ModelSync('checked', 'change', { type: Boolean }) readonly checkedValue!: boolean
 
-    @Watch('person', { immediate: true, deep: true })
-    onPersonChanged1(val: Person, oldVal: Person) { }
+      @Watch('child')
+      onChildChanged(val: string, oldVal: string) { }
 
-    @Emit()
-    addToCount(n: number) {
-      this.count += n
+      @Watch('person', { immediate: true, deep: true })
+      onPersonChanged1(val: Person, oldVal: Person) { }
+
+      @Emit()
+      addToCount(n: number) {
+        this.count += n
+      }
+
+      @Emit('reset')
+      resetCount() {
+        this.count = 0
+      }
+
+      @Emit()
+      returnValue() {
+        return 10
+      }
+
+      @Emit()
+      onInputChange(e) {
+        return e.target.value
+      }
+
+      @Emit()
+      promise() {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve(20)
+          }, 0)
+        })
+      }
+
+      #privateMethod() {}
     }
-
-    @Emit('reset')
-    resetCount() {
-      this.count = 0
-    }
-
-    @Emit()
-    returnValue() {
-      return 10
-    }
-
-    @Emit()
-    onInputChange(e) {
-      return e.target.value
-    }
-
-    @Emit()
-    promise() {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(20)
-        }, 0)
-      })
-    }
-
-    #privateMethod() {}
-  }
   </script>
 `;
 
@@ -126,17 +126,6 @@ describe('Vue Property Decorator', () => {
           required: false,
           type: 'Boolean',
           category: undefined,
-          version: undefined,
-          visibility: 'public' },
-        {
-          category: undefined,
-          default: undefined,
-          describeModel: true,
-          keywords: [],
-          kind: 'prop',
-          name: 'checked',
-          required: false,
-          type: 'Boolean',
           version: undefined,
           visibility: 'public' },
       ],

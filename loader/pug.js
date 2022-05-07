@@ -1,11 +1,11 @@
 // eslint-disable-next-line import/no-unresolved
-const pug = require('pug');
-const Loader = require('../lib/Loader');
+import pug from 'pug';
+import { Loader } from '../lib/Loader';
 
 /**
  * @note Install the [pug](https://www.npmjs.com/package/pug) dependency
  */
-class PugLoader extends Loader {
+export class PugLoader extends Loader {
   load (source) {
     const outputText = pug.render(source, {
       compileDebug: false
@@ -15,5 +15,3 @@ class PugLoader extends Loader {
     return this.emitTemplate(outputText);
   }
 }
-
-module.exports = PugLoader;
