@@ -45,6 +45,9 @@ Generate a JSON documentation for a Vue file component.
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
+: Node 16+ is needed to use it and it must be imported instead of required.
+
 ```sh
 npm install --save @vuedoc/parser
 ```
