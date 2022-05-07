@@ -37,30 +37,28 @@ dependencies check:
     - code quality
     - dependencies outdated
     - tests & coverage
-  dependencies: *tests-jobs
   script:
     - yarn audit --production
 
 sast:
   stage: security
   needs: *tests-jobs
-  dependencies: *tests-jobs
 
 pages:
   stage: publish
   needs: &security-jobs
+    - tests & coverage
     - dependencies check
-    - eslint-sast
-    - nodejs-scan-sast
-    - semgrep-sast
-  dependencies: *security-jobs
+  dependencies:
+    - tests & coverage
   script:
     - mv coverage/lcov-report/ public/
   artifacts:
     paths:
       - public
+    expire_in: 30 days
   only:
-    - master
+    - main
   environment:
     name: coverage report
     url: https://vuedoc.gitlab.io/parser
@@ -68,7 +66,6 @@ pages:
 package:
   stage: publish
   needs: *security-jobs
-  dependencies: *security-jobs
   script:
     - yarn pack
   artifacts:
@@ -78,7 +75,6 @@ package:
 publish:
   stage: publish
   needs: *security-jobs
-  dependencies: *security-jobs
   only:
     - tags
     - triggers
