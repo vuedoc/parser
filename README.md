@@ -129,7 +129,8 @@ This will print this JSON output:
 ```
 
 > Found the complete result here:
-  [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
+
+[test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/master/test/fixtures/checkbox-result.json)
 
 See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 
