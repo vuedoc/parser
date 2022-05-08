@@ -39,7 +39,7 @@ describe('MethodParser', () => {
     const [ expectedType, expectedType2 = expectedType ] = expectedTypes instanceof Array ? expectedTypes : [ expectedTypes ]
     const args = paramValue ? `${paramName} = ${paramValue}` : `${paramName}`
     const argsWithTyping = paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}`
-    const expectedArgs = paramValue && paramValue !== 'undefined' ? `${paramName}: ${expectedType2} = ${paramValue}` : `${paramName}: ${expectedType}`
+    const expectedArgs = paramValue ? `${paramName}: ${expectedType2} = ${paramValue}` : `${paramName}: ${expectedType}`
 
     ComponentTestCase({
       name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
@@ -669,6 +669,51 @@ describe('MethodParser', () => {
               name: 'x',
               type: '[first: string, second: number]',
               defaultValue: undefined,
+              rest: false,
+              description: undefined
+            }
+          ],
+          returns: {
+            type: 'void',
+            description: undefined
+          }
+        },
+      ]
+    }
+  });
+
+  ComponentTestCase({
+    name: 'should render undefined as default function param',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            methods: {
+              parseDate(value = undefined) {}
+            }
+          }
+        </script>
+      `
+    },
+    expected: {
+      errors: [],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'parseDate(value: unknown = undefined): void'
+          ],
+          name: 'parseDate',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          version: undefined,
+          keywords: [],
+          params: [
+            {
+              name: 'value',
+              type: 'unknown',
+              defaultValue: 'undefined',
               rest: false,
               description: undefined
             }

@@ -2059,7 +2059,7 @@ describe('issues', () => {
           description: undefined,
           keywords: [],
           name: 'my-prop',
-          type: 'any',
+          type: 'unknown',
           default: undefined,
           required: false,
           describeModel: false
@@ -2399,7 +2399,7 @@ describe('issues', () => {
           description: undefined,
           keywords: [],
           name: 'a',
-          type: 'any',
+          type: 'unknown',
           initialValue: 'undefined'
         },
         {
@@ -2409,7 +2409,7 @@ describe('issues', () => {
           description: undefined,
           keywords: [],
           name: 'b',
-          type: 'any',
+          type: 'unknown',
           initialValue: 'undefined'
         },
         {
@@ -2429,7 +2429,7 @@ describe('issues', () => {
           description: undefined,
           keywords: [],
           name: 'd',
-          type: 'any',
+          type: 'unknown',
           initialValue: '!(a || b || c)'
         },
         {
@@ -2449,7 +2449,7 @@ describe('issues', () => {
           description: undefined,
           keywords: [],
           name: 'f',
-          type: 'any',
+          type: 'unknown',
           initialValue: '!!d'
         }
       ]
