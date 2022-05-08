@@ -38,6 +38,7 @@ declare module '@vuedoc/parser/parser/Parser.js' {
   type Visibility = 'public' | 'protected' | 'private';
 
   declare class Parser extends EventEmitter {
+    static SUPPORTED_FEATURES: Feature[];
     constructor(options: Options);
     walk(): Parser;
   }
