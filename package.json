@@ -4,6 +4,7 @@
   "description": "Generate a JSON documentation for a Vue file",
   "type": "module",
   "exports": "./index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "preversion": "yarn test",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage",

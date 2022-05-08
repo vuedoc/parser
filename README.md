@@ -84,16 +84,16 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| Name                  | Description                                                                                                     |
-|-----------------------|-----------------------------------------------------------------------------------------------------------------|
-| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                |
-| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                               |
-| `encoding`            | The file encoding. Default is `'utf8'`                                                                          |
-| `features`            | The component features to parse and extract.                                                                    |
-|                       | Default features: `['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']` |
-| `loaders`             | Use this option to define [custom loaders](#language-processing) for specific languages                         |
-| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                               |
-| `jsx`                 | Set to `true` to enable JSX parsing. Default `false`                                                            |
+| Name                  | Description                                                                                                                                 |
+|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                                            |
+| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                                                           |
+| `encoding`            | The file encoding. Default is `'utf8'`                                                                                                      |
+| `features`            | The component features to parse and extract.                                                                                                |
+|                       | Default features: `['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']`                             |
+| `loaders`             | Use this option to define [custom loaders](https://gitlab.com/vuedoc/parser/blob/main/README.md#language-processing) for specific languages |
+| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                                                           |
+| `jsx`                 | Set to `true` to enable JSX parsing. Default `false`                                                                                        |
 
 ## Usage
 
@@ -939,26 +939,17 @@ parseComponent(options)
 
 ### Loader API
 
-```js
-abstract class Loader {
-  public static extend(loaderName: string, loaderClass: Loader);
-  public abstract load(source: string): Promise<void>;
-  public emitTemplate(source: string): Promise<void>;
-  public emitScript(source: string): Promise<void>;
-  public emitErrors(errors: Array<string>): Promise<void>;
-  public pipe(loaderName: string, source: string): Promise<void>;
-}
-```
+Please see [TypeScript definition file](https://gitlab.com/vuedoc/parser/blob/main/lib/Loader.d.ts).
 
 ### Build-in loaders
 
-| Language    | Load by default?  | Package                                                   |
-|-------------|-------------------|-----------------------------------------------------------|
-| HTML        | Yes               | [@vuedoc/parser/loader/html](loader/html.js)              |
-| JavaScript  | Yes               | [@vuedoc/parser/loader/javascript](loader/javascript.js)  |
-| Pug         | No                | [@vuedoc/parser/loader/pug](loader/pug.js)                |
-| TypeScript  | Yes               | [@vuedoc/parser/loader/typescript](loader/typescript.js)  |
-| Vue         | Yes               | [@vuedoc/parser/loader/vue](loader/vue.js)                |
+| Language    | Load by default?  | Package                                                                                                |
+|-------------|-------------------|--------------------------------------------------------------------------------------------------------|
+| HTML        | Yes               | [@vuedoc/parser/loaders/html](https://gitlab.com/vuedoc/parser/blob/main/loaders/html.js)              |
+| JavaScript  | Yes               | [@vuedoc/parser/loaders/javascript](https://gitlab.com/vuedoc/parser/blob/main/loaders/javascript.js)  |
+| Pug         | No                | [@vuedoc/parser/loaders/pug](https://gitlab.com/vuedoc/parser/blob/main/loaders/pug.js)                |
+| TypeScript  | Yes               | [@vuedoc/parser/loaders/typescript](https://gitlab.com/vuedoc/parser/blob/main/loaders/typescript.js)  |
+| Vue         | Yes               | [@vuedoc/parser/loaders/vue](https://gitlab.com/vuedoc/parser/blob/main/loaders/vue.js)                |
 
 ### TypeScript usage
 
@@ -973,16 +964,15 @@ specialized class to handle a template with the
 It uses the built-in `PugLoader` to load Pug template:
 
 ```js
-import { parseComponent } from '@vuedoc/parser';
-import { PugLoader } from '@vuedoc/parser/loader/pug';
-import CoffeeScript from 'coffeescript';
+import { parseComponent, Loader } from '@vuedoc/parser';
+import { PugLoader } from '@vuedoc/parser/loaders/pug';
+import { compile } from 'coffeescript';
 
-class CoffeeScriptLoader extends Vuedoc.Loader {
+class CoffeeScriptLoader extends Loader {
   load (source) {
-    const outputText = CoffeeScript.compile(source);
+    const outputText = compile(source);
 
-    // don't forget the return here
-    return this.emitScript(outputText);
+    this.emitScript(outputText);
   }
 }
 
@@ -1009,16 +999,16 @@ const options = {
      * Note that the name of the loader is either the extension
      * of the file or the value of the attribute `lang`
      */
-    Vuedoc.Loader.extend('coffee', CoffeeScriptLoader),
+    Loader.extend('coffee', CoffeeScriptLoader),
 
     // Register the built-in Pug loader
-    Vuedoc.Loader.extend('pug', PugLoader)
-  ]
-}
+    Loader.extend('pug', PugLoader),
+  ],
+};
 
 parseComponent(options).then((component) => {
-  console.log(component)
-})
+  console.log(component);
+});
 ```
 
 **Output**
@@ -1043,59 +1033,7 @@ parseComponent(options).then((component) => {
 
 ## Parsing Output Interface
 
-```ts
-type ParsingOutput = {
-  name: string;               // Component name
-  description?: string;       // Component description
-  category?: string;
-  version?: string;
-  since?: string;
-  inheritAttrs: boolean;
-  keywords: Keyword[];        // Attached component keywords
-  model?: ModelEntry;         // Component model
-  slots: SlotEntry[];         // Component slots
-  props: PropEntry[];         // Component props
-  data: DataEntry[];          // Component data
-  computed: ComputedEntry[];  // Computed properties
-  events: EventEntry[];       // Events
-  methods: MethodEntry[];     // Component methods
-  errors: string[];           // Syntax and parsing errors
-  warnings: string[];         // Syntax and parsing warnings
-};
-
-interface NameEntry {
-  kind: 'name';
-  value: string;
-}
-
-interface DescriptionEntry {
-  kind: 'description'
-  value: string;
-}
-
-interface InheritAttrsEntry {
-  kind: 'inheritAttrs'
-  value: boolean;
-}
-
-interface KeywordsEntry {
-  kind: 'keywords';
-  value: Keyword[];
-}
-
-interface ModelEntry {
-  kind: 'model';
-  prop: string;
-  event: string;
-  description?: string;
-  keywords: Keyword[];
-}
-
-type Keyword = {
-  name: string;
-  description?: string;
-};
-```
+Please see [TypeScript definition file](https://gitlab.com/vuedoc/parser/blob/main/index.d.ts).
 
 ## Related projects
 
