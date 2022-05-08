@@ -425,7 +425,7 @@ const Feature = {
   `,
 };
 
-function testPropertyFunction (property) {
+function testPropertyFunction(property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
       Object.keys(Feature).forEach((feature) => it(feature, (done) => {
@@ -489,7 +489,7 @@ function testPropertyFunction (property) {
   });
 }
 
-function testPropertyObject (property) {
+function testPropertyObject(property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
       Object.keys(Feature).forEach((feature) => it(feature, (done) => {

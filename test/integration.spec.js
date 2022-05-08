@@ -43,10 +43,10 @@ const optionsForPropsArray = {
 };
 
 /* eslint-disable no-unused-vars */
-function testComponentMethods (optionsToParse) {
+function testComponentMethods(optionsToParse) {
   let component = {};
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     component = await parseComponent(optionsToParse);
   });
 
@@ -78,10 +78,10 @@ function testComponentMethods (optionsToParse) {
   });
 }
 
-function testComponent (optionsToParse) {
+function testComponent(optionsToParse) {
   let component = {};
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     component = await parseComponent(optionsToParse);
   });
 
@@ -95,7 +95,7 @@ function testComponent (optionsToParse) {
     ]);
   });
 
-  it('should guess the component name using the filename', async () => {
+  it('should guess the component name using the filename', async() => {
     const component = await parseComponent({ filename: Fixture.resolve('UnNamedInput.vue') });
 
     assert.equal(component.name, 'UnNamedInput');
@@ -106,10 +106,10 @@ function testComponent (optionsToParse) {
   });
 }
 
-function testComponentProps (optionsToParse) {
+function testComponentProps(optionsToParse) {
   let component = {};
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     component = await parseComponent(optionsToParse);
   });
 
@@ -150,10 +150,10 @@ function testComponentProps (optionsToParse) {
   });
 }
 
-function testComponentSlots (optionsToParse) {
+function testComponentSlots(optionsToParse) {
   let component = {};
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     component = await parseComponent(optionsToParse);
   });
 
@@ -186,10 +186,10 @@ function testComponentSlots (optionsToParse) {
   });
 }
 
-function testComponentEvents (optionsToParse) {
+function testComponentEvents(optionsToParse) {
   let component = {};
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     component = await parseComponent(optionsToParse);
   });
 
@@ -221,7 +221,7 @@ function testComponentEvents (optionsToParse) {
     expect(item.description).toBe('Event with recursive identifier name');
   });
 
-  it('should contain event with spread syntax', async () => {
+  it('should contain event with spread syntax', async() => {
     const options = {
       features: ['events'],
       filecontent: `
@@ -415,7 +415,7 @@ describe('Integration', () => {
       expect(parseOptions({})).rejects.toThrow(/One of options.filename or options.filecontent is required/);
     });
 
-    it('should parse with minimum required options', async () => {
+    it('should parse with minimum required options', async() => {
       const filecontent = ' ';
       const options = { filecontent };
       const expected = {
@@ -433,7 +433,7 @@ describe('Integration', () => {
       expect(options).toEqual(expected);
     });
 
-    it('should parse with user options', async () => {
+    it('should parse with user options', async() => {
       const options = {
         filecontent: ' ',
         ignoredVisibilities: ['private'],
@@ -460,7 +460,7 @@ describe('Integration', () => {
       expect(options).toEqual(expected);
     });
 
-    it('should parse with options.filename', async () => {
+    it('should parse with options.filename', async() => {
       const options = {
         filename: Fixture.resolve('checkbox.js'),
         ignoredVisibilities: ['private'],
@@ -483,7 +483,7 @@ describe('Integration', () => {
       expect(options).toEqual(expected);
     });
 
-    it('should parse with options.filecontent', async () => {
+    it('should parse with options.filecontent', async() => {
       const options = {
         filecontent: ' ',
         ignoredVisibilities: ['private'],
@@ -526,7 +526,7 @@ describe('Integration', () => {
   describe('component.props (es6 Array)', () => {
     let component = {};
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       component = await parseComponent(optionsForPropsArray);
     });
 
@@ -554,7 +554,7 @@ describe('Integration', () => {
   });
 
   describe('component.data', () => {
-    it('should successfully extract data', async () => {
+    it('should successfully extract data', async() => {
       const options = {
         filecontent: `
           <script>
@@ -637,7 +637,7 @@ describe('Integration', () => {
   describe('component.slots filesource', () => testComponentSlots(optionsWithFileSource));
 
   describe('component.slots scoped', () => {
-    it('should successfully parse scoped slot', async () => {
+    it('should successfully parse scoped slot', async() => {
       const filecontent = `
         <template>
           <span>
@@ -670,7 +670,7 @@ describe('Integration', () => {
       expect(slots).toEqual(expected);
     });
 
-    it('should successfully parse scoped slot with description', async () => {
+    it('should successfully parse scoped slot with description', async() => {
       const filecontent = `
         <template>
           <ul>
@@ -713,7 +713,7 @@ describe('Integration', () => {
       expect(slots).toEqual(expected);
     });
 
-    it('should successfully parse scoped slot with description and props', async () => {
+    it('should successfully parse scoped slot with description and props', async() => {
       const filecontent = `
         <template>
           <ul>
@@ -758,7 +758,7 @@ describe('Integration', () => {
       expect(slots).toEqual(expected);
     });
 
-    it('should successfully parse scoped slot with @prop and undescribed prop', async () => {
+    it('should successfully parse scoped slot with @prop and undescribed prop', async() => {
       const filecontent = `
         <template>
           <ul>
@@ -820,7 +820,7 @@ describe('Integration', () => {
   describe('component.methods filesource', () => testComponentMethods(optionsWithFileSource));
 
   describe('spread operators', () => {
-    it('should successfully parse', async () => {
+    it('should successfully parse', async() => {
       const filecontent = `
         <script>
           const importedComputed = {
@@ -855,7 +855,7 @@ describe('Integration', () => {
       expect(computed).toEqual(expected);
     });
 
-    it('should successfully parse with missing identifier', async () => {
+    it('should successfully parse with missing identifier', async() => {
       const filecontent = `
         <script>
           export default {
@@ -873,7 +873,7 @@ describe('Integration', () => {
       expect(computed).toEqual(expected);
     });
 
-    it('should successfully parse with external identifier', async () => {
+    it('should successfully parse with external identifier', async() => {
       const filecontent = `
         <script>
           const importedComputed = {
@@ -923,7 +923,7 @@ describe('Integration', () => {
       expect(computed).toEqual(expected);
     });
 
-    it('should successfully parse with identifier function call', async () => {
+    it('should successfully parse with identifier function call', async() => {
       const filecontent = `
         <script>
           export default {
@@ -1006,7 +1006,7 @@ describe('Integration', () => {
         .catch(() => done());
     });
 
-    it('should return component syntax error', async () => {
+    it('should return component syntax error', async() => {
       const filecontent = `
           <template>
             <input>
@@ -1022,7 +1022,7 @@ describe('Integration', () => {
       assert.deepEqual(errors, expected);
     });
 
-    it('should emit event with @event and no description', async () => {
+    it('should emit event with @event and no description', async() => {
       const filecontent = `
           <script type="js">
             export default {
