@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 describe('@znck/prop-types', () => {
   ComponentTestCase({
@@ -64,7 +64,7 @@ describe('@znck/prop-types', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -167,7 +167,7 @@ describe('@znck/prop-types', () => {
           required: false,
           type: [
             '\'News\'',
-            '\'Photos\''
+            '\'Photos\'',
           ],
           visibility: 'public' },
         {
@@ -182,7 +182,7 @@ describe('@znck/prop-types', () => {
           type: [
             'string',
             'number',
-            'Message'
+            'Message',
           ],
           visibility: 'public' },
         {
@@ -251,7 +251,7 @@ describe('@znck/prop-types', () => {
           required: false,
           type: 'unknown',
           visibility: 'public' },
-      ]
-    }
+      ],
+    },
   });
 });

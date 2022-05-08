@@ -2,10 +2,10 @@
 /* eslint-disable max-len */
 /* eslint-disable indent */
 
-import * as parser from '..';
+import * as parser from '../index.js';
 
-import { ComponentTestCase } from './lib/TestUtils';
-import { Fixture } from './lib/Fixture';
+import { ComponentTestCase } from './lib/TestUtils.js';
+import { Fixture } from './lib/Fixture.js';
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
@@ -3710,7 +3710,7 @@ describe('issues', () => {
   //         "arguments": [
   //           {
   //             "description": undefined,
-  //             "name": '"accepts"',
+  //             "name": '\'accepts\'',
   //             "rest": false,
   //             "type": "string",
   //           },

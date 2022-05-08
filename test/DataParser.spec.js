@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 describe('DataParser', () => {
   ComponentTestCase({
@@ -15,7 +15,7 @@ describe('DataParser', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       data: [
@@ -27,9 +27,9 @@ describe('DataParser', () => {
           name: 'initialValue',
           initialValue: '""',
           type: 'string',
-          visibility: 'public' }
-      ]
-    }
+          visibility: 'public' },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -50,7 +50,7 @@ describe('DataParser', () => {
             })
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -143,8 +143,8 @@ describe('DataParser', () => {
           initialValue: '~1',
           name: 'h',
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -159,7 +159,7 @@ describe('DataParser', () => {
             } as any)
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -175,7 +175,7 @@ describe('DataParser', () => {
           initialValue: '{}',
           name: 'x',
         },
-      ]
-    }
+      ],
+    },
   });
 });

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 describe('PropParser', () => {
   ComponentTestCase({
@@ -22,7 +22,7 @@ describe('PropParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -36,9 +36,9 @@ describe('PropParser', () => {
           name: 'format',
           required: false,
           type: 'TextInput.FormatCallback',
-          visibility: 'public' }
-      ]
-    }
+          visibility: 'public' },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -60,7 +60,7 @@ describe('PropParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -74,9 +74,9 @@ describe('PropParser', () => {
           name: 'format',
           required: false,
           type: 'Function',
-          visibility: 'public' }
-      ]
-    }
+          visibility: 'public' },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -94,7 +94,7 @@ describe('PropParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -108,9 +108,9 @@ describe('PropParser', () => {
           name: 'complex',
           required: false,
           type: 'Complex.Object',
-          visibility: 'public' }
-      ]
-    }
+          visibility: 'public' },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -136,7 +136,7 @@ describe('PropParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -150,9 +150,9 @@ describe('PropParser', () => {
           name: 'complex',
           required: false,
           type: 'Object',
-          visibility: 'public' }
-      ]
-    }
+          visibility: 'public' },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -166,7 +166,7 @@ describe('PropParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -180,9 +180,9 @@ describe('PropParser', () => {
           name: 'disabled',
           required: false,
           type: 'Boolean',
-          visibility: 'public' }
-      ]
-    }
+          visibility: 'public' },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -216,7 +216,7 @@ describe('PropParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       props: [
@@ -237,7 +237,7 @@ describe('PropParser', () => {
             description: undefined,
             keywords: [],
             syntax: [
-              'regexObj.exec(str: string): any[]'
+              'regexObj.exec(str: string): any[]',
             ],
             params: [
               {
@@ -245,13 +245,13 @@ describe('PropParser', () => {
                 type: 'string',
                 description: 'the x param description',
                 defaultValue: undefined,
-                rest: false
-              }
+                rest: false,
+              },
             ],
             returns: {
               type: 'unknown',
-              description: 'the return value description'
-            }
+              description: 'the return value description',
+            },
           },
         },
         {
@@ -271,7 +271,7 @@ describe('PropParser', () => {
             description: 'The input validation function',
             keywords: [],
             syntax: [
-              'function validator(value: any): boolean'
+              'function validator(value: any): boolean',
             ],
             params: [
               {
@@ -279,17 +279,17 @@ describe('PropParser', () => {
                 type: 'any',
                 description: 'User input value to validate',
                 defaultValue: undefined,
-                rest: false
-              }
+                rest: false,
+              },
             ],
             returns: {
               type: 'boolean',
-              description: '`true` if validation succeeds; `false` otherwise.'
-            }
-          }
+              description: '`true` if validation succeeds; `false` otherwise.',
+            },
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -328,7 +328,7 @@ describe('PropParser', () => {
                 }
             })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -346,7 +346,7 @@ describe('PropParser', () => {
           default: '() => ({ a: 1, b: 2, })',
           name: 'test-prop',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -359,7 +359,7 @@ describe('PropParser', () => {
           default: '() => ({ a: 1, b: 2, })',
           name: 'test-prop2',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -372,10 +372,10 @@ describe('PropParser', () => {
           default: '() => ({ a: 1, b: 2, })',
           name: 'test-prop3',
           describeModel: false,
-          required: false
+          required: false,
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -411,7 +411,7 @@ describe('PropParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -429,7 +429,7 @@ describe('PropParser', () => {
           default: undefined,
           name: 'context-factory',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -442,7 +442,7 @@ describe('PropParser', () => {
           default: undefined,
           name: 'context-factory2',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -455,7 +455,7 @@ describe('PropParser', () => {
           default: undefined,
           name: 'menu-factory',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -468,9 +468,9 @@ describe('PropParser', () => {
           default: 'new Function()',
           name: 'menu-factory-multiline',
           describeModel: false,
-          required: false
+          required: false,
         },
-      ]
-    }
+      ],
+    },
   });
 });

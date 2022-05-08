@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 describe('ComputedParser', () => {
   ComponentTestCase({
@@ -20,7 +20,7 @@ describe('ComputedParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -29,14 +29,14 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           type: 'unknown',
-          dependencies: [ 'links', 'site' ],
+          dependencies: ['links', 'site'],
           category: undefined,
           description: undefined,
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -62,7 +62,7 @@ describe('ComputedParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -71,12 +71,12 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           type: 'unknown',
-          dependencies: [ 'links', 'site' ],
+          dependencies: ['links', 'site'],
           category: undefined,
           description: undefined,
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
       events: [
         {
@@ -94,9 +94,9 @@ describe('ComputedParser', () => {
               type: 'unknown',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -122,7 +122,7 @@ describe('ComputedParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -131,12 +131,12 @@ describe('ComputedParser', () => {
           kind: 'computed',
           name: 'pages',
           type: 'unknown',
-          dependencies: [ 'links', 'site' ],
+          dependencies: ['links', 'site'],
           category: undefined,
           description: undefined,
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
       events: [
         {
@@ -154,9 +154,9 @@ describe('ComputedParser', () => {
               type: 'unknown',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -173,7 +173,7 @@ describe('ComputedParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -195,9 +195,9 @@ describe('ComputedParser', () => {
           description: undefined,
           keywords: [],
           dependencies: [],
-          visibility: 'public' }
+          visibility: 'public' },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -273,7 +273,7 @@ describe('ComputedParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -294,8 +294,8 @@ describe('ComputedParser', () => {
             'isTouched',
             'disabled',
             'hasLabel',
-            'hasFloatingLabel'
-          ]
+            'hasFloatingLabel',
+          ],
         },
         {
           kind: 'computed',
@@ -307,8 +307,8 @@ describe('ComputedParser', () => {
           name: 'labelClasses',
           dependencies: [
             'hasFloatingLabel',
-            'isLabelInline'
-          ]
+            'isLabelInline',
+          ],
         },
         {
           kind: 'computed',
@@ -320,8 +320,8 @@ describe('ComputedParser', () => {
           name: 'hasLabel',
           dependencies: [
             'label',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -333,8 +333,8 @@ describe('ComputedParser', () => {
           name: 'hasFloatingLabel',
           dependencies: [
             'hasLabel',
-            'floatingLabel'
-          ]
+            'floatingLabel',
+          ],
         },
         {
           kind: 'computed',
@@ -346,8 +346,8 @@ describe('ComputedParser', () => {
           name: 'isLabelInline',
           dependencies: [
             'valueLength',
-            'isActive'
-          ]
+            'isActive',
+          ],
         },
         {
           kind: 'computed',
@@ -358,8 +358,8 @@ describe('ComputedParser', () => {
           keywords: [],
           name: 'valueLength',
           dependencies: [
-            'value'
-          ]
+            'value',
+          ],
         },
         {
           kind: 'computed',
@@ -372,8 +372,8 @@ describe('ComputedParser', () => {
           dependencies: [
             'help',
             'error',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -386,8 +386,8 @@ describe('ComputedParser', () => {
           dependencies: [
             'invalid',
             'error',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -400,8 +400,8 @@ describe('ComputedParser', () => {
           dependencies: [
             'showError',
             'help',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -416,8 +416,8 @@ describe('ComputedParser', () => {
             'filter',
             'value',
             'defaultFilter',
-            'limit'
-          ]
+            'limit',
+          ],
         },
         {
           kind: 'computed',
@@ -427,9 +427,9 @@ describe('ComputedParser', () => {
           description: undefined,
           keywords: [],
           name: 'nullx',
-          dependencies: []
+          dependencies: [],
         },
       ],
-    }
+    },
   });
 });

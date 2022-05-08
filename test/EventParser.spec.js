@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* global describe */
 
@@ -16,12 +16,12 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
-      events: []
-    }
+      events: [],
+    },
   });
 
   ComponentTestCase({
@@ -37,7 +37,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -50,9 +50,9 @@ describe('EventParser', () => {
           description: undefined,
           visibility: 'public',
           arguments: [],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -68,7 +68,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -88,9 +88,9 @@ describe('EventParser', () => {
               type: 'unknown',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -110,7 +110,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -130,9 +130,9 @@ describe('EventParser', () => {
               type: 'string[]',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -151,7 +151,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -171,9 +171,9 @@ describe('EventParser', () => {
               type: 'object',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -193,7 +193,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -213,9 +213,9 @@ describe('EventParser', () => {
               type: 'object',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -234,7 +234,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -254,9 +254,9 @@ describe('EventParser', () => {
               type: 'array',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -276,7 +276,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -296,9 +296,9 @@ describe('EventParser', () => {
               type: 'array',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -317,7 +317,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -337,9 +337,9 @@ describe('EventParser', () => {
               type: 'unknown',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -358,7 +358,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -378,9 +378,9 @@ describe('EventParser', () => {
               type: 'unknown',
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -407,7 +407,7 @@ describe('EventParser', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -416,12 +416,12 @@ describe('EventParser', () => {
           kind: 'computed',
           name: 'oven',
           type: 'unknown',
-          dependencies: [ 'value' ],
+          dependencies: ['value'],
           keywords: [],
           category: undefined,
           version: undefined,
           visibility: 'public',
-        }
+        },
       ],
       events: [
         {
@@ -439,9 +439,9 @@ describe('EventParser', () => {
               rest: false,
             },
           ],
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -515,7 +515,7 @@ describe('EventParser', () => {
           }
         }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -607,7 +607,7 @@ describe('EventParser', () => {
             },
           ],
         },
-      ]
-    }
+      ],
+    },
   });
 });

@@ -1,4 +1,4 @@
-import * as parser from '..';
+import * as parser from '../index.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -13,7 +13,7 @@ describe('#43 - InheritAttrs Field', () => {
             inheritAttrs: true
           })
         </script>
-      `
+      `,
     };
 
     const expected = true;
@@ -31,7 +31,7 @@ describe('#43 - InheritAttrs Field', () => {
             inheritAttrs: false
           })
         </script>
-      `
+      `,
     };
 
     const expected = false;
@@ -49,7 +49,7 @@ describe('#43 - InheritAttrs Field', () => {
             inheritAttrs: true
           })
         </script>
-      `
+      `,
     };
 
     const expected = true;
@@ -67,7 +67,7 @@ describe('#43 - InheritAttrs Field', () => {
             inheritAttrs: false
           })
         </script>
-      `
+      `,
     };
 
     const expected = false;
@@ -83,7 +83,7 @@ describe('#43 - InheritAttrs Field', () => {
         <script>
           export default Vue.extends({})
         </script>
-      `
+      `,
     };
 
     const expected = true;

@@ -2,20 +2,20 @@ export const JSDocTypeSpec = [
   {
     name: 'Any type',
     values: [
-      '*'
+      '*',
     ],
     expected: [
-      'any'
-    ]
+      'any',
+    ],
   },
   {
     name: 'Unknown type',
     values: [
-      '?'
+      '?',
     ],
     expected: [
-      'unknown'
-    ]
+      'unknown',
+    ],
   },
   {
     name: 'Symbol name (name expression)',
@@ -24,15 +24,15 @@ export const JSDocTypeSpec = [
       'boolean',
       'myNamespace.MyClass',
       'PromiseLike<string>',
-      'HTMLElement'
+      'HTMLElement',
     ],
     expected: [
       'string',
       'boolean',
       'myNamespace.MyClass',
       'PromiseLike<string>',
-      'HTMLElement'
-    ]
+      'HTMLElement',
+    ],
   },
   {
     name: 'Multiple types (type union)',
@@ -41,15 +41,15 @@ export const JSDocTypeSpec = [
       'number|boolean',
       '(string|Array.)',
       'string|Array.',
-      '      string |Array. '
+      '      string |Array. ',
     ],
     expected: [
-      [ 'number', 'boolean' ],
-      [ 'number', 'boolean' ],
-      [ 'string', 'Array.' ],
-      [ 'string', 'Array.' ],
-      [ 'string', 'Array.' ],
-    ]
+      ['number', 'boolean'],
+      ['number', 'boolean'],
+      ['string', 'Array.'],
+      ['string', 'Array.'],
+      ['string', 'Array.'],
+    ],
   },
   {
     name: 'Arrays and objects (type applications and record types)',
@@ -58,46 +58,46 @@ export const JSDocTypeSpec = [
       'Array.<MyClass>',
       'MyClass[]',
       'Object.<string, number>',
-      'Object.<string, number>'
+      'Object.<string, number>',
     ],
     get expected() {
       return this.values;
-    }
+    },
   },
   {
     name: 'Closure syntax',
     values: [
-      'function(string, boolean): number'
+      'function(string, boolean): number',
     ],
     get expected() {
       return this.values;
-    }
+    },
   },
   {
     name: 'TypeScript syntax',
     values: [
-      '(s: string, b: boolean) => number'
+      '(s: string, b: boolean) => number',
     ],
     get expected() {
       return this.values;
-    }
+    },
   },
   {
     name: 'Nullable type ',
     values: [
-      '?number'
+      '?number',
     ],
     expected: [
-      [ 'number', 'null' ]
-    ]
+      ['number', 'null'],
+    ],
   },
   {
     name: 'Non-nullable type',
     values: [
-      '!number'
+      '!number',
     ],
     expected: [
-      'number'
-    ]
+      'number',
+    ],
   },
 ];

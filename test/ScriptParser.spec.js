@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* global describe */
 
@@ -15,7 +15,7 @@ describe('ScriptParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: undefined,
@@ -28,8 +28,8 @@ describe('ScriptParser', () => {
       data: [],
       computed: [],
       events: [],
-      methods: []
-    }
+      methods: [],
+    },
   });
 
   ComponentTestCase({
@@ -69,7 +69,7 @@ describe('ScriptParser', () => {
               }
           });
         </script>
-      `
+      `,
     },
     expected: {
       name: undefined,
@@ -79,18 +79,18 @@ describe('ScriptParser', () => {
       errors: [],
       keywords: [],
       methods: [],
-      computed: [ {
+      computed: [{
         kind: 'computed',
         name: 'pages',
         type: 'unknown',
-        dependencies: [ 'links', 'site' ],
+        dependencies: ['links', 'site'],
         category: undefined,
         version: undefined,
         description: undefined,
         keywords: [],
-        visibility: 'public'
-      } ],
-      data: [ {
+        visibility: 'public',
+      }],
+      data: [{
         kind: 'data',
         name: 'currentYear',
         type: 'unknown',
@@ -99,9 +99,9 @@ describe('ScriptParser', () => {
         description: undefined,
         initialValue: 'new Date().getFullYear()',
         keywords: [],
-        visibility: 'public'
-      } ],
-      props: [ {
+        visibility: 'public',
+      }],
+      props: [{
         kind: 'prop',
         name: 'links',
         type: 'Object',
@@ -112,7 +112,7 @@ describe('ScriptParser', () => {
         version: undefined,
         description: undefined,
         keywords: [],
-        visibility: 'public'
+        visibility: 'public',
       }, {
         kind: 'prop',
         name: 'site',
@@ -124,10 +124,10 @@ describe('ScriptParser', () => {
         version: undefined,
         description: undefined,
         keywords: [],
-        visibility: 'public'
-      } ],
-      slots: []
-    }
+        visibility: 'public',
+      }],
+      slots: [],
+    },
   });
 
   ComponentTestCase({
@@ -167,7 +167,7 @@ describe('ScriptParser', () => {
               }
           });
         </script>
-      `
+      `,
     },
     expected: {
       name: undefined,
@@ -177,18 +177,18 @@ describe('ScriptParser', () => {
       errors: [],
       keywords: [],
       methods: [],
-      computed: [ {
+      computed: [{
         kind: 'computed',
         name: 'pages',
         type: 'unknown',
-        dependencies: [ 'links', 'site' ],
+        dependencies: ['links', 'site'],
         category: undefined,
         version: undefined,
         description: undefined,
         keywords: [],
-        visibility: 'public'
-      } ],
-      data: [ {
+        visibility: 'public',
+      }],
+      data: [{
         kind: 'data',
         name: 'currentYear',
         type: 'unknown',
@@ -197,9 +197,9 @@ describe('ScriptParser', () => {
         description: undefined,
         initialValue: 'new Date().getFullYear()',
         keywords: [],
-        visibility: 'public'
-      } ],
-      props: [ {
+        visibility: 'public',
+      }],
+      props: [{
         kind: 'prop',
         name: 'links',
         type: 'Object',
@@ -210,7 +210,7 @@ describe('ScriptParser', () => {
         version: undefined,
         description: undefined,
         keywords: [],
-        visibility: 'public'
+        visibility: 'public',
       }, {
         kind: 'prop',
         name: 'site',
@@ -222,10 +222,10 @@ describe('ScriptParser', () => {
         version: undefined,
         description: undefined,
         keywords: [],
-        visibility: 'public'
-      } ],
-      slots: []
-    }
+        visibility: 'public',
+      }],
+      slots: [],
+    },
   });
 
   ComponentTestCase({
@@ -235,19 +235,19 @@ describe('ScriptParser', () => {
         <script>
           var !*/= mù*! invalid syntax
         </script>
-      `
+      `,
     },
     expected: {
       errors: [
-        'Unexpected token (2:4)'
-      ]
-    }
+        'Unexpected token (2:4)',
+      ],
+    },
   });
 
   ComponentTestCase({
     name: 'parseComment() with disbaled description',
     options: {
-      features: [ 'name' ],
+      features: ['name'],
       filecontent: `
         <script>
           /**
@@ -256,20 +256,20 @@ describe('ScriptParser', () => {
            */
           export default {}
         </script>
-      `
+      `,
     },
     expected: {
       name: 'InputText',
       description: undefined,
       keywords: [],
-      errors: []
-    }
+      errors: [],
+    },
   });
 
   ComponentTestCase({
     name: 'parseComment() with disabled name',
     options: {
-      features: [ 'description' ],
+      features: ['description'],
       filecontent: `
         <script>
           /**
@@ -278,14 +278,14 @@ describe('ScriptParser', () => {
            */
           export default {}
         </script>
-      `
+      `,
     },
     expected: {
       name: undefined,
       description: 'Component description',
       keywords: [],
-      errors: []
-    }
+      errors: [],
+    },
   });
 
   ComponentTestCase({
@@ -300,11 +300,11 @@ describe('ScriptParser', () => {
             name: MethodThatIsHandledAsUndefined()
           }
         </script>
-      `
+      `,
     },
     expected: {
-      name: 'my-checkbox'
-    }
+      name: 'my-checkbox',
+    },
   });
 
   ComponentTestCase({
@@ -324,7 +324,7 @@ describe('ScriptParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: undefined,
@@ -339,7 +339,7 @@ describe('ScriptParser', () => {
           keywords: [],
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -351,14 +351,14 @@ describe('ScriptParser', () => {
           keywords: [],
           default: undefined,
           required: false,
-          describeModel: false
-        }
+          describeModel: false,
+        },
       ],
       methods: [
         {
           kind: 'method',
           syntax: [
-            'someMethodCall(): unknown'
+            'someMethodCall(): unknown',
           ],
           name: 'someMethodCall',
           visibility: 'public',
@@ -368,13 +368,13 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'someMethodRef(): unknown'
+            'someMethodRef(): unknown',
           ],
           name: 'someMethodRef',
           visibility: 'public',
@@ -384,11 +384,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -407,14 +407,14 @@ describe('ScriptParser', () => {
 
           export default RouteMixin
         </script>
-      `
+      `,
     },
     expected: {
       methods: [
         {
           kind: 'method',
           syntax: [
-            'route(): unknown'
+            'route(): unknown',
           ],
           name: 'route',
           visibility: 'public',
@@ -424,11 +424,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -448,7 +448,7 @@ describe('ScriptParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -456,7 +456,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknown'
+            'route(): unknown',
           ],
           name: 'route',
           visibility: 'public',
@@ -466,11 +466,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -489,7 +489,7 @@ describe('ScriptParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -497,7 +497,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknown'
+            'route(): unknown',
           ],
           name: 'route',
           visibility: 'public',
@@ -507,11 +507,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -533,7 +533,7 @@ describe('ScriptParser', () => {
            */
           export default () => RouteMixin
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -541,7 +541,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'route(): unknown'
+            'route(): unknown',
           ],
           name: 'route',
           visibility: 'public',
@@ -551,11 +551,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -576,7 +576,7 @@ describe('ScriptParser', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -584,7 +584,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknown'
+            'myFunction(): unknown',
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -594,11 +594,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -627,7 +627,7 @@ describe('ScriptParser', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -635,7 +635,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(test: Record<string, any>): Record<string, any>'
+            'myFunction(test: Record<string, any>): Record<string, any>',
           ],
           name: 'myFunction',
           visibility: 'protected',
@@ -648,16 +648,16 @@ describe('ScriptParser', () => {
               type: 'Record<string, any>',
               description: '<-- Parser stops with error',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'Record<string, any>',
-            description: '<-- Gets parsed as description'
-          }
-        }
-      ]
-    }
+            description: '<-- Gets parsed as description',
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -678,7 +678,7 @@ describe('ScriptParser', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -686,7 +686,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknown'
+            'myFunction(): unknown',
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -696,11 +696,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -721,7 +721,7 @@ describe('ScriptParser', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -729,7 +729,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknown'
+            'myFunction(): unknown',
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -739,11 +739,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -766,7 +766,7 @@ describe('ScriptParser', () => {
             return Component
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -774,7 +774,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknown'
+            'myFunction(): unknown',
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -784,11 +784,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -796,7 +796,7 @@ describe('ScriptParser', () => {
     options: {
       filecontent: `
         <script>
-          import Vue from 'vue';
+          import Vue from 'vue.js';
 
           /**
            * @mixin
@@ -812,7 +812,7 @@ describe('ScriptParser', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'InputMixin',
@@ -828,25 +828,25 @@ describe('ScriptParser', () => {
           description: undefined,
           keywords: [],
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
           name: 'value',
-          type: [ 'Boolean', 'Number', 'String' ],
+          type: ['Boolean', 'Number', 'String'],
           visibility: 'public',
           category: undefined,
           description: undefined,
           keywords: [],
           required: false,
-          describeModel: true
-        }
+          describeModel: true,
+        },
       ],
       methods: [
         {
           kind: 'method',
           syntax: [
-            'route(): unknown'
+            'route(): unknown',
           ],
           name: 'route',
           category: undefined,
@@ -856,11 +856,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -868,7 +868,7 @@ describe('ScriptParser', () => {
     options: {
       filecontent: `
         <script>
-          import Vue from 'vue';
+          import Vue from 'vue.js';
 
           /**
            * @mixin
@@ -882,7 +882,7 @@ describe('ScriptParser', () => {
             methods: { route }
           })
         </script>
-      `
+      `,
     },
     expected: {
       name: 'InputMixin',
@@ -898,25 +898,25 @@ describe('ScriptParser', () => {
           description: undefined,
           keywords: [],
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
           name: 'value',
-          type: [ 'Boolean', 'Number', 'String' ],
+          type: ['Boolean', 'Number', 'String'],
           visibility: 'public',
           category: undefined,
           description: undefined,
           keywords: [],
           required: false,
-          describeModel: true
-        }
+          describeModel: true,
+        },
       ],
       methods: [
         {
           kind: 'method',
           syntax: [
-            'route(): unknown'
+            'route(): unknown',
           ],
           name: 'route',
           category: undefined,
@@ -926,11 +926,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -951,7 +951,7 @@ describe('ScriptParser', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -959,7 +959,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknown'
+            'myFunction(): unknown',
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -969,11 +969,11 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -996,7 +996,7 @@ describe('ScriptParser', () => {
             return Component
           }
         </script>
-      `
+      `,
     },
     expected: {
       keywords: [],
@@ -1004,7 +1004,7 @@ describe('ScriptParser', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): unknown'
+            'myFunction(): unknown',
           ],
           name: 'myFunction',
           visibility: 'public',
@@ -1014,10 +1014,10 @@ describe('ScriptParser', () => {
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
-        }
-      ]
-    }
+            description: undefined,
+          },
+        },
+      ],
+    },
   });
 });

@@ -1,6 +1,6 @@
-import { JSDoc } from '../lib/JSDoc';
-import { ComponentTestCase } from './lib/TestUtils';
-import { JSDocTypeSpec } from './spec/JSDocTypeSpec';
+import { JSDoc } from '../lib/JSDoc.js';
+import { ComponentTestCase } from './lib/TestUtils.js';
+import { JSDocTypeSpec } from './spec/JSDocTypeSpec.js';
 
 /* global describe it expect */
 
@@ -17,7 +17,7 @@ describe('JSDoc', () => {
 
     it('should parse JSDoc type with pipe char', () => {
       const type = 'string|string[]';
-      const expected = { type: [ 'string', 'string[]' ] };
+      const expected = { type: ['string', 'string[]'] };
       const result = {};
 
       JSDoc.parseTypeParam(type, result);
@@ -49,7 +49,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'number',
         name: 'x',
-        description: 'The x value.'
+        description: 'The x value.',
       };
       const result = JSDoc.parseParamKeyword(comment);
 
@@ -66,7 +66,7 @@ describe('JSDoc', () => {
         type: 'number',
         name: 'x',
         description: 'The x value.',
-        kind: 'param'
+        kind: 'param',
       };
 
       const result = JSDoc.parseParamKeyword(comment, customParamGenerator());
@@ -79,7 +79,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'Record<number>',
         name: 'x',
-        description: 'The x value.'
+        description: 'The x value.',
       };
       const result = JSDoc.parseParamKeyword(comment);
 
@@ -91,7 +91,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'number',
         name: 'x',
-        description: 'The x value.'
+        description: 'The x value.',
       };
       const result = JSDoc.parseParamKeyword(comment);
 
@@ -128,7 +128,7 @@ describe('JSDoc', () => {
         type: 'number',
         name: 'num',
         description: 'A positive or negative number.',
-        rest: true
+        rest: true,
       };
       const result = JSDoc.parseParamKeyword(comment);
 
@@ -140,7 +140,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'any',
         name: 'somebody',
-        description: 'Whatever you want.'
+        description: 'Whatever you want.',
       };
       const result = JSDoc.parseParamKeyword(comment);
 
@@ -152,7 +152,7 @@ describe('JSDoc', () => {
       const expected = {
         type: 'any',
         name: 'somebody',
-        description: undefined
+        description: undefined,
       };
       const result = JSDoc.parseParamKeyword(comment);
 
@@ -304,7 +304,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -312,7 +312,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'set(id: string, name?: string, order?: number = 1, values?: string | string[], ...rest: any[]): boolean'
+            'set(id: string, name?: string, order?: number = 1, values?: string | string[], ...rest: any[]): boolean',
           ],
           visibility: 'public',
           category: undefined,
@@ -325,7 +325,7 @@ describe('JSDoc', () => {
               name: 'id',
               description: 'The checkbox ID',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
@@ -333,7 +333,7 @@ describe('JSDoc', () => {
               description: 'The checkbox name',
               defaultValue: undefined,
               optional: true,
-              rest: false
+              rest: false,
             },
             {
               type: 'number',
@@ -341,18 +341,18 @@ describe('JSDoc', () => {
               description: 'The checkbox order',
               optional: true,
               defaultValue: '1',
-              rest: false
+              rest: false,
             },
             {
               type: [
                 'string',
-                'string[]'
+                'string[]',
               ],
               name: 'values',
               description: 'The checkbox values',
               defaultValue: undefined,
               optional: true,
-              rest: false
+              rest: false,
             },
             {
               type: 'any[]',
@@ -360,16 +360,16 @@ describe('JSDoc', () => {
               description: 'The rest options',
               defaultValue: undefined,
               optional: true,
-              rest: true
-            }
+              rest: true,
+            },
           ],
           returns: {
             type: 'boolean',
-            description: 'True on success; ortherwise false'
-          }
+            description: 'True on success; ortherwise false',
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   // Names, types, and descriptions
@@ -393,7 +393,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -401,7 +401,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'nameOnly(somebody: unknown): void'
+            'nameOnly(somebody: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -414,16 +414,16 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -444,7 +444,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -452,7 +452,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'nameAndType(somebody: string): void'
+            'nameAndType(somebody: string): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -465,16 +465,16 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -495,7 +495,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -503,7 +503,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'nameTypeAndDescription(somebody: string): void'
+            'nameTypeAndDescription(somebody: string): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -516,16 +516,16 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: 'Somebody\'s name.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -546,7 +546,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -554,7 +554,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'nameTypeAndDescriptionWithHyphen(somebody: string): void'
+            'nameTypeAndDescriptionWithHyphen(somebody: string): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -567,16 +567,16 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: 'Somebody\'s name.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   // Documenting a parameter's properties
@@ -604,7 +604,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -612,7 +612,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withParameterProperties(employee: Object): void'
+            'withParameterProperties(employee: Object): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -625,30 +625,30 @@ describe('JSDoc', () => {
               name: 'employee',
               description: 'The employee who is responsible for the project.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
               name: 'employee.name',
               description: 'The name of the employee.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
               name: 'employee.department',
               description: 'The employee\'s department.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -671,7 +671,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -679,7 +679,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withDestructuringParameter(employee: Object): void'
+            'withDestructuringParameter(employee: Object): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -692,30 +692,30 @@ describe('JSDoc', () => {
               name: 'employee',
               description: 'The employee who is responsible for the project.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
               name: 'employee.name',
               description: 'The name of the employee.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
               name: 'employee.department',
               description: 'The employee\'s department.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -738,7 +738,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -746,7 +746,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withPropertiesOfValuesInAnArray(employees: Object[]): void'
+            'withPropertiesOfValuesInAnArray(employees: Object[]): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -759,30 +759,30 @@ describe('JSDoc', () => {
               name: 'employees',
               description: 'The employees who are responsible for the project.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
               name: 'employees[].name',
               description: 'The name of an employee.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'string',
               name: 'employees[].department',
               description: 'The employee\'s department.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -807,7 +807,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -815,7 +815,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withOptionalParameter(somebody?: string): void'
+            'withOptionalParameter(somebody?: string): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -829,16 +829,16 @@ describe('JSDoc', () => {
               description: 'Somebody\'s name.',
               defaultValue: undefined,
               optional: true,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -862,7 +862,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -870,7 +870,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withOptionalParameterAndDefaultValue(somebody?: string = "John Doe"): void'
+            'withOptionalParameterAndDefaultValue(somebody?: string = "John Doe"): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -884,16 +884,16 @@ describe('JSDoc', () => {
               description: 'Somebody\'s name.',
               optional: true,
               defaultValue: '"John Doe"',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   // Multiple types and repeatable parameters
@@ -926,7 +926,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -934,7 +934,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withMultipleType(somebody?: string | string[] = "John Doe"): void'
+            'withMultipleType(somebody?: string | string[] = "John Doe"): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -945,22 +945,22 @@ describe('JSDoc', () => {
             {
               type: [
                 'string',
-                'string[]'
+                'string[]',
               ],
               name: 'somebody',
               description: 'Somebody\'s name, or an array of names.',
               optional: true,
               defaultValue: '"John Doe"',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -981,7 +981,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -989,7 +989,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withAnyType(somebody: any): void'
+            'withAnyType(somebody: any): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1002,16 +1002,16 @@ describe('JSDoc', () => {
               name: 'somebody',
               description: 'Whatever you want.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -1037,7 +1037,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -1045,7 +1045,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withSpreadNotation(...num: number[]): unknown'
+            'withSpreadNotation(...num: number[]): unknown',
           ],
           visibility: 'public',
           category: undefined,
@@ -1058,16 +1058,16 @@ describe('JSDoc', () => {
               name: 'num',
               description: 'A positive or negative number.',
               defaultValue: undefined,
-              rest: true
-            }
+              rest: true,
+            },
           ],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   // Callback functions
@@ -1100,7 +1100,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -1108,7 +1108,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'doSomethingAsynchronously(cb: requestCallback): void'
+            'doSomethingAsynchronously(cb: requestCallback): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1121,16 +1121,16 @@ describe('JSDoc', () => {
               name: 'cb',
               description: 'The callback that handles the response.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -1153,7 +1153,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -1161,7 +1161,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withType(a: number, b: number): number'
+            'withType(a: number, b: number): number',
           ],
           visibility: 'public',
           category: undefined,
@@ -1174,23 +1174,23 @@ describe('JSDoc', () => {
               name: 'a',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'number',
               name: 'b',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'number',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -1217,7 +1217,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -1225,7 +1225,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withMultipleType(a: number, b: number, retArr: boolean): number | Array'
+            'withMultipleType(a: number, b: number, retArr: boolean): number | Array',
           ],
           visibility: 'public',
           category: undefined,
@@ -1238,33 +1238,33 @@ describe('JSDoc', () => {
               name: 'a',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'number',
               name: 'b',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'boolean',
               name: 'retArr',
               description: 'If set to true, the function will return an array',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: [
               'number',
-              'Array'
+              'Array',
             ],
-            description: 'Sum of a and b or an array that contains a, b and the sum of a and b.'
-          }
+            description: 'Sum of a and b or an array that contains a, b and the sum of a and b.',
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -1289,7 +1289,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -1297,7 +1297,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withPromise(a: number, b: number): Promise'
+            'withPromise(a: number, b: number): Promise',
           ],
           visibility: 'public',
           category: undefined,
@@ -1310,23 +1310,23 @@ describe('JSDoc', () => {
               name: 'a',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'number',
               name: 'b',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'Promise',
-            description: 'Promise object represents the sum of a and b'
-          }
+            description: 'Promise object represents the sum of a and b',
+          },
         },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -1351,7 +1351,7 @@ describe('JSDoc', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -1359,7 +1359,7 @@ describe('JSDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'withSpreadParam(a: number, ...b: number[]): Promise'
+            'withSpreadParam(a: number, ...b: number[]): Promise',
           ],
           visibility: 'public',
           category: undefined,
@@ -1372,22 +1372,22 @@ describe('JSDoc', () => {
               name: 'a',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               type: 'number[]',
               name: 'b',
               description: undefined,
               defaultValue: undefined,
-              rest: true
-            }
+              rest: true,
+            },
           ],
           returns: {
             type: 'Promise',
-            description: 'Promise object represents the sum of a and b'
-          }
-        }
-      ]
-    }
+            description: 'Promise object represents the sum of a and b',
+          },
+        },
+      ],
+    },
   });
 });
