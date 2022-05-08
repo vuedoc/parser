@@ -101,13 +101,13 @@ See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/main/test
 for an Vue Component decoration example.
 
 ```js
-import { parse } from '@vuedoc/parser';
+import { parseComponent } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue'
 };
 
-parse(options)
+parseComponent(options)
   .then((component) => console.log(component))
   .catch((err) => console.error(err))
 ```
@@ -841,12 +841,12 @@ To parse a mixin, you need to parse its file as a standalone component and then
 merge the parsing result with the result of the initial component:
 
 ```js
-import { parse } from '@vuedoc/parser';
+import { parseComponent } from '@vuedoc/parser';
 import merge from 'deepmerge';
 
 const parsers = [
-  parse({ filename: 'mixinFile.js' })
-  parse({ filename: 'componentUsingMixin.vue' })
+  parseComponent({ filename: 'mixinFile.js' })
+  parseComponent({ filename: 'componentUsingMixin.vue' })
 ]
 
 Promise.all(parsers)
@@ -905,14 +905,14 @@ The default value is defined by `Vuedoc.Parser.SUPPORTED_FEATURES` array.
 Only parse `name`, `props`, `computed properties`, `slots` and `events`:
 
 ```js
-import { parse } from '@vuedoc/parser';
+import { parseComponent } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
   features: [ 'name', 'props', 'computed', 'slots', 'events' ]
 }
 
-parse(options)
+parseComponent(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'props', 'computed', 'slots', 'events' ]
@@ -921,14 +921,14 @@ parse(options)
 Parse all features except `data`:
 
 ```js
-import { parse } from '@vuedoc/parser';
+import { parseComponent } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
   features: Vuedoc.Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data')
 }
 
-parse(options)
+parseComponent(options)
   .then((component) => Object.keys(component))
   .then((keys) => console.log(keys))
   // => [ 'name', 'description', 'keywords', 'model',
@@ -973,7 +973,7 @@ specialized class to handle a template with the
 It uses the built-in `PugLoader` to load Pug template:
 
 ```js
-import { parse } from '@vuedoc/parser';
+import { parseComponent } from '@vuedoc/parser';
 import { PugLoader } from '@vuedoc/parser/loader/pug';
 import CoffeeScript from 'coffeescript';
 
@@ -1016,7 +1016,7 @@ const options = {
   ]
 }
 
-parse(options).then((component) => {
+parseComponent(options).then((component) => {
   console.log(component)
 })
 ```

@@ -1,6 +1,4 @@
-import * as vuedoc from '../index.js';
-
-import { Parser } from '../lib/parser/Parser.js';
+import { parseComponent, Parser } from '../index.js';
 
 /* global describe it expect */
 /* eslint-disable quote-props */
@@ -688,7 +686,7 @@ describe('ECMAScript Feature Parsing', () => {
           keywords: [] },
       ];
 
-      return vuedoc.parse(options).then(({ data }) => {
+      return parseComponent(options).then(({ data }) => {
         expect(data).toEqual(expected);
       });
     });
@@ -720,7 +718,7 @@ describe('ECMAScript Feature Parsing', () => {
           keywords: [] },
       ];
 
-      return vuedoc.parse(options).then(({ data }) => {
+      return parseComponent(options).then(({ data }) => {
         expect(data).toEqual(expected);
       });
     });
@@ -761,7 +759,7 @@ describe('ECMAScript Feature Parsing', () => {
           keywords: [] },
       ];
 
-      return vuedoc.parse(options).then(({ data }) => {
+      return parseComponent(options).then(({ data }) => {
         expect(data).toEqual(expected);
       });
     });
@@ -837,7 +835,7 @@ describe('ECMAScript Feature Parsing', () => {
           keywords: [] },
       ];
 
-      return vuedoc.parse(options).then(({ data }) => {
+      return parseComponent(options).then(({ data }) => {
         expect(data).toEqual(expected);
       });
     });
@@ -923,7 +921,7 @@ describe('ECMAScript Feature Parsing', () => {
           keywords: [] },
       ];
 
-      return vuedoc.parse(options).then(({ data }) => {
+      return parseComponent(options).then(({ data }) => {
         expect(data).toEqual(expected);
       });
     });
@@ -1019,7 +1017,7 @@ describe('ECMAScript Feature Parsing', () => {
           keywords: [] },
       ];
 
-      return vuedoc.parse(options).then(({ data }) => {
+      return parseComponent(options).then(({ data }) => {
         expect(data).toEqual(expected);
       });
     });

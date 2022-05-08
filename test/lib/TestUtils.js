@@ -1,4 +1,4 @@
-import * as parser from '../../index.js';
+import { parseComponent } from '../../index.js';
 
 /* global describe beforeAll it expect */
 
@@ -11,7 +11,7 @@ export const ComponentTestCase = ({ name, description, expected, options }) => {
         options.filecontent = await options.filecontent;
       }
 
-      component = await parser.parse(options);
+      component = await parseComponent(options);
     });
 
     Object.keys(expected).forEach((key) => {

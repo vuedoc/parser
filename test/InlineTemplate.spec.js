@@ -1,4 +1,4 @@
-import * as parser from '../index.js';
+import { parseComponent } from '../index.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -16,7 +16,7 @@ describe('#44 - Inline Template', () => {
       `,
     };
 
-    return parser.parse(options).then(({ slots }) => {
+    return parseComponent(options).then(({ slots }) => {
       expect(slots).toEqual([
         {
           kind: 'slot',
@@ -48,7 +48,7 @@ describe('#44 - Inline Template', () => {
       `,
     };
 
-    return parser.parse(options).then((component) => {
+    return parseComponent(options).then((component) => {
       expect(component).toEqual({
         name: undefined,
         inheritAttrs: true,

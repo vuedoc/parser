@@ -64,7 +64,7 @@ export async function parseOptions(options) {
   return new VueLoader(options).load(options.filecontent);
 }
 
-export async function parse(options) {
+export async function parseComponent(options) {
   await parseOptions(options);
 
   return new Promise((resolve) => {

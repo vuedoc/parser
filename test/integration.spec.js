@@ -58,7 +58,7 @@ function testComponentMethods (optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
-    component = await vuedoc.parse(optionsToParse);
+    component = await vuedoc.parseComponent(optionsToParse);
   });
 
   it('should contain a method', () => {
@@ -93,7 +93,7 @@ function testComponent (optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
-    component = await vuedoc.parse(optionsToParse);
+    component = await vuedoc.parseComponent(optionsToParse);
   });
 
   it('should have a name', () => {
@@ -107,7 +107,7 @@ function testComponent (optionsToParse) {
   });
 
   it('should guess the component name using the filename', async () => {
-    const component = await vuedoc.parse({ filename: Fixture.resolve('UnNamedInput.vue') });
+    const component = await vuedoc.parseComponent({ filename: Fixture.resolve('UnNamedInput.vue') });
 
     assert.equal(component.name, 'UnNamedInput');
   });
@@ -121,7 +121,7 @@ function testComponentProps (optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
-    component = await vuedoc.parse(optionsToParse);
+    component = await vuedoc.parseComponent(optionsToParse);
   });
 
   it('should contain a v-model prop with a description', () => {
@@ -165,7 +165,7 @@ function testComponentSlots (optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
-    component = await vuedoc.parse(optionsToParse);
+    component = await vuedoc.parseComponent(optionsToParse);
   });
 
   it('should contain a default slot', () => {
@@ -201,7 +201,7 @@ function testComponentEvents (optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
-    component = await vuedoc.parse(optionsToParse);
+    component = await vuedoc.parseComponent(optionsToParse);
   });
 
   it('should contain event with literal name', () => {
@@ -270,7 +270,7 @@ function testComponentEvents (optionsToParse) {
       visibility: 'public',
     };
 
-    const component = await vuedoc.parse(options);
+    const component = await vuedoc.parseComponent(options);
 
     assert.deepEqual(component.events, [event]);
   });
@@ -413,7 +413,7 @@ describe('Integration', () => {
         `,
       };
 
-      return vuedoc.parse(options);
+      return vuedoc.parseComponent(options);
     });
   });
 
@@ -540,7 +540,7 @@ describe('Integration', () => {
     let component = {};
 
     beforeAll(async () => {
-      component = await vuedoc.parse(optionsForPropsArray);
+      component = await vuedoc.parseComponent(optionsForPropsArray);
     });
 
     it('should list props from string array', () => {
@@ -584,7 +584,7 @@ describe('Integration', () => {
         `,
       };
 
-      const component = await vuedoc.parse(options);
+      const component = await vuedoc.parseComponent(options);
 
       expect(component.data).toEqual([
         {
@@ -627,7 +627,7 @@ describe('Integration', () => {
       `,
     };
 
-    it('should successfully extract computed properties', () => vuedoc.parse(options).then((component) => {
+    it('should successfully extract computed properties', () => vuedoc.parseComponent(options).then((component) => {
       const { computed } = component;
 
       assert.equal(computed.length, 3);
@@ -678,7 +678,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { slots } = await vuedoc.parse(options);
+      const { slots } = await vuedoc.parseComponent(options);
 
       expect(slots).toEqual(expected);
     });
@@ -721,7 +721,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { slots } = await vuedoc.parse(options);
+      const { slots } = await vuedoc.parseComponent(options);
 
       expect(slots).toEqual(expected);
     });
@@ -766,7 +766,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { slots } = await vuedoc.parse(options);
+      const { slots } = await vuedoc.parseComponent(options);
 
       expect(slots).toEqual(expected);
     });
@@ -814,7 +814,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { slots } = await vuedoc.parse(options);
+      const { slots } = await vuedoc.parseComponent(options);
 
       expect(slots).toEqual(expected);
     });
@@ -863,7 +863,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { computed } = await vuedoc.parse(options);
+      const { computed } = await vuedoc.parseComponent(options);
 
       expect(computed).toEqual(expected);
     });
@@ -881,7 +881,7 @@ describe('Integration', () => {
       const options = { filecontent };
       const expected = [];
 
-      const { computed } = await vuedoc.parse(options);
+      const { computed } = await vuedoc.parseComponent(options);
 
       expect(computed).toEqual(expected);
     });
@@ -931,7 +931,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { computed } = await vuedoc.parse(options);
+      const { computed } = await vuedoc.parseComponent(options);
 
       expect(computed).toEqual(expected);
     });
@@ -964,7 +964,7 @@ describe('Integration', () => {
         methods: [],
       };
 
-      const component = await vuedoc.parse(options);
+      const component = await vuedoc.parseComponent(options);
 
       expect(component).toEqual(expected);
     });
@@ -980,7 +980,7 @@ describe('Integration', () => {
       `;
       const options = { filecontent };
 
-      vuedoc.parse(options)
+      vuedoc.parseComponent(options)
         .then(() => {
           done(new Error('should throw an error for non html script'));
         })
@@ -1001,7 +1001,7 @@ describe('Integration', () => {
       `;
       const options = { filecontent };
 
-      vuedoc.parse(options)
+      vuedoc.parseComponent(options)
         .then(() => {
           done(new Error('should throw an error for non js script'));
         })
@@ -1012,7 +1012,7 @@ describe('Integration', () => {
       const filename = Fixture.resolve('checkbox.coffee');
       const options = { filename };
 
-      vuedoc.parse(options)
+      vuedoc.parseComponent(options)
         .then(() => {
           done(new Error('should throw an error for non js file'));
         })
@@ -1030,7 +1030,7 @@ describe('Integration', () => {
         'tag <input> has no matching end tag.',
       ];
 
-      const { errors } = await vuedoc.parse(options);
+      const { errors } = await vuedoc.parseComponent(options);
 
       assert.deepEqual(errors, expected);
     });
@@ -1061,7 +1061,7 @@ describe('Integration', () => {
         },
       ];
 
-      const { events } = await vuedoc.parse(options);
+      const { events } = await vuedoc.parseComponent(options);
 
       assert.deepEqual(events, expected);
     });
