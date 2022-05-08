@@ -1,4 +1,4 @@
-import * as parser from '../index.js';
+import { parseComponent } from '../index.js';
 
 /* global describe it expect */
 
@@ -30,7 +30,7 @@ describe('#42 - Model', () => {
       event: 'change',
     };
 
-    return parser.parse(options).then(({ model }) => {
+    return parseComponent(options).then(({ model }) => {
       expect(model).toEqual(expected);
     });
   });
@@ -40,7 +40,7 @@ describe('#42 - Model', () => {
     const options = { filecontent, features };
     const expected = undefined;
 
-    return parser.parse(options).then(({ model }) => {
+    return parseComponent(options).then(({ model }) => {
       expect(model).toEqual(expected);
     });
   });

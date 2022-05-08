@@ -2,8 +2,7 @@
 /* eslint-disable max-len */
 /* eslint-disable indent */
 
-import * as parser from '../index.js';
-
+import { parseComponent } from '../index.js';
 import { ComponentTestCase } from './lib/TestUtils.js';
 import { Fixture } from './lib/Fixture.js';
 
@@ -41,7 +40,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -77,7 +76,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -114,7 +113,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -151,7 +150,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -188,7 +187,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -225,7 +224,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -262,7 +261,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ props }) => {
+      return parseComponent(options).then(({ props }) => {
         expect(props).toEqual(expected)
       })
     })
@@ -288,7 +287,7 @@ describe('issues', () => {
         `
       }
 
-      return parser.parse(options)
+      return parseComponent(options)
     })
 
     it('should successfully parse component with lazy import', () => {
@@ -312,7 +311,7 @@ describe('issues', () => {
         `
       }
 
-      return parser.parse(options)
+      return parseComponent(options)
     })
   })
 
@@ -337,7 +336,7 @@ describe('issues', () => {
       }
       const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```'
 
-      return parser.parse(options).then(({ description }) => {
+      return parseComponent(options).then(({ description }) => {
         expect(description).toEqual(expected)
       })
     })
@@ -374,7 +373,7 @@ describe('issues', () => {
           description: 'Node three' }
       ]
 
-      return parser.parse(options).then(({ description, keywords }) => {
+      return parseComponent(options).then(({ description, keywords }) => {
         expect(description).toEqual(expectedDescription)
         expect(keywords).toEqual(expectedKeywords)
       })
@@ -399,7 +398,7 @@ describe('issues', () => {
       }
       const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```'
 
-      return parser.parse(options).then(({ description }) => {
+      return parseComponent(options).then(({ description }) => {
         expect(description).toEqual(expected)
       })
     })
@@ -436,7 +435,7 @@ describe('issues', () => {
           description: 'Node three' }
       ]
 
-      return parser.parse(options).then(({ description, keywords }) => {
+      return parseComponent(options).then(({ description, keywords }) => {
         expect(description).toEqual(expectedDescription)
         expect(keywords).toEqual(expectedKeywords)
       })
@@ -526,7 +525,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ slots }) => {
+      return parseComponent(options).then(({ slots }) => {
         expect(slots).toEqual(expected)
       })
     })
@@ -563,7 +562,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ events }) => {
+      return parseComponent(options).then(({ events }) => {
         expect(events).toEqual(expected)
       })
     })
@@ -598,7 +597,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ events }) => {
+      return parseComponent(options).then(({ events }) => {
         expect(events).toEqual(expected)
       })
     })
@@ -633,7 +632,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ events }) => {
+      return parseComponent(options).then(({ events }) => {
         expect(events).toEqual(expected)
       })
     })
@@ -668,7 +667,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ events }) => {
+      return parseComponent(options).then(({ events }) => {
         expect(events).toEqual(expected)
       })
     })
@@ -703,7 +702,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ events }) => {
+      return parseComponent(options).then(({ events }) => {
         expect(events).toEqual(expected)
       })
     })
@@ -738,7 +737,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ events }) => {
+      return parseComponent(options).then(({ events }) => {
         expect(events).toEqual(expected)
       })
     })
@@ -775,7 +774,7 @@ describe('issues', () => {
         }
       ]
 
-      return parser.parse(options).then(({ computed }) => {
+      return parseComponent(options).then(({ computed }) => {
         expect(computed).toEqual(expected)
       })
     })

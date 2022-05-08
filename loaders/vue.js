@@ -5,7 +5,7 @@ const DEFAULT_TEMPLATE_LANG = 'html';
 const DEFAULT_SCRIPT_LANG = 'js';
 
 export class VueLoader extends Loader {
-  async load (source) {
+  async load(source) {
     const result = parseComponent(source);
 
     const template = result.template || {
@@ -32,7 +32,7 @@ export class VueLoader extends Loader {
       this.emitErrors(result.errors);
     }
 
-    return Promise.all([
+    await Promise.all([
       this.pipe(script.attrs.lang, script.content),
       this.pipe(template.attrs.lang, template.content),
     ]);

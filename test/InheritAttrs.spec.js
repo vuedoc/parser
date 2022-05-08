@@ -1,4 +1,4 @@
-import * as parser from '../index.js';
+import { parseComponent } from '../index.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -18,7 +18,7 @@ describe('#43 - InheritAttrs Field', () => {
 
     const expected = true;
 
-    return parser.parse(options).then(({ inheritAttrs }) => {
+    return parseComponent(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected);
     });
   });
@@ -36,7 +36,7 @@ describe('#43 - InheritAttrs Field', () => {
 
     const expected = false;
 
-    return parser.parse(options).then(({ inheritAttrs }) => {
+    return parseComponent(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected);
     });
   });
@@ -54,7 +54,7 @@ describe('#43 - InheritAttrs Field', () => {
 
     const expected = true;
 
-    return parser.parse(options).then(({ inheritAttrs }) => {
+    return parseComponent(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected);
     });
   });
@@ -72,7 +72,7 @@ describe('#43 - InheritAttrs Field', () => {
 
     const expected = false;
 
-    return parser.parse(options).then(({ inheritAttrs }) => {
+    return parseComponent(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected);
     });
   });
@@ -88,7 +88,7 @@ describe('#43 - InheritAttrs Field', () => {
 
     const expected = true;
 
-    return parser.parse(options).then(({ inheritAttrs }) => {
+    return parseComponent(options).then(({ inheritAttrs }) => {
       expect(inheritAttrs).toEqual(expected);
     });
   });

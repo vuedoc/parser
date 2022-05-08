@@ -2,10 +2,10 @@ import path from 'path';
 
 import { Loader } from './lib/Loader.js';
 import { Parser } from './lib/parser/Parser.js';
-import { VueLoader } from './loader/vue.js';
-import { HtmlLoader } from './loader/html.js';
-import { JavaScriptLoader } from './loader/javascript.js';
-import { TypeScriptLoader } from './loader/typescript.js';
+import { VueLoader } from './loaders/vue.js';
+import { HtmlLoader } from './loaders/html.js';
+import { JavaScriptLoader } from './loaders/javascript.js';
+import { TypeScriptLoader } from './loaders/typescript.js';
 import { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } from './lib/Enum.js';
 import { KeywordsUtils } from './lib/utils/KeywordsUtils.js';
 
@@ -38,33 +38,42 @@ export async function parseOptions(options) {
     options.ignoredVisibilities = DEFAULT_IGNORED_VISIBILITIES;
   }
 
-  if (!Array.isArray(options.loaders)) {
-    options.loaders = [...DEFAULT_LOADERS];
-  } else {
-    options.loaders.push(...DEFAULT_LOADERS);
-  }
-
   options.source = {
     template: '',
     script: '',
     errors: [],
   };
 
+  const loaderOptions = {
+    ...options,
+    definitions: [
+      ...DEFAULT_LOADERS,
+    ],
+  };
+
+  if (options.loaders instanceof Array) {
+    loaderOptions.definitions.unshift(...options.loaders);
+  }
+
   if (options.filename) {
     const ext = path.extname(options.filename);
     const loaderName = ext.substring(1);
-    const LoaderClass = Loader.get(loaderName, options);
+    const LoaderClass = Loader.get(loaderName, loaderOptions);
     const source = await Loader.getFileContent(options.filename, {
       encoding: options.encoding,
     });
 
-    return new LoaderClass(options).load(source);
-  }
+    const loader = new LoaderClass(loaderOptions);
 
-  return new VueLoader(options).load(options.filecontent);
+    await loader.load(source);
+  } else {
+    const loader = new VueLoader(loaderOptions);
+
+    await loader.load(options.filecontent);
+  }
 }
 
-export async function parse(options) {
+export async function parseComponent(options) {
   await parseOptions(options);
 
   return new Promise((resolve) => {

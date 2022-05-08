@@ -3,16 +3,16 @@ export default {
   notify: false,
   transform: {},
   testMatch: [
-    '<rootDir>/test/**/*.spec.js'
+    '<rootDir>/test/**/*.spec.js',
   ],
   collectCoverageFrom: [
     'index.js',
     'lib/**',
     'schema/**',
-    'loader/**'
+    'loader/**',
   ],
   moduleFileExtensions: [
     'js',
-    'json'
-  ]
+    'json',
+  ],
 };
