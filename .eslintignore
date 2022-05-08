@@ -1,2 +1,4 @@
 test/MethodParser.spec.js
 test/issues.spec.js
+jest.config.js
+sample.js
