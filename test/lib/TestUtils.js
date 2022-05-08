@@ -6,7 +6,7 @@ export const ComponentTestCase = ({ name, description, expected, options }) => {
   describe(description ? `${name}: ${description}` : name, () => {
     let component = null;
 
-    beforeAll(async() => {
+    beforeAll(async () => {
       if (options.filecontent instanceof Promise) {
         options.filecontent = await options.filecontent;
       }
