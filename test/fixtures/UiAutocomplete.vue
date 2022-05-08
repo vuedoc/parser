@@ -92,9 +92,9 @@
 </template>
 
 <script>
-import autofocus from './directives/autofocus';
-import UiAutocompleteSuggestion from './UiAutocompleteSuggestion.vue';
-import UiIcon from './UiIcon.vue';
+import autofocus from './directives/autofocus.js';
+import UiAutocompleteSuggestion from './UiAutocompleteSuggestion.vue.js';
+import UiIcon from './UiIcon.vue.js';
 
 import fuzzysearch from 'fuzzysearch';
 

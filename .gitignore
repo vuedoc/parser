@@ -39,5 +39,14 @@ jspm_packages
 # Dolphin file
 .directory
 
+# CodeLineX
+.codeline/
+
+# vscode
+.vscode/
+
 # Nix
 .nix-node
+
+# Archives
+*.tgz

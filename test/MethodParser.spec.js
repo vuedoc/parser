@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* global describe */
 

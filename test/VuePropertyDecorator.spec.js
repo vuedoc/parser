@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* eslint-disable max-len */
 /* eslint-disable indent */
@@ -73,7 +73,7 @@ describe('Vue Property Decorator', () => {
     name: '#47 - Vue Property Decorator',
     options: {
       filecontent: script,
-      ignoredVisibilities: []
+      ignoredVisibilities: [],
     },
     expected: {
       name: 'YourComponent',
@@ -147,7 +147,7 @@ describe('Vue Property Decorator', () => {
         prop: 'checked',
         event: 'change',
         description: undefined,
-        keywords: []
+        keywords: [],
       },
       computed: [
         {
@@ -159,9 +159,9 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           keywords: [],
           dependencies: [
-            'checked'
+            'checked',
           ],
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       events: [
         {
@@ -175,7 +175,7 @@ describe('Vue Property Decorator', () => {
               name: 'value',
               description: undefined,
               type: 'boolean',
-              rest: false
+              rest: false,
             },
           ],
           keywords: [],
@@ -191,8 +191,8 @@ describe('Vue Property Decorator', () => {
               name: 'n',
               description: undefined,
               type: 'unknown',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           keywords: [],
           visibility: 'public' },
@@ -225,8 +225,8 @@ describe('Vue Property Decorator', () => {
               name: 'e',
               description: undefined,
               type: 'unknown',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           keywords: [],
           visibility: 'public' },
@@ -249,7 +249,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'onChildChanged(val: string, oldVal: string): void'
+            'onChildChanged(val: string, oldVal: string): void',
           ],
           params: [
             {
@@ -257,15 +257,15 @@ describe('Vue Property Decorator', () => {
               type: 'string',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'oldVal',
               type: 'string',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             description: undefined,
@@ -281,7 +281,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'onPersonChanged1(val: Person, oldVal: Person): void'
+            'onPersonChanged1(val: Person, oldVal: Person): void',
           ],
           params: [
             {
@@ -289,15 +289,15 @@ describe('Vue Property Decorator', () => {
               type: 'Person',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'oldVal',
               type: 'Person',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             description: undefined,
@@ -313,7 +313,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'addToCount(n: number): void'
+            'addToCount(n: number): void',
           ],
           params: [
             {
@@ -321,8 +321,8 @@ describe('Vue Property Decorator', () => {
               type: 'number',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             description: undefined,
@@ -338,7 +338,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'resetCount(): void'
+            'resetCount(): void',
           ],
           params: [],
           returns: {
@@ -355,7 +355,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'returnValue(): void'
+            'returnValue(): void',
           ],
           params: [],
           returns: {
@@ -372,7 +372,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'onInputChange(e: unknown): void'
+            'onInputChange(e: unknown): void',
           ],
           params: [
             {
@@ -380,8 +380,8 @@ describe('Vue Property Decorator', () => {
               type: 'unknown',
               description: undefined,
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             description: undefined,
@@ -397,7 +397,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'promise(): void'
+            'promise(): void',
           ],
           params: [],
           returns: {
@@ -414,7 +414,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'privateMethod(): void'
+            'privateMethod(): void',
           ],
           params: [],
           returns: {
@@ -422,16 +422,16 @@ describe('Vue Property Decorator', () => {
             type: 'void',
           },
           visibility: 'private',
-        }
-      ]
-    }
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
     name: '#47 - Vue Property Decorator with disabled features',
     options: {
-      features: [ 'name' ],
-      filecontent: script
+      features: ['name'],
+      filecontent: script,
     },
     expected: {
       name: 'YourComponent',
@@ -441,8 +441,8 @@ describe('Vue Property Decorator', () => {
       model: undefined,
       computed: undefined,
       events: undefined,
-      methods: undefined
-    }
+      methods: undefined,
+    },
   });
 
   ComponentTestCase({
@@ -457,7 +457,7 @@ describe('Vue Property Decorator', () => {
             @Model('change', { type: Boolean }) readonly checked!: boolean
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'YourComponent',
@@ -483,12 +483,12 @@ describe('Vue Property Decorator', () => {
         prop: 'checked',
         event: 'change',
         description: undefined,
-        keywords: []
+        keywords: [],
       },
       computed: [],
       events: [],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -504,7 +504,7 @@ describe('Vue Property Decorator', () => {
             readonly checkedValue!: boolean
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'YourComponent',
@@ -530,7 +530,7 @@ describe('Vue Property Decorator', () => {
         prop: 'checked',
         event: 'change',
         description: undefined,
-        keywords: []
+        keywords: [],
       },
       computed: [
         {
@@ -542,9 +542,9 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           keywords: [],
           dependencies: [
-            'checked'
+            'checked',
           ],
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       events: [
         {
@@ -558,14 +558,14 @@ describe('Vue Property Decorator', () => {
               name: 'value',
               description: undefined,
               type: 'boolean',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           keywords: [],
           visibility: 'public' },
       ],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -580,7 +580,7 @@ describe('Vue Property Decorator', () => {
             @VModel({ type: String }) name!: string
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'YourComponent',
@@ -606,7 +606,7 @@ describe('Vue Property Decorator', () => {
         prop: 'value',
         event: 'input',
         description: undefined,
-        keywords: []
+        keywords: [],
       },
       computed: [
         {
@@ -618,9 +618,9 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           keywords: [],
           dependencies: [
-            'value'
+            'value',
           ],
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       events: [
         {
@@ -634,14 +634,14 @@ describe('Vue Property Decorator', () => {
               name: 'value',
               description: undefined,
               type: 'string',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           keywords: [],
           visibility: 'public' },
       ],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -659,7 +659,7 @@ describe('Vue Property Decorator', () => {
             @Ref('aButton') readonly button!: HTMLButtonElement
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'YourComponent',
@@ -695,7 +695,7 @@ describe('Vue Property Decorator', () => {
       computed: [],
       events: [],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -712,7 +712,7 @@ describe('Vue Property Decorator', () => {
             @Prop([String, Boolean]) readonly propC: string | boolean | undefined
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'YourComponent',
@@ -752,7 +752,7 @@ describe('Vue Property Decorator', () => {
           keywords: [],
           default: undefined,
           required: false,
-          type: [ 'String', 'Boolean' ],
+          type: ['String', 'Boolean'],
           category: undefined,
           version: undefined,
           visibility: 'public' },
@@ -762,7 +762,7 @@ describe('Vue Property Decorator', () => {
       computed: [],
       events: [],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -778,7 +778,7 @@ describe('Vue Property Decorator', () => {
             @Prop() age!: number
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'MyComponent',
@@ -804,7 +804,7 @@ describe('Vue Property Decorator', () => {
       computed: [],
       events: [],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -819,7 +819,7 @@ describe('Vue Property Decorator', () => {
             @PropSync('name', { type: String }) syncedName!: string
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'YourComponent',
@@ -852,7 +852,7 @@ describe('Vue Property Decorator', () => {
           version: undefined,
           keywords: [],
           dependencies: [
-            'name'
+            'name',
           ],
           visibility: 'public' },
         ],
@@ -868,14 +868,14 @@ describe('Vue Property Decorator', () => {
               name: 'name',
               description: undefined,
               type: 'string',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           keywords: [],
           visibility: 'public' },
         ],
       methods: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -885,7 +885,7 @@ describe('Vue Property Decorator', () => {
         <script lang='ts'>
           import { Vue, Component, Prop } from 'vue-property-decorator';
           import { Observer } from 'mobx-vue';
-          import { IContextMenuItem } from '../../contextmenus/IContextMenuItem';
+          import { IContextMenuItem } from '../../contextmenus/IContextMenuItem.js';
 
           @Observer
           @Component
@@ -898,7 +898,7 @@ describe('Vue Property Decorator', () => {
             ) => Array<IContextMenuItem<any>>;
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -916,7 +916,7 @@ describe('Vue Property Decorator', () => {
           default: undefined,
           name: 'context-factory',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -929,9 +929,9 @@ describe('Vue Property Decorator', () => {
           default: undefined,
           name: 'menu-factory',
           describeModel: false,
-          required: false
+          required: false,
         },
-      ]
-    }
+      ],
+    },
   });
 });

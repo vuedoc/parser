@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* eslint-disable max-len */
 /* eslint-disable indent */
@@ -203,7 +203,7 @@ describe('Class Component', () => {
           export default App;
         </script>
       `,
-      ignoredVisibilities: [ 'private' ]
+      ignoredVisibilities: ['private'],
     },
     expected: {
       name: 'App',
@@ -213,8 +213,8 @@ describe('Class Component', () => {
       keywords: [
         {
           name: 'contributor',
-          description: 'Jon Snow'
-        }
+          description: 'Jon Snow',
+        },
       ],
       events: [
         { kind: 'event',
@@ -224,7 +224,7 @@ describe('Class Component', () => {
           category: undefined,
           version: undefined,
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'event',
           name: 'mounted',
@@ -233,8 +233,8 @@ describe('Class Component', () => {
           category: undefined,
           version: undefined,
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
       methods: [
         { kind: 'method',
@@ -245,13 +245,13 @@ describe('Class Component', () => {
           version: undefined,
           keywords: [],
           syntax: [
-            'greet(): void'
+            'greet(): void',
           ],
           visibility: 'public',
           returns: {
             description: undefined,
-            type: 'void'
-          }
+            type: 'void',
+          },
         },
         { kind: 'method',
           name: '_protectedMethod',
@@ -261,14 +261,14 @@ describe('Class Component', () => {
           version: undefined,
           keywords: [],
           syntax: [
-            '_protectedMethod(): void'
+            '_protectedMethod(): void',
           ],
           visibility: 'protected',
           returns: {
             description: undefined,
-            type: 'void'
-          }
-        }
+            type: 'void',
+          },
+        },
       ],
       computed: [
         { kind: 'computed',
@@ -276,20 +276,20 @@ describe('Class Component', () => {
           type: 'string',
           category: undefined,
           version: undefined,
-          dependencies: [ 'msg' ],
+          dependencies: ['msg'],
           description: 'computed computedMsg description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedString',
           type: 'string',
           category: undefined,
           version: undefined,
-          dependencies: [ 'msg' ],
+          dependencies: ['msg'],
           description: 'computed computedString description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedString2',
@@ -299,7 +299,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedString description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedNull',
@@ -309,7 +309,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedNull description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedBool',
@@ -319,7 +319,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedBool description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedArray',
@@ -329,7 +329,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedArray description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedObject',
@@ -339,7 +339,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedObject description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedNewObject',
@@ -349,7 +349,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedNewObject description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedCustomeObject',
@@ -359,7 +359,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed CustomeObject description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedNewObject2',
@@ -369,7 +369,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedNewObject2 description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedRegExpLiteral',
@@ -379,7 +379,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedRegExpLiteral description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedBigIntLiteral',
@@ -389,7 +389,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedBigIntLiteral description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedNumber',
@@ -399,7 +399,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedNumber description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedNumber1',
@@ -409,17 +409,17 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed computedNumber description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'computedNumber2',
           type: 'number',
           category: undefined,
           version: undefined,
-          dependencies: [ 'msg' ],
+          dependencies: ['msg'],
           description: 'computed computedNumber description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: '[Symbol.species]',
@@ -429,7 +429,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed [Symbol.species] description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'empty',
@@ -439,7 +439,7 @@ describe('Class Component', () => {
           dependencies: [],
           description: 'computed [Symbol.species] description',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         { kind: 'computed',
           name: 'something',
@@ -449,8 +449,8 @@ describe('Class Component', () => {
           dependencies: [],
           description: undefined,
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
       data: [
         {
@@ -462,7 +462,7 @@ describe('Class Component', () => {
           description: 'data msg description',
           initialValue: '"Hello"',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         {
           kind: 'data',
@@ -473,8 +473,8 @@ describe('Class Component', () => {
           description: 'data helloMsg with expression',
           initialValue: '\'Hello, \' + this.name',
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
       props: [
         { kind: 'prop',
@@ -487,11 +487,11 @@ describe('Class Component', () => {
           describeModel: false,
           description: 'prop name description',
           keywords: [],
-          visibility: 'public'
-        }
+          visibility: 'public',
+        },
       ],
-      slots: []
-    }
+      slots: [],
+    },
   });
 
   ComponentTestCase({
@@ -525,7 +525,7 @@ describe('Class Component', () => {
 
           export default App
         </script>
-      `
+      `,
     },
     expected: {
       name: 'MyComponent',
@@ -546,7 +546,7 @@ describe('Class Component', () => {
           version: undefined,
           initialValue: '[this.$router.currentRoute]',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         {
           kind: 'data',
@@ -557,7 +557,7 @@ describe('Class Component', () => {
           version: undefined,
           initialValue: 'window.history.length',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         {
           kind: 'data',
@@ -568,7 +568,7 @@ describe('Class Component', () => {
           version: undefined,
           initialValue: '"slide-left"',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
         {
           kind: 'data',
@@ -579,12 +579,12 @@ describe('Class Component', () => {
           version: undefined,
           initialValue: 'false',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
       ],
       props: [],
-      slots: []
-    }
+      slots: [],
+    },
   });
 
   ComponentTestCase({
@@ -630,7 +630,7 @@ describe('Class Component', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'MyComponent',
@@ -681,11 +681,11 @@ describe('Class Component', () => {
           version: undefined,
           initialValue: '"some other string"',
           keywords: [],
-          visibility: 'public'
+          visibility: 'public',
         },
       ],
       props: [],
-      slots: []
-    }
+      slots: [],
+    },
   });
 });

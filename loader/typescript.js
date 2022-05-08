@@ -1,4 +1,4 @@
-import { JavaScriptLoader } from './javascript';
+import { JavaScriptLoader } from './javascript.js';
 
 /**
  * @note Don't fotget to install `typescript` and `@types/node` dependencies

@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 ComponentTestCase({
   name: '#48 - Vue Instance',
@@ -26,7 +26,7 @@ ComponentTestCase({
           template: \`<slot>The visited URL is: {{ url }}</slot>\`
         })
       </script>
-    `
+    `,
   },
   expected: {
     name: 'App',
@@ -35,7 +35,7 @@ ComponentTestCase({
     keywords: [
       {
         name: 'tagtest',
-        description: '1.2' }
+        description: '1.2' },
     ],
     events: [],
     methods: [],
@@ -70,7 +70,7 @@ ComponentTestCase({
         description: 'data contextNumber description',
         initialValue: '12',
         keywords: [],
-        visibility: 'public' }
+        visibility: 'public' },
     ],
     props: [
       {
@@ -84,7 +84,7 @@ ComponentTestCase({
         name: 'todo',
         required: false,
         type: 'unknown',
-        visibility: 'public' }
+        visibility: 'public' },
     ],
     slots: [
       {
@@ -95,7 +95,7 @@ ComponentTestCase({
         kind: 'slot',
         name: 'default',
         props: [],
-        visibility: 'public' }
-    ]
-  }
+        visibility: 'public' },
+    ],
+  },
 });

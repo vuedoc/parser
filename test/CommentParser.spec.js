@@ -1,4 +1,4 @@
-import { CommentParser } from '../lib/parser/CommentParser';
+import { CommentParser } from '../lib/parser/CommentParser.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -112,25 +112,26 @@ describe('CommentParser', () => {
               + 'let array1;\n'
               + '\n'
               + 'while ((array1 = regex1.exec(str1)) !== null) {\n'
+              // eslint-disable-next-line no-template-curly-in-string
               + '  console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`);\n'
               + '  // expected output: "Found foo. Next starts at 9."\n'
               + '  // expected output: "Found foo. Next starts at 19."\n'
               + '}\n'
-              + '```'
+              + '```',
           },
           {
             name: 'syntax',
-            description: 'regexObj.exec(str: string): any[]'
+            description: 'regexObj.exec(str: string): any[]',
           },
           {
             name: 'param',
-            description: '{string} str - The string against which to match the regular expression.'
+            description: '{string} str - The string against which to match the regular expression.',
           },
           {
             name: 'returns',
             description: 'If the match succeeds, the exec() method returns an array (with extra properties index and input; see below) and updates the lastIndex property of the regular expression object. The returned array has the matched text as the first item, and then one item for each parenthetical capture group of the matched text.\n'
-              + 'If the match fails, the exec() method returns null, and sets lastIndex to 0.'
-          }
+              + 'If the match fails, the exec() method returns null, and sets lastIndex to 0.',
+          },
         ],
         visibility: 'public',
         description: 'The **`exec()`** method executes a search for a match in a specified\n'
@@ -146,7 +147,7 @@ describe('CommentParser', () => {
           + 'A newer function has been proposed to simplify matching multiple parts of a string (with capture groups): `String.prototype.matchAll()`.\n'
           + '\n'
           + 'If you are executing a match simply to find `true` or `false`, use\n'
-          + '`RegExp.prototype.test()` method or String.prototype.search() instead.'
+          + '`RegExp.prototype.test()` method or String.prototype.search() instead.',
       });
     });
 
@@ -207,7 +208,7 @@ describe('CommentParser', () => {
     it('should return the attached visibility', () => {
       const keywords = [
         { name: 'private',
-          description: undefined }
+          description: undefined },
       ];
       const result = CommentParser.getVisibility(keywords);
       const expected = 'private';
@@ -218,7 +219,7 @@ describe('CommentParser', () => {
     it('should return default method visibility for non visibility keyword', () => {
       const keywords = [
         { name: 'author',
-          description: 'Sébastien' }
+          description: 'Sébastien' },
       ];
       const result = CommentParser.getVisibility(keywords);
 
@@ -228,7 +229,7 @@ describe('CommentParser', () => {
     it('should return explicit default visibility', () => {
       const keywords = [
         { name: 'author',
-          description: 'Sébastien' }
+          description: 'Sébastien' },
       ];
       const result = CommentParser.getVisibility(keywords, 'private');
 

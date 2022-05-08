@@ -1,6 +1,6 @@
-import * as vuedoc from '..';
+import * as vuedoc from '../index.js';
 
-import { Parser } from '../lib/parser/Parser';
+import { Parser } from '../lib/parser/Parser.js';
 
 /* global describe it expect */
 /* eslint-disable quote-props */
@@ -424,7 +424,7 @@ const Feature = {
     let amount = 12345_00,    // 12,345 (1234500 cents, apparently)
         amount2 = 123_4500,   // 123.45 (4-fixed financial)
         amount3 = 1_234_500;  // 1,234,500
-  `
+  `,
 };
 
 function testPropertyFunction (property) {
@@ -611,7 +611,7 @@ describe('ECMAScript Feature Parsing', () => {
           }
         </script>
       `;
-      const features = [ 'data' ];
+      const features = ['data'];
       const options = { filecontent, features };
       const expected = [
         { kind: 'data',
@@ -685,7 +685,7 @@ describe('ECMAScript Feature Parsing', () => {
           description: undefined,
           type: 'unknown',
           initialValue: 'undefined',
-          keywords: [] }
+          keywords: [] },
       ];
 
       return vuedoc.parse(options).then(({ data }) => {
@@ -707,7 +707,7 @@ describe('ECMAScript Feature Parsing', () => {
           }
         </script>
       `;
-      const features = [ 'data' ];
+      const features = ['data'];
       const options = { filecontent, features };
       const expected = [
         { kind: 'data',
@@ -717,7 +717,7 @@ describe('ECMAScript Feature Parsing', () => {
           description: undefined,
           type: 'symbol',
           initialValue: 'Symbol("key")',
-          keywords: [] }
+          keywords: [] },
       ];
 
       return vuedoc.parse(options).then(({ data }) => {
@@ -740,7 +740,7 @@ describe('ECMAScript Feature Parsing', () => {
           }
         </script>
       `;
-      const features = [ 'data' ];
+      const features = ['data'];
       const options = { filecontent, features };
       const expected = [
         { kind: 'data',
@@ -758,7 +758,7 @@ describe('ECMAScript Feature Parsing', () => {
           description: undefined,
           type: 'number',
           initialValue: '0o767',
-          keywords: [] }
+          keywords: [] },
       ];
 
       return vuedoc.parse(options).then(({ data }) => {
@@ -784,7 +784,7 @@ describe('ECMAScript Feature Parsing', () => {
           }
         </script>
       `;
-      const features = [ 'data' ];
+      const features = ['data'];
       const options = { filecontent, features };
       const expected = [
         { kind: 'data',
@@ -834,7 +834,7 @@ describe('ECMAScript Feature Parsing', () => {
           description: undefined,
           type: 'bigint',
           initialValue: 'BigInt("0b11111111111111111111111111111111111111111111111111111")',
-          keywords: [] }
+          keywords: [] },
       ];
 
       return vuedoc.parse(options).then(({ data }) => {
@@ -864,7 +864,7 @@ describe('ECMAScript Feature Parsing', () => {
           }
         </script>
       `;
-      const features = [ 'data' ];
+      const features = ['data'];
       const options = { filecontent, features };
       const expected = [
         { kind: 'data',
@@ -920,7 +920,7 @@ describe('ECMAScript Feature Parsing', () => {
           version: undefined,
           type: 'boolean',
           initialValue: 'a && (a = b)',
-          keywords: [] }
+          keywords: [] },
       ];
 
       return vuedoc.parse(options).then(({ data }) => {
@@ -950,7 +950,7 @@ describe('ECMAScript Feature Parsing', () => {
           }
         </script>
       `;
-      const features = [ 'data' ];
+      const features = ['data'];
       const options = { filecontent, features };
       const expected = [
         { kind: 'data',
@@ -1016,7 +1016,7 @@ describe('ECMAScript Feature Parsing', () => {
           description: undefined,
           type: 'regexp',
           initialValue: '/azerty/',
-          keywords: [] }
+          keywords: [] },
       ];
 
       return vuedoc.parse(options).then(({ data }) => {

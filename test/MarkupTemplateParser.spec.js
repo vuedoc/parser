@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* global describe */
 
@@ -19,7 +19,7 @@ describe('MarkupTemplateParser', () => {
             </div>
           </div>
         </template>
-      `
+      `,
     },
     expected: {
       slots: [
@@ -30,7 +30,7 @@ describe('MarkupTemplateParser', () => {
           category: undefined,
           description: 'Use this slot to set the label',
           keywords: [],
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -39,10 +39,10 @@ describe('MarkupTemplateParser', () => {
           category: undefined,
           description: 'Use this slot to set the textarea value',
           keywords: [],
-          props: []
-        }
-      ]
-    }
+          props: [],
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -65,7 +65,7 @@ describe('MarkupTemplateParser', () => {
                 </div>
             </div>
         </template>
-      `
+      `,
     },
     expected: {
       slots: [
@@ -76,7 +76,7 @@ describe('MarkupTemplateParser', () => {
           category: undefined,
           description: 'Slot A',
           keywords: [],
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -85,10 +85,10 @@ describe('MarkupTemplateParser', () => {
           category: undefined,
           description: 'Slot B',
           keywords: [],
-          props: []
-        }
-      ]
-    }
+          props: [],
+        },
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -120,7 +120,7 @@ describe('MarkupTemplateParser', () => {
           <slot :name="'this-does-not'">hi</slot>
           <slot v-bind:name="'this-does-not2'">hi</slot>
         </template>
-      `
+      `,
     },
     expected: {
       slots: [
@@ -165,6 +165,6 @@ describe('MarkupTemplateParser', () => {
           props: [],
         },
       ],
-    }
+    },
   });
 });

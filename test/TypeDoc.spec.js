@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 describe('TypeDoc', () => {
   ComponentTestCase({
@@ -18,7 +18,7 @@ describe('TypeDoc', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -26,7 +26,7 @@ describe('TypeDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'doSomething(target: any, text: string): number'
+            'doSomething(target: any, text: string): number',
           ],
           name: 'doSomething',
           category: undefined,
@@ -38,23 +38,23 @@ describe('TypeDoc', () => {
               type: 'any',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'text',
               type: 'string',
               description: 'Comment for parameter ´text´.',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
           ],
           returns: {
             type: 'number',
-            description: undefined
+            description: undefined,
           },
           visibility: 'public' },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -71,7 +71,7 @@ describe('TypeDoc', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -79,7 +79,7 @@ describe('TypeDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'doSomething(target: any, value: number): number'
+            'doSomething(target: any, value: number): number',
           ],
           name: 'doSomething',
           category: undefined,
@@ -91,23 +91,23 @@ describe('TypeDoc', () => {
               type: 'any',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'value',
               type: 'number',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
           ],
           returns: {
             type: 'number',
-            description: 'Comment for special return value.'
+            description: 'Comment for special return value.',
           },
           visibility: 'public' },
-      ]
-    }
+      ],
+    },
   });
 
   ComponentTestCase({
@@ -128,12 +128,12 @@ describe('TypeDoc', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
-      methods: []
-    }
+      methods: [],
+    },
   });
 
   ComponentTestCase({
@@ -152,7 +152,7 @@ describe('TypeDoc', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -161,7 +161,7 @@ describe('TypeDoc', () => {
         {
           kind: 'method',
           syntax: [
-            'doSomething(): void'
+            'doSomething(): void',
           ],
           name: 'doSomething',
           description: 'Regular description',
@@ -170,11 +170,11 @@ describe('TypeDoc', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
+            description: undefined,
           },
-          visibility: 'public'
+          visibility: 'public',
         },
-      ]
-    }
+      ],
+    },
   });
 });

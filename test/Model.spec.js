@@ -1,4 +1,4 @@
-import * as parser from '..';
+import * as parser from '../index.js';
 
 /* global describe it expect */
 
@@ -27,7 +27,7 @@ describe('#42 - Model', () => {
       description: 'Use v-model to define a reactive model',
       keywords: [],
       prop: 'checked',
-      event: 'change'
+      event: 'change',
     };
 
     return parser.parse(options).then(({ model }) => {

@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils';
+import { ComponentTestCase } from './lib/TestUtils.js';
 
 /* global describe */
 
@@ -16,7 +16,7 @@ describe('JSXParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -27,7 +27,7 @@ describe('JSXParser', () => {
       events: [],
       methods: [],
       slots: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -43,7 +43,7 @@ describe('JSXParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -54,7 +54,7 @@ describe('JSXParser', () => {
       events: [],
       methods: [],
       slots: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -77,7 +77,7 @@ describe('JSXParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -97,9 +97,9 @@ describe('JSXParser', () => {
           category: undefined,
           description: undefined,
           visibility: 'public',
-        }
+        },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -122,7 +122,7 @@ describe('JSXParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -142,9 +142,9 @@ describe('JSXParser', () => {
           category: undefined,
           description: undefined,
           visibility: 'public',
-        }
+        },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -167,7 +167,7 @@ describe('JSXParser', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -187,9 +187,9 @@ describe('JSXParser', () => {
           category: undefined,
           description: undefined,
           visibility: 'public',
-        }
+        },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -210,7 +210,7 @@ describe('JSXParser', () => {
             )
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -230,8 +230,8 @@ describe('JSXParser', () => {
           category: undefined,
           description: undefined,
           visibility: 'public',
-        }
+        },
       ],
-    }
+    },
   });
 });

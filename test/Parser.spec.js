@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Parser } from '../lib/parser/Parser';
+import { Parser } from '../lib/parser/Parser.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -364,7 +364,7 @@ const script = `
 const events = [
   'name', 'description', 'keywords',
   'prop', 'data', 'computed', 'method',
-  'event', 'slot'
+  'event', 'slot',
 ];
 
 describe('Parser', () => {
@@ -391,7 +391,7 @@ describe('Parser', () => {
     });
 
     it('should parse with an invalid options.features', () => {
-      const options = { source: {}, features: [ 'invalid-feature' ] };
+      const options = { source: {}, features: ['invalid-feature'] };
 
       assert.throws(
         () => Parser.validateOptions(options),
@@ -400,7 +400,7 @@ describe('Parser', () => {
     });
 
     it('should parse with a valid options.features', () => {
-      const options = { source: {}, features: [ 'name', 'events' ] };
+      const options = { source: {}, features: ['name', 'events'] };
 
       assert.doesNotThrow(() => Parser.validateOptions(options));
     });
@@ -427,7 +427,7 @@ describe('Parser', () => {
       const filename = './fixtures/checkbox.vue';
       const options = {
         source: { script, template },
-        filename
+        filename,
       };
 
       const parser = new Parser(options);
@@ -439,7 +439,7 @@ describe('Parser', () => {
 
     it('should successfully create new object with missing script', () => {
       const options = {
-        source: { template }
+        source: { template },
       };
 
       const parser = new Parser(options);
@@ -450,7 +450,7 @@ describe('Parser', () => {
 
     it('should successfully create new object with empty script', () => {
       const options = {
-        source: { template, script: '' }
+        source: { template, script: '' },
       };
 
       const parser = new Parser(options);
@@ -465,7 +465,7 @@ describe('Parser', () => {
       const filename = './fixtures/checkbox.vue';
       const options = {
         source: { script, template },
-        filename
+        filename,
       };
 
       const parser = new Parser(options);
@@ -518,7 +518,7 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: [ 'name' ]
+          features: ['name'],
         };
 
         new Parser(options).walk()
@@ -544,7 +544,7 @@ describe('Parser', () => {
         const options = { source: { script } };
 
         new Parser(options).walk().on('keywords', ({ value }) => {
-          expect(value).toEqual([ { name: 'tagtest', description: '1.0.0' } ]);
+          expect(value).toEqual([{ name: 'tagtest', description: '1.0.0' }]);
           done();
         });
       });
@@ -560,7 +560,7 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: [ 'name' ]
+          features: ['name'],
         };
 
         new Parser(options).walk()
@@ -624,7 +624,7 @@ describe('Parser', () => {
         const template = '<slot/>';
         const options = {
           source: { template },
-          filename
+          filename,
         };
 
         new Parser(options).walk().on('slot', (slot) => {
@@ -647,7 +647,7 @@ describe('Parser', () => {
         `;
         const options = {
           source: { template },
-          filename
+          filename,
         };
 
         new Parser(options).walk().on('slot', (slot) => {
@@ -670,7 +670,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename,
-          features: [ 'name' ]
+          features: ['name'],
         };
 
         new Parser(options).walk()
@@ -691,7 +691,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ]
+          features: ['events'],
         };
 
         new Parser(options).walk()
@@ -716,7 +716,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ]
+          features: ['events'],
         };
 
         new Parser(options).walk()
@@ -741,8 +741,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ],
-          ignoredVisibilities: [ 'protected' ]
+          features: ['events'],
+          ignoredVisibilities: ['protected'],
         };
 
         new Parser(options).walk()
@@ -772,8 +772,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ],
-          ignoredVisibilities: [ 'private' ]
+          features: ['events'],
+          ignoredVisibilities: ['private'],
         };
 
         new Parser(options).walk()
@@ -782,7 +782,7 @@ describe('Parser', () => {
             expect(event.description).toBe('Emit the input event');
             expect(event.visibility).toBe('protected');
             expect(event.keywords).toEqual([
-              { name: 'value', description: 'A input value' }
+              { name: 'value', description: 'A input value' },
             ]);
             done();
           });
@@ -805,8 +805,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ],
-          ignoredVisibilities: [ 'private' ]
+          features: ['events'],
+          ignoredVisibilities: ['private'],
         };
 
         new Parser(options).walk()
@@ -815,7 +815,7 @@ describe('Parser', () => {
             expect(event.description).toBe('Emit the input event');
             expect(event.visibility).toBe('protected');
             expect(event.keywords).toEqual([
-              { name: 'value', description: 'A input value' }
+              { name: 'value', description: 'A input value' },
             ]);
             done();
           });
@@ -839,8 +839,8 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename: './fixtures/checkbox.vue',
-          features: [ 'events' ],
-          ignoredVisibilities: [ 'private' ]
+          features: ['events'],
+          ignoredVisibilities: ['private'],
         };
 
         const expected = [
@@ -851,7 +851,7 @@ describe('Parser', () => {
             visibility: 'protected',
             description: 'Emit the input event',
             keywords:
-            [ { name: 'value', description: 'A input value' } ] },
+            [{ name: 'value', description: 'A input value' }] },
           { kind: 'event',
             name: 'change',
             category: undefined,
@@ -859,7 +859,7 @@ describe('Parser', () => {
             visibility: 'protected',
             description: 'Emit the input event',
             keywords:
-            [ { name: 'value', description: 'A input value' } ] }
+            [{ name: 'value', description: 'A input value' }] },
         ];
 
         const result = [];
@@ -874,7 +874,7 @@ describe('Parser', () => {
     });
 
     describe('parseKeywords()', () => {
-      [ 'arg', 'prop', 'param', 'argument' ].forEach((tag) => {
+      ['arg', 'prop', 'param', 'argument'].forEach((tag) => {
         it(`should successfully emit param with @${tag}`, (done) => {
           const filename = './fixtures/checkbox.vue';
           const script = `
@@ -895,8 +895,8 @@ describe('Parser', () => {
               name: 'x',
               description: 'The x value.',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ];
 
           new Parser(options).walk().on('method', (method) => {
@@ -942,7 +942,7 @@ describe('Parser', () => {
             name: 'employee.department',
             description: 'The employee\'s department.',
             defaultValue: undefined,
-            rest: false }
+            rest: false },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -973,7 +973,7 @@ describe('Parser', () => {
             name: 'employees',
             description: 'The employees who are responsible for the project.',
             defaultValue: undefined,
-            rest: false }
+            rest: false },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -1018,7 +1018,7 @@ describe('Parser', () => {
             name: 'employees[].department',
             description: 'The employee\'s department.',
             defaultValue: undefined,
-            rest: false }
+            rest: false },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -1049,8 +1049,8 @@ describe('Parser', () => {
             description: 'Somebody\'s name.',
             optional: true,
             defaultValue: undefined,
-            rest: false
-          }
+            rest: false,
+          },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -1081,8 +1081,8 @@ describe('Parser', () => {
             description: 'Somebody\'s name.',
             defaultValue: undefined,
             optional: true,
-            rest: false
-          }
+            rest: false,
+          },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -1108,13 +1108,13 @@ describe('Parser', () => {
         const options = { source: { script }, filename };
         const expected = [
           {
-            type: [ 'string', 'string[]' ],
+            type: ['string', 'string[]'],
             name: 'somebody',
             description: 'Somebody\'s name, or an array of names.',
             optional: true,
             defaultValue: 'John Doe',
-            rest: false
-          }
+            rest: false,
+          },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -1145,8 +1145,8 @@ describe('Parser', () => {
             description: 'Somebody\'s name.',
             optional: true,
             defaultValue: 'John Doe',
-            rest: false
-          }
+            rest: false,
+          },
         ];
 
         new Parser(options).walk().on('method', (method) => {
@@ -1177,7 +1177,7 @@ describe('Parser', () => {
           { type: 'number',
             name: 'x',
             description: 'The x value.',
-            rest: false }
+            rest: false },
         ];
 
         new Parser(options).walk().on('event', (event) => {
@@ -1204,7 +1204,7 @@ describe('Parser', () => {
         const options = { source: { script }, filename };
         const expected = {
           type: 'number',
-          description: 'The x value.'
+          description: 'The x value.',
         };
 
         new Parser(options).walk().on('method', (method) => {
@@ -1231,7 +1231,7 @@ describe('Parser', () => {
         const options = { source: { script }, filename };
         const expected = {
           type: 'number',
-          description: 'The x value.'
+          description: 'The x value.',
         };
 
         new Parser(options).walk().on('method', (method) => {
@@ -1258,7 +1258,7 @@ describe('Parser', () => {
         const options = { source: { script }, filename };
         const expected = {
           type: 'number[]',
-          description: 'The x values.'
+          description: 'The x values.',
         };
 
         new Parser(options).walk().on('method', (method) => {
@@ -1283,8 +1283,8 @@ describe('Parser', () => {
         `;
         const options = { source: { script }, filename };
         const expected = {
-          type: [ 'string', 'string[]' ],
-          description: 'The x values.'
+          type: ['string', 'string[]'],
+          description: 'The x values.',
         };
 
         new Parser(options).walk().on('method', (method) => {
@@ -1306,7 +1306,7 @@ describe('Parser', () => {
         `;
         const options = {
           source: { template },
-          filename
+          filename,
         };
 
         new Parser(options).walk().on('name', ({ value }) => {
@@ -1324,7 +1324,7 @@ describe('Parser', () => {
         `;
         const options = {
           source: { script },
-          filename
+          filename,
         };
 
         new Parser(options).walk().on('name', ({ value }) => {
@@ -1343,7 +1343,7 @@ describe('Parser', () => {
         const options = {
           source: { script },
           filename,
-          features: [ 'description' ]
+          features: ['description'],
         };
 
         new Parser(options).walk()
@@ -1364,7 +1364,7 @@ describe('Parser', () => {
         const options = {
           source: { template },
           filename,
-          features: [ 'description' ]
+          features: ['description'],
         };
 
         new Parser(options).walk()
@@ -1386,7 +1386,7 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script }
+          source: { script },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1396,7 +1396,7 @@ describe('Parser', () => {
             event: 'change',
             description: undefined,
             visibility: 'public',
-            keywords: []
+            keywords: [],
           });
           done();
         });
@@ -1411,7 +1411,7 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script }
+          source: { script },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1421,7 +1421,7 @@ describe('Parser', () => {
             event: 'input',
             description: undefined,
             visibility: 'public',
-            keywords: []
+            keywords: [],
           });
           done();
         });
@@ -1436,7 +1436,7 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script }
+          source: { script },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1446,7 +1446,7 @@ describe('Parser', () => {
             event: 'change',
             description: undefined,
             visibility: 'public',
-            keywords: []
+            keywords: [],
           });
           done();
         });
@@ -1459,7 +1459,7 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script }
+          source: { script },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1469,7 +1469,7 @@ describe('Parser', () => {
             event: 'input',
             description: undefined,
             visibility: 'public',
-            keywords: []
+            keywords: [],
           });
           done();
         });
@@ -1487,7 +1487,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1516,7 +1516,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1544,7 +1544,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1569,7 +1569,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1588,7 +1588,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1612,21 +1612,21 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-a',
-          type: [ 'Boolean', 'Number' ],
+          type: ['Boolean', 'Number'],
           visibility: 'public',
           category: undefined,
           description: undefined,
           required: false,
           describeModel: false,
           keywords: [],
-          default: undefined
+          default: undefined,
         });
 
         done();
@@ -1644,21 +1644,21 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-o',
-          type: [ 'Boolean', 'Number' ],
+          type: ['Boolean', 'Number'],
           visibility: 'public',
           category: undefined,
           description: undefined,
           required: false,
           describeModel: false,
           keywords: [],
-          default: undefined
+          default: undefined,
         });
 
         done();
@@ -1679,7 +1679,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       const expected = {
@@ -1691,7 +1691,7 @@ describe('Parser', () => {
         description: 'ID data',
         initialValue: '12',
         type: 'number',
-        name: 'id'
+        name: 'id',
       };
 
       new Parser(options).walk().on('data', (entry) => {
@@ -1714,7 +1714,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       const expected = {
@@ -1726,7 +1726,7 @@ describe('Parser', () => {
         description: 'Enabled data',
         initialValue: 'false',
         type: 'boolean',
-        name: 'enabled'
+        name: 'enabled',
       };
 
       new Parser(options).walk().on('data', (entry) => {
@@ -1751,7 +1751,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       const expected = {
@@ -1763,7 +1763,7 @@ describe('Parser', () => {
         description: 'ID data',
         initialValue: '"Hello"',
         type: 'string',
-        name: 'id'
+        name: 'id',
       };
 
       new Parser(options).walk().on('data', (entry) => {
@@ -1788,7 +1788,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       const expected = {
@@ -1800,7 +1800,7 @@ describe('Parser', () => {
         description: 'ID data',
         initialValue: '"Hello"',
         type: 'string',
-        name: 'id'
+        name: 'id',
       };
 
       new Parser(options).walk().on('data', (entry) => {
@@ -1829,7 +1829,7 @@ describe('Parser', () => {
       const options = {
         source: { script },
         filename,
-        ignoredVisibilities: [ 'protected' ]
+        ignoredVisibilities: ['protected'],
       };
 
       const expected = {
@@ -1840,7 +1840,7 @@ describe('Parser', () => {
         description: 'ID computed prop',
         category: undefined,
         version: undefined,
-        dependencies: [ 'value', 'name' ]
+        dependencies: ['value', 'name'],
       };
 
       new Parser(options).walk().on('computed', (prop) => {
@@ -1873,7 +1873,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
       const expected = {
         name: 'idGetter',
@@ -1884,7 +1884,7 @@ describe('Parser', () => {
         keywords: [],
         visibility: 'public',
         description: 'ID computed prop',
-        dependencies: [ 'value', 'name' ]
+        dependencies: ['value', 'name'],
       };
 
       new Parser(options).walk().on('computed', (prop) => {
@@ -1912,7 +1912,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('computed', (prop) => {
@@ -1935,7 +1935,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       /* eslint-disable no-unused-vars */
@@ -1960,7 +1960,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk()
@@ -1981,7 +1981,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        filename
+        filename,
       };
 
       new Parser(options).walk().on('method', (prop) => {
@@ -1995,8 +1995,8 @@ describe('Parser', () => {
             type: 'unknown',
             defaultValue: undefined,
             description: undefined,
-            rest: false
-          }
+            rest: false,
+          },
         ]);
 
         done();
@@ -2010,7 +2010,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       const parser = new Parser(options);
@@ -2031,7 +2031,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2058,7 +2058,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        ignoredVisibilities: [ 'private' ]
+        ignoredVisibilities: ['private'],
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2084,7 +2084,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2109,7 +2109,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2138,7 +2138,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        ignoredVisibilities: [ 'private' ]
+        ignoredVisibilities: ['private'],
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2166,7 +2166,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2216,7 +2216,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       let eventCount = 0;
@@ -2243,7 +2243,7 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script }
+        source: { script },
       };
 
       let eventCount = 0;
@@ -2270,7 +2270,7 @@ describe('Parser', () => {
       `;
       const options = {
         source: { script },
-        features: [ 'name' ]
+        features: ['name'],
       };
 
       new Parser(options).walk()

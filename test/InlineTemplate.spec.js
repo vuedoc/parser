@@ -1,4 +1,4 @@
-import * as parser from '..';
+import * as parser from '../index.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */
@@ -13,7 +13,7 @@ describe('#44 - Inline Template', () => {
             template: '<slot>Hello, World!</slot>'
           })
         </script>
-      `
+      `,
     };
 
     return parser.parse(options).then(({ slots }) => {
@@ -25,8 +25,8 @@ describe('#44 - Inline Template', () => {
           category: undefined,
           keywords: [],
           name: 'default',
-          props: []
-        }
+          props: [],
+        },
       ]);
     });
   });
@@ -45,7 +45,7 @@ describe('#44 - Inline Template', () => {
             \`
           })
         </script>
-      `
+      `,
     };
 
     return parser.parse(options).then((component) => {
@@ -57,7 +57,7 @@ describe('#44 - Inline Template', () => {
         errors: [],
         warnings: [],
         slots:
-          [ {
+          [{
               kind: 'slot',
               visibility: 'public',
               description: 'Use this slot to set the content',
@@ -65,12 +65,12 @@ describe('#44 - Inline Template', () => {
               version: undefined,
               keywords: [],
               name: 'content',
-              props: [] } ],
+              props: [] }],
         props: [],
         data: [],
         computed: [],
         events:
-          [ {
+          [{
               kind: 'event',
               visibility: 'public',
               description: undefined,
@@ -78,8 +78,8 @@ describe('#44 - Inline Template', () => {
               version: undefined,
               keywords: [],
               name: 'input',
-              arguments: [] } ],
-        methods: []
+              arguments: [] }],
+        methods: [],
       });
     });
   });
