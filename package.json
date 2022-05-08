@@ -5,7 +5,6 @@
   "type": "module",
   "exports": {
     ".": "./index.js",
-    "./lib/entity/MethodEntry.js": "./lib/entity/MethodEntry.js"
     "./lib/Enum.js": "./lib/Enum.js",
     "./lib/entity/ComputedEntry.js": "./lib/entity/ComputedEntry.js",
     "./lib/entity/DataEntry.js": "./lib/entity/DataEntry.js",
