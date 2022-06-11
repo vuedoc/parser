@@ -43,7 +43,7 @@ const optionsForPropsArray = {
 };
 
 /* eslint-disable no-unused-vars */
-function testComponentMethods (optionsToParse) {
+function testComponentMethods(optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
@@ -78,7 +78,7 @@ function testComponentMethods (optionsToParse) {
   });
 }
 
-function testComponent (optionsToParse) {
+function testComponent(optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
@@ -106,7 +106,7 @@ function testComponent (optionsToParse) {
   });
 }
 
-function testComponentProps (optionsToParse) {
+function testComponentProps(optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
@@ -150,7 +150,7 @@ function testComponentProps (optionsToParse) {
   });
 }
 
-function testComponentSlots (optionsToParse) {
+function testComponentSlots(optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
@@ -186,7 +186,7 @@ function testComponentSlots (optionsToParse) {
   });
 }
 
-function testComponentEvents (optionsToParse) {
+function testComponentEvents(optionsToParse) {
   let component = {};
 
   beforeAll(async () => {
