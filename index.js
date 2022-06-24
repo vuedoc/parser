@@ -39,8 +39,6 @@ export async function parseOptions(options) {
   }
 
   options.source = {
-    template: '',
-    script: '',
     errors: [],
   };
 
@@ -65,11 +63,21 @@ export async function parseOptions(options) {
 
     const loader = new LoaderClass(loaderOptions);
 
-    await loader.load(source);
+    await loader.load({
+      attrs: {
+        lang: loaderName,
+      },
+      content: source,
+    });
   } else {
     const loader = new VueLoader(loaderOptions);
 
-    await loader.load(options.filecontent);
+    await loader.load({
+      attrs: {
+        lang: 'vue',
+      },
+      content: options.filecontent,
+    });
   }
 }
 
@@ -79,16 +87,12 @@ export async function parseComponent(options) {
   return new Promise((resolve) => {
     const component = {
       inheritAttrs: true,
-      errors: [],
+      errors: [...options.source.errors],
       warnings: [],
       keywords: [],
     };
 
     const parser = new Parser(options);
-
-    if (options.source.errors.length) {
-      component.errors = options.source.errors;
-    }
 
     parser.on('error', ({ message }) => {
       component.errors.push(message);

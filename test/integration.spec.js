@@ -423,8 +423,12 @@ describe('Integration', () => {
         encoding: 'utf8',
         ignoredVisibilities: ['protected', 'private'],
         source: {
-          template: '',
-          script: '',
+          template: {
+            attrs: { lang: 'html' },
+          },
+          script: {
+            attrs: { lang: 'js' },
+          },
           errors: [],
         },
       };
@@ -447,8 +451,12 @@ describe('Integration', () => {
         encoding: 'utf8',
         ignoredVisibilities: [...options.ignoredVisibilities],
         source: {
-          template: '',
-          script: '',
+          template: {
+            attrs: { lang: 'html' },
+          },
+          script: {
+            attrs: { lang: 'js' },
+          },
           errors: [],
         },
         loaders: [
@@ -472,8 +480,10 @@ describe('Integration', () => {
         encoding: 'utf8',
         ignoredVisibilities: [...options.ignoredVisibilities],
         source: {
-          template: '',
-          script: await Fixture.get('checkbox.js'),
+          script: {
+            attrs: { lang: 'js' },
+            content: await Fixture.get('checkbox.js'),
+          },
           errors: [],
         },
         loaders: [],
@@ -495,8 +505,12 @@ describe('Integration', () => {
         encoding: 'utf8',
         ignoredVisibilities: [...options.ignoredVisibilities],
         source: {
-          template: '',
-          script: '',
+          template: {
+            attrs: { lang: 'html' },
+          },
+          script: {
+            attrs: { lang: 'js' },
+          },
           errors: [],
         },
         loaders: [],
