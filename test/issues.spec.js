@@ -1522,7 +1522,7 @@ describe('issues', () => {
           name: 'highlight-overflow',
           arguments: [
             {
-              name: 'this.$refs.suggestions.length - 1',
+              name: 'index',
               type: 'unknown',
               description: undefined,
               rest: false
@@ -3667,7 +3667,7 @@ describe('issues', () => {
           "arguments": [
             {
               "description": undefined,
-              "name": '"hello"',
+              "name": 'something',
               "rest": false,
               "type": "string",
             },
@@ -3683,48 +3683,97 @@ describe('issues', () => {
     }
   });
 
-  // ComponentTestCase({
-  //   name: '#107 - Arguments length for event is wrong',
-  //   options: {
-  //     filecontent: `
-  //       <script>
-  //         export default {
-  //           mounted() {
-  //               /**
-  //                * Wrong arguments length
-  //                *
-  //                * @arg {string} 'accepts' Hello
-  //                */
-  //               this.$emit('work', 'accepts');
-  //           },
-  //         }
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     warnings: [],
-  //     errors: [],
-  //     events: [
-  //       {
-  //         "arguments": [
-  //           {
-  //             "description": undefined,
-  //             "name": '\'accepts\'',
-  //             "rest": false,
-  //             "type": "string",
-  //           },
-  //         ],
-  //         "category": undefined,
-  //         "description": "Wrong arguments length",
-  //         "keywords": [],
-  //         "kind": "event",
-  //         "name": "work",
-  //         "version": undefined,
-  //         "visibility": "public",
-  //       },
-  //     ],
-  //   }
-  // });
+  ComponentTestCase({
+    name: '#107 - Arguments length for event is wrong',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            mounted() {
+              /**
+               * Wrong arguments length
+               *
+               * @arg {string} 'accepts' Hello
+               */
+              this.$emit('work', 'accepts');
+
+
+              const complicatedCondition = !this.wrong && this.correct || this.okay;
+              
+              /**
+               * Weird name && too much arguments
+               *
+               * @arg {boolean} complicatedCondition
+               */
+              this.$emit('work2', complicatedCondition);
+              
+              /**
+               * Weird name && too much arguments
+               */
+              this.$emit('work3', !this.wrong && this.correct || this.okay);
+            },
+          }
+        </script>
+      `
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      events: [
+        {
+          "arguments": [
+            {
+              "description": 'Hello',
+              "name": '"accepts"',
+              "rest": false,
+              "type": "string",
+            },
+          ],
+          "category": undefined,
+          "description": "Wrong arguments length",
+          "keywords": [],
+          "kind": "event",
+          "name": "work",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": 'complicatedCondition',
+              "rest": false,
+              "type": "boolean",
+            },
+          ],
+          "category": undefined,
+          "description": "Weird name && too much arguments",
+          "keywords": [],
+          "kind": "event",
+          "name": "work2",
+          "version": undefined,
+          "visibility": "public",
+        },
+        {
+          "arguments": [
+            {
+              "description": undefined,
+              "name": '!this.wrong && this.correct || this.okay',
+              "rest": false,
+              "type": "boolean",
+            },
+          ],
+          "category": undefined,
+          "description": "Weird name && too much arguments",
+          "keywords": [],
+          "kind": "event",
+          "name": "work3",
+          "version": undefined,
+          "visibility": "public",
+        },
+      ],
+    }
+  });
 
   // ComponentTestCase({
   //   name: '#107 - Arguments length for event is wrong',
