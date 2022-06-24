@@ -490,18 +490,23 @@ describe('Parser', () => {
     });
 
     describe('description', () => {
-      const script = `
-        /**
-         * Component description
-         * on multiline
-         *
-         * with preserve
-         *
-         *
-         * whitespaces
-         */
-        export default {}
-      `;
+      const script = {
+        attrs: {
+          lang: 'js',
+        },
+        content: `
+          /**
+           * Component description
+           * on multiline
+           *
+           * with preserve
+           *
+           *
+           * whitespaces
+           */
+          export default {}
+        `,
+      };
 
       it('should successfully emit component description', (done) => {
         const options = { source: { script } };
@@ -531,15 +536,20 @@ describe('Parser', () => {
 
     describe('keywords', () => {
       it('should successfully emit component keywords by ignoring name, slot and mixin', (done) => {
-        const script = `
-          /**
-           * @name my-checkbox
-           * @mixin
-           * @slot default slot
-           * @tagtest 1.0.0
-           */
-          export default {}
-        `;
+        const script = {
+          attrs: {
+            lang: 'js',
+          },
+          content: `
+            /**
+             * @name my-checkbox
+             * @mixin
+             * @slot default slot
+             * @tagtest 1.0.0
+             */
+            export default {}
+          `,
+        };
 
         const options = { source: { script } };
 
@@ -571,16 +581,24 @@ describe('Parser', () => {
 
     describe('export default expression', () => {
       it('should successfully emit component name', (done) => {
-        const script = `
-          import child from 'child.vue'
-
-          const component = {
-            name: 'hello'
-          }
-
-          export default component
-        `;
-        const options = { source: { script } };
+        const options = {
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: `
+                import child from 'child.vue'
+      
+                const component = {
+                  name: 'hello'
+                }
+      
+                export default component
+              `,
+            },
+          },
+        };
 
         new Parser(options).walk().on('name', ({ value }) => {
           expect(value).toBe('hello');
@@ -598,18 +616,26 @@ describe('Parser', () => {
       });
 
       it('should not fail when there is a top-level non-assignment expression', (done) => {
-        const script = `
-          import library from 'library'
-
-          library.init()
-
-          const component = {
-            name: 'hello'
-          }
-
-          export default component
-        `;
-        const options = { source: { script } };
+        const options = {
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: `
+                import library from 'library'
+      
+                library.init()
+      
+                const component = {
+                  name: 'hello'
+                }
+      
+                export default component
+              `,
+            },
+          },
+        };
 
         new Parser(options).walk().on('name', ({ value }) => {
           expect(value).toBe('hello');
@@ -623,8 +649,15 @@ describe('Parser', () => {
         const filename = './fixtures/checkbox.vue';
         const template = '<slot/>';
         const options = {
-          source: { template },
           filename,
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk().on('slot', (slot) => {
@@ -646,8 +679,15 @@ describe('Parser', () => {
           </div>
         `;
         const options = {
-          source: { template },
           filename,
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk().on('slot', (slot) => {
@@ -668,9 +708,16 @@ describe('Parser', () => {
           </div>
         `;
         const options = {
-          source: { template },
           filename,
           features: ['name'],
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -688,10 +735,19 @@ describe('Parser', () => {
               v-on:input="$emit('input', $event)"/>
           </div>
         `;
+        const filename = './fixtures/checkbox.vue';
+        const features = ['events'];
         const options = {
-          source: { template },
-          filename: './fixtures/checkbox.vue',
-          features: ['events'],
+          filename,
+          features,
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -713,10 +769,19 @@ describe('Parser', () => {
               v-on:input="$emit('input', $event)"/>
           </div>
         `;
+        const filename = './fixtures/checkbox.vue';
+        const features = ['events'];
         const options = {
-          source: { template },
-          filename: './fixtures/checkbox.vue',
-          features: ['events'],
+          filename,
+          features,
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -738,11 +803,20 @@ describe('Parser', () => {
               v-on:input="$emit('input', $event)"/>
           </div>
         `;
+        const filename = './fixtures/checkbox.vue';
+        const features = ['events'];
         const options = {
-          source: { template },
-          filename: './fixtures/checkbox.vue',
-          features: ['events'],
+          filename,
+          features,
           ignoredVisibilities: ['protected'],
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -769,11 +843,20 @@ describe('Parser', () => {
               v-on:input="$emit('input', $event)"/>
           </div>
         `;
+        const filename = './fixtures/checkbox.vue';
+        const features = ['events'];
         const options = {
-          source: { template },
-          filename: './fixtures/checkbox.vue',
-          features: ['events'],
+          filename,
+          features,
           ignoredVisibilities: ['private'],
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -802,11 +885,20 @@ describe('Parser', () => {
               @input="$emit('input', $event)"/>
           </div>
         `;
+        const filename = './fixtures/checkbox.vue';
+        const features = ['events'];
         const options = {
-          source: { template },
-          filename: './fixtures/checkbox.vue',
-          features: ['events'],
+          filename,
+          features,
           ignoredVisibilities: ['private'],
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -836,11 +928,20 @@ describe('Parser', () => {
               v-on:change="$emit('change', $event)"/>
           </div>
         `;
+        const filename = './fixtures/checkbox.vue';
+        const features = ['events'];
         const options = {
-          source: { template },
-          filename: './fixtures/checkbox.vue',
-          features: ['events'],
+          filename,
+          features,
           ignoredVisibilities: ['private'],
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         const expected = [
@@ -888,7 +989,17 @@ describe('Parser', () => {
               }
             }
           `;
-          const options = { source: { script }, filename };
+          const options = {
+            filename,
+            source: {
+              script: {
+                attrs: {
+                  lang: 'js',
+                },
+                content: script,
+              },
+            },
+          };
           const expected = [
             {
               type: 'number',
@@ -923,7 +1034,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: 'Object',
@@ -966,7 +1087,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: 'Object[]',
@@ -999,7 +1130,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: 'Object[]',
@@ -1041,7 +1182,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: 'string',
@@ -1073,7 +1224,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: 'string',
@@ -1105,7 +1266,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: ['string', 'string[]'],
@@ -1137,7 +1308,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           {
             type: 'string',
@@ -1172,7 +1353,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = [
           { type: 'number',
             name: 'x',
@@ -1201,7 +1392,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = {
           type: 'number',
           description: 'The x value.',
@@ -1228,7 +1429,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = {
           type: 'number',
           description: 'The x value.',
@@ -1255,7 +1466,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = {
           type: 'number[]',
           description: 'The x values.',
@@ -1281,7 +1502,17 @@ describe('Parser', () => {
             }
           }
         `;
-        const options = { source: { script }, filename };
+        const options = {
+          filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
+        };
         const expected = {
           type: ['string', 'string[]'],
           description: 'The x values.',
@@ -1305,8 +1536,15 @@ describe('Parser', () => {
           </div>
         `;
         const options = {
-          source: { template },
           filename,
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk().on('name', ({ value }) => {
@@ -1323,8 +1561,15 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script },
           filename,
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
         };
 
         new Parser(options).walk().on('name', ({ value }) => {
@@ -1341,9 +1586,16 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script },
           filename,
           features: ['description'],
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -1362,9 +1614,16 @@ describe('Parser', () => {
           </div>
         `;
         const options = {
-          source: { template },
           filename,
           features: ['description'],
+          source: {
+            template: {
+              attrs: {
+                lang: 'html',
+              },
+              content: template,
+            },
+          },
         };
 
         new Parser(options).walk()
@@ -1386,7 +1645,14 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script },
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1411,7 +1677,14 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script },
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1436,7 +1709,14 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script },
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1459,7 +1739,14 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: { script },
+          source: {
+            script: {
+              attrs: {
+                lang: 'js',
+              },
+              content: script,
+            },
+          },
         };
 
         new Parser(options).walk().on('model', (model) => {
@@ -1486,8 +1773,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1515,8 +1809,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1543,8 +1844,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1568,8 +1876,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1587,8 +1902,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1612,7 +1934,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1644,7 +1973,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('prop', (prop) => {
@@ -1678,8 +2014,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       const expected = {
@@ -1713,8 +2056,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       const expected = {
@@ -1750,8 +2100,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       const expected = {
@@ -1787,8 +2144,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       const expected = {
@@ -1827,9 +2191,16 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
         ignoredVisibilities: ['protected'],
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       const expected = {
@@ -1872,8 +2243,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
       const expected = {
         name: 'idGetter',
@@ -1911,8 +2289,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('computed', (prop) => {
@@ -1934,8 +2319,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       /* eslint-disable no-unused-vars */
@@ -1959,8 +2351,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk()
@@ -1980,8 +2379,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         filename,
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('method', (prop) => {
@@ -2010,7 +2416,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       const parser = new Parser(options);
@@ -2031,7 +2444,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2057,8 +2477,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         ignoredVisibilities: ['private'],
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2084,7 +2511,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2109,7 +2543,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2137,8 +2578,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         ignoredVisibilities: ['private'],
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2166,7 +2614,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2192,7 +2647,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk().on('event', (event) => {
@@ -2216,7 +2678,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       let eventCount = 0;
@@ -2243,7 +2712,14 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       let eventCount = 0;
@@ -2269,8 +2745,15 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: { script },
         features: ['name'],
+        source: {
+          script: {
+            attrs: {
+              lang: 'js',
+            },
+            content: script,
+          },
+        },
       };
 
       new Parser(options).walk()

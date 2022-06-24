@@ -3,12 +3,28 @@ declare module '@vuedoc/parser/lib/Loader.js' {
     static extend(name: LoaderName, loader: Loader): Definition;
     static getFileContent(filename: string, options?: GetFileContentOptions): Promise<string>;
 
-    abstract load(): Promise<void>;  
-    emitTemplate(source: string): void;  
-    emitScript(source: string): void;  
+    abstract load(data: ScriptData | TemplateData): Promise<void>;  
+    emitTemplate(data: TemplateData): void;  
+    emitScript(data: ScriptData): void;  
     emitErrors(errors: any[]): void;
-    pipe(name: string, source: string): Promise<void>;
+    pipe(name: string, data: ScriptData | TemplateData): Promise<void>;
   }
+
+  type GenericAttrs = {
+    lang: string;
+  };
+
+  type ScriptAttrs = GenericAttrs & {
+    setup: boolean;
+  };
+
+  type PipeData<Attrs extends GenericAttrs = GenericAttrs> = {
+    content: string;
+    attrs: Attrs;
+  };
+
+  type ScriptData = PipeData<ScriptAttrs>;
+  type TemplateData = PipeData;
 
   /**
    * The loader name, which is either the extension of the file or the value of
