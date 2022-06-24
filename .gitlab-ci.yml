@@ -31,14 +31,15 @@ tests & coverage:
     paths:
       - coverage/
 
-dependencies check:
+security audit:
   stage: security
   needs: &tests-jobs
     - code quality
     - dependencies outdated
     - tests & coverage
   script:
-    - yarn audit --production
+    - yarn audit --level high --groups dependencies
+  allow_failure: true
 
 sast:
   stage: security
@@ -48,7 +49,7 @@ pages:
   stage: publish
   needs: &security-jobs
     - tests & coverage
-    - dependencies check
+    - security audit
   dependencies:
     - tests & coverage
   script:
