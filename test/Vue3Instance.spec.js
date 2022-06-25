@@ -417,5 +417,80 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'writable computed',
+      options: {
+        filecontent: `
+          <script lang="ts" setup>
+            import { ref, computed } from 'vue'
+
+            const firstName = ref('John')
+            const lastName = ref('Doe')
+            
+            /**
+             * Message value
+             */
+            const fullName = computed({
+              // getter
+              get() {
+                return firstName.value + ' ' + lastName.value
+              },
+              // setter
+              set(newValue) {
+                // Note: we are using destructuring assignment syntax here.
+                [firstName.value, lastName.value] = newValue.split(' ')
+              }
+            })
+            
+            /**
+             * Message value
+             */
+            const fullName2 = computed({
+              // getter
+              get(): kakarot {
+                return firstName.value + ' ' + lastName.value
+              },
+              // setter
+              set(newValue) {
+                // Note: we are using destructuring assignment syntax here.
+                [firstName.value, lastName.value] = newValue.split(' ')
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        events: [],
+        methods: [],
+        computed: [
+          {
+            kind: 'computed',
+            name: 'fullName',
+            type: 'unknown',
+            category: undefined,
+            version: undefined,
+            description: 'Message value',
+            dependencies: [],
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'computed',
+            name: 'fullName2',
+            type: 'kakarot',
+            category: undefined,
+            version: undefined,
+            description: 'Message value',
+            dependencies: [],
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 });
