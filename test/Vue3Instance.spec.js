@@ -18,12 +18,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [],
         data: [
           {
@@ -61,12 +57,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [],
         data: [
           {
@@ -114,12 +106,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [],
         data: [
           {
@@ -162,12 +150,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [],
         data: [
           {
@@ -205,12 +189,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [],
         data: [
           {
@@ -253,12 +233,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [],
         data: [
           {
@@ -295,12 +271,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [
           {
             kind: 'computed',
@@ -344,12 +316,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [
           {
             kind: 'computed',
@@ -429,12 +397,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        events: [],
-        methods: [],
+        errors: [],
+        warnings: [],
         computed: [
           {
             kind: 'computed',
@@ -475,11 +439,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        computed: [],
+        errors: [],
+        warnings: [],
         props: [
           {
             kind: 'prop',
@@ -513,11 +474,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        computed: [],
+        errors: [],
+        warnings: [],
         props: [
           {
             kind: 'prop',
@@ -564,10 +522,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
+        errors: [],
+        warnings: [],
         computed: [],
         props: [
           {
@@ -629,10 +585,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
+        errors: [],
+        warnings: [],
         computed: [],
         props: [
           {
@@ -695,10 +649,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
+        errors: [],
+        warnings: [],
         computed: [],
         props: [
           {
@@ -763,11 +715,25 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
+        errors: [],
+        warnings: [],
         computed: [],
+        props: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with missing type declaration',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            defineProps<MissingTyping>()
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
         props: [],
       },
     });
@@ -782,11 +748,8 @@ describe('Vue 3', () => {
         `,
       },
       expected: {
-        name: undefined,
-        description: undefined,
-        inheritAttrs: true,
-        keywords: [],
-        computed: [],
+        errors: [],
+        warnings: [],
         props: [
           {
             kind: 'prop',
@@ -798,6 +761,107 @@ describe('Vue 3', () => {
             default: undefined,
             describeModel: true,
             required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with withDefaults()',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            enum Bool {
+              oui = 1,
+              non
+            }
+
+            interface Iface {}
+
+            type Name = string;
+
+            interface Props {
+              msg?: string
+              labels: string[]
+              enum?: Bool
+              iface?: Iface
+              /**
+               * type description
+               */
+              type?: Name
+            }
+            
+            const props = withDefaults(defineProps<Props>(), {
+              msg: 'hello',
+              labels: () => ['one', 'two']
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'msg',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'labels',
+            type: 'string[]',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'enum',
+            type: 'Bool',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'iface',
+            type: 'Iface',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'type',
+            type: 'Name',
+            category: undefined,
+            version: undefined,
+            description: 'type description',
+            default: undefined,
+            describeModel: false,
+            required: false,
             keywords: [],
             visibility: 'public' },
         ],
