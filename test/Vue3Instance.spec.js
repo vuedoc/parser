@@ -15,10 +15,6 @@ describe('Vue 3', () => {
              */
             const message = 'Hello World!';
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -62,10 +58,6 @@ describe('Vue 3', () => {
              */
             const message2: bool.Custom = 'Hello World!';
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -119,10 +111,6 @@ describe('Vue 3', () => {
                */
               message2 = 'Hello World!2';
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -171,10 +159,6 @@ describe('Vue 3', () => {
              */
             const message = ref('Hello World!');
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -218,10 +202,6 @@ describe('Vue 3', () => {
                */
               message2 = ref('Hello World!2');
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -270,10 +250,6 @@ describe('Vue 3', () => {
              */
             const message = ref<number>('Hello World!');
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -316,10 +292,6 @@ describe('Vue 3', () => {
              */
             const message = computed(() => messagex);
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -369,10 +341,6 @@ describe('Vue 3', () => {
              */
             const message3 = computed<custom>((): number => messagex);
           </script>
-
-          <template>
-            <h1>{{ message }}</h1>
-          </template>
         `,
       },
       expected: {
@@ -490,6 +458,349 @@ describe('Vue 3', () => {
             visibility: 'public' },
         ],
         props: [],
+      },
+    });
+  });
+
+  describe('props', () => {
+    ComponentTestCase({
+      name: 'simple declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            const props = defineProps(['foo'])
+
+            console.log(props.foo)
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'foo',
+            type: 'unknown',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'object declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            defineProps({
+              /**
+               * Title description
+               */
+              title: String,
+              likes: Number
+            })
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'title',
+            type: 'String',
+            category: undefined,
+            version: undefined,
+            description: 'Title description',
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'likes',
+            type: 'Number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with TSTypeLiteral',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            defineProps<{
+              /**
+               * Title description
+               */
+              title?: string
+              likes?: number
+              modelValue: number
+            }>()
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'title',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: 'Title description',
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'likes',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'model-value',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: true,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with external TSTypeLiteral',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            type Props = {
+              /**
+               * Title description
+               */
+              title?: string
+              likes: number
+              modelValue: number
+            };
+  
+            defineProps<Props>()
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'title',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: 'Title description',
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'likes',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'model-value',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: true,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with class',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            declare class Props {
+              /**
+               * Title description
+               */
+              title?: string
+              likes: number
+              modelValue: number
+              get getter() { return this.title }
+            };
+  
+            defineProps<Props>()
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'title',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: 'Title description',
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'likes',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'model-value',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: true,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'getter',
+            type: 'unknown',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with empty TSTypeLiteral',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            defineProps<string>()
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'declaration with modelValue',
+      options: {
+        filecontent: `
+          <script setup lang="ts">
+            defineProps(['modelValue'])
+          </script>
+        `,
+      },
+      expected: {
+        name: undefined,
+        description: undefined,
+        inheritAttrs: true,
+        keywords: [],
+        computed: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'model-value',
+            type: 'unknown',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: true,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
       },
     });
   });

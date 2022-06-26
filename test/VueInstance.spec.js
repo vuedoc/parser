@@ -82,7 +82,7 @@ ComponentTestCase({
         keywords: [],
         kind: 'prop',
         name: 'todo',
-        required: false,
+        required: true,
         type: 'unknown',
         visibility: 'public' },
     ],
