@@ -117,7 +117,7 @@ function testComponentProps(optionsToParse) {
     const item = component.props.find((item) => item.describeModel);
 
     expect(item).toBeDefined();
-    assert.equal(item.type, 'Array');
+    assert.equal(item.type, 'array');
     assert.equal(item.required, true);
     assert.equal(item.twoWay, undefined);
     expect(item.description).toBe('The checkbox model');
@@ -127,7 +127,7 @@ function testComponentProps(optionsToParse) {
     const item = component.props.find((item) => item.name === 'disabled');
 
     expect(item).toBeDefined();
-    assert.equal(item.type, 'Boolean');
+    assert.equal(item.type, 'boolean');
     expect(item.description).toBe('Initial checkbox state');
   });
 
@@ -135,7 +135,7 @@ function testComponentProps(optionsToParse) {
     const item = component.props.find((item) => item.name === 'checked');
 
     expect(item).toBeDefined();
-    assert.equal(item.type, 'Boolean');
+    assert.equal(item.type, 'boolean');
     assert.equal(item.default, 'true');
     expect(item.description).toBe('Initial checkbox value');
   });
@@ -144,8 +144,8 @@ function testComponentProps(optionsToParse) {
     const item = component.props.find((item) => item.name === 'prop-with-camel');
 
     expect(item).toBeDefined();
-    assert.equal(item.type, 'Object');
-    assert.equal(item.default, '() => ({ name: \'X\'})');
+    assert.equal(item.type, 'object');
+    assert.equal(item.default, '{"name":"X"}');
     expect(item.description).toBe('Prop with camel name');
   });
 }
@@ -1105,7 +1105,7 @@ describe('Integration', () => {
           kind: 'prop',
           name: 'complex',
           required: false,
-          type: 'Object',
+          type: 'object',
           visibility: 'public' },
       ],
     },
@@ -1159,7 +1159,7 @@ describe('Integration', () => {
           kind: 'prop',
           name: 'complex-value',
           required: false,
-          type: 'Object',
+          type: 'object',
           visibility: 'public' },
         {
           default: 'true',
@@ -1171,7 +1171,7 @@ describe('Integration', () => {
           kind: 'prop',
           name: 'bool-false',
           required: false,
-          type: 'Boolean',
+          type: 'boolean',
           visibility: 'public' },
       ],
       methods: [
@@ -1416,7 +1416,7 @@ describe('Integration', () => {
           {
             kind: 'prop',
             name: 'prop',
-            type: 'String',
+            type: 'string',
             required: false,
             default: undefined,
             describeModel: false,

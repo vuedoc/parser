@@ -479,7 +479,7 @@ describe('Class Component', () => {
       props: [
         { kind: 'prop',
           name: 'name',
-          type: 'String',
+          type: 'string',
           category: undefined,
           version: undefined,
           required: false,

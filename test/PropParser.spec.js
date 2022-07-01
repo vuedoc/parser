@@ -73,7 +73,7 @@ describe('PropParser', () => {
           kind: 'prop',
           name: 'format',
           required: false,
-          type: 'Function',
+          type: 'function',
           visibility: 'public' },
       ],
     },
@@ -149,7 +149,7 @@ describe('PropParser', () => {
           kind: 'prop',
           name: 'complex',
           required: false,
-          type: 'Object',
+          type: 'object',
           visibility: 'public' },
       ],
     },
@@ -179,7 +179,7 @@ describe('PropParser', () => {
           kind: 'prop',
           name: 'disabled',
           required: false,
-          type: 'Boolean',
+          type: 'boolean',
           visibility: 'public' },
       ],
     },
@@ -230,7 +230,7 @@ describe('PropParser', () => {
           kind: 'prop',
           name: 'function-prop-with-default-as-keyword',
           required: false,
-          type: 'Function',
+          type: 'function',
           visibility: 'public',
           function: {
             name: 'functionPropWithDefaultAsKeyword',
@@ -264,7 +264,7 @@ describe('PropParser', () => {
           kind: 'prop',
           name: 'validator',
           required: false,
-          type: 'Function',
+          type: 'function',
           visibility: 'public',
           function: {
             name: 'validator',
@@ -305,26 +305,45 @@ describe('PropParser', () => {
                 name: "TestComponent",
                 props: {
                   testProp: {
-                      type: Object,
+                      type: Object as PropOptions<Record<string, any>>,
                       default: () => ({
                           a: 1,
                           b: 2,
                       })
-                  } as PropOptions<Record<string, any>>,
+                  },
                   testProp2: {
-                      type: Object,
-                      default: () => ({
-                          a: 1,
-                          b: 2,
-                      })
-                  } as Record<string, any>,
+                      type: Array as number[],
+                      default: () => [1,2]
+                  },
                   testProp3: {
-                      type: Object,
-                      default: () => ({
+                      type: Object as PropOptions<any>,
+                      default: () => {
+                        return {
                           a: 1,
                           b: 2,
-                      })
-                  } as PropOptions<any>,
+                        };
+                      }
+                  },
+                  testProp4: {
+                      type: Object as PropOptions<any>,
+                      default: function() {
+                        return {
+                          a: 1,
+                          b: 2,
+                        };
+                      }
+                  },
+                  testProp5: {
+                      type: Object as PropOptions<any>,
+                      default() {
+                        const x = 1;
+
+                        return {
+                          a: x,
+                          b: 2,
+                        };
+                      }
+                  },
                 }
             })
         </script>
@@ -343,7 +362,7 @@ describe('PropParser', () => {
           description: undefined,
           keywords: [],
           type: 'Record<string, any>',
-          default: '() => ({ a: 1, b: 2, })',
+          default: '{"a":1,"b":2}',
           name: 'test-prop',
           describeModel: false,
           required: false,
@@ -355,8 +374,8 @@ describe('PropParser', () => {
           version: undefined,
           description: undefined,
           keywords: [],
-          type: 'Record<string, any>',
-          default: '() => ({ a: 1, b: 2, })',
+          type: 'number[]',
+          default: '[1,2]',
           name: 'test-prop2',
           describeModel: false,
           required: false,
@@ -369,8 +388,34 @@ describe('PropParser', () => {
           description: undefined,
           keywords: [],
           type: 'any',
-          default: '() => ({ a: 1, b: 2, })',
+          default: '{"a":1,"b":2}',
           name: 'test-prop3',
+          describeModel: false,
+          required: false,
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'any',
+          default: '{"a":1,"b":2}',
+          name: 'test-prop4',
+          describeModel: false,
+          required: false,
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'any',
+          default: undefined,
+          name: 'test-prop5',
           describeModel: false,
           required: false,
         },
@@ -408,6 +453,12 @@ describe('PropParser', () => {
                 ) => Array<IContextMenuItem<any>>,
                 default: new Function(),
               },
+              menuFactoryMultiline2: {
+                type: Function as (
+                  selectedItemsData: Array<any>
+                ) => Array<IContextMenuItem<any>>,
+                default: function test() { return 1 },
+              },
             }
           })
         </script>
@@ -438,7 +489,7 @@ describe('PropParser', () => {
           version: undefined,
           description: undefined,
           keywords: [],
-          type: 'FactoryFunction',
+          type: '(selectedItemsData: Array<any>) => Array<any>',
           default: undefined,
           name: 'context-factory2',
           describeModel: false,
@@ -467,6 +518,19 @@ describe('PropParser', () => {
           type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
           default: 'new Function()',
           name: 'menu-factory-multiline',
+          describeModel: false,
+          required: false,
+        },
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          version: undefined,
+          description: undefined,
+          keywords: [],
+          type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
+          default: 'function() { return 1 }',
+          name: 'menu-factory-multiline2',
           describeModel: false,
           required: false,
         },

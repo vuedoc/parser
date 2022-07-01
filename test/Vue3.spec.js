@@ -480,7 +480,7 @@ describe('Vue 3', () => {
           {
             kind: 'prop',
             name: 'title',
-            type: 'String',
+            type: 'string',
             category: undefined,
             version: undefined,
             description: 'Title description',
@@ -492,7 +492,7 @@ describe('Vue 3', () => {
           {
             kind: 'prop',
             name: 'likes',
-            type: 'Number',
+            type: 'number',
             category: undefined,
             version: undefined,
             description: undefined,
@@ -782,7 +782,7 @@ describe('Vue 3', () => {
             type Name = string;
 
             interface Props {
-              msg?: string
+              msg: string
               labels: string[]
               enum?: Bool
               iface?: Iface
@@ -811,9 +811,9 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
+            default: '"hello"',
             describeModel: false,
-            required: false,
+            required: true,
             keywords: [],
             visibility: 'public' },
           {
@@ -823,7 +823,7 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
+            default: "['one', 'two']",
             describeModel: false,
             required: true,
             keywords: [],

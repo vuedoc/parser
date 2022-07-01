@@ -1788,7 +1788,7 @@ describe('Parser', () => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('id');
         expect(prop.default).toBe('"$id"');
-        expect(prop.type).toBe('String');
+        expect(prop.type).toBe('string');
         expect(prop.description).toBeUndefined();
         expect(prop.required).toBeFalsy();
         expect(prop.keywords).toEqual([]);
@@ -1826,7 +1826,7 @@ describe('Parser', () => {
         expect(prop.describeModel).toBe(true);
         expect(prop.description).toBeUndefined();
         expect(prop.keywords).toEqual([]);
-        expect(prop.type).toBe('String');
+        expect(prop.type).toBe('string');
         done();
       });
     });
@@ -1860,7 +1860,7 @@ describe('Parser', () => {
         expect(prop.name).toBe('checked');
         expect(prop.description).toBeUndefined();
         expect(prop.describeModel).toBeTruthy();
-        expect(prop.type).toBe('String');
+        expect(prop.type).toBe('string');
         expect(prop.keywords).toEqual([]);
         done();
       });
