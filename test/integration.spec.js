@@ -1053,7 +1053,7 @@ describe('Integration', () => {
       const expected = [
         {
           kind: 'event',
-          name: 'INPUT',
+          name: 'input',
           category: undefined,
           version: undefined,
           arguments: [],

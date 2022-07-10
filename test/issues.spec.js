@@ -3302,7 +3302,7 @@ describe('issues', () => {
           "category": undefined,
           "keywords": [],
           "kind": "event",
-          "name": "pressEnter",
+          "name": "press-enter",
           "version": undefined,
           "visibility": "public",
         },
