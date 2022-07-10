@@ -868,4 +868,209 @@ describe('Vue 3', () => {
       },
     });
   });
+
+  describe('events', () => {
+    ComponentTestCase({
+      name: 'simple declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            const emit = defineEmits(['change', 'delete'])
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        events: [
+          {
+            kind: 'event',
+            name: 'change',
+            keywords: [],
+            category: undefined,
+            description: undefined,
+            visibility: 'public',
+            arguments: [],
+          },
+          {
+            kind: 'event',
+            name: 'delete',
+            keywords: [],
+            category: undefined,
+            description: undefined,
+            visibility: 'public',
+            arguments: [],
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'Type-only emit declarations',
+      options: {
+        filecontent: `
+          <script setup>
+            const emit = defineEmits<{
+              (e: 'change', id: number): void
+              (e: 'update', value: string): void
+            }>()
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        events: [
+          {
+            kind: 'event',
+            name: 'change',
+            keywords: [],
+            category: undefined,
+            description: undefined,
+            visibility: 'public',
+            arguments: [
+              {
+                description: undefined,
+                name: 'id',
+                rest: false,
+                type: 'number',
+              },
+            ],
+          },
+          {
+            kind: 'event',
+            name: 'update',
+            keywords: [],
+            category: undefined,
+            description: undefined,
+            visibility: 'public',
+            arguments: [
+              {
+                description: undefined,
+                name: 'value',
+                rest: false,
+                type: 'string',
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'Events Validation',
+      options: {
+        filecontent: `
+          <script setup>
+            const emit = defineEmits({
+              // No validation
+              click: null,
+            
+              // Validate submit event
+              submit: ({ email, password }) => {
+                if (email && password) {
+                  return true
+                } else {
+                  console.warn('Invalid submit event payload!')
+                  return false
+                }
+              }
+            })
+            
+            function submitForm(email, password) {
+              emit('submit', { email, password })
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        events: [
+          {
+            kind: 'event',
+            name: 'click',
+            keywords: [],
+            category: undefined,
+            description: 'No validation',
+            visibility: 'public',
+            arguments: [],
+          },
+          {
+            kind: 'event',
+            name: 'submit',
+            keywords: [],
+            category: undefined,
+            description: 'Validate submit event',
+            visibility: 'public',
+            arguments: [
+              {
+                description: undefined,
+                name: '{ email, password }',
+                rest: false,
+                type: 'object',
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'Usage with v-model',
+      options: {
+        filecontent: `
+          <script setup>
+            defineProps(['modelValue'])
+            defineEmits(['update:modelValue'])
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        events: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'Multiple v-model bindings',
+      options: {
+        filecontent: `
+          <script setup>
+            defineProps({
+              firstName: String,
+              lastName: String
+            })
+            
+            defineEmits(['update:firstName', 'update:lastName'])
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        events: [
+          {
+            kind: 'event',
+            name: 'update:first-name',
+            keywords: [],
+            category: undefined,
+            description: undefined,
+            visibility: 'public',
+            arguments: [],
+          },
+          {
+            kind: 'event',
+            name: 'update:last-name',
+            keywords: [],
+            category: undefined,
+            description: undefined,
+            visibility: 'public',
+            arguments: [],
+          },
+        ],
+      },
+    });
+  });
 });
