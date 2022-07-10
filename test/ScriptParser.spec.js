@@ -242,7 +242,7 @@ describe('ScriptParser', () => {
     },
     expected: {
       errors: [
-        'Unexpected token (2:4)',
+        'Unexpected token (1:4)',
       ],
     },
   });

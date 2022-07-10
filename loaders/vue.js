@@ -14,7 +14,7 @@ export class VueLoader extends Loader {
       },
     };
 
-    const script = result.script || {
+    const script = result.script || result.scriptSetup || {
       attrs: {
         lang: DEFAULT_SCRIPT_LANG,
       },
