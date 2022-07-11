@@ -527,6 +527,54 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'markRaw() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { markRaw } from 'vue'
+            
+            const foo = markRaw({
+              nested: {}
+            })
+            
+            const bar = reactive({
+              // although \`foo\` is marked as raw, foo.nested is not.
+              nested: foo.nested
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'foo',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"nested":{}}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'bar',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"nested":{}}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
