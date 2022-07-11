@@ -620,6 +620,52 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'unref() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { ref, unref } from 'vue'
+            
+            const state = reactive({
+              foo: 1,
+              bar: 2
+            })
+            
+            const fooRef = toRef(state, 'foo')
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'state',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"foo":1,"bar":2}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'fooRef',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '1',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
