@@ -577,46 +577,46 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
-      name: 'effectScope() declaration',
+      name: 'unref() declaration',
       options: {
         filecontent: `
           <script setup>
-            import { effectScope } from 'vue'
+            import { ref, unref } from 'vue'
             
-            const scope = effectScope()
-
-            scope.run(() => {
-              /**
-               * @type number 
-               */
-              const doubled = computed(() => counter.value * 2)
-
-              watch(doubled, () => console.log(doubled.value))
-
-              watchEffect(() => console.log('Count: ', doubled.value))
+            const foo = ref({
+              nested: {}
             })
-
-            // to dispose all effects in the scope
-            scope.stop()
+            
+            const bar = unref(foo)
           </script>
         `,
       },
       expected: {
         errors: [],
         warnings: [],
-        computed: [
+        computed: [],
+        data: [
           {
-            kind: 'computed',
-            name: 'doubled',
-            type: 'number',
+            kind: 'data',
+            name: 'foo',
+            type: 'object',
             category: undefined,
             version: undefined,
             description: undefined,
-            dependencies: [],
+            initialValue: '{"nested":{}}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'bar',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"nested":{}}',
             keywords: [],
             visibility: 'public' },
         ],
-        data: [],
         props: [],
       },
     });
@@ -790,6 +790,51 @@ describe('Vue 3', () => {
             keywords: [],
             visibility: 'public' },
         ],
+        props: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'effectScope() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { effectScope } from 'vue'
+            
+            const scope = effectScope()
+
+            scope.run(() => {
+              /**
+               * @type number 
+               */
+              const doubled = computed(() => counter.value * 2)
+
+              watch(doubled, () => console.log(doubled.value))
+
+              watchEffect(() => console.log('Count: ', doubled.value))
+            })
+
+            // to dispose all effects in the scope
+            scope.stop()
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [
+          {
+            kind: 'computed',
+            name: 'doubled',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            dependencies: [],
+            keywords: [],
+            visibility: 'public' },
+        ],
+        data: [],
         props: [],
       },
     });
