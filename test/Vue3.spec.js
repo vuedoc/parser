@@ -251,6 +251,51 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'reactive declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { reactive } from 'vue'
+            
+            /**
+             * Message value
+             */
+            const obj = reactive({ count: 0 })
+            const map = reactive(new Map([['count', ref(0)]]))
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'obj',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: 'Message value',
+            initialValue: '{"count":0}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'map',
+            type: 'Map',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: 'new Map([[\'count\', ref(0)]])',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
