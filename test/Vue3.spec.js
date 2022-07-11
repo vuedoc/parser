@@ -441,6 +441,39 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'triggerRef() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { triggerRef } from 'vue'
+            
+            const shallow = triggerRef({
+              greet: 'Hello, world'
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'shallow',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"greet":"Hello, world"}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
