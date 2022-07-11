@@ -296,6 +296,48 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'readonly() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { reactive, readonly } from 'vue'
+            
+            const original = reactive({ count: 0 })
+            const copy = readonly(original)
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'original',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"count":0}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'copy',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"count":0}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
