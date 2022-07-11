@@ -405,6 +405,42 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'shallowReadonly() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { shallowReadonly } from 'vue'
+            
+            const state = shallowReadonly({
+              foo: 1,
+              nested: {
+                bar: 2
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'state',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"foo":1,"nested":{"bar":2}}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
