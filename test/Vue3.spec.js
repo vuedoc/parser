@@ -474,6 +474,59 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'toRaw() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { toRaw } from 'vue'
+            
+            const foo = {}
+            const reactiveFoo = reactive(foo)
+            const rawFoo = toRaw(reactiveFoo)
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'foo',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'reactiveFoo',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'rawFoo',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
