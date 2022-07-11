@@ -575,6 +575,51 @@ describe('Vue 3', () => {
         props: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'effectScope() declaration',
+      options: {
+        filecontent: `
+          <script setup>
+            import { effectScope } from 'vue'
+            
+            const scope = effectScope()
+
+            scope.run(() => {
+              /**
+               * @type number 
+               */
+              const doubled = computed(() => counter.value * 2)
+
+              watch(doubled, () => console.log(doubled.value))
+
+              watchEffect(() => console.log('Count: ', doubled.value))
+            })
+
+            // to dispose all effects in the scope
+            scope.stop()
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [
+          {
+            kind: 'computed',
+            name: 'doubled',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            dependencies: [],
+            keywords: [],
+            visibility: 'public' },
+        ],
+        data: [],
+        props: [],
+      },
+    });
   });
 
   describe('computed', () => {
