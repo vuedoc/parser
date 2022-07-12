@@ -75,7 +75,7 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
-      name: 'defineComponent()  with setup',
+      name: 'defineComponent() with setup',
       options: {
         filecontent: `
           <script setup>
@@ -111,6 +111,24 @@ describe('Vue 3', () => {
             keywords: [],
             visibility: 'public' },
         ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'useAttrs()',
+      options: {
+        filecontent: `
+          <script setup>
+            import { useAttrs } from 'vue'
+
+            const attrs = useAttrs()
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [],
       },
     });
   });
