@@ -75,6 +75,77 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
+      name: 'defineCustomElement()',
+      options: {
+        filecontent: `
+          <script>
+            import { defineCustomElement } from 'vue'
+
+            export default defineCustomElement({
+              // type inference enabled
+              props: {
+                name: String,
+                msg: { type: String, required: true }
+              },
+              data() {
+                return {
+                  count: 1
+                }
+              },
+              mounted() {
+                this.name // type: string | undefined
+                this.msg // type: string
+                this.count // type: number
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'count',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '1',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [
+          {
+            kind: 'prop',
+            name: 'name',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: false,
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'prop',
+            name: 'msg',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            default: undefined,
+            describeModel: false,
+            required: true,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
       name: 'defineComponent() with setup',
       options: {
         filecontent: `
