@@ -2,1015 +2,1015 @@ import { describe } from '@jest/globals';
 import { ComponentTestCase } from './lib/TestUtils.js';
 
 describe('Vue 3', () => {
-  describe('General Usage', () => {
-    ComponentTestCase({
-      name: 'defineComponent()',
-      options: {
-        filecontent: `
-          <script>
-            import { defineComponent } from 'vue'
+  // describe('General Usage', () => {
+  //   ComponentTestCase({
+  //     name: 'defineComponent()',
+  //     options: {
+  //       filecontent: `
+  //         <script>
+  //           import { defineComponent } from 'vue'
 
-            export default defineComponent({
-              // type inference enabled
-              props: {
-                name: String,
-                msg: { type: String, required: true }
-              },
-              data() {
-                return {
-                  count: 1
-                }
-              },
-              mounted() {
-                this.name // type: string | undefined
-                this.msg // type: string
-                this.count // type: number
-              }
-            })
-          </script>
-        `,
-      },
-      expected: {
-        errors: [],
-        warnings: [],
-        data: [
-          {
-            kind: 'data',
-            name: 'count',
-            type: 'number',
-            category: undefined,
-            version: undefined,
-            description: undefined,
-            initialValue: '1',
-            keywords: [],
-            visibility: 'public' },
-        ],
-        props: [
-          {
-            kind: 'prop',
-            name: 'name',
-            type: 'string',
-            category: undefined,
-            version: undefined,
-            description: undefined,
-            default: undefined,
-            describeModel: false,
-            required: false,
-            keywords: [],
-            visibility: 'public' },
-          {
-            kind: 'prop',
-            name: 'msg',
-            type: 'string',
-            category: undefined,
-            version: undefined,
-            description: undefined,
-            default: undefined,
-            describeModel: false,
-            required: true,
-            keywords: [],
-            visibility: 'public' },
-        ],
-      },
-    });
+  //           export default defineComponent({
+  //             // type inference enabled
+  //             props: {
+  //               name: String,
+  //               msg: { type: String, required: true }
+  //             },
+  //             data() {
+  //               return {
+  //                 count: 1
+  //               }
+  //             },
+  //             mounted() {
+  //               this.name // type: string | undefined
+  //               this.msg // type: string
+  //               this.count // type: number
+  //             }
+  //           })
+  //         </script>
+  //       `,
+  //     },
+  //     expected: {
+  //       errors: [],
+  //       warnings: [],
+  //       data: [
+  //         {
+  //           kind: 'data',
+  //           name: 'count',
+  //           type: 'number',
+  //           category: undefined,
+  //           version: undefined,
+  //           description: undefined,
+  //           initialValue: '1',
+  //           keywords: [],
+  //           visibility: 'public' },
+  //       ],
+  //       props: [
+  //         {
+  //           kind: 'prop',
+  //           name: 'name',
+  //           type: 'string',
+  //           category: undefined,
+  //           version: undefined,
+  //           description: undefined,
+  //           default: undefined,
+  //           describeModel: false,
+  //           required: false,
+  //           keywords: [],
+  //           visibility: 'public' },
+  //         {
+  //           kind: 'prop',
+  //           name: 'msg',
+  //           type: 'string',
+  //           category: undefined,
+  //           version: undefined,
+  //           description: undefined,
+  //           default: undefined,
+  //           describeModel: false,
+  //           required: true,
+  //           keywords: [],
+  //           visibility: 'public' },
+  //       ],
+  //     },
+  //   });
 
-    ComponentTestCase({
-      name: 'defineComponent()  with setup',
-      options: {
-        filecontent: `
-          <script setup>
-            import { defineComponent } from 'vue'
+  //   ComponentTestCase({
+  //     name: 'defineComponent()  with setup',
+  //     options: {
+  //       filecontent: `
+  //         <script setup>
+  //           import { defineComponent } from 'vue'
 
-            export default defineComponent({
-              // type inference enabled
-              props: {
-                message: String
-              },
-              setup(props) {
-                props.message // type: string | undefined
-              }
-            })
-          </script>
-        `,
-      },
-      expected: {
-        errors: [],
-        warnings: [],
-        data: [],
-        props: [
-          {
-            kind: 'prop',
-            name: 'message',
-            type: 'string',
-            category: undefined,
-            version: undefined,
-            description: undefined,
-            default: undefined,
-            describeModel: false,
-            required: false,
-            keywords: [],
-            visibility: 'public' },
-        ],
-      },
-    });
-  });
+  //           export default defineComponent({
+  //             // type inference enabled
+  //             props: {
+  //               message: String
+  //             },
+  //             setup(props) {
+  //               props.message // type: string | undefined
+  //             }
+  //           })
+  //         </script>
+  //       `,
+  //     },
+  //     expected: {
+  //       errors: [],
+  //       warnings: [],
+  //       data: [],
+  //       props: [
+  //         {
+  //           kind: 'prop',
+  //           name: 'message',
+  //           type: 'string',
+  //           category: undefined,
+  //           version: undefined,
+  //           description: undefined,
+  //           default: undefined,
+  //           describeModel: false,
+  //           required: false,
+  //           keywords: [],
+  //           visibility: 'public' },
+  //       ],
+  //     },
+  //   });
+  // });
 
   describe('Composition API', () => {
-    describe('data', () => {
-      ComponentTestCase({
-        name: 'simple declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref } from 'vue'
-              
-              /**
-               * Message value
-               */
-              const message = 'Hello World!';
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    // describe('data', () => {
+    //   ComponentTestCase({
+    //     name: 'simple declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { ref } from 'vue'
 
-      ComponentTestCase({
-        name: 'simple declaration with typing',
-        options: {
-          filecontent: `
-            <script lang="ts" setup>
-              import { ref } from 'vue'
-              
-              /**
-               * Message value
-               */
-              const message: number = 'Hello World!';
-              
-              /**
-               * Message value
-               */
-              const message2: bool.Custom = 'Hello World!';
-              
-              let x: string | number = 1
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'message2',
-              type: 'bool.Custom',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'x',
-              type: ['string', 'number'],
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '1',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           /**
+    //            * Message value
+    //            */
+    //           const message = 'Hello World!';
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'message',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'multiple declarations',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref } from 'vue'
-              
-              const 
-                /**
-                 * Message value
-                 */
-                message = 'Hello World!', 
-                /**
-                 * Message value 2
-                 */
-                message2 = 'Hello World!2';
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'message2',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value 2',
-              initialValue: '"Hello World!2"',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'simple declaration with typing',
+    //     options: {
+    //       filecontent: `
+    //         <script lang="ts" setup>
+    //           import { ref } from 'vue'
 
-      ComponentTestCase({
-        name: 'ref declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref } from 'vue'
-              
-              /**
-               * Message value
-               */
-              const message = ref('Hello World!');
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           /**
+    //            * Message value
+    //            */
+    //           const message: number = 'Hello World!';
 
-      ComponentTestCase({
-        name: 'multiple ref declarations',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref } from 'vue'
-              
-              const
-                /**
-                 * Message value
-                 */
-                message = ref('Hello World!'),
-                /**
-                 * Message value 2
-                 */
-                message2 = ref('Hello World!2');
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'message2',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value 2',
-              initialValue: '"Hello World!2"',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           /**
+    //            * Message value
+    //            */
+    //           const message2: bool.Custom = 'Hello World!';
 
-      ComponentTestCase({
-        name: 'ref declaration with typing',
-        options: {
-          filecontent: `
-            <script lang="ts" setup>
-              import { ref } from 'vue'
-              
-              /**
-               * Message value
-               */
-              const message = ref<number>('Hello World!');
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           let x: string | number = 1
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'message',
+    //           type: 'number',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'message2',
+    //           type: 'bool.Custom',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'x',
+    //           type: ['string', 'number'],
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '1',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'reactive declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { reactive } from 'vue'
-              
-              /**
-               * Message value
-               */
-              const obj = reactive({ count: 0 })
-              const map = reactive(new Map([['count', ref(0)]]))
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'obj',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '{"count":0}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'map',
-              type: 'Map',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: 'new Map([[\'count\', ref(0)]])',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'multiple declarations',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { ref } from 'vue'
 
-      ComponentTestCase({
-        name: 'readonly() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { reactive, readonly } from 'vue'
-              
-              const original = reactive({ count: 0 })
-              const copy = readonly(original)
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'original',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"count":0}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'copy',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"count":0}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           const
+    //             /**
+    //              * Message value
+    //              */
+    //             message = 'Hello World!',
+    //             /**
+    //              * Message value 2
+    //              */
+    //             message2 = 'Hello World!2';
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'message',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'message2',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value 2',
+    //           initialValue: '"Hello World!2"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'shallowRef() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { shallowRef } from 'vue'
-              
-              const state = shallowRef({ count: 1 })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'state',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"count":1}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'ref declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { ref } from 'vue'
 
-      ComponentTestCase({
-        name: 'shallowReactive() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { shallowReactive } from 'vue'
-              
-              const state = shallowReactive({
-                foo: 1,
-                nested: {
-                  bar: 2
-                }
-              })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'state',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"foo":1,"nested":{"bar":2}}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           /**
+    //            * Message value
+    //            */
+    //           const message = ref('Hello World!');
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'message',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'shallowReadonly() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { shallowReadonly } from 'vue'
-              
-              const state = shallowReadonly({
-                foo: 1,
-                nested: {
-                  bar: 2
-                }
-              })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'state',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"foo":1,"nested":{"bar":2}}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'multiple ref declarations',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { ref } from 'vue'
 
-      ComponentTestCase({
-        name: 'triggerRef() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { triggerRef } from 'vue'
-              
-              const shallow = triggerRef({
-                greet: 'Hello, world'
-              })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'shallow',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"greet":"Hello, world"}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           const
+    //             /**
+    //              * Message value
+    //              */
+    //             message = ref('Hello World!'),
+    //             /**
+    //              * Message value 2
+    //              */
+    //             message2 = ref('Hello World!2');
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'message',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'message2',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value 2',
+    //           initialValue: '"Hello World!2"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'toRaw() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { toRaw } from 'vue'
-              
-              const foo = {}
-              const reactiveFoo = reactive(foo)
-              const rawFoo = toRaw(reactiveFoo)
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'foo',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'reactiveFoo',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'rawFoo',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'ref declaration with typing',
+    //     options: {
+    //       filecontent: `
+    //         <script lang="ts" setup>
+    //           import { ref } from 'vue'
 
-      ComponentTestCase({
-        name: 'markRaw() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { markRaw } from 'vue'
-              
-              const foo = markRaw({
-                nested: {}
-              })
-              
-              const bar = reactive({
-                // although \`foo\` is marked as raw, foo.nested is not.
-                nested: foo.nested
-              })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'foo',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"nested":{}}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'bar',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"nested":{}}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           /**
+    //            * Message value
+    //            */
+    //           const message = ref<number>('Hello World!');
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'message',
+    //           type: 'number',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '"Hello World!"',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'unref() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref, unref } from 'vue'
-              
-              const foo = ref({
-                nested: {}
-              })
-              
-              const bar = unref(foo)
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'foo',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"nested":{}}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'bar',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"nested":{}}',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'reactive declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { reactive } from 'vue'
 
-      ComponentTestCase({
-        name: 'unref() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref, unref } from 'vue'
-              
-              const state = reactive({
-                foo: 1,
-                bar: 2
-              })
-              
-              const fooRef = toRef(state, 'foo')
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'state',
-              type: 'object',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '{"foo":1,"bar":2}',
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'data',
-              name: 'fooRef',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              initialValue: '1',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
-    });
+    //           /**
+    //            * Message value
+    //            */
+    //           const obj = reactive({ count: 0 })
+    //           const map = reactive(new Map([['count', ref(0)]]))
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'obj',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           initialValue: '{"count":0}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'map',
+    //           type: 'Map',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: 'new Map([[\'count\', ref(0)]])',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-    describe('computed', () => {
-      ComponentTestCase({
-        name: 'simple declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { computed } from 'vue'
-              
-              const messagex = 'Hello World!';
-              
-              /**
-               * Message value
-               */
-              const message = computed(() => messagex);
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [
-            {
-              kind: 'computed',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //   ComponentTestCase({
+    //     name: 'readonly() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { reactive, readonly } from 'vue'
 
-      ComponentTestCase({
-        name: 'simple declaration with typing',
-        options: {
-          filecontent: `
-            <script lang="ts" setup>
-              import { computed } from 'vue'
-              
-              const messagex = 'Hello World!';
-              
-              /**
-               * Message value
-               */
-              const message = computed((): number => messagex);
-              
-              /**
-               * Message value
-               */
-              const message2: bool.custom = computed((): number => messagex);
-              
-              /**
-               * Message value
-               */
-              const message3 = computed<custom>((): number => messagex);
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [
-            {
-              kind: 'computed',
-              name: 'message',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'computed',
-              name: 'message2',
-              type: 'bool.custom',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'computed',
-              name: 'message3',
-              type: 'custom',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           const original = reactive({ count: 0 })
+    //           const copy = readonly(original)
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'original',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"count":0}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'copy',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"count":0}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'writable computed',
-        options: {
-          filecontent: `
-            <script lang="ts" setup>
-              import { ref, computed } from 'vue'
+    //   ComponentTestCase({
+    //     name: 'shallowRef() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { shallowRef } from 'vue'
 
-              const firstName = ref('John')
-              const lastName = ref('Doe')
-              
-              /**
-               * Message value
-               */
-              const fullName = computed({
-                // getter
-                get() {
-                  return firstName.value + ' ' + lastName.value
-                },
-                // setter
-                set(newValue) {
-                  // Note: we are using destructuring assignment syntax here.
-                  [firstName.value, lastName.value] = newValue.split(' ')
-                }
-              })
-              
-              /**
-               * Message value
-               */
-              const fullName2 = computed({
-                // getter
-                get(): kakarot {
-                  return firstName.value + ' ' + lastName.value
-                },
-                // setter
-                set(newValue) {
-                  // Note: we are using destructuring assignment syntax here.
-                  [firstName.value, lastName.value] = newValue.split(' ')
-                }
-              })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [
-            {
-              kind: 'computed',
-              name: 'fullName',
-              type: 'unknown',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'computed',
-              name: 'fullName2',
-              type: 'kakarot',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+    //           const state = shallowRef({ count: 1 })
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'state',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"count":1}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-      ComponentTestCase({
-        name: 'effectScope() declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { effectScope } from 'vue'
-              
-              const scope = effectScope()
+    //   ComponentTestCase({
+    //     name: 'shallowReactive() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { shallowReactive } from 'vue'
 
-              scope.run(() => {
-                /**
-                 * @type number 
-                 */
-                const doubled = computed(() => counter.value * 2)
+    //           const state = shallowReactive({
+    //             foo: 1,
+    //             nested: {
+    //               bar: 2
+    //             }
+    //           })
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'state',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"foo":1,"nested":{"bar":2}}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-                watch(doubled, () => console.log(doubled.value))
+    //   ComponentTestCase({
+    //     name: 'shallowReadonly() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { shallowReadonly } from 'vue'
 
-                watchEffect(() => console.log('Count: ', doubled.value))
-              })
+    //           const state = shallowReadonly({
+    //             foo: 1,
+    //             nested: {
+    //               bar: 2
+    //             }
+    //           })
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'state',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"foo":1,"nested":{"bar":2}}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
 
-              // to dispose all effects in the scope
-              scope.stop()
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [
-            {
-              kind: 'computed',
-              name: 'doubled',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              dependencies: [],
-              keywords: [],
-              visibility: 'public' },
-          ],
-          data: [],
-          props: [],
-        },
-      });
-    });
+    //   ComponentTestCase({
+    //     name: 'triggerRef() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { triggerRef } from 'vue'
+
+    //           const shallow = triggerRef({
+    //             greet: 'Hello, world'
+    //           })
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'shallow',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"greet":"Hello, world"}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'toRaw() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { toRaw } from 'vue'
+
+    //           const foo = {}
+    //           const reactiveFoo = reactive(foo)
+    //           const rawFoo = toRaw(reactiveFoo)
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'foo',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'reactiveFoo',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'rawFoo',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'markRaw() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { markRaw } from 'vue'
+
+    //           const foo = markRaw({
+    //             nested: {}
+    //           })
+
+    //           const bar = reactive({
+    //             // although \`foo\` is marked as raw, foo.nested is not.
+    //             nested: foo.nested
+    //           })
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'foo',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"nested":{}}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'bar',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"nested":{}}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'unref() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { ref, unref } from 'vue'
+
+    //           const foo = ref({
+    //             nested: {}
+    //           })
+
+    //           const bar = unref(foo)
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'foo',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"nested":{}}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'bar',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"nested":{}}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'unref() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { ref, unref } from 'vue'
+
+    //           const state = reactive({
+    //             foo: 1,
+    //             bar: 2
+    //           })
+
+    //           const fooRef = toRef(state, 'foo')
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [],
+    //       data: [
+    //         {
+    //           kind: 'data',
+    //           name: 'state',
+    //           type: 'object',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '{"foo":1,"bar":2}',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'data',
+    //           name: 'fooRef',
+    //           type: 'number',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           initialValue: '1',
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+    // });
+
+    // describe('computed', () => {
+    //   ComponentTestCase({
+    //     name: 'simple declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { computed } from 'vue'
+
+    //           const messagex = 'Hello World!';
+
+    //           /**
+    //            * Message value
+    //            */
+    //           const message = computed(() => messagex);
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [
+    //         {
+    //           kind: 'computed',
+    //           name: 'message',
+    //           type: 'string',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'simple declaration with typing',
+    //     options: {
+    //       filecontent: `
+    //         <script lang="ts" setup>
+    //           import { computed } from 'vue'
+
+    //           const messagex = 'Hello World!';
+
+    //           /**
+    //            * Message value
+    //            */
+    //           const message = computed((): number => messagex);
+
+    //           /**
+    //            * Message value
+    //            */
+    //           const message2: bool.custom = computed((): number => messagex);
+
+    //           /**
+    //            * Message value
+    //            */
+    //           const message3 = computed<custom>((): number => messagex);
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [
+    //         {
+    //           kind: 'computed',
+    //           name: 'message',
+    //           type: 'number',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'computed',
+    //           name: 'message2',
+    //           type: 'bool.custom',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'computed',
+    //           name: 'message3',
+    //           type: 'custom',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'writable computed',
+    //     options: {
+    //       filecontent: `
+    //         <script lang="ts" setup>
+    //           import { ref, computed } from 'vue'
+
+    //           const firstName = ref('John')
+    //           const lastName = ref('Doe')
+
+    //           /**
+    //            * Message value
+    //            */
+    //           const fullName = computed({
+    //             // getter
+    //             get() {
+    //               return firstName.value + ' ' + lastName.value
+    //             },
+    //             // setter
+    //             set(newValue) {
+    //               // Note: we are using destructuring assignment syntax here.
+    //               [firstName.value, lastName.value] = newValue.split(' ')
+    //             }
+    //           })
+
+    //           /**
+    //            * Message value
+    //            */
+    //           const fullName2 = computed({
+    //             // getter
+    //             get(): kakarot {
+    //               return firstName.value + ' ' + lastName.value
+    //             },
+    //             // setter
+    //             set(newValue) {
+    //               // Note: we are using destructuring assignment syntax here.
+    //               [firstName.value, lastName.value] = newValue.split(' ')
+    //             }
+    //           })
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [
+    //         {
+    //           kind: 'computed',
+    //           name: 'fullName',
+    //           type: 'unknown',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //         {
+    //           kind: 'computed',
+    //           name: 'fullName2',
+    //           type: 'kakarot',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: 'Message value',
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       props: [],
+    //     },
+    //   });
+
+    //   ComponentTestCase({
+    //     name: 'effectScope() declaration',
+    //     options: {
+    //       filecontent: `
+    //         <script setup>
+    //           import { effectScope } from 'vue'
+
+    //           const scope = effectScope()
+
+    //           scope.run(() => {
+    //             /**
+    //              * @type number
+    //              */
+    //             const doubled = computed(() => counter.value * 2)
+
+    //             watch(doubled, () => console.log(doubled.value))
+
+    //             watchEffect(() => console.log('Count: ', doubled.value))
+    //           })
+
+    //           // to dispose all effects in the scope
+    //           scope.stop()
+    //         </script>
+    //       `,
+    //     },
+    //     expected: {
+    //       errors: [],
+    //       warnings: [],
+    //       computed: [
+    //         {
+    //           kind: 'computed',
+    //           name: 'doubled',
+    //           type: 'number',
+    //           category: undefined,
+    //           version: undefined,
+    //           description: undefined,
+    //           dependencies: [],
+    //           keywords: [],
+    //           visibility: 'public' },
+    //       ],
+    //       data: [],
+    //       props: [],
+    //     },
+    //   });
+    // });
 
     describe('props', () => {
       ComponentTestCase({
@@ -1347,6 +1347,54 @@ describe('Vue 3', () => {
               default: undefined,
               describeModel: true,
               required: true,
+              keywords: [],
+              visibility: 'public' },
+          ],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'Props Default Values',
+        options: {
+          filecontent: `
+            <script setup lang="ts">
+              interface Props {
+                foo: string
+                bar?: number
+              }
+              
+              // reactive destructure for defineProps()
+              // default value is compiled to equivalent runtime option
+              const { foo, bar = 100 } = defineProps<Props>()
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          props: [
+            {
+              kind: 'prop',
+              name: 'foo',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: undefined,
+              describeModel: false,
+              required: true,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'bar',
+              type: 'number',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: '100',
+              describeModel: false,
+              required: false,
               keywords: [],
               visibility: 'public' },
           ],
