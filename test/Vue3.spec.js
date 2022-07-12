@@ -256,6 +256,78 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
+      name: 'createApp()',
+      options: {
+        filecontent: `
+          <script>
+            import { createApp } from 'vue'
+
+            export default createApp({
+              data() {
+                return {
+                  count: 0
+                }
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'count',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '0',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'createApp() with setup',
+      options: {
+        filecontent: `
+          <script setup>
+            import { createApp } from 'vue'
+
+            const app = createApp({
+              data() {
+                return {
+                  count: 0
+                }
+              }
+            })
+            
+            export default app
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'count',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '0',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
       name: 'useAttrs()',
       options: {
         filecontent: `
