@@ -131,6 +131,108 @@ describe('Vue 3', () => {
         data: [],
       },
     });
+
+    ComponentTestCase({
+      name: 'Composition API - State: Handle expose',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script setup>
+            export default {
+              // only publicMethod will be available on the public instance
+              expose: ['publicMethod'],
+              data: () => ({ x: 1}),
+              computed: {
+                y() { return 2; },
+              },
+              methods: {
+                publicMethod() {
+                  // ...
+                },
+                /**
+                 * @public
+                 */
+                publicMethod2() {
+                  // ...
+                },
+                privateMethod() {
+                  // ...
+                }
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'x',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '1',
+            keywords: [],
+            visibility: 'private' },
+        ],
+        computed: [
+          {
+            kind: 'computed',
+            name: 'y',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            dependencies: [],
+            keywords: [],
+            visibility: 'private' },
+        ],
+        methods: [
+          {
+            kind: 'method',
+            name: 'publicMethod',
+            params: [],
+            keywords: [],
+            syntax: [
+              'publicMethod(): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+            visibility: 'public',
+          },
+          {
+            kind: 'method',
+            name: 'publicMethod2',
+            params: [],
+            keywords: [],
+            syntax: [
+              'publicMethod2(): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+            visibility: 'private',
+          },
+          {
+            kind: 'method',
+            name: 'privateMethod',
+            params: [],
+            keywords: [],
+            syntax: [
+              'privateMethod(): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+            visibility: 'private',
+          },
+        ],
+      },
+    });
   });
 
   describe('Composition API', () => {
