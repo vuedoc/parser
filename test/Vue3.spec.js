@@ -1528,6 +1528,39 @@ describe('Vue 3', () => {
 
     describe('events', () => {
       ComponentTestCase({
+        name: 'with defineComponent()',
+        options: {
+          filecontent: `
+            <script setup>
+              import { defineComponent } from 'vue'
+
+              export default defineComponent({
+                emits: ['change'],
+                setup(props, { emit }) {
+                  emit('change') // <-- type check / auto-completion
+                }
+              })
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          events: [
+            {
+              kind: 'event',
+              name: 'change',
+              keywords: [],
+              category: undefined,
+              description: undefined,
+              visibility: 'public',
+              arguments: [],
+            },
+          ],
+        },
+      });
+
+      ComponentTestCase({
         name: 'simple declaration',
         options: {
           filecontent: `
