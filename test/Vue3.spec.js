@@ -446,6 +446,176 @@ describe('Vue 3', () => {
         ],
       },
     });
+
+    ComponentTestCase({
+      name: 'setup()',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script setup>
+            import { reactive } from 'vue'
+
+            export default {
+              // \`setup\` is a special hook dedicated for composition API.
+              setup() {
+                const state = reactive({ count: 0 })
+            
+                // expose the state to the template
+                return {
+                  state
+                }
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'state',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '{"count":0}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'setup() with Render Functions',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script setup>
+            import { h, ref } from 'vue'
+
+            export default {
+              setup() {
+                const count = ref(0)
+                return () => h('div', count.value)
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'setup() with Render Functions and expose()',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script setup>
+            import { h, ref } from 'vue'
+
+            export default {
+              setup(props, { expose }) {
+                const count = ref(0)
+                const increment = () => ++count.value
+            
+                expose({
+                  increment
+                })
+            
+                return () => h('div', count.value)
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'increment',
+            type: 'function',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '() => ++count.value',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'setup() with empty expose()',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script setup>
+            import { h, ref } from 'vue'
+
+            export default {
+              setup(props, { expose }) {
+                const count = ref(0)
+                const increment = () => ++count.value
+            
+                // make the instance "closed" -
+                // i.e. do not expose anything to the parent
+                expose()
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'setup() with selectively expose local state',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script setup>
+            import { h, ref } from 'vue'
+
+            export default {
+              setup(props, { expose }) {
+                const publicCount = ref(0)
+                const privateCount = ref(0)
+                // selectively expose local state
+                expose({ count: publicCount })
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'count',
+            type: 'number',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            initialValue: '0',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
   });
 
   describe('Composition API', () => {
