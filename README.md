@@ -54,16 +54,18 @@ npm install --save @vuedoc/parser
 
 ## Features
 
-- Extract the component name (from the name field or from the filename)
+- Extract the component name (from the `name` field or from the filename)
 - Extract the component description
 - [Keywords support](#keywords-extraction)
 - Extract component model
 - Extract component props
 - Extract component data
-- Extract computed properties with dependencies
+- Extract computed properties
 - Extract component events
 - Extract component slots
 - Extract component methods
+- Vue 3 support
+- Vue Composition API support
 - JSX support
 - [Class Component](https://www.npmjs.com/package/vue-class-component) support
 - [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support
@@ -104,12 +106,12 @@ for an Vue Component decoration example.
 import { parseComponent } from '@vuedoc/parser';
 
 const options = {
-  filename: 'test/fixtures/checkbox.vue'
+  filename: 'test/fixtures/checkbox.vue',
 };
 
 parseComponent(options)
   .then((component) => console.log(component))
-  .catch((err) => console.error(err))
+  .catch((err) => console.error(err));
 ```
 
 This will print this JSON output:
@@ -148,8 +150,8 @@ To set a custom name, use the `name` field like:
 
 ```js
 export default {
-  name: 'my-checkbox'
-}
+  name: 'my-checkbox',
+};
 ```
 
 You can also use the `@name` tag to set the component name:
@@ -160,7 +162,7 @@ You can also use the `@name` tag to set the component name:
  */
 export default {
   // ...
-}
+};
 ```
 
 ### Add component description
@@ -174,7 +176,7 @@ statement like:
  */
 export default {
   // ...
-}
+};
 ```
 
 ### Annotate props
@@ -189,10 +191,10 @@ export default {
      */
     id: {
       type: String,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 ```
 
 Vuedoc Parser will automatically extract `required` and `default` values for
@@ -210,12 +212,12 @@ export default {
    */
   model: {
     prop: 'checked',
-    event: 'change'
+    event: 'change',
   },
   props: {
-    checked: Boolean
-  }
-}
+    checked: Boolean,
+  },
+};
 ```
 
 You can also use the `@model` keyword on a prop if you use an old Vue version:
@@ -227,9 +229,9 @@ export default {
      * The checkbox model
      * @model
      */
-    checked: Boolean
-  }
-}
+    checked: Boolean,
+  },
+};
 ```
 
 #### Annotate Vue Array String Props
@@ -247,9 +249,9 @@ export default {
     /**
      * The checkbox model
      */
-    'value'
-  ]
-}
+    'value',
+  ],
+};
 ```
 
 #### Special tags for props
@@ -277,8 +279,8 @@ export default {
       type: Object,
       default: () => {
         // complex code
-        return anythingExpression()
-      }
+        return anythingExpression();
+      },
     },
     /**
      * The input validation function
@@ -288,7 +290,7 @@ export default {
      */
     validator: {
       type: Function,
-      default: (value) => !Number.isNaN(value)
+      default: (value) => !Number.isNaN(value),
     },
   },
 };
@@ -329,10 +331,10 @@ export default {
       /**
        * Indicates that the control is checked
        */
-      isChecked: false
-    }
-  }
-}
+      isChecked: false,
+    };
+  },
+};
 ```
 
 Vuedoc Parser will automatically detect type for each defined data field and
@@ -357,10 +359,10 @@ export default {
        * @type boolean
        * @initialValue false
        */
-      isChecked: !(a || b || c)
-    }
-  }
-}
+      isChecked: !(a || b || c),
+    };
+  },
+};
 ```
 
 **Data Entry Interface**
@@ -396,10 +398,10 @@ export default {
      * Indicates that the control is selected
      */
     selected () {
-      return this.isChecked
-    }
-  }
-}
+      return this.isChecked;
+    },
+  },
+};
 ```
 
 Vuedoc Parser will automatically extract computed properties dependencies.
@@ -436,9 +438,9 @@ export default {
     /**
      * Submit form
      */
-    submit () {}
-  }
-}
+    submit () {},
+  },
+};
 ```
 
 Use the JSDoc [`@param`](http://usejsdoc.org/tags-param.html) and
@@ -455,10 +457,10 @@ export default {
      * @returns {boolean} true on success; otherwise, false
      */
     submit (data) {
-      return true
-    }
-  }
-}
+      return true;
+    },
+  },
+};
 ```
 
 **Special tags for methods**
@@ -469,8 +471,8 @@ export default {
   ```html
   <script>
     const METHODS = {
-      CLOSE: 'closeModal'
-    }
+      CLOSE: 'closeModal',
+    };
 
     export default {
       methods: {
@@ -478,9 +480,9 @@ export default {
           * Close modal
           * @method closeModal
           */
-        [METHODS.CLOSE] () {}
-      }
-    }
+        [METHODS.CLOSE] () {},
+      },
+    };
   </script>
   ```
 - `@syntax <custom method syntax>`<br>
@@ -515,9 +517,9 @@ export default {
        * @syntax target.addEventListener(type, listener [, useCapture]);
        * @syntax target.addEventListener(type, listener [, useCapture, wantsUntrusted  ]); // Gecko/Mozilla only
        */
-      addEventListener(type, listener, options, useCapture) {}
-    }
-  }
+      addEventListener(type, listener, options, useCapture) {},
+    },
+  };
   ```
 
 **Method Entry Interface**
@@ -574,17 +576,17 @@ methods:
       /**
       * Emit on Vue `created` hook
       */
-      this.$emit('created', true)
+      this.$emit('created', true);
     },
     methods: {
       submit () {
         /**
         * Emit the `input` event on submit
         */
-        this.$emit('input', true)
-      }
-    }
-  }
+        this.$emit('input', true);
+      },
+    },
+  };
 </script>
 ```
 
@@ -599,10 +601,10 @@ export default {
        *
        * @arg {boolean} status - The loading status
        */
-      this.$emit('loading', true)
-    }
-  }
-}
+      this.$emit('loading', true);
+    },
+  },
+};
 ```
 
 > Note: `@arg` is an alias of `@argument`.
@@ -612,8 +614,8 @@ You can use special keyword `@event` for non primitive name:
 ```html
 <script>
   const EVENTS = {
-    CLOSE: 'close'
-  }
+    CLOSE: 'close',
+  };
 
   export default {
     methods: {
@@ -622,10 +624,10 @@ You can use special keyword `@event` for non primitive name:
           * Emit the `close` event on click
           * @event close
           */
-        this.$emit(EVENTS.CLOSE, true)
-      }
-    }
-  }
+        this.$emit(EVENTS.CLOSE, true);
+      },
+    },
+  };
 </script>
 ```
 
@@ -697,10 +699,10 @@ export default {
   render(h, { slots }) {
     return h('div', [
       h('h1', slots().title),
-      h('p', slots().default)
-    ])
-  }
-}
+      h('p', slots().default),
+    ]);
+  },
+};
 ```
 
 You can also use the keyword `@slot` to define dynamic slots on template:
@@ -713,7 +715,7 @@ You can also use the keyword `@slot` to define dynamic slots on template:
         @slot title - A title slot
         @slot default - A default slot
       -->
-      <slot :name="name" :slot="name"></slot>
+      <slot :name="name"></slot>
     </template>
   </div>
 </template>
@@ -758,9 +760,9 @@ export default {
      * This will be ignored on parsing
      * @ignore
      */
-    isChecked: false
-  })
-}
+    isChecked: false,
+  }),
+};
 ```
 
 You can also use the [TypeDoc's tag `@hidden`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
@@ -777,7 +779,7 @@ You can attach keywords to any comment and then extract them using the parser.
  *
  * @license MIT
  */
-export default { /* ... */ }
+export default { /* ... */ };
 ```
 
 > Note that the description must always appear before keywords definition.
@@ -799,36 +801,36 @@ Parsing result:
 
 ## Supported tags
 
-| Keyword               | Scope           | Description                                                                               |
-| --------------------- | --------------- | ----------------------------------------------------------------------------------------- |
-| `@name`               | `component`     | Provide a custom name of the component                                                    |
-| `@type`               | `props`, `data` | Provide a type expression identifying the type of value that a prop or a data may contain |
-| `@default`            | `props`         | Provide a default value of a prop                                                         |
-| `@model`              | `props`         | Mark a prop as `v-model`                                                                  |
-| `@kind`               | `props`         | Used to document what kind of symbol is being documented                                  |
-| `@initialValue`       | `data`          | Provide an initial value of a data                                                        |
-| `@method`             | `methods`       | Force the name of a specific method                                                       |
-| `@syntax`             | `methods`       | Provide the custom method syntax                                                          |
-| `@param`              | `methods`       | Provide the name, type, and description of a function parameter                           |
-| `@returns`, `@return` | `methods`       | Document the value that a function returns                                                |
-| `@event`              | `events`        | Force the name of a specific event                                                        |
-| `@arg`, `@argument`   | `events`        | Provide the name, type, and description of an event argument                              |
-| `@slot`               | `slots`         | Document slot defined in render function                                                  |
-| `@prop`               | `slots`         | Provide the name, type, and description of a slot prop                                    |
-| `@mixin`              | `component`     | Force parsing of the exported item as a mixin component                                   |
-| `@version`            | `all`           | Assign a version to an item                                                               |
-| `@since`              | `all`           | Indicate that an item was added in a specific version                                     |
-| `@author`             | `all`           | Identify authors of an item                                                               |
-| `@deprecated`         | `all`           | Mark an item as being deprecated                                                          |
-| `@see`                | `all`           | Allow to refer to a resource that may be related to the item being documented             |
-| `@ignore`             | `*`             | Keep the subsequent code from being documented                                            |
-| **TypeDoc**                                                                                                                         |
-| `@category`           | `all`           | Attach a category to an item                                                              |
-| `@hidden`             | `*`             | Keep the subsequent code from being documented                                            |
-| **Visibilities**                                                                                                                    |
-| `@public`             | `*`             | Mark a symbol as public                                                                   |
-| `@protected`          | `*`             | Mark a symbol as private                                                                  |
-| `@private`            | `*`             | Mark a symbol as protected                                                                |
+| Keyword               | Scope                       | Description                                                                               |
+| --------------------- | --------------------------- | ----------------------------------------------------------------------------------------- |
+| `@name`               | `component`                 | Provide a custom name of the component                                                    |
+| `@type`               | `props`, `data`, `computed` | Provide a type expression identifying the type of value that a prop or a data may contain |
+| `@default`            | `props`                     | Provide a default value of a prop                                                         |
+| `@model`              | `props`                     | Mark a prop as `v-model`                                                                  |
+| `@kind`               | `props`                     | Used to document what kind of symbol is being documented                                  |
+| `@initialValue`       | `data`                      | Provide an initial value of a data                                                        |
+| `@method`             | `methods`                   | Force the name of a specific method                                                       |
+| `@syntax`             | `methods`                   | Provide the custom method syntax                                                          |
+| `@param`              | `methods`                   | Provide the name, type, and description of a function parameter                           |
+| `@returns`, `@return` | `methods`                   | Document the value that a function returns                                                |
+| `@event`              | `events`                    | Force the name of a specific event                                                        |
+| `@arg`, `@argument`   | `events`                    | Provide the name, type, and description of an event argument                              |
+| `@slot`               | `slots`                     | Document slot defined in render function                                                  |
+| `@prop`               | `slots`                     | Provide the name, type, and description of a slot prop                                    |
+| `@mixin`              | `component`                 | Force parsing of the exported item as a mixin component                                   |
+| `@version`            | `all`                       | Assign a version to an item                                                               |
+| `@since`              | `all`                       | Indicate that an item was added in a specific version                                     |
+| `@author`             | `all`                       | Identify authors of an item                                                               |
+| `@deprecated`         | `all`                       | Mark an item as being deprecated                                                          |
+| `@see`                | `all`                       | Allow to refer to a resource that may be related to the item being documented             |
+| `@ignore`             | `*`                         | Keep the subsequent code from being documented                                            |
+| **TypeDoc**                                                                                                                                     |
+| `@category`           | `all`                       | Attach a category to an item                                                              |
+| `@hidden`             | `*`                         | Keep the subsequent code from being documented                                            |
+| **Visibilities**                                                                                                                                |
+| `@public`             | `*`                         | Mark a symbol as public                                                                   |
+| `@protected`          | `*`                         | Mark a symbol as private                                                                  |
+| `@private`            | `*`                         | Mark a symbol as protected                                                                |
 
 > `*` stand for `props`, `data`, `methods`, `events`, `slots`
 
@@ -845,14 +847,14 @@ import { parseComponent } from '@vuedoc/parser';
 import merge from 'deepmerge';
 
 const parsers = [
-  parseComponent({ filename: 'mixinFile.js' })
-  parseComponent({ filename: 'componentUsingMixin.vue' })
-]
+  parseComponent({ filename: 'mixinFile.js' }),
+  parseComponent({ filename: 'componentUsingMixin.vue' }),
+];
 
 Promise.all(parsers)
   .then(merge.all)
   .then((mergedParsingResult) => console.log(mergedParsingResult))
-  .catch((err) => console.error(err))
+  .catch((err) => console.error(err));
 ```
 
 **Using the keyword `@mixin`**
@@ -869,8 +871,8 @@ import Vue from 'vue';
 export const InputMixin = Vue.extend({
   props: {
     id: String,
-    value: [ Boolean, Number, String ]
-  }
+    value: [ Boolean, Number, String ],
+  },
 });
 ```
 
@@ -886,9 +888,9 @@ export function InputMixin (route) {
   return Vue.extend({
     props: {
       id: String,
-      value: [ Boolean, Number, String ]
+      value: [ Boolean, Number, String ],
     },
-    methods: { route }
+    methods: { route },
   });
 }
 ```
@@ -909,12 +911,12 @@ import { parseComponent } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
-  features: [ 'name', 'props', 'computed', 'slots', 'events' ]
-}
+  features: [ 'name', 'props', 'computed', 'slots', 'events' ],
+};
 
 parseComponent(options)
   .then((component) => Object.keys(component))
-  .then((keys) => console.log(keys))
+  .then((keys) => console.log(keys));
   // => [ 'name', 'props', 'computed', 'slots', 'events' ]
 ```
 
@@ -925,12 +927,12 @@ import { parseComponent } from '@vuedoc/parser';
 
 const options = {
   filename: 'test/fixtures/checkbox.vue',
-  features: Vuedoc.Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data')
-}
+  features: Vuedoc.Parser.SUPPORTED_FEATURES.filter((feature) => feature !== 'data'),
+};
 
 parseComponent(options)
   .then((component) => Object.keys(component))
-  .then((keys) => console.log(keys))
+  .then((keys) => console.log(keys));
   // => [ 'name', 'description', 'keywords', 'model',
   //      'props', 'computed', 'events', 'methods', 'slots' ]
 ```
