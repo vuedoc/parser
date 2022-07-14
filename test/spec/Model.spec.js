@@ -1,4 +1,4 @@
-import { parseComponent } from '../index.js';
+import { parseComponent } from '../../index.js';
 
 /* global describe it expect */
 

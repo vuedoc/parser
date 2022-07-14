@@ -2,15 +2,15 @@
 /* eslint-disable max-len */
 /* eslint-disable indent */
 
-import { parseComponent } from '../index.js';
-import { ComponentTestCase } from './lib/TestUtils.js';
-import { Fixture } from './lib/Fixture.js';
+import { parseComponent } from '../../index.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
+import { Fixture } from '../lib/Fixture.js';
 
 describe('issues', () => {
   describe('#27 - undefined default value is parsed as a string', () => {
     it('should parse undefined default value as it', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -22,8 +22,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -36,18 +36,18 @@ describe('issues', () => {
           default: 'undefined',
           name: 'value',
           describeModel: true,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
+        expect(props).toEqual(expected);
+      });
+    });
 
     it('should parse missing default value', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -58,8 +58,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -72,18 +72,18 @@ describe('issues', () => {
           default: undefined,
           name: 'value',
           describeModel: true,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
+        expect(props).toEqual(expected);
+      });
+    });
 
     it('should parse boolean default value as it', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -95,8 +95,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -109,18 +109,18 @@ describe('issues', () => {
           default: 'false',
           name: 'bool',
           describeModel: false,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
+        expect(props).toEqual(expected);
+      });
+    });
 
     it('should parse string default value as it', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -132,8 +132,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -146,18 +146,18 @@ describe('issues', () => {
           default: '"hello"',
           name: 'str',
           describeModel: false,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
+        expect(props).toEqual(expected);
+      });
+    });
 
     it('should parse number default value as it', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -169,8 +169,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -183,18 +183,18 @@ describe('issues', () => {
           default: '123',
           name: 'int',
           describeModel: false,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
+        expect(props).toEqual(expected);
+      });
+    });
 
     it('should parse null default value as it', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -206,8 +206,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -220,18 +220,18 @@ describe('issues', () => {
           default: 'null',
           name: 'null',
           describeModel: false,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
+        expect(props).toEqual(expected);
+      });
+    });
 
     it('should parse bigint default value as it', () => {
       const options = {
-        features: [ 'props' ],
+        features: ['props'],
         filecontent: `
           <script>
             export default {
@@ -243,8 +243,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -257,15 +257,15 @@ describe('issues', () => {
           default: '100n',
           name: 'bigint',
           describeModel: false,
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ];
 
       return parseComponent(options).then(({ props }) => {
-        expect(props).toEqual(expected)
-      })
-    })
-  })
+        expect(props).toEqual(expected);
+      });
+    });
+  });
 
   describe('#32 - dynamic (lazy) import() function alongside a regular import', () => {
     it('should successfully parse component with regular import', () => {
@@ -284,11 +284,11 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
-      return parseComponent(options)
-    })
+      return parseComponent(options);
+    });
 
     it('should successfully parse component with lazy import', () => {
       const options = {
@@ -308,12 +308,12 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
-      return parseComponent(options)
-    })
-  })
+      return parseComponent(options);
+    });
+  });
 
   describe('#29 - Bad format when using code block in comment', () => {
     it('should successfully parse comment with block comment', () => {
@@ -332,14 +332,14 @@ describe('issues', () => {
             export default {}
 
           </script>
-        `
-      }
-      const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```'
+        `,
+      };
+      const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```';
 
       return parseComponent(options).then(({ description }) => {
-        expect(description).toEqual(expected)
-      })
-    })
+        expect(description).toEqual(expected);
+      });
+    });
 
     it('should successfully preserve spaces on keywords', () => {
       const options = {
@@ -358,9 +358,9 @@ describe('issues', () => {
             export default {}
 
           </script>
-        `
-      }
-      const expectedDescription = 'Description'
+        `,
+      };
+      const expectedDescription = 'Description';
       const expectedKeywords = [
         {
           name: 'note',
@@ -370,15 +370,15 @@ describe('issues', () => {
           description: 'Node two\n- Line 3' },
         {
           name: 'note',
-          description: 'Node three' }
-      ]
+          description: 'Node three' },
+      ];
 
       return parseComponent(options).then(({ description, keywords }) => {
-        expect(description).toEqual(expectedDescription)
-        expect(keywords).toEqual(expectedKeywords)
-      })
-    })
-  })
+        expect(description).toEqual(expectedDescription);
+        expect(keywords).toEqual(expectedKeywords);
+      });
+    });
+  });
 
   describe('#30 - Block of comment is broken when using @ in comment in replacement of v-on', () => {
     it('should successfully parse comment with block comment', () => {
@@ -394,14 +394,14 @@ describe('issues', () => {
             export default {}
 
           </script>
-        `
-      }
-      const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```'
+        `,
+      };
+      const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```';
 
       return parseComponent(options).then(({ description }) => {
-        expect(description).toEqual(expected)
-      })
-    })
+        expect(description).toEqual(expected);
+      });
+    });
 
     it('should successfully parse with keywords', () => {
       const options = {
@@ -420,9 +420,9 @@ describe('issues', () => {
             export default {}
 
           </script>
-        `
-      }
-      const expectedDescription = 'Description'
+        `,
+      };
+      const expectedDescription = 'Description';
       const expectedKeywords = [
         {
           name: 'note',
@@ -432,15 +432,15 @@ describe('issues', () => {
           description: 'Node two\n- Line 3' },
         {
           name: 'note',
-          description: 'Node three' }
-      ]
+          description: 'Node three' },
+      ];
 
       return parseComponent(options).then(({ description, keywords }) => {
-        expect(description).toEqual(expectedDescription)
-        expect(keywords).toEqual(expectedKeywords)
-      })
-    })
-  })
+        expect(description).toEqual(expectedDescription);
+        expect(keywords).toEqual(expectedKeywords);
+      });
+    });
+  });
 
   describe('#40 - Nested slot documentation', () => {
     it('should successfully parse nested slots', () => {
@@ -474,8 +474,8 @@ describe('issues', () => {
               </n-module>
             </slot>
           </template>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -485,7 +485,7 @@ describe('issues', () => {
           description: 'Overrides entire dialog contents',
           keywords: [],
           name: 'content',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -494,7 +494,7 @@ describe('issues', () => {
           description: 'Overrides dialog header',
           keywords: [],
           name: 'header',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -503,7 +503,7 @@ describe('issues', () => {
           description: 'Overrides dialog header actions, i.e. default close button',
           keywords: [],
           name: 'actions',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -512,7 +512,7 @@ describe('issues', () => {
           description: 'Dialog body',
           keywords: [],
           name: 'default',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -521,15 +521,15 @@ describe('issues', () => {
           description: 'Dialog footer',
           keywords: [],
           name: 'footer',
-          props: []
-        }
-      ]
+          props: [],
+        },
+      ];
 
       return parseComponent(options).then(({ slots }) => {
-        expect(slots).toEqual(expected)
-      })
-    })
-  })
+        expect(slots).toEqual(expected);
+      });
+    });
+  });
 
   describe('#39 - Events parsing on function calls', () => {
     it('should successfully parse events on this.$nextTick()', () => {
@@ -547,8 +547,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -558,14 +558,14 @@ describe('issues', () => {
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
+        expect(events).toEqual(expected);
+      });
+    });
 
     it('should successfully parse events on Vue.nextTick()', () => {
       const options = {
@@ -582,8 +582,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -593,14 +593,14 @@ describe('issues', () => {
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
+        expect(events).toEqual(expected);
+      });
+    });
 
     it('should successfully parse events on callee function', () => {
       const options = {
@@ -617,8 +617,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -628,14 +628,14 @@ describe('issues', () => {
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
+        expect(events).toEqual(expected);
+      });
+    });
 
     it('should successfully parse events on Promise.resolve function', () => {
       const options = {
@@ -652,8 +652,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -663,14 +663,14 @@ describe('issues', () => {
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
+        expect(events).toEqual(expected);
+      });
+    });
 
     it('should successfully parse events on Promise.reject function', () => {
       const options = {
@@ -687,8 +687,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -698,14 +698,14 @@ describe('issues', () => {
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
+        expect(events).toEqual(expected);
+      });
+    });
 
     it('should successfully parse events on Promise.finally function', () => {
       const options = {
@@ -722,8 +722,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -733,15 +733,15 @@ describe('issues', () => {
           description: 'Emits when confirmation dialog is closed',
           arguments: [],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ events }) => {
-        expect(events).toEqual(expected)
-      })
-    })
-  })
+        expect(events).toEqual(expected);
+      });
+    });
+  });
 
   describe('#41 - Duplicate computed properties dependencies', () => {
     it('should successfully parse dependencies without duplicates', () => {
@@ -758,8 +758,8 @@ describe('issues', () => {
               }
             }
           </script>
-        `
-      }
+        `,
+      };
 
       const expected = [
         {
@@ -768,17 +768,17 @@ describe('issues', () => {
           type: 'boolean',
           category: undefined,
           description: undefined,
-          dependencies: [ 'docs', 'name' ],
+          dependencies: ['docs', 'name'],
           keywords: [],
-          visibility: 'public'
-        }
-      ]
+          visibility: 'public',
+        },
+      ];
 
       return parseComponent(options).then(({ computed }) => {
-        expect(computed).toEqual(expected)
-      })
-    })
-  })
+        expect(computed).toEqual(expected);
+      });
+    });
+  });
 
   ComponentTestCase({
     name: '#52 - Prop as array type declaration',
@@ -794,7 +794,7 @@ describe('issues', () => {
             },
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -808,11 +808,11 @@ describe('issues', () => {
           kind: 'prop',
           name: 'value',
           required: false,
-          type: [ 'String', 'Number' ],
-          visibility: 'public' }
-      ]
-    }
-  })
+          type: ['String', 'Number'],
+          visibility: 'public' },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#53 - Documenting dynamic slots with @slot',
@@ -834,7 +834,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -848,7 +848,7 @@ describe('issues', () => {
           description: 'A title slot',
           keywords: [],
           name: 'title',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -857,11 +857,11 @@ describe('issues', () => {
           description: 'A default slot',
           keywords: [],
           name: 'default',
-          props: []
-        }
-      ]
-    }
-  })
+          props: [],
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#53 - Documenting dynamic slots with @slot on template',
@@ -878,7 +878,7 @@ describe('issues', () => {
             </template>
           </div>
         </template>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -890,7 +890,7 @@ describe('issues', () => {
           description: 'A title slot',
           keywords: [],
           name: 'title',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -899,21 +899,21 @@ describe('issues', () => {
           description: 'A default slot',
           keywords: [],
           name: 'default',
-          props: []
-        }
-      ]
-    }
-  })
+          props: [],
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#56 - Cannot read property \'type\' of null (UiAutocomplete.vue)',
     options: {
-      filecontent: Fixture.get('UiAutocomplete.vue')
+      filecontent: Fixture.get('UiAutocomplete.vue'),
     },
     expected: {
       inheritAttrs: true,
       errors: [
-        'tag <input> has no matching end tag.'
+        'tag <input> has no matching end tag.',
       ],
       name: 'ui-autocomplete',
       description: undefined,
@@ -927,7 +927,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'icon',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -937,7 +937,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'default',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -947,7 +947,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'suggestion',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -957,7 +957,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'error',
-          props: []
+          props: [],
         },
         {
           kind: 'slot',
@@ -967,8 +967,8 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'help',
-          props: []
-        }
+          props: [],
+        },
       ],
       props: [
         {
@@ -982,7 +982,7 @@ describe('issues', () => {
           type: 'string',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -995,7 +995,7 @@ describe('issues', () => {
           type: 'string',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1005,10 +1005,10 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'value',
-          type: [ 'String', 'Number' ],
+          type: ['String', 'Number'],
           default: '""',
           required: false,
-          describeModel: true
+          describeModel: true,
         },
         {
           kind: 'prop',
@@ -1021,7 +1021,7 @@ describe('issues', () => {
           type: 'string',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1034,7 +1034,7 @@ describe('issues', () => {
           type: 'string',
           default: '"left"',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1047,7 +1047,7 @@ describe('issues', () => {
           type: 'string',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1060,7 +1060,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'false',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1073,7 +1073,7 @@ describe('issues', () => {
           type: 'string',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1086,7 +1086,7 @@ describe('issues', () => {
           type: 'string',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1099,7 +1099,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'false',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1112,7 +1112,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'false',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1125,7 +1125,7 @@ describe('issues', () => {
           type: 'string',
           default: '"simple"',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1138,7 +1138,7 @@ describe('issues', () => {
           type: 'array',
           default: '[]',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1151,7 +1151,7 @@ describe('issues', () => {
           type: 'number',
           default: '8',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1164,7 +1164,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'false',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1177,7 +1177,7 @@ describe('issues', () => {
           type: 'string',
           default: '", "',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1190,7 +1190,7 @@ describe('issues', () => {
           type: 'number',
           default: '2',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1203,7 +1203,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'true',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1216,7 +1216,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'false',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1229,7 +1229,7 @@ describe('issues', () => {
           type: 'function',
           default: undefined,
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1242,7 +1242,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'true',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1255,7 +1255,7 @@ describe('issues', () => {
           type: 'boolean',
           default: 'true',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1268,7 +1268,7 @@ describe('issues', () => {
           type: 'object',
           default: '{"label":"label","value":"value","image":"image"}',
           required: false,
-          describeModel: false
+          describeModel: false,
         },
         {
           kind: 'prop',
@@ -1281,8 +1281,8 @@ describe('issues', () => {
           type: 'boolean',
           default: 'false',
           required: false,
-          describeModel: false
-        }
+          describeModel: false,
+        },
       ],
       data: [
         {
@@ -1294,7 +1294,7 @@ describe('issues', () => {
           keywords: [],
           name: 'initialValue',
           type: 'object',
-          initialValue: 'this.value'
+          initialValue: 'this.value',
         },
         {
           kind: 'data',
@@ -1305,7 +1305,7 @@ describe('issues', () => {
           keywords: [],
           name: 'isActive',
           type: 'boolean',
-          initialValue: 'false'
+          initialValue: 'false',
         },
         {
           kind: 'data',
@@ -1316,7 +1316,7 @@ describe('issues', () => {
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
-          initialValue: 'false'
+          initialValue: 'false',
         },
         {
           kind: 'data',
@@ -1327,7 +1327,7 @@ describe('issues', () => {
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
-          initialValue: 'false'
+          initialValue: 'false',
         },
         {
           kind: 'data',
@@ -1338,8 +1338,8 @@ describe('issues', () => {
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
-          initialValue: '-1'
-        }
+          initialValue: '-1',
+        },
       ],
       computed: [
         {
@@ -1359,8 +1359,8 @@ describe('issues', () => {
             'isTouched',
             'disabled',
             'hasLabel',
-            'hasFloatingLabel'
-          ]
+            'hasFloatingLabel',
+          ],
         },
         {
           kind: 'computed',
@@ -1373,8 +1373,8 @@ describe('issues', () => {
           name: 'labelClasses',
           dependencies: [
             'hasFloatingLabel',
-            'isLabelInline'
-          ]
+            'isLabelInline',
+          ],
         },
         {
           kind: 'computed',
@@ -1387,8 +1387,8 @@ describe('issues', () => {
           name: 'hasLabel',
           dependencies: [
             'label',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -1401,8 +1401,8 @@ describe('issues', () => {
           name: 'hasFloatingLabel',
           dependencies: [
             'hasLabel',
-            'floatingLabel'
-          ]
+            'floatingLabel',
+          ],
         },
         {
           kind: 'computed',
@@ -1415,8 +1415,8 @@ describe('issues', () => {
           name: 'isLabelInline',
           dependencies: [
             'valueLength',
-            'isActive'
-          ]
+            'isActive',
+          ],
         },
         {
           kind: 'computed',
@@ -1428,8 +1428,8 @@ describe('issues', () => {
           keywords: [],
           name: 'valueLength',
           dependencies: [
-            'value'
-          ]
+            'value',
+          ],
         },
         {
           kind: 'computed',
@@ -1443,8 +1443,8 @@ describe('issues', () => {
           dependencies: [
             'help',
             'error',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -1458,8 +1458,8 @@ describe('issues', () => {
           dependencies: [
             'invalid',
             'error',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -1473,8 +1473,8 @@ describe('issues', () => {
           dependencies: [
             'showError',
             'help',
-            '$slots'
-          ]
+            '$slots',
+          ],
         },
         {
           kind: 'computed',
@@ -1490,9 +1490,9 @@ describe('issues', () => {
             'filter',
             'value',
             'defaultFilter',
-            'limit'
-          ]
-        }
+            'limit',
+          ],
+        },
       ],
       events: [
         {
@@ -1508,9 +1508,9 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
-          ]
+              rest: false,
+            },
+          ],
         },
         {
           kind: 'event',
@@ -1525,9 +1525,9 @@ describe('issues', () => {
               name: 'index',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
-          ]
+              rest: false,
+            },
+          ],
         },
         {
           kind: 'event',
@@ -1537,7 +1537,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'dropdown-open',
-          arguments: []
+          arguments: [],
         },
         {
           kind: 'event',
@@ -1547,7 +1547,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'dropdown-close',
-          arguments: []
+          arguments: [],
         },
         {
           kind: 'event',
@@ -1562,9 +1562,9 @@ describe('issues', () => {
               name: 'value',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
-          ]
+              rest: false,
+            },
+          ],
         },
         {
           kind: 'event',
@@ -1579,9 +1579,9 @@ describe('issues', () => {
               name: 'e',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
-          ]
+              rest: false,
+            },
+          ],
         },
         {
           kind: 'event',
@@ -1596,18 +1596,18 @@ describe('issues', () => {
               name: 'value',
               type: [
                 'String',
-                'Number'
+                'Number',
               ],
               description: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'e',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
-          ]
+              rest: false,
+            },
+          ],
         },
         {
           kind: 'event',
@@ -1622,9 +1622,9 @@ describe('issues', () => {
               name: 'e',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
-          ]
+              rest: false,
+            },
+          ],
         },
         {
           kind: 'event',
@@ -1634,14 +1634,14 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'touch',
-          arguments: []
-        }
+          arguments: [],
+        },
       ],
       methods: [
         {
           kind: 'method',
           syntax: [
-            'defaultFilter(suggestion: unknown): unknown'
+            'defaultFilter(suggestion: unknown): unknown',
           ],
           visibility: 'public',
           category: undefined,
@@ -1655,18 +1655,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'selectSuggestion(suggestion: unknown): void'
+            'selectSuggestion(suggestion: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1680,18 +1680,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'highlightSuggestion(index: unknown): void'
+            'highlightSuggestion(index: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1705,18 +1705,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'selectHighlighted(index: unknown, e: unknown): void'
+            'selectHighlighted(index: unknown, e: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1730,25 +1730,25 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'e',
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'openDropdown(): void'
+            'openDropdown(): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1759,13 +1759,13 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'closeDropdown(): void'
+            'closeDropdown(): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1776,13 +1776,13 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'updateValue(value: unknown): void'
+            'updateValue(value: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1796,18 +1796,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'onFocus(e: unknown): void'
+            'onFocus(e: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1821,18 +1821,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'onChange(e: unknown): void'
+            'onChange(e: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1846,18 +1846,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'onBlur(e: unknown): void'
+            'onBlur(e: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1871,18 +1871,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'onExternalClick(e: unknown): void'
+            'onExternalClick(e: unknown): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1896,18 +1896,18 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'reset(): void'
+            'reset(): void',
           ],
           visibility: 'public',
           category: undefined,
@@ -1918,17 +1918,17 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
-          }
-        }
-      ]
-    }
-  })
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
     options: {
-      filecontent: Fixture.get('UiAutocompleteMinimal.vue')
+      filecontent: Fixture.get('UiAutocompleteMinimal.vue'),
     },
     expected: {
       errors: [],
@@ -1940,7 +1940,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           syntax: [
-            'selectSuggestion(suggestion: unknown): void'
+            'selectSuggestion(suggestion: unknown): void',
           ],
           name: 'selectSuggestion',
           params: [
@@ -1949,14 +1949,14 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
+            description: undefined,
           },
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       events: [
         {
@@ -1969,20 +1969,20 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           kind: 'event',
-          visibility: 'public'
-        }
-      ]
-    }
-  })
+          visibility: 'public',
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
     options: {
-      filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue')
+      filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue'),
     },
     expected: {
       name: 'ui-autocomplete',
@@ -1994,7 +1994,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           syntax: [
-            'selectSuggestion(suggestion: unknown): void'
+            'selectSuggestion(suggestion: unknown): void',
           ],
           name: 'selectSuggestion',
           params: [
@@ -2003,14 +2003,14 @@ describe('issues', () => {
               type: 'unknown',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
+            description: undefined,
           },
-          visibility: 'public' }
+          visibility: 'public' },
       ],
       events: [
         {
@@ -2023,15 +2023,15 @@ describe('issues', () => {
               name: 'suggestion',
               type: 'unknown',
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           kind: 'event',
-          visibility: 'public'
-        }
-      ]
-    }
-  })
+          visibility: 'public',
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#59 - Parser fails when props have an empty validator block',
@@ -2047,7 +2047,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2062,11 +2062,11 @@ describe('issues', () => {
           type: 'unknown',
           default: undefined,
           required: false,
-          describeModel: false
-        }
-      ]
-    }
-  })
+          describeModel: false,
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
@@ -2084,7 +2084,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2092,7 +2092,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'example(): void'
+            'example(): void',
           ],
           name: 'example',
           visibility: 'public',
@@ -2102,12 +2102,12 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
-          }
-        }
-      ]
-    }
-  })
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#61 - Parsing event fails when event name is non-primitive value',
@@ -2138,7 +2138,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2146,7 +2146,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'close(): void'
+            'close(): void',
           ],
           name: 'close',
           visibility: 'public',
@@ -2156,9 +2156,9 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
-          }
-        }
+            description: undefined,
+          },
+        },
       ],
       events: [
         {
@@ -2173,13 +2173,13 @@ describe('issues', () => {
               type: 'boolean',
               description: undefined,
               name: 'true',
-              rest: false
-            }
-          ]
-        }
-      ]
-    }
-  })
+              rest: false,
+            },
+          ],
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#62 - @ symbol breaks comment parsing',
@@ -2191,13 +2191,13 @@ describe('issues', () => {
            */
           export default {}
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
-      description: 'Defines if `bleed@small` class should be added to component for mobile view'
-    }
-  })
+      description: 'Defines if `bleed@small` class should be added to component for mobile view',
+    },
+  });
 
   ComponentTestCase({
     name: '#66 - @returns with type',
@@ -2216,7 +2216,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2224,7 +2224,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'sum(a: number, b: number): number'
+            'sum(a: number, b: number): number',
           ],
           name: 'sum',
           visibility: 'public',
@@ -2237,24 +2237,24 @@ describe('issues', () => {
               type: 'number',
               defaultValue: undefined,
               description: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'b',
               type: 'number',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'number',
-            description: undefined
-          }
-        }
-      ]
-    }
-  })
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#76 - Support for @link params',
@@ -2272,7 +2272,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2280,7 +2280,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(): void'
+            'myFunction(): void',
           ],
           name: 'myFunction',
           keywords: [],
@@ -2289,12 +2289,12 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
+            description: undefined,
           },
-          visibility: 'public' }
-      ]
-    }
-  })
+          visibility: 'public' },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#77 - Parsing TypeScript methods doesn\'t work correctly',
@@ -2323,7 +2323,7 @@ describe('issues', () => {
             })
           }
         </script>
-      `
+      `,
     },
     expected: {
       name: 'TestMixinFactory',
@@ -2340,7 +2340,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'method',
           syntax: [
-            'myFunction(test: Record<string, any>): Record<string, any>'
+            'myFunction(test: Record<string, any>): Record<string, any>',
           ],
           name: 'myFunction',
           params: [
@@ -2348,18 +2348,18 @@ describe('issues', () => {
               name: 'test',
               type: 'Record<string, any>',
               description: '<-- Parser stops with error',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             description: '<-- Gets parsed as description',
             type: 'Record<string, any>',
           },
           visibility: 'public',
-        }
-      ]
-    }
-  })
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#80 - Parser issue with !(...)',
@@ -2387,7 +2387,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2400,7 +2400,7 @@ describe('issues', () => {
           keywords: [],
           name: 'a',
           type: 'unknown',
-          initialValue: 'undefined'
+          initialValue: 'undefined',
         },
         {
           kind: 'data',
@@ -2410,7 +2410,7 @@ describe('issues', () => {
           keywords: [],
           name: 'b',
           type: 'unknown',
-          initialValue: 'undefined'
+          initialValue: 'undefined',
         },
         {
           kind: 'data',
@@ -2420,7 +2420,7 @@ describe('issues', () => {
           keywords: [],
           name: 'c',
           type: 'number',
-          initialValue: '0'
+          initialValue: '0',
         },
         {
           kind: 'data',
@@ -2430,7 +2430,7 @@ describe('issues', () => {
           keywords: [],
           name: 'd',
           type: 'unknown',
-          initialValue: '!(a || b || c)'
+          initialValue: '!(a || b || c)',
         },
         {
           kind: 'data',
@@ -2440,7 +2440,7 @@ describe('issues', () => {
           keywords: [],
           name: 'e',
           type: 'boolean',
-          initialValue: 'false'
+          initialValue: 'false',
         },
         {
           kind: 'data',
@@ -2450,11 +2450,11 @@ describe('issues', () => {
           keywords: [],
           name: 'f',
           type: 'unknown',
-          initialValue: '!!d'
-        }
-      ]
-    }
-  })
+          initialValue: '!!d',
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#83 - Parser issue with !(...)',
@@ -2483,7 +2483,7 @@ describe('issues', () => {
               })
           }
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2491,7 +2491,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'myFunction(test: Promise<string>): number'
+            'myFunction(test: Promise<string>): number',
           ],
           name: 'myFunction',
           category: undefined,
@@ -2504,17 +2504,17 @@ describe('issues', () => {
               type: 'Promise<string>',
               defaultValue: undefined,
               description: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'number',
-            description: undefined
-          }
-        }
-      ]
-    }
-  })
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#83 - Issue with arrow function',
@@ -2548,7 +2548,7 @@ describe('issues', () => {
             }
           })
         </script>
-      `
+      `,
     },
     expected: {
       name: 'TestComponent',
@@ -2557,7 +2557,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'test(): void'
+            'test(): void',
           ],
           name: 'test',
           category: undefined,
@@ -2567,12 +2567,12 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined
-          }
-        }
-      ]
-    }
-  })
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: 'vuedoc/md#19 - does not render default param values for function',
@@ -2611,14 +2611,14 @@ describe('issues', () => {
             }
           };
         </script>
-      `
+      `,
     },
     expected: {
       methods: [
         {
           kind: 'method',
           syntax: [
-            'load(schema: object, model: Number | String | Array | Object | Boolean = "hello"): void'
+            'load(schema: object, model: Number | String | Array | Object | Boolean = "hello"): void',
           ],
           name: 'load',
           visibility: 'public',
@@ -2627,8 +2627,8 @@ describe('issues', () => {
           keywords: [
             {
               name: 'Note',
-              description: '`model` is not a two-way data bindings.\nTo get the form data, use the `v-model` directive.'
-            }
+              description: '`model` is not a two-way data bindings.\nTo get the form data, use the `v-model` directive.',
+            },
           ],
           params: [
             {
@@ -2636,26 +2636,25 @@ describe('issues', () => {
               type: 'object',
               description: 'The JSON Schema object to load',
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
             {
               name: 'model',
-              type: [ 'Number', 'String', 'Array', 'Object', 'Boolean' ],
+              type: ['Number', 'String', 'Array', 'Object', 'Boolean'],
               description: 'The initial data for the schema.',
-              defaultValue: undefined,
               defaultValue: '"hello"',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'number(model: number = 123): void'
+            'number(model: number = 123): void',
           ],
           name: 'number',
           visibility: 'public',
@@ -2668,18 +2667,18 @@ describe('issues', () => {
               type: 'number',
               description: undefined,
               defaultValue: '123',
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'withImplicitUndefinedReturn(schema: object): unknown'
+            'withImplicitUndefinedReturn(schema: object): unknown',
           ],
           name: 'withImplicitUndefinedReturn',
           visibility: 'public',
@@ -2692,18 +2691,18 @@ describe('issues', () => {
               type: 'object',
               description: 'The JSON Schema object to load',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'unknown',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'withExplicitUndefinedReturn(schema: object): void'
+            'withExplicitUndefinedReturn(schema: object): void',
           ],
           name: 'withExplicitUndefinedReturn',
           visibility: 'public',
@@ -2716,18 +2715,18 @@ describe('issues', () => {
               type: 'object',
               description: 'The JSON Schema object to load',
               defaultValue: undefined,
-              rest: false
-            }
+              rest: false,
+            },
           ],
           returns: {
             type: 'void',
-            description: 'undefined'
-          }
+            description: 'undefined',
+          },
         },
         {
           kind: 'method',
           syntax: [
-            'withExplicitReturn(): int'
+            'withExplicitReturn(): int',
           ],
           name: 'withExplicitReturn',
           visibility: 'public',
@@ -2737,12 +2736,12 @@ describe('issues', () => {
           params: [],
           returns: {
             type: 'int',
-            description: '123'
-          }
-        }
-      ]
-    }
-  })
+            description: '123',
+          },
+        },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#84 - Method parameters not parsed correctly (typescript)',
@@ -2768,7 +2767,7 @@ describe('issues', () => {
                 }
             })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2777,7 +2776,7 @@ describe('issues', () => {
         {
           kind: 'method',
           syntax: [
-            'test(a: string): boolean'
+            'test(a: string): boolean',
           ],
           name: 'test',
           visibility: 'public',
@@ -2790,17 +2789,17 @@ describe('issues', () => {
               type: 'string',
               description: undefined,
               defaultValue: undefined,
-              rest: false
+              rest: false,
             },
           ],
           returns: {
             type: 'boolean',
-            description: undefined
-          }
+            description: undefined,
+          },
         },
-      ]
-    }
-  })
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: 'vuedoc/md#84 - Multiline default breaks table',
@@ -2831,7 +2830,7 @@ describe('issues', () => {
                 }
             })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2848,7 +2847,7 @@ describe('issues', () => {
           default: '{"a":1,"b":2}',
           name: 'test-prop',
           describeModel: false,
-          required: false
+          required: false,
         },
         {
           kind: 'prop',
@@ -2861,11 +2860,11 @@ describe('issues', () => {
           default: undefined,
           name: 'test-prop2',
           describeModel: false,
-          required: false
+          required: false,
         },
-      ]
-    }
-  })
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#87 - Typescript Parser Error',
@@ -2905,7 +2904,7 @@ describe('issues', () => {
               },
           })
         </script>
-      `
+      `,
     },
     expected: {
       errors: [],
@@ -2916,8 +2915,8 @@ describe('issues', () => {
       events: [],
       methods: [],
       slots: [],
-    }
-  })
+    },
+  });
 
   ComponentTestCase({
     name: '#91 - crash when parsing event with anonymous object as value',
@@ -2947,7 +2946,7 @@ describe('issues', () => {
             }
           }
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [
@@ -2979,7 +2978,7 @@ describe('issues', () => {
       ],
       methods: [],
       slots: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -3008,7 +3007,7 @@ describe('issues', () => {
           token: any = localStorage.getItem('devToken');
         }
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [],
@@ -3064,7 +3063,7 @@ describe('issues', () => {
       events: [],
       methods: [],
       slots: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -3084,7 +3083,7 @@ describe('issues', () => {
             },
           };
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [],
@@ -3092,30 +3091,30 @@ describe('issues', () => {
       events: [],
       data: [
         {
-          "category": undefined,
-          "initialValue": "\"123\"",
-          "keywords": [],
-          "kind": "data",
-          "name": "test",
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          initialValue: '"123"',
+          keywords: [],
+          kind: 'data',
+          name: 'test',
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "initialValue": "\"200px\"",
-          "keywords": [],
-          "kind": "data",
-          "name": "cWidth",
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          initialValue: '"200px"',
+          keywords: [],
+          kind: 'data',
+          name: 'cWidth',
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
       ],
       props: [],
       methods: [],
       slots: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -3235,7 +3234,7 @@ describe('issues', () => {
             },
           };
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [],
@@ -3243,252 +3242,252 @@ describe('issues', () => {
       name: 'HmAntInput',
       events: [
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": "cValue",
-              "rest": false,
-              "type": "unknown",
+              description: undefined,
+              name: 'cValue',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "update:valuex",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'update:valuex',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": "cValue",
-              "rest": false,
-              "type": "string",
+              description: undefined,
+              name: 'cValue',
+              rest: false,
+              type: 'string',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "update:value",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'update:value',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": "e",
-              "rest": false,
-              "type": "unknown",
+              description: undefined,
+              name: 'e',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "change",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'change',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": "e",
-              "rest": false,
-              "type": "unknown",
+              description: undefined,
+              name: 'e',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "press-enter",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'press-enter',
+          version: undefined,
+          visibility: 'public',
         },
       ],
       data: [
         {
-          "category": undefined,
-          "initialValue": "\"\"",
-          "keywords": [],
-          "kind": "data",
-          "name": "cValue",
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          initialValue: '""',
+          keywords: [],
+          kind: 'data',
+          name: 'cValue',
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "initialValue": "\"200px\"",
-          "keywords": [],
-          "kind": "data",
-          "name": "cWidth",
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          initialValue: '"200px"',
+          keywords: [],
+          kind: 'data',
+          name: 'cWidth',
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
       ],
       props: [
         {
-          "category": undefined,
-          "default": undefined,
-          "describeModel": true,
-          "description": "值",
-          "keywords": [
+          category: undefined,
+          default: undefined,
+          describeModel: true,
+          description: '值',
+          keywords: [
             {
-              "name": "v-model",
+              name: 'v-model',
             },
           ],
-          "kind": "prop",
-          "name": "value",
-          "required": false,
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          kind: 'prop',
+          name: 'value',
+          required: false,
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "default": undefined,
-          "describeModel": false,
-          "description": "前缀图标",
-          "keywords": [],
-          "kind": "prop",
-          "name": "prefixicon",
-          "required": false,
-          "type": "Icon",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          default: undefined,
+          describeModel: false,
+          description: '前缀图标',
+          keywords: [],
+          kind: 'prop',
+          name: 'prefixicon',
+          required: false,
+          type: 'Icon',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "default": undefined,
-          "describeModel": false,
-          "description": "后缀图标",
-          "keywords": [],
-          "kind": "prop",
-          "name": "suffixicon",
-          "required": false,
-          "type": "Icon",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          default: undefined,
+          describeModel: false,
+          description: '后缀图标',
+          keywords: [],
+          kind: 'prop',
+          name: 'suffixicon',
+          required: false,
+          type: 'Icon',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "default": "\"输入框\"",
-          "describeModel": false,
-          "description": "标题",
-          "keywords": [],
-          "kind": "prop",
-          "name": "title",
-          "required": false,
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          default: '"输入框"',
+          describeModel: false,
+          description: '标题',
+          keywords: [],
+          kind: 'prop',
+          name: 'title',
+          required: false,
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "default": "\"200\"",
-          "describeModel": false,
-          "description": "输入框宽度",
-          "keywords": [],
-          "kind": "prop",
-          "name": "width",
-          "required": false,
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          default: '"200"',
+          describeModel: false,
+          description: '输入框宽度',
+          keywords: [],
+          kind: 'prop',
+          name: 'width',
+          required: false,
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "default": undefined,
-          "describeModel": false,
-          "description": "标题宽度",
-          "keywords": [],
-          "kind": "prop",
-          "name": "label-width",
-          "required": false,
-          "type": "number",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          default: undefined,
+          describeModel: false,
+          description: '标题宽度',
+          keywords: [],
+          kind: 'prop',
+          name: 'label-width',
+          required: false,
+          type: 'number',
+          version: undefined,
+          visibility: 'public',
         },
       ],
       methods: [
         {
-          "category": undefined,
-          "keywords": [],
-          "kind": "method",
-          "name": "onChange",
-          "params": [
+          category: undefined,
+          keywords: [],
+          kind: 'method',
+          name: 'onChange',
+          params: [
             {
-              "defaultValue": undefined,
-              "description": undefined,
-              "name": "e",
-              "rest": false,
-              "type": "unknown",
+              defaultValue: undefined,
+              description: undefined,
+              name: 'e',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "returns": {
-            "description": undefined,
-            "type": "void",
+          returns: {
+            description: undefined,
+            type: 'void',
           },
-          "syntax": [
-            "onChange(e: unknown): void",
+          syntax: [
+            'onChange(e: unknown): void',
           ],
-          "version": undefined,
-          "visibility": "public",
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "keywords": [],
-          "kind": "method",
-          "name": "onPressEnter",
-          "params": [
+          category: undefined,
+          keywords: [],
+          kind: 'method',
+          name: 'onPressEnter',
+          params: [
             {
-              "defaultValue": undefined,
-              "description": undefined,
-              "name": "e",
-              "rest": false,
-              "type": "unknown",
+              defaultValue: undefined,
+              description: undefined,
+              name: 'e',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "returns": {
-            "description": undefined,
-            "type": "void",
+          returns: {
+            description: undefined,
+            type: 'void',
           },
-          "syntax": [
-            "onPressEnter(e: unknown): void",
+          syntax: [
+            'onPressEnter(e: unknown): void',
           ],
-          "version": undefined,
-          "visibility": "public",
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "keywords": [],
-          "kind": "method",
-          "name": "getCssUnit",
-          "params": [
+          category: undefined,
+          keywords: [],
+          kind: 'method',
+          name: 'getCssUnit',
+          params: [
             {
-              "defaultValue": undefined,
-              "description": undefined,
-              "name": "value",
-              "rest": false,
-              "type": "unknown",
+              defaultValue: undefined,
+              description: undefined,
+              name: 'value',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "returns": {
-            "description": undefined,
-            "type": "unknown",
+          returns: {
+            description: undefined,
+            type: 'unknown',
           },
-          "syntax": [
-            "getCssUnit(value: unknown): unknown",
+          syntax: [
+            'getCssUnit(value: unknown): unknown',
           ],
-          "version": undefined,
-          "visibility": "public",
+          version: undefined,
+          visibility: 'public',
         },
       ],
       slots: [],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -3526,64 +3525,64 @@ describe('issues', () => {
             },
           }
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [],
       errors: [],
       computed: [
         {
-          "category": undefined,
-          "dependencies": ['something'],
-          "keywords": [],
-          "kind": "computed",
-          "name": "test",
-          "type": "object",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          dependencies: ['something'],
+          keywords: [],
+          kind: 'computed',
+          name: 'test',
+          type: 'object',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "dependencies": ['something', 'name'],
-          "keywords": [],
-          "kind": "computed",
-          "name": "test2",
-          "type": "object",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          dependencies: ['something', 'name'],
+          keywords: [],
+          kind: 'computed',
+          name: 'test2',
+          type: 'object',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "dependencies": ['something', 'name'],
-          "keywords": [],
-          "kind": "computed",
-          "name": "test3",
-          "type": "object",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          dependencies: ['something', 'name'],
+          keywords: [],
+          kind: 'computed',
+          name: 'test3',
+          type: 'object',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "dependencies": ['something', 'name'],
-          "keywords": [],
-          "kind": "computed",
-          "name": "test4",
-          "type": "object",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          dependencies: ['something', 'name'],
+          keywords: [],
+          kind: 'computed',
+          name: 'test4',
+          type: 'object',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "category": undefined,
-          "dependencies": ['something', 'name'],
-          "keywords": [],
-          "kind": "computed",
-          "name": "test5",
-          "type": "object",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          dependencies: ['something', 'name'],
+          keywords: [],
+          kind: 'computed',
+          name: 'test5',
+          type: 'object',
+          version: undefined,
+          visibility: 'public',
         },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -3611,76 +3610,76 @@ describe('issues', () => {
             },
           };
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [],
       errors: [],
       props: [
         {
-          "category": undefined,
-          "default": undefined,
-          "describeModel": false,
-          "keywords": [],
-          "kind": "prop",
-          "name": "something",
-          "required": true,
-          "type": "string",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          default: undefined,
+          describeModel: false,
+          keywords: [],
+          kind: 'prop',
+          name: 'something',
+          required: true,
+          type: 'string',
+          version: undefined,
+          visibility: 'public',
         },
       ],
       events: [
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": "something",
-              "rest": false,
-              "type": "unknown",
+              description: undefined,
+              name: 'something',
+              rest: false,
+              type: 'unknown',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "update:test",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'update:test',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": "something",
-              "rest": false,
-              "type": "string",
+              description: undefined,
+              name: 'something',
+              rest: false,
+              type: 'string',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "update:test2",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'update:test2',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": 'something',
-              "rest": false,
-              "type": "string",
+              description: undefined,
+              name: 'something',
+              rest: false,
+              type: 'string',
             },
           ],
-          "category": undefined,
-          "keywords": [],
-          "kind": "event",
-          "name": "update:test3",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'update:test3',
+          version: undefined,
+          visibility: 'public',
         },
       ],
-    }
+    },
   });
 
   ComponentTestCase({
@@ -3714,94 +3713,64 @@ describe('issues', () => {
             },
           }
         </script>
-      `
+      `,
     },
     expected: {
       warnings: [],
       errors: [],
       events: [
         {
-          "arguments": [
+          arguments: [
             {
-              "description": 'Hello',
-              "name": '"accepts"',
-              "rest": false,
-              "type": "string",
+              description: 'Hello',
+              name: '"accepts"',
+              rest: false,
+              type: 'string',
             },
           ],
-          "category": undefined,
-          "description": "Wrong arguments length",
-          "keywords": [],
-          "kind": "event",
-          "name": "work",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          description: 'Wrong arguments length',
+          keywords: [],
+          kind: 'event',
+          name: 'work',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": 'complicatedCondition',
-              "rest": false,
-              "type": "boolean",
+              description: undefined,
+              name: 'complicatedCondition',
+              rest: false,
+              type: 'boolean',
             },
           ],
-          "category": undefined,
-          "description": "Weird name && too much arguments",
-          "keywords": [],
-          "kind": "event",
-          "name": "work2",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          description: 'Weird name && too much arguments',
+          keywords: [],
+          kind: 'event',
+          name: 'work2',
+          version: undefined,
+          visibility: 'public',
         },
         {
-          "arguments": [
+          arguments: [
             {
-              "description": undefined,
-              "name": '!this.wrong && this.correct || this.okay',
-              "rest": false,
-              "type": "boolean",
+              description: undefined,
+              name: '!this.wrong && this.correct || this.okay',
+              rest: false,
+              type: 'boolean',
             },
           ],
-          "category": undefined,
-          "description": "Weird name && too much arguments",
-          "keywords": [],
-          "kind": "event",
-          "name": "work3",
-          "version": undefined,
-          "visibility": "public",
+          category: undefined,
+          description: 'Weird name && too much arguments',
+          keywords: [],
+          kind: 'event',
+          name: 'work3',
+          version: undefined,
+          visibility: 'public',
         },
       ],
-    }
+    },
   });
-
-  // ComponentTestCase({
-  //   name: '#107 - Arguments length for event is wrong',
-  //   options: {
-  //     filecontent: `
-  //       <script>
-  //         export default {
-  //           methods: {
-  //             /**
-  //              * Load the given \`schema\` with initial filled \`value\`
-  //              * Use this to load async schema.
-  //              *
-  //              * @param {object} schema - The JSON Schema object to load
-  //              * @param {Number|String|Array|Object|Boolean} model - The initial data for the schema.
-  //              *
-  //              * @Note \`model\` is not a two-way data bindings.
-  //              * To get the form data, use the \`v-model\` directive.
-  //              */
-  //             load (schema, model = undefined) {}
-  //           }
-  //         }
-  //       </script>
-  //     `
-  //   },
-  //   expected: {
-  //     warnings: [],
-  //     errors: [],
-  //     methods: [],
-  //   }
-  // });
 });

@@ -1,5 +1,5 @@
 import { describe } from '@jest/globals';
-import { ComponentTestCase } from './lib/TestUtils.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
 
 describe('Vue 3', () => {
   describe('General Usage', () => {

@@ -1,4 +1,4 @@
-import { CommentParser } from '../lib/parser/CommentParser.js';
+import { CommentParser } from '../../lib/parser/CommentParser.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */

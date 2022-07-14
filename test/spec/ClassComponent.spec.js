@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
 
 /* eslint-disable max-len */
 /* eslint-disable indent */

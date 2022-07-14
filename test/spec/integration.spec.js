@@ -5,12 +5,12 @@
 
 import assert from 'assert';
 
-import { parseComponent, parseOptions } from '../index.js';
-import { ComponentTestCase } from './lib/TestUtils.js';
-import { JSDocTypeSpec } from './spec/JSDocTypeSpec.js';
-import { Fixture } from './lib/Fixture.js';
-import { Loader } from '../lib/Loader.js';
-import { JavaScriptLoader } from '../loaders/javascript.js';
+import { parseComponent, parseOptions } from '../../index.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
+import { JSDocTypeSpec } from './JSDocTypeSpec.js';
+import { Fixture } from '../lib/Fixture.js';
+import { Loader } from '../../lib/Loader.js';
+import { JavaScriptLoader } from '../../loaders/javascript.js';
 
 const options = {
   filename: Fixture.resolve('checkbox.vue'),

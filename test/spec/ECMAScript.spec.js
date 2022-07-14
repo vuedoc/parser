@@ -1,4 +1,4 @@
-import { parseComponent, Parser } from '../index.js';
+import { parseComponent, Parser } from '../../index.js';
 
 /* global describe it expect */
 /* eslint-disable quote-props */

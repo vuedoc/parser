@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* global describe */
 
-import { ComponentTestCase } from './lib/TestUtils.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
 
 describe('ComputedParser', () => {
   ComponentTestCase({

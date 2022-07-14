@@ -59,8 +59,7 @@ npm install --save @vuedoc/parser
 - [Keywords support](#keywords-extraction)
 - Extract component `model`, `props`, `data`, `computed properties`,
   `events`, `slots` and `methods`
-- Vue 3 support
-- Composition API support
+- Vue 3 support with Composition API
 - JSX support
 - [Class Component](https://www.npmjs.com/package/vue-class-component) support
 - [Vue Property Decorator](https://www.npmjs.com/package/vue-property-decorator) support

@@ -1,4 +1,4 @@
-import { ComponentTestCase } from './lib/TestUtils.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
 
 ComponentTestCase({
   name: '#48 - Vue Instance',

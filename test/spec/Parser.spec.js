@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Parser } from '../lib/parser/Parser.js';
+import { Parser } from '../../lib/parser/Parser.js';
 
 /* global describe it expect */
 /* eslint-disable max-len */

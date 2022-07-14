@@ -1,6 +1,6 @@
-import { JSDoc } from '../lib/JSDoc.js';
-import { ComponentTestCase } from './lib/TestUtils.js';
-import { JSDocTypeSpec } from './spec/JSDocTypeSpec.js';
+import { JSDoc } from '../../lib/JSDoc.js';
+import { ComponentTestCase } from '../lib/TestUtils.js';
+import { JSDocTypeSpec } from './JSDocTypeSpec.js';
 
 /* global describe it expect */
 
