@@ -2327,5 +2327,238 @@ describe('Vue 3', () => {
         },
       });
     });
+
+    describe('methods', () => {
+      ComponentTestCase({
+        name: 'method as a function definition',
+        options: {
+          filecontent: `
+            <script setup>
+              /**
+               * Name only
+               * @syntax nameOnly(somebody: string) => void
+               */
+              function nameOnly(somebody) {
+                this.$emit('input', somebody)
+              }
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          data: [],
+          methods: [
+            {
+              kind: 'method',
+              syntax: [
+                'nameOnly(somebody: string) => void',
+              ],
+              visibility: 'public',
+              category: undefined,
+              description: 'Name only',
+              keywords: [],
+              name: 'nameOnly',
+              params: [
+                {
+                  type: 'unknown',
+                  name: 'somebody',
+                  description: undefined,
+                  defaultValue: undefined,
+                  rest: false,
+                },
+              ],
+              returns: {
+                type: 'void',
+                description: undefined,
+              },
+            },
+          ],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'method as a variable declaration',
+        options: {
+          filecontent: `
+            <script setup>
+              /**
+               * Name only
+               */
+              const nameOnly = (somebody) => {
+                alert('Hello ' + somebody);
+              }
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          data: [],
+          methods: [
+            {
+              kind: 'method',
+              syntax: [
+                'nameOnly(somebody: unknown): void',
+              ],
+              visibility: 'public',
+              category: undefined,
+              description: 'Name only',
+              keywords: [],
+              name: 'nameOnly',
+              params: [
+                {
+                  type: 'unknown',
+                  name: 'somebody',
+                  description: undefined,
+                  defaultValue: undefined,
+                  rest: false,
+                },
+              ],
+              returns: {
+                type: 'void',
+                description: undefined,
+              },
+            },
+          ],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'method with setup property as declaration',
+        options: {
+          filecontent: `
+            <script>
+              export default {
+                setup() {
+                  /**
+                   * Name only
+                   */
+                  const nameOnly = (somebody) => {
+                    alert('Hello ' + somebody);
+                  }
+
+                  return { nameOnly }
+                }
+              }
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          data: [],
+          methods: [
+            {
+              kind: 'method',
+              syntax: [
+                'nameOnly(somebody: unknown): void',
+              ],
+              visibility: 'public',
+              category: undefined,
+              description: 'Name only',
+              keywords: [],
+              name: 'nameOnly',
+              params: [
+                {
+                  type: 'unknown',
+                  name: 'somebody',
+                  description: undefined,
+                  defaultValue: undefined,
+                  rest: false,
+                },
+              ],
+              returns: {
+                type: 'void',
+                description: undefined,
+              },
+            },
+          ],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'method with setup property',
+        options: {
+          filecontent: `
+            <script>
+              export default {
+                setup() {
+                  return {
+                    /**
+                     * Name only
+                     */
+                    nameOnly: (somebody) => {
+                      alert('Hello ' + somebody);
+                    },
+                    /**
+                     * Name only
+                     */
+                    nameOnly2(somebody) {
+                      alert('Hello ' + somebody);
+                    }
+                  }
+                }
+              }
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          data: [],
+          methods: [
+            {
+              kind: 'method',
+              syntax: [
+                'nameOnly(somebody: unknown): void',
+              ],
+              visibility: 'public',
+              category: undefined,
+              description: 'Name only',
+              keywords: [],
+              name: 'nameOnly',
+              params: [
+                {
+                  type: 'unknown',
+                  name: 'somebody',
+                  description: undefined,
+                  defaultValue: undefined,
+                  rest: false,
+                },
+              ],
+              returns: {
+                type: 'void',
+                description: undefined,
+              },
+            },
+            {
+              kind: 'method',
+              syntax: [
+                'nameOnly2(somebody: unknown): void',
+              ],
+              visibility: 'public',
+              category: undefined,
+              description: 'Name only',
+              keywords: [],
+              name: 'nameOnly2',
+              params: [
+                {
+                  type: 'unknown',
+                  name: 'somebody',
+                  description: undefined,
+                  defaultValue: undefined,
+                  rest: false,
+                },
+              ],
+              returns: {
+                type: 'void',
+                description: undefined,
+              },
+            },
+          ],
+        },
+      });
+    });
   });
 });
