@@ -616,6 +616,67 @@ describe('Vue 3', () => {
         ],
       },
     });
+
+    ComponentTestCase({
+      name: 'extends',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script>
+            import { h, ref } from 'vue'
+
+            const CompA = {
+              props: {
+                age: Number,
+                name: {
+                  type: ExtendedString,
+                  required: true,
+                }
+              }
+            }
+
+            export default {
+              extends: CompA,
+              props: {
+                name: String
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        props: [
+          {
+            kind: 'prop',
+            visibility: 'public',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            keywords: [],
+            type: 'number',
+            default: undefined,
+            name: 'age',
+            describeModel: false,
+            required: false,
+          },
+          {
+            kind: 'prop',
+            visibility: 'public',
+            category: undefined,
+            version: undefined,
+            description: undefined,
+            keywords: [],
+            type: 'string',
+            default: undefined,
+            name: 'name',
+            describeModel: false,
+            required: false,
+          },
+        ],
+      },
+    });
   });
 
   describe('Composition API', () => {
