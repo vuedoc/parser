@@ -3477,10 +3477,10 @@ describe('issues', () => {
           ],
           returns: {
             description: undefined,
-            type: 'unknown',
+            type: 'string',
           },
           syntax: [
-            'getCssUnit(value: unknown): unknown',
+            'getCssUnit(value: unknown): string',
           ],
           version: undefined,
           visibility: 'public',

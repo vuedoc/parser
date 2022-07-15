@@ -38,6 +38,13 @@ export async function parseOptions(options) {
     options.ignoredVisibilities = DEFAULT_IGNORED_VISIBILITIES;
   }
 
+  options.composition = {
+    data: options.composition?.data || [],
+    methods: options.composition?.methods || [],
+    computed: options.composition?.computed || [],
+    props: options.composition?.props || [],
+  };
+
   options.source = {
     errors: [],
   };

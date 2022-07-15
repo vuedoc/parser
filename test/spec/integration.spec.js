@@ -15,31 +15,67 @@ import { JavaScriptLoader } from '../../loaders/javascript.js';
 const options = {
   filename: Fixture.resolve('checkbox.vue'),
   ignoredVisibilities: [],
+  composition: {
+    data: [],
+    methods: [],
+    computed: [],
+    props: [],
+  },
 };
 
 const optionsForModuleExports = {
   filename: Fixture.resolve('checkboxModuleExports.vue'),
   ignoredVisibilities: [],
+  composition: {
+    data: [],
+    methods: [],
+    computed: [],
+    props: [],
+  },
 };
 
 const optionsForVueExtend = {
   filename: Fixture.resolve('checkboxVueExtend.vue'),
   ignoredVisibilities: [],
+  composition: {
+    data: [],
+    methods: [],
+    computed: [],
+    props: [],
+  },
 };
 
 const optionsNoTopLevelConstant = {
   filename: Fixture.resolve('checkboxNoTopLevelConstant.vue'),
   ignoredVisibilities: [],
+  composition: {
+    data: [],
+    methods: [],
+    computed: [],
+    props: [],
+  },
 };
 
 const optionsWithFileSource = {
   filecontent: await Fixture.get('checkbox.vue'),
   ignoredVisibilities: [],
+  composition: {
+    data: [],
+    methods: [],
+    computed: [],
+    props: [],
+  },
 };
 
 const optionsForPropsArray = {
   filename: Fixture.resolve('checkboxPropsArray.vue'),
   ignoredVisibilities: [],
+  composition: {
+    data: [],
+    methods: [],
+    computed: [],
+    props: [],
+  },
 };
 
 /* eslint-disable no-unused-vars */
@@ -431,6 +467,12 @@ describe('Integration', () => {
           },
           errors: [],
         },
+        composition: {
+          data: [],
+          methods: [],
+          computed: [],
+          props: [],
+        },
       };
 
       await parseOptions(options);
@@ -462,6 +504,12 @@ describe('Integration', () => {
         loaders: [
           Loader.extend('coffee', JavaScriptLoader),
         ],
+        composition: {
+          data: [],
+          methods: [],
+          computed: [],
+          props: [],
+        },
       };
 
       await parseOptions(options);
@@ -487,6 +535,12 @@ describe('Integration', () => {
           errors: [],
         },
         loaders: [],
+        composition: {
+          data: [],
+          methods: [],
+          computed: [],
+          props: [],
+        },
       };
 
       await parseOptions(options);
@@ -514,6 +568,12 @@ describe('Integration', () => {
           errors: [],
         },
         loaders: [],
+        composition: {
+          data: [],
+          methods: [],
+          computed: [],
+          props: [],
+        },
       };
 
       await parseOptions(options);

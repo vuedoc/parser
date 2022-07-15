@@ -355,12 +355,12 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'returnValue(): void',
+            'returnValue(): number',
           ],
           params: [],
           returns: {
             description: undefined,
-            type: 'void',
+            type: 'number',
           },
           visibility: 'public',
         },
@@ -397,12 +397,12 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'promise(): void',
+            'promise(): Promise',
           ],
           params: [],
           returns: {
             description: undefined,
-            type: 'void',
+            type: 'Promise',
           },
           visibility: 'public',
         },

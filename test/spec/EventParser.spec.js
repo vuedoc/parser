@@ -249,7 +249,7 @@ describe('EventParser', () => {
           arguments: [
             {
               description: undefined,
-              name: '[ this.value ]',
+              name: '[this.value]',
               rest: false,
               type: 'array',
             },

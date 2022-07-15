@@ -650,11 +650,11 @@ describe('Class Component', () => {
           params: [],
           visibility: 'public',
           returns: {
-            type: 'void',
+            type: 'string',
             description: undefined,
           },
           syntax: [
-            'shouldBeSeen3(): void',
+            'shouldBeSeen3(): string',
           ],
         },
       ],

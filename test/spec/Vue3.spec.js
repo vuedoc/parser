@@ -304,7 +304,7 @@ describe('Vue 3', () => {
                 }
               }
             })
-            
+
             export default app
           </script>
         `,
@@ -459,7 +459,7 @@ describe('Vue 3', () => {
               // \`setup\` is a special hook dedicated for composition API.
               setup() {
                 const state = reactive({ count: 0 })
-            
+
                 // expose the state to the template
                 return {
                   state
@@ -523,11 +523,11 @@ describe('Vue 3', () => {
               setup(props, { expose }) {
                 const count = ref(0)
                 const increment = () => ++count.value
-            
+
                 expose({
                   increment
                 })
-            
+
                 return () => h('div', count.value)
               }
             }
@@ -537,17 +537,21 @@ describe('Vue 3', () => {
       expected: {
         errors: [],
         warnings: [],
-        data: [
+        data: [],
+        methods: [
           {
-            kind: 'data',
-            name: 'increment',
-            type: 'function',
-            category: undefined,
-            version: undefined,
-            description: undefined,
-            initialValue: '() => ++count.value',
+            kind: 'method',
             keywords: [],
-            visibility: 'public' },
+            name: 'increment',
+            params: [],
+            returns: {
+              type: 'void',
+            },
+            syntax: [
+              'increment(): void',
+            ],
+            visibility: 'public',
+          },
         ],
       },
     });
@@ -564,7 +568,7 @@ describe('Vue 3', () => {
               setup(props, { expose }) {
                 const count = ref(0)
                 const increment = () => ++count.value
-            
+
                 // make the instance "closed" -
                 // i.e. do not expose anything to the parent
                 expose()
@@ -673,6 +677,333 @@ describe('Vue 3', () => {
             name: 'name',
             describeModel: false,
             required: false,
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'complexe example',
+      options: {
+        filecontent: `
+          <script>
+            import { ref, reactive, computed, watch } from 'vue';
+
+            export default {
+              setup() {
+                const names = reactive(['Emil, Hans', 'Mustermann, Max', 'Tisch, Roman']);
+                const selected = ref('');
+                const prefix = ref('');
+                const first = ref('');
+                const last = ref('');
+            
+                const filteredNames = computed(() => names.filter((n) => n.toLowerCase().startsWith(prefix.value.toLowerCase())));
+            
+                watch(selected, (name) => {
+                  [last.value, first.value] = name.split(', ');
+                });
+            
+                function create() {
+                  if (hasValidInput()) {
+                    const fullName = \`\${last.value}, \${first.value}\`;
+            
+                    if (!names.includes(fullName)) {
+                      names.push(fullName);
+                      first.value = last.value = '';
+                    }
+                  }
+                }
+            
+                function update() {
+                  if (hasValidInput() && selected.value) {
+                    const i = names.indexOf(selected.value);
+            
+                    names[i] = selected.value = \`\${last.value}, \${first.value}\`;
+                  }
+                }
+            
+                function del() {
+                  if (selected.value) {
+                    const i = names.indexOf(selected.value);
+            
+                    names.splice(i, 1);
+                    selected.value = first.value = last.value = '';
+                  }
+                }
+            
+                function hasValidInput() {
+                  return first.value.trim() && last.value.trim();
+                }
+            
+                return {
+                  filteredNames,
+                  selected,
+                  prefix,
+                  first,
+                  last,
+                  create,
+                  update,
+                  del,
+                  hasValidInput,
+                };
+              },
+            };          
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        props: [],
+        data: [
+          {
+            category: undefined,
+            initialValue: '""',
+            keywords: [],
+            kind: 'data',
+            name: 'selected',
+            type: 'string',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: '""',
+            keywords: [],
+            kind: 'data',
+            name: 'prefix',
+            type: 'string',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: '""',
+            keywords: [],
+            kind: 'data',
+            name: 'first',
+            type: 'string',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: '""',
+            keywords: [],
+            kind: 'data',
+            name: 'last',
+            type: 'string',
+            version: undefined,
+            visibility: 'public',
+          },
+        ],
+        computed: [
+          {
+            category: undefined,
+            keywords: [],
+            dependencies: [],
+            kind: 'computed',
+            name: 'filteredNames',
+            type: 'unknown',
+            version: undefined,
+            visibility: 'public',
+          },
+        ],
+        methods: [
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'create',
+            params: [],
+            returns: {
+              description: undefined,
+              type: 'void',
+            },
+            syntax: [
+              'create(): void',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'update',
+            params: [],
+            returns: {
+              description: undefined,
+              type: 'void',
+            },
+            syntax: [
+              'update(): void',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'del',
+            params: [],
+            returns: {
+              description: undefined,
+              type: 'void',
+            },
+            syntax: [
+              'del(): void',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'hasValidInput',
+            params: [],
+            returns: {
+              description: undefined,
+              type: 'boolean',
+            },
+            syntax: [
+              'hasValidInput(): boolean',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'complexe example with global variables',
+      options: {
+        filecontent: `
+          <script>
+            import { ref, watchEffect } from 'vue';
+
+            const API_URL = 'https://api.github.com/repos/vuejs/core/commits?per_page=3&sha=';
+            const branches = ['main', 'v2-compat'];
+            
+            export default {
+              setup() {
+                const currentBranch = ref(branches[0]);
+                const commits = ref(null);
+            
+                watchEffect(async () => {
+                  // this effect will run immediately and then
+                  // re-run whenever currentBranch.value changes
+                  const url = \`\${API_URL}\${currentBranch.value}\`;
+            
+                  commits.value = await (await fetch(url)).json();
+                });
+            
+                function truncate(v) {
+                  const newline = v.indexOf('\\n');
+            
+                  return newline > 0 ? v.slice(0, newline) : v;
+                }
+            
+                function formatDate(v) {
+                  return v.replace(/T|Z/g, ' ');
+                }
+            
+                return {
+                  branches,
+                  currentBranch,
+                  commits,
+                  truncate,
+                  formatDate,
+                };
+              },
+            };          
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        props: [],
+        data: [
+          {
+            category: undefined,
+            initialValue: '["main","v2-compat"]',
+            keywords: [],
+            kind: 'data',
+            name: 'branches',
+            type: 'array',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: '"main"',
+            keywords: [],
+            kind: 'data',
+            name: 'currentBranch',
+            type: 'string',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: 'null',
+            keywords: [],
+            kind: 'data',
+            name: 'commits',
+            type: 'unknown',
+            version: undefined,
+            visibility: 'public',
+          },
+        ],
+        computed: [],
+        methods: [
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'truncate',
+            params: [
+              {
+                name: 'v',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            returns: {
+              description: undefined,
+              type: 'unknown',
+            },
+            syntax: [
+              'truncate(v: unknown): unknown',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'formatDate',
+            params: [
+              {
+                name: 'v',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            returns: {
+              description: undefined,
+              type: 'unknown',
+            },
+            syntax: [
+              'formatDate(v: unknown): unknown',
+            ],
+            version: undefined,
+            visibility: 'public',
           },
         ],
       },
@@ -1356,6 +1687,80 @@ describe('Vue 3', () => {
           props: [],
         },
       });
+
+      ComponentTestCase({
+        name: 'unref() declaration',
+        options: {
+          filecontent: `
+            <script>
+              import { ref } from 'vue';
+
+              export default {
+                setup() {
+                  const message = ref('Hello World!');
+                  const isRed = ref(true);
+                  const color = ref('green');
+
+                  function toggleRed() {
+                    isRed.value = !isRed.value;
+                  }
+
+                  function toggleColor() {
+                    color.value = color.value === 'green' ? 'blue' : 'green';
+                  }
+
+                  return {
+                    message,
+                    isRed,
+                    color,
+                    toggleRed,
+                    toggleColor,
+                  };
+                },
+              };
+
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [],
+          data: [
+            {
+              kind: 'data',
+              name: 'message',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              initialValue: '"Hello World!"',
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'data',
+              name: 'isRed',
+              type: 'boolean',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              initialValue: 'true',
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'data',
+              name: 'color',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              initialValue: '"green"',
+              keywords: [],
+              visibility: 'public' },
+          ],
+          props: [],
+        },
+      });
     });
 
     describe('computed', () => {
@@ -1729,7 +2134,7 @@ describe('Vue 3', () => {
                 likes: number
                 modelValue: number
               };
-    
+
               defineProps<Props>()
             </script>
           `,
@@ -1793,7 +2198,7 @@ describe('Vue 3', () => {
                 modelValue: number
                 get getter() { return this.title }
               };
-    
+
               defineProps<Props>()
             </script>
           `,
@@ -1930,13 +2335,13 @@ describe('Vue 3', () => {
                 // here we are aliasing \`props.foo\` to \`bar\`
                 foo?: string
               }
-            
+
               const {
                 msg,
                 count = 1,
                 foo: bar
               } = defineProps<Props>()
-            
+
               watchEffect(() => {
                 // will log whenever the props change
                 console.log(msg, count, bar)
@@ -2012,7 +2417,7 @@ describe('Vue 3', () => {
                  */
                 type?: Name
               }
-              
+
               const props = withDefaults(defineProps<Props>(), {
                 msg: 'hello',
                 labels: () => ['one', 'two']
@@ -2044,7 +2449,7 @@ describe('Vue 3', () => {
               category: undefined,
               version: undefined,
               description: undefined,
-              default: "['one', 'two']",
+              default: '["one","two"]',
               describeModel: false,
               required: true,
               keywords: [],
@@ -2219,7 +2624,7 @@ describe('Vue 3', () => {
               const emit = defineEmits({
                 // No validation
                 click: null,
-              
+
                 // Validate submit event
                 submit: ({ email, password }) => {
                   if (email && password) {
@@ -2230,7 +2635,7 @@ describe('Vue 3', () => {
                   }
                 }
               })
-              
+
               function submitForm(email, password) {
                 emit('submit', { email, password })
               }
@@ -2296,7 +2701,7 @@ describe('Vue 3', () => {
                 firstName: String,
                 lastName: String
               })
-              
+
               defineEmits(['update:firstName', 'update:lastName'])
             </script>
           `,

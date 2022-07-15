@@ -389,7 +389,7 @@ describe('MethodParser', () => {
         {
           kind: 'method',
           syntax: [
-            'async nameOnly(): Promise<unknown>',
+            'async nameOnly(): Promise<number>',
           ],
           visibility: 'public',
           category: undefined,
@@ -398,7 +398,7 @@ describe('MethodParser', () => {
           name: 'nameOnly',
           params: [],
           returns: {
-            type: 'Promise<unknown>',
+            type: 'Promise<number>',
             description: undefined,
           },
         },
