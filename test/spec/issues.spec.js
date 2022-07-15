@@ -1536,6 +1536,29 @@ describe('issues', () => {
           description: undefined,
           version: undefined,
           keywords: [],
+          name: 'highlight',
+          arguments: [
+            {
+              name: 'suggestion',
+              type: 'unknown',
+              description: undefined,
+              rest: false,
+            },
+            {
+              name: 'index',
+              type: 'unknown',
+              description: undefined,
+              rest: false,
+            },
+          ],
+        },
+        {
+          kind: 'event',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          version: undefined,
+          keywords: [],
           name: 'dropdown-open',
           arguments: [],
         },
@@ -3767,6 +3790,49 @@ describe('issues', () => {
           keywords: [],
           kind: 'event',
           name: 'work3',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+    },
+  });
+
+  ComponentTestCase({
+    name: '#106 - $emit is ignored if it is inside an else statement',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            mounted() {
+              if (true) {
+                this.$emit('work'); // work
+              } else {
+                this.$emit('nope'); // only one event is in the events array
+              }
+            },
+          }
+        </script>
+      `,
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      events: [
+        {
+          arguments: [],
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'work',
+          version: undefined,
+          visibility: 'public',
+        },
+        {
+          arguments: [],
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'nope',
           version: undefined,
           visibility: 'public',
         },
