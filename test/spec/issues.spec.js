@@ -3839,4 +3839,46 @@ describe('issues', () => {
       ],
     },
   });
+
+  ComponentTestCase({
+    name: '#105 - $emit inside an arrow function don\'t show up in events array',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            mounted() {
+              this.$emit('work');
+              setTimeout(() => {
+                this.$emit('nope');
+              }, 5000);
+            },
+          }
+        </script>
+      `,
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      events: [
+        {
+          arguments: [],
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'work',
+          version: undefined,
+          visibility: 'public',
+        },
+        {
+          arguments: [],
+          category: undefined,
+          keywords: [],
+          kind: 'event',
+          name: 'nope',
+          version: undefined,
+          visibility: 'public',
+        },
+      ],
+    },
+  });
 });
