@@ -28,6 +28,16 @@ declare module '@vuedoc/parser/parser/Parser.js' {
     ignoredVisibilities?: Visibility[];
 
     /**
+     * Additional composition tokens for advanced components
+     */
+    composition?: {
+      data?: string[];
+      props?: string[];
+      computed?: string[];
+      methods?: string[];
+    };
+
+    /**
      * Set to `true` to enable JSX parsing
      * @default false
      */
