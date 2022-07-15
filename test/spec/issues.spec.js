@@ -3881,4 +3881,57 @@ describe('issues', () => {
       ],
     },
   });
+
+  ComponentTestCase({
+    name: 'md#50 - Destructuring an object property with the same name as a data property causes parsing to fail',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            data() {
+              return {
+                myProp: null,
+              };
+            },
+            methods: {
+              getMyProp() {
+                  const { myProp } = { myProp: null };
+  
+                  return myProp;
+              },
+            },  
+          }
+        </script>
+      `,
+    },
+    expected: {
+      warnings: [],
+      errors: [],
+      data: [
+        {
+          kind: 'data',
+          name: 'myProp',
+          initialValue: 'null',
+          keywords: [],
+          type: 'unknown',
+          visibility: 'public',
+        },
+      ],
+      methods: [
+        {
+          kind: 'method',
+          name: 'getMyProp',
+          keywords: [],
+          visibility: 'public',
+          params: [],
+          returns: {
+            type: 'unknown',
+          },
+          syntax: [
+            'getMyProp(): unknown',
+          ],
+        },
+      ],
+    },
+  });
 });
