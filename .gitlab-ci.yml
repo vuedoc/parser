@@ -39,7 +39,6 @@ security audit:
     - tests & coverage
   script:
     - yarn audit --level high --groups dependencies
-  allow_failure: true
 
 sast:
   stage: security
