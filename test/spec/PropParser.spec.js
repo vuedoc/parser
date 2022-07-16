@@ -445,8 +445,8 @@ describe('PropParser', () => {
                 type: Function as PropType<FactoryFunction>,
               },
               menuFactory: {
-                type: Function as (selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>,
-              },
+                type: Function,
+              } as PropOptions<(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>>,
               menuFactoryMultiline: {
                 type: Function as (
                   selectedItemsData: Array<any>
