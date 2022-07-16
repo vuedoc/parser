@@ -429,7 +429,7 @@ describe('PropParser', () => {
       filecontent: `
         <script lang="ts">
           import mixins         from 'vue-typed-mixins'
-          import {PropOptions}  from 'vue'
+          import {PropType}  from 'vue'
 
           const Vue = mixins()
           export default Vue.extend({
@@ -442,8 +442,8 @@ describe('PropParser', () => {
                 type: Function as (selectedItemsData: Array<any>) => Array<any>,
               },
               contextFactory2: {
-                type: Function as (selectedItemsData: Array<any>) => Array<any>,
-              } as PropOptions<FactoryFunction>,
+                type: Function as PropType<FactoryFunction>,
+              },
               menuFactory: {
                 type: Function as (selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>,
               },
@@ -489,7 +489,7 @@ describe('PropParser', () => {
           version: undefined,
           description: undefined,
           keywords: [],
-          type: '(selectedItemsData: Array<any>) => Array<any>',
+          type: 'FactoryFunction',
           default: undefined,
           name: 'context-factory2',
           describeModel: false,
