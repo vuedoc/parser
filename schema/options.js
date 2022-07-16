@@ -29,6 +29,36 @@ export default {
       type: 'array',
       description: 'Use this option to define custom loaders for specific languages',
     },
+    composition: {
+      type: 'object',
+      description: 'Additional composition tokens for advanced components',
+      properties: {
+        data: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+        methods: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+        computed: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+        props: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+      },
+    },
     ignoredVisibilities: {
       type: 'array',
       description: 'List of ignored visibilities',
