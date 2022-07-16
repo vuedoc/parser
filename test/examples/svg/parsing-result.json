@@ -1,0 +1,71 @@
+{
+  "inheritAttrs": true,
+  "errors": [
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag."
+  ],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "newLabel",
+      "initialValue": "\"\""
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "array",
+      "name": "stats",
+      "initialValue": "[{ label: 'A', value: 100 },{ label: 'B', value: 100 },{ label: 'C', value: 100 },{ label: 'D', value: 100 },{ label: 'E', value: 100 },{ label: 'F', value: 100 }]"
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": [
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "add",
+      "params": [
+        {
+          "name": "e",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "add(e: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "remove",
+      "params": [
+        {
+          "name": "stat",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "remove(stat: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    }
+  ]
+}

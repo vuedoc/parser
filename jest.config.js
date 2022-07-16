@@ -15,4 +15,7 @@ export default {
     'js',
     'json',
   ],
+  watchPathIgnorePatterns: [
+    '<rootDir>/test/examples',
+  ],
 };

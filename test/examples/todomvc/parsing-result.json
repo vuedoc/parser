@@ -1,0 +1,187 @@
+{
+  "inheritAttrs": true,
+  "errors": [
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag."
+  ],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "todos",
+      "initialValue": "JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "editedTodo",
+      "initialValue": "null"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "visibility",
+      "initialValue": "\"all\""
+    }
+  ],
+  "computed": [
+    {
+      "kind": "computed",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "filteredTodos",
+      "dependencies": []
+    },
+    {
+      "kind": "computed",
+      "keywords": [],
+      "visibility": "public",
+      "type": "object",
+      "name": "remaining",
+      "dependencies": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "toggleAll",
+      "params": [
+        {
+          "name": "e",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "toggleAll(e: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "addTodo",
+      "params": [
+        {
+          "name": "e",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "addTodo(e: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "removeTodo",
+      "params": [
+        {
+          "name": "todo",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "removeTodo(todo: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "editTodo",
+      "params": [
+        {
+          "name": "todo",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "editTodo(todo: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "doneEdit",
+      "params": [
+        {
+          "name": "todo",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "doneEdit(todo: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "cancelEdit",
+      "params": [
+        {
+          "name": "todo",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "cancelEdit(todo: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "removeCompleted",
+      "params": [],
+      "syntax": [
+        "removeCompleted(): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    }
+  ]
+}

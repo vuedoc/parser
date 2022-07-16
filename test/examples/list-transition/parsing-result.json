@@ -1,0 +1,80 @@
+{
+  "inheritAttrs": true,
+  "errors": [],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "items",
+      "initialValue": "getInitialItems()"
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": [
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "insert",
+      "params": [],
+      "syntax": [
+        "insert(): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "reset",
+      "params": [],
+      "syntax": [
+        "reset(): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "shuffle",
+      "params": [],
+      "syntax": [
+        "shuffle(): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "remove",
+      "params": [
+        {
+          "name": "item",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "remove(item: unknown): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    }
+  ]
+}

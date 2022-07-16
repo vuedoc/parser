@@ -34,6 +34,7 @@
   "scripts": {
     "preversion": "yarn test",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
+    "update-examples": "UPDATE_EXAMPLES_RESULTS=true node --experimental-vm-modules node_modules/.bin/jest --no-coverage Compatibility.spec.js",
     "lint": "eslint .",
     "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },

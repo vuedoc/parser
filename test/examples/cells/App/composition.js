@@ -1,16 +1,27 @@
-import Cell from './Cell.vue';
-import { cells } from './store.js';
+import { ref } from 'vue';
+import { cells, evalCell } from './store.js';
 
 export default {
-  components: {
-    Cell,
+  props: {
+    c: Number,
+    r: Number,
   },
-  setup() {
-    const cols = cells.map((_, i) => String.fromCharCode(65 + i));
+  setup(props) {
+    const editing = ref(false);
+
+    function update(e) {
+      editing.value = false;
+      cells[props.c][props.r] = e.target.value.trim();
+    }
 
     return {
-      cols,
       cells,
+      editing,
+      /**
+       * @hidden
+       */
+      evalCell,
+      update,
     };
   },
 };

@@ -1,24 +1,60 @@
-import DemoGrid from './Grid.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 export default {
-  components: {
-    DemoGrid,
+  props: {
+    data: Array,
+    columns: Array,
+    filterKey: String,
   },
-  setup() {
-    const searchQuery = ref('');
-    const gridColumns = ['name', 'power'];
-    const gridData = [
-      { name: 'Chuck Norris', power: Infinity },
-      { name: 'Bruce Lee', power: 9000 },
-      { name: 'Jackie Chan', power: 7000 },
-      { name: 'Jet Li', power: 8000 },
-    ];
+  setup(props) {
+    const sortKey = ref('');
+    const sortOrders = ref(
+      props.columns.reduce((o, key) => ((o[key] = 1), o), {})
+    );
+
+    const filteredData = computed(() => {
+      let { data, filterKey } = props;
+
+      if (filterKey) {
+        filterKey = filterKey.toLowerCase();
+        data = data.filter((row) => {
+          return Object.keys(row).some((key) => {
+            return String(row[key]).toLowerCase().indexOf(filterKey) > -1;
+          });
+        });
+      }
+
+      const key = sortKey.value;
+
+      if (key) {
+        const order = sortOrders.value[key];
+
+        data = data.slice().sort((a, b) => {
+          a = a[key];
+          b = b[key];
+
+          return (a === b ? 0 : a > b ? 1 : -1) * order;
+        });
+      }
+
+      return data;
+    });
+
+    function sortBy(key) {
+      sortKey.value = key;
+      sortOrders.value[key] *= -1;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
     return {
-      searchQuery,
-      gridColumns,
-      gridData,
+      sortKey,
+      sortOrders,
+      filteredData,
+      sortBy,
+      capitalize,
     };
   },
 };

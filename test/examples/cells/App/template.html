@@ -1,16 +1,10 @@
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th v-for="c in cols">{{ c }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="i in cells[0].length">
-      <th>{{ i - 1 }}</th>
-      <td v-for="(c, j) in cols">
-        <Cell :r="i - 1" :c="j"></Cell>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="cell" :title="cells[c][r]" @click="editing = true">
+  <input
+    v-if="editing"
+    :value="cells[c][r]"
+    @change="update"
+    @blur="update"
+    @vnode-mounted="({ el }) => el.focus()"
+  >
+  <span v-else>{{ evalCell(cells[c][r]) }}</span>
+</div>

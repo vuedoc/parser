@@ -1,0 +1,29 @@
+{
+  "inheritAttrs": true,
+  "errors": [],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "cols",
+      "initialValue": "cells.map((_, i) => String.fromCharCode(65 + i))"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "cells",
+      "initialValue": "cells"
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": []
+}

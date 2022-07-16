@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { readFile, stat } from 'fs/promises';
+import { readFile, stat, writeFile } from 'fs/promises';
 import { beforeAll, describe, expect, it } from '@jest/globals';
 import { parseComponent } from '../../index.js';
 
@@ -84,15 +84,24 @@ export const VueDocExample = {
         });
       });
 
-      it.each(features)('should successfully parse %j', (feature) => {
-        if (feature === 'computed') {
-          for (const computed of legacyResult[feature]) {
-            computed.dependencies = [];
-          }
-        }
+      if (process.env.UPDATE_EXAMPLES_RESULTS) {
+        it(`update example result for ${path}`, async () => {
+          const resultPath = join(path, 'parsing-result.json');
+          const resultString = JSON.stringify(compositionResult, null, 2);
 
-        expect(compositionResult[feature]).toEqual(legacyResult[feature]);
-      });
+          await writeFile(resultPath, resultString, 'utf-8');
+        });
+      } else {
+        it.each(features)('should successfully parse %j', (feature) => {
+          if (feature === 'computed') {
+            for (const computed of legacyResult[feature]) {
+              computed.dependencies = [];
+            }
+          }
+
+          expect(compositionResult[feature]).toEqual(legacyResult[feature]);
+        });
+      }
     });
   },
 };

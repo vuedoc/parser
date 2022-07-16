@@ -1,36 +1,38 @@
-import { ref } from 'vue';
-import TreeItem from './TreeItem.vue';
+import { ref, computed } from 'vue';
 
 export default {
-  components: {
-    TreeItem,
+  name: 'TreeItem', // necessary for self-reference
+  props: {
+    model: Object,
   },
-  setup() {
-    const treeData = ref({
-      name: 'My Tree',
-      children: [
-        { name: 'hello' },
-        { name: 'world' },
-        {
-          name: 'child folder',
-          children: [
-          {
-            name: 'child folder',
-            children: [{ name: 'hello' }, { name: 'wat' }],
-          },
-          { name: 'hello' },
-          { name: 'wat' },
-          {
-            name: 'child folder',
-            children: [{ name: 'hello' }, { name: 'wat' }],
-          },
-          ],
-        },
-      ],
+  setup(props) {
+    const isOpen = ref(false);
+    const isFolder = computed(() => {
+      return props.model.children && props.model.children.length;
     });
 
+    function toggle() {
+      isOpen.value = !isOpen.value;
+    }
+
+    function changeType() {
+      if (!isFolder.value) {
+        props.model.children = [];
+        addChild();
+        isOpen.value = true;
+      }
+    }
+
+    function addChild() {
+      props.model.children.push({ name: 'new stuff' });
+    }
+
     return {
-      treeData,
+      isOpen,
+      isFolder,
+      toggle,
+      changeType,
+      addChild,
     };
   },
 };

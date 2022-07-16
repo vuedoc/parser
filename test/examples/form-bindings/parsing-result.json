@@ -1,0 +1,71 @@
+{
+  "inheritAttrs": true,
+  "errors": [
+    "tag <br> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <br> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag."
+  ],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "text",
+      "initialValue": "\"Edit me\""
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "boolean",
+      "name": "checked",
+      "initialValue": "true"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "array",
+      "name": "checkedNames",
+      "initialValue": "[\"Jack\"]"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "picked",
+      "initialValue": "\"One\""
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "selected",
+      "initialValue": "\"A\""
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "array",
+      "name": "multiSelected",
+      "initialValue": "[\"A\"]"
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": []
+}
