@@ -1,20 +1,18 @@
 declare module '@vuedoc/parser' {
-  export { Parser } from '@vuedoc/parser/parser/lib/Parser.js';
-  export { Loader } from './lib/Loader.js';
-
+  export { Parser, Loader } from '@vuedoc/parser/parser/lib/Parser.js';
   import { Options as ParserOptions } from '@vuedoc/parser/parser/Parser.js';
   import { Definition } from '@vuedoc/parser/lib/Loader.js';
-  import { Keyword } from './lib/entity/Keyword';
-  import { ComputedEntry } from './lib/entity/ComputedEntry';
-  import { DataEntry } from './lib/entity/DataEntry';
-  import { EventEntry } from './lib/entity/EventEntry';
-  import { MethodEntry } from './lib/entity/MethodEntry';
-  import { ModelEntry } from './lib/entity/ModelEntry';
-  import { PropEntry } from './lib/entity/PropEntry';
-  import { SlotEntry } from './lib/entity/SlotEntry';
+  import { Keyword } from '@vuedoc/parser/entity/Keyword';
+  import { ComputedEntry } from '@vuedoc/parser/entity/ComputedEntry';
+  import { DataEntry } from '@vuedoc/parser/entity/DataEntry';
+  import { EventEntry } from '@vuedoc/parser/entity/EventEntry';
+  import { MethodEntry } from '@vuedoc/parser/entity/MethodEntry';
+  import { ModelEntry } from '@vuedoc/parser/entity/ModelEntry';
+  import { PropEntry } from '@vuedoc/parser/entity/PropEntry';
+  import { SlotEntry } from '@vuedoc/parser/entity/SlotEntry';
 
-  async function parseComponent(options: Options): Promise<ComponentAST>;
-  async function parseOptions(options: Options): Promise<void>;
+  export async function parseComponent(options: Options): Promise<ComponentAST>;
+  export async function parseOptions(options: Options): Promise<void>;
 
   type FileOptions = {
     /**
@@ -30,7 +28,7 @@ declare module '@vuedoc/parser' {
     filecontent: string;
   };
 
-  type Options = (FileOptions | ContentOptions) & Omit<ParserOptions, 'source' | 'filename'> & {
+  export type Options = (FileOptions | ContentOptions) & Omit<ParserOptions, 'source' | 'filename'> & {
     /**
      * The file encoding
      * @default 'utf8'
