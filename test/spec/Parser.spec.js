@@ -1859,7 +1859,7 @@ describe('Parser', () => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('checked');
         expect(prop.description).toBeUndefined();
-        expect(prop.describeModel).toBeTruthy();
+        expect(prop.describeModel).toBeFalsy();
         expect(prop.type).toBe('string');
         expect(prop.keywords).toEqual([]);
         done();
@@ -1889,7 +1889,7 @@ describe('Parser', () => {
 
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop.name).toBe('value');
-        expect(prop.describeModel).toBeTruthy();
+        expect(prop.describeModel).toBeFalsy();
         done();
       });
     });

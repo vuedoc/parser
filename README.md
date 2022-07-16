@@ -86,7 +86,7 @@ npm install --save @vuedoc/parser
 | `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                                                           |
 | `encoding`            | The file encoding. Default is `'utf8'`                                                                                                      |
 | `features`            | The component features to parse and extract.                                                                                                |
-|                       | Default features: `['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']`                             |
+|                       | Default features: `['name', 'description', 'slots', 'props', 'data', 'computed', 'events', 'methods']`                                      |
 | `loaders`             | Use this option to define [custom loaders](https://gitlab.com/vuedoc/parser/blob/main/README.md#language-processing) for specific languages |
 | `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                                                           |
 | `composition`         | Additional composition tokens for advanced components                                                                                       |

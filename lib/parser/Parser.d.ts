@@ -17,7 +17,7 @@ declare module '@vuedoc/parser/parser/Parser.js' {
 
     /**
      * The component features to parse and extract
-     * @default ['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']
+     * @default ['name', 'description', 'slots', 'props', 'data', 'computed', 'events', 'methods']
      */
     features?: Feature[];
 
@@ -44,7 +44,7 @@ declare module '@vuedoc/parser/parser/Parser.js' {
     jsx?: boolean;
   };
 
-  export type Feature = 'name' | 'description' | 'slots' | 'model' | 'props' | 'data' | 'computed' | 'events' | 'methods';
+  export type Feature = 'name' | 'description' | 'slots' | 'props' | 'data' | 'computed' | 'events' | 'methods';
   export type Visibility = 'public' | 'protected' | 'private';
 
   export declare class Parser extends EventEmitter {

@@ -608,7 +608,7 @@ describe('Integration', () => {
       const propsNames = component.props.map((item) => item.name);
 
       assert.deepEqual(propsNames, [
-        'model', 'disabled', 'checked', 'prop-with-camel',
+        'v-model', 'disabled', 'checked', 'prop-with-camel',
       ]);
     });
 

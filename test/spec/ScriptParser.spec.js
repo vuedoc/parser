@@ -835,7 +835,7 @@ describe('ScriptParser', () => {
         },
         {
           kind: 'prop',
-          name: 'value',
+          name: 'v-model',
           type: ['boolean', 'number', 'string'],
           visibility: 'public',
           category: undefined,
@@ -905,7 +905,7 @@ describe('ScriptParser', () => {
         },
         {
           kind: 'prop',
-          name: 'value',
+          name: 'v-model',
           type: ['boolean', 'number', 'string'],
           visibility: 'public',
           category: undefined,

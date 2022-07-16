@@ -7,7 +7,6 @@ declare module '@vuedoc/parser' {
   import { DataEntry } from '@vuedoc/parser/entity/DataEntry';
   import { EventEntry } from '@vuedoc/parser/entity/EventEntry';
   import { MethodEntry } from '@vuedoc/parser/entity/MethodEntry';
-  import { ModelEntry } from '@vuedoc/parser/entity/ModelEntry';
   import { PropEntry } from '@vuedoc/parser/entity/PropEntry';
   import { SlotEntry } from '@vuedoc/parser/entity/SlotEntry';
 
@@ -49,7 +48,6 @@ declare module '@vuedoc/parser' {
     since?: string;
     inheritAttrs: boolean;
     keywords: Keyword[];        // Attached component keywords
-    model?: ModelEntry;         // Component model
     slots: SlotEntry[];         // Component slots
     props: PropEntry[];         // Component props
     data: DataEntry[];          // Component data

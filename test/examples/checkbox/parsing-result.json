@@ -1,0 +1,110 @@
+{
+  "inheritAttrs": true,
+  "errors": [],
+  "warnings": [],
+  "keywords": [
+    {
+      "name": "contributor",
+      "description": "Sébastien"
+    }
+  ],
+  "slots": [
+    {
+      "kind": "slot",
+      "description": "Default slot",
+      "keywords": [],
+      "visibility": "public",
+      "name": "default",
+      "props": []
+    },
+    {
+      "kind": "slot",
+      "description": "Use this slot to set the checkbox label",
+      "keywords": [],
+      "visibility": "public",
+      "name": "label",
+      "props": []
+    },
+    {
+      "kind": "slot",
+      "description": "This\nis multiline description",
+      "keywords": [],
+      "visibility": "public",
+      "name": "multiline",
+      "props": []
+    },
+    {
+      "kind": "slot",
+      "keywords": [],
+      "visibility": "public",
+      "name": "undescribed",
+      "props": []
+    }
+  ],
+  "props": [
+    {
+      "kind": "prop",
+      "description": "The checkbox model",
+      "keywords": [],
+      "visibility": "public",
+      "type": "array",
+      "name": "v-model",
+      "required": true,
+      "describeModel": true
+    },
+    {
+      "kind": "prop",
+      "description": "Initial checkbox state",
+      "keywords": [],
+      "visibility": "public",
+      "type": "boolean",
+      "name": "disabled",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "description": "Initial checkbox value",
+      "keywords": [],
+      "visibility": "public",
+      "type": "boolean",
+      "name": "checked",
+      "default": "true",
+      "required": false,
+      "describeModel": false
+    }
+  ],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "unknown",
+      "name": "initialValue",
+      "initialValue": "null"
+    }
+  ],
+  "computed": [
+    {
+      "kind": "computed",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "id",
+      "dependencies": []
+    }
+  ],
+  "events": [
+    {
+      "kind": "event",
+      "description": "Emit when the component has been loaded",
+      "keywords": [],
+      "visibility": "public",
+      "name": "loaded",
+      "arguments": []
+    }
+  ],
+  "methods": [],
+  "name": "checkbox",
+  "description": "A simple checkbox component"
+}

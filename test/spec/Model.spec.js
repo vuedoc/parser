@@ -21,27 +21,29 @@ const filecontent = `
 describe('#42 - Model', () => {
   it('should successfully parse component with a model field', () => {
     const options = { filecontent };
-    const expected = {
-      kind: 'model',
-      visibility: 'public',
-      description: 'Use v-model to define a reactive model',
-      keywords: [],
-      prop: 'checked',
-      event: 'change',
-    };
 
-    return parseComponent(options).then(({ model }) => {
-      expect(model).toEqual(expected);
+    return parseComponent(options).then(({ props }) => {
+      expect(props).toEqual([
+        {
+          kind: 'prop',
+          visibility: 'public',
+          description: 'Use v-model to define a reactive model',
+          keywords: [],
+          name: 'v-model',
+          required: false,
+          describeModel: true,
+          type: 'unknown',
+        },
+      ]);
     });
   });
 
   it('should ignore the model feature', () => {
     const features = [];
     const options = { filecontent, features };
-    const expected = undefined;
 
-    return parseComponent(options).then(({ model }) => {
-      expect(model).toEqual(expected);
+    return parseComponent(options).then(({ props }) => {
+      expect(props).toEqual([]);
     });
   });
 });

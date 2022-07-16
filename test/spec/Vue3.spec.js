@@ -2107,7 +2107,70 @@ describe('Vue 3', () => {
               visibility: 'public' },
             {
               kind: 'prop',
-              name: 'model-value',
+              name: 'v-model',
+              type: 'number',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: undefined,
+              describeModel: true,
+              required: true,
+              keywords: [],
+              visibility: 'public' },
+          ],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'declaration with TSTypeLiteral #2',
+        options: {
+          filecontent: `
+            <script setup lang="ts">
+              defineProps<{
+                /**
+                 * Title description
+                 */
+                title?: string
+                likes?: number
+                modelValue: number
+              }>()
+
+              defineEmits(['update:modelValue'])
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [],
+          props: [
+            {
+              kind: 'prop',
+              name: 'title',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: 'Title description',
+              default: undefined,
+              describeModel: false,
+              required: false,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'likes',
+              type: 'number',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: undefined,
+              describeModel: false,
+              required: false,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'v-model',
               type: 'number',
               category: undefined,
               version: undefined,
@@ -2170,7 +2233,7 @@ describe('Vue 3', () => {
               visibility: 'public' },
             {
               kind: 'prop',
-              name: 'model-value',
+              name: 'v-model',
               type: 'number',
               category: undefined,
               version: undefined,
@@ -2234,7 +2297,7 @@ describe('Vue 3', () => {
               visibility: 'public' },
             {
               kind: 'prop',
-              name: 'model-value',
+              name: 'v-model',
               type: 'number',
               category: undefined,
               version: undefined,
@@ -2308,7 +2371,7 @@ describe('Vue 3', () => {
           props: [
             {
               kind: 'prop',
-              name: 'model-value',
+              name: 'v-model',
               type: 'unknown',
               category: undefined,
               version: undefined,
@@ -2497,10 +2560,41 @@ describe('Vue 3', () => {
 
     describe('events', () => {
       ComponentTestCase({
+        name: 'emits as array',
+        options: {
+          filecontent: `
+            <script>
+              export default {
+                emits: ['change'],
+                setup(props, { emit }) {
+                  emit('change') // <-- type check / auto-completion
+                }
+              }
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          events: [
+            {
+              kind: 'event',
+              name: 'change',
+              keywords: [],
+              category: undefined,
+              description: undefined,
+              visibility: 'public',
+              arguments: [],
+            },
+          ],
+        },
+      });
+
+      ComponentTestCase({
         name: 'with defineComponent()',
         options: {
           filecontent: `
-            <script setup>
+            <script>
               import { defineComponent } from 'vue'
 
               export default defineComponent({
@@ -2709,6 +2803,32 @@ describe('Vue 3', () => {
         expected: {
           errors: [],
           warnings: [],
+          props: [
+            {
+              category: undefined,
+              default: undefined,
+              describeModel: true,
+              keywords: [],
+              kind: 'prop',
+              name: 'v-model:first-name',
+              required: false,
+              type: 'string',
+              version: undefined,
+              visibility: 'public',
+            },
+            {
+              category: undefined,
+              default: undefined,
+              describeModel: true,
+              keywords: [],
+              kind: 'prop',
+              name: 'v-model:last-name',
+              required: false,
+              type: 'string',
+              version: undefined,
+              visibility: 'public',
+            },
+          ],
           events: [
             {
               kind: 'event',
