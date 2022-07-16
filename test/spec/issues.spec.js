@@ -808,7 +808,7 @@ describe('issues', () => {
           kind: 'prop',
           name: 'value',
           required: false,
-          type: ['String', 'Number'],
+          type: ['string', 'number'],
           visibility: 'public' },
       ],
     },
@@ -1005,7 +1005,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'value',
-          type: ['String', 'Number'],
+          type: ['string', 'number'],
           default: '""',
           required: false,
           describeModel: true,
@@ -1618,8 +1618,8 @@ describe('issues', () => {
             {
               name: 'value',
               type: [
-                'String',
-                'Number',
+                'string',
+                'number',
               ],
               description: undefined,
               rest: false,

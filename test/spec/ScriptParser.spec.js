@@ -836,7 +836,7 @@ describe('ScriptParser', () => {
         {
           kind: 'prop',
           name: 'value',
-          type: ['Boolean', 'Number', 'String'],
+          type: ['boolean', 'number', 'string'],
           visibility: 'public',
           category: undefined,
           description: undefined,
@@ -906,7 +906,7 @@ describe('ScriptParser', () => {
         {
           kind: 'prop',
           name: 'value',
-          type: ['Boolean', 'Number', 'String'],
+          type: ['boolean', 'number', 'string'],
           visibility: 'public',
           category: undefined,
           description: undefined,

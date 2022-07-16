@@ -752,7 +752,7 @@ describe('Vue Property Decorator', () => {
           keywords: [],
           default: undefined,
           required: false,
-          type: ['String', 'Boolean'],
+          type: ['string', 'boolean'],
           category: undefined,
           version: undefined,
           visibility: 'public' },

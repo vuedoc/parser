@@ -1948,7 +1948,7 @@ describe('Parser', () => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-a',
-          type: ['Boolean', 'Number'],
+          type: ['boolean', 'number'],
           visibility: 'public',
           category: undefined,
           description: undefined,
@@ -1987,7 +1987,7 @@ describe('Parser', () => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-o',
-          type: ['Boolean', 'Number'],
+          type: ['boolean', 'number'],
           visibility: 'public',
           category: undefined,
           description: undefined,

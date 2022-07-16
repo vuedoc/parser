@@ -186,6 +186,36 @@ describe('PropParser', () => {
   });
 
   ComponentTestCase({
+    name: 'with multiple types',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              disabled: [Boolean, Number]
+            }
+          }
+        </script>
+      `,
+    },
+    expected: {
+      props: [
+        {
+          default: undefined,
+          describeModel: false,
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          kind: 'prop',
+          name: 'disabled',
+          required: false,
+          type: ['boolean', 'number'],
+          visibility: 'public' },
+      ],
+    },
+  });
+
+  ComponentTestCase({
     name: '@kind function',
     options: {
       filecontent: `
