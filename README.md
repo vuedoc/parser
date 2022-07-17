@@ -92,6 +92,8 @@ npm install --save @vuedoc/parser
 |                       | Default value: `{data: [], methods: [], computed: [], props: []}`                                                                           |
 | `jsx`                 | Set to `true` to enable JSX parsing. Default `false`                                                                                        |
 
+Found [TypeScript definition here](https://gitlab.com/vuedoc/parser/blob/main/index.d.ts).
+
 ## Usage
 
 See [test/fixtures/checkbox.vue](https://gitlab.com/vuedoc/parser/blob/main/test/fixtures/checkbox.vue)
@@ -129,8 +131,6 @@ This will print this JSON output:
 ```
 
 > Found the complete result here: [test/fixtures/checkbox-result.json](https://gitlab.com/vuedoc/parser/blob/main/test/fixtures/checkbox-result.json)
-
-See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 
 ## Syntax
 
