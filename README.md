@@ -150,7 +150,7 @@ To set a custom name, use the [`name` option](https://vuejs.org/api/options-misc
 </script>
 ```
 
-You can also use the `@name` tag if you're using Vue 2.
+You can also use the `@name` tag:
 
 ```html
 <!-- CheckboxInput.vue -->
