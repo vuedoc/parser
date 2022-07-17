@@ -1285,39 +1285,39 @@ describe('Vue 3', () => {
 
   describe('Composition API', () => {
     describe('data', () => {
-      // ComponentTestCase({
-      //   name: 'simple declaration',
-      //   options: {
-      //     filecontent: `
-      //       <script setup>
-      //         import { ref } from 'vue'
+      ComponentTestCase({
+        name: 'simple declaration',
+        options: {
+          filecontent: `
+            <script setup>
+              import { ref } from 'vue'
 
-      //         /**
-      //          * Message value
-      //          */
-      //         const message = 'Hello World!';
-      //       </script>
-      //     `,
-      //   },
-      //   expected: {
-      //     errors: [],
-      //     warnings: [],
-      //     computed: [],
-      //     data: [
-      //       {
-      //         kind: 'data',
-      //         name: 'message',
-      //         type: 'string',
-      //         category: undefined,
-      //         version: undefined,
-      //         description: 'Message value',
-      //         initialValue: '"Hello World!"',
-      //         keywords: [],
-      //         visibility: 'public' },
-      //     ],
-      //     props: [],
-      //   },
-      // });
+              /**
+               * Message value
+               */
+              const message = 'Hello World!';
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [],
+          data: [
+            {
+              kind: 'data',
+              name: 'message',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: 'Message value',
+              initialValue: '"Hello World!"',
+              keywords: [],
+              visibility: 'public' },
+          ],
+          props: [],
+        },
+      });
 
       ComponentTestCase({
         name: 'simple declaration with typing',
@@ -2028,6 +2028,47 @@ describe('Vue 3', () => {
               version: undefined,
               description: undefined,
               initialValue: '"green"',
+              keywords: [],
+              visibility: 'public' },
+          ],
+          props: [],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'explicit exposing ref()',
+        options: {
+          filecontent: `
+            <script>
+              import { ref } from 'vue';
+
+              export default {
+                setup() {
+                  return {
+                    /**
+                     * Message text
+                     */
+                    message: ref('Hello World!'),
+                  };
+                },
+              };
+
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [],
+          data: [
+            {
+              kind: 'data',
+              name: 'message',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: 'Message text',
+              initialValue: '"Hello World!"',
               keywords: [],
               visibility: 'public' },
           ],

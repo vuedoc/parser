@@ -26,9 +26,9 @@ Generate a JSON documentation for a Vue file component.
   * [Annotate methods](#annotate-methods)
   * [Annotate events](#annotate-events)
   * [Annotate slots](#annotate-slots)
-  * [Ignore item from parsing](#ignore-item-from-parsing)
-- [Keywords Extraction](#keywords-extraction)
-- [Supported tags](#supported-tags)
+  * [Ignore items from parsing](#ignore-items-from-parsing)
+- [Tags Extraction](#tags-extraction)
+- [Supported Tags](#supported-tags)
 - [Working with Mixins](#working-with-mixins)
 - [Parsing control with `options.features`](#parsing-control-with-optionsfeatures)
 - [Language Processing](#language-processing)
@@ -140,23 +140,27 @@ See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 By default, Vuedoc Parser uses the component's filename to generate the
 component name.
 
-To set a custom name, use the `name` field like:
+To set a custom name, use the `@name` tag like:
 
-```js
-export default {
-  name: 'my-checkbox',
-};
+```html
+<script>
+  /**
+   * @name my-checkbox
+   */
+  export default {
+    // ...
+  };
+</script>
 ```
 
-You can also use the `@name` tag to set the component name:
+You can also use the `@name` tag if you're using Vue 2.
 
-```js
-/**
- * @name my-checkbox
- */
-export default {
-  // ...
-};
+```html
+<script>
+  export default {
+    name: 'my-checkbox',
+  };
+</script>
 ```
 
 ### Add component description
@@ -164,13 +168,16 @@ export default {
 To add a component description, just add a comment before the `export default`
 statement like:
 
-```js
-/**
- * Component description
- */
-export default {
-  // ...
-};
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  /**
+   * My awesome custom checkbox component
+   */
+  export default {
+    // ...
+  };
+</script>
 ```
 
 ### Annotate props
@@ -375,34 +382,36 @@ To document Vue array string props, just attach a Vuedoc comment to each prop:
 - `@kind function`<br>
   Force parsing of a prop as a function
 
-```js
-export default {
-  name: 'NumberInput',
-  props: {
-    /**
-     * Custom default value
-     * @type Complex.Object
-     * @default { anything: 'custom default value' }
-     */
-    custom: {
-      type: Object,
-      default: () => {
-        // complex code
-        return anythingExpression();
+```html
+<!-- NumberInput.vue -->
+<script>
+  export default {
+    props: {
+      /**
+       * Custom default value
+       * @type Complex.Object
+       * @default { anything: 'custom default value' }
+       */
+      custom: {
+        type: Object,
+        default: () => {
+          // complex code
+          return anythingExpression();
+        },
+      },
+      /**
+       * The input validation function
+       * @kind function
+       * @param {any} value - User input value to validate
+       * @returns {boolean} - `true` if validation succeeds; `false` otherwise.
+       */
+      validator: {
+        type: Function,
+        default: (value) => !Number.isNaN(value),
       },
     },
-    /**
-     * The input validation function
-     * @kind function
-     * @param {any} value - User input value to validate
-     * @returns {boolean} - `true` if validation succeeds; `false` otherwise.
-     */
-    validator: {
-      type: Function,
-      default: (value) => !Number.isNaN(value),
-    },
-  },
-};
+  };
+</script>
 ```
 
 #### Prop Entry Interface
@@ -433,17 +442,42 @@ type Keyword = {
 
 To document data, annotate your code like:
 
-```js
-export default {
-  data () {
-    return {
-      /**
-       * Indicates that the control is checked
-       */
-      isChecked: false,
-    };
-  },
-};
+**Legacy usage**
+
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  export default {
+    data() {
+      return {
+        /**
+         * Indicates that the control is checked
+         */
+        checked: false,
+      };
+    },
+  };
+</script>
+```
+
+**Composition usage**
+
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  import { ref } from 'vue';
+
+  export default {
+    setup() {
+      return {
+        /**
+         * Indicates that the control is checked
+         */
+        checked: ref(false),
+      };
+    },
+  };
+</script>
 ```
 
 Vuedoc Parser will automatically detect type for each defined data field and
@@ -459,19 +493,22 @@ catch their initial value.
   Commented data will use the provided value as initial data value. This option
   may be helpful in case the data type is a complex object or function
 
-```js
-export default {
-  data () {
-    return {
-      /**
-       * A data with a complex expression
-       * @type boolean
-       * @initialValue false
-       */
-      isChecked: !(a || b || c),
-    };
-  },
-};
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  export default {
+    data() {
+      return {
+        /**
+         * A data with a complex expression
+         * @type boolean
+         * @initialValue false
+         */
+        checked: ExternalHelper.getDefaultValue(),
+      };
+    },
+  };
+</script>
 ```
 
 **Data Entry Interface**
@@ -500,20 +537,66 @@ type Keyword = {
 
 To document computed properties, annotate your code like:
 
-```js
-export default {
-  computed: {
-    /**
-     * Indicates that the control is selected
-     */
-    selected () {
-      return this.isChecked;
+**Legacy usage**
+
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  export default {
+    computed: {
+      /**
+       * Indicates that the control is selected
+       */
+      selected () {
+        return this.checked;
+      },
     },
-  },
-};
+  };
+</script>
 ```
 
 Vuedoc Parser will automatically extract computed properties dependencies.
+
+**Composition usage**
+
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  import { computed } from 'vue';
+
+  export default {
+    props: {
+      checked: Boolean,
+    },
+    setup(props) {
+      return {
+        /**
+         * Indicates that the control is selected
+         */
+        selected: computed(() => props.checked),
+      };
+    },
+  };
+</script>
+```
+
+**Usage with `<script setup>`**
+
+```html
+<!-- CheckboxInput.vue -->
+<script setup>
+  import { computed } from 'vue';
+
+  const props = defineProps({
+    checked: Boolean,
+  });
+
+  /**
+   * Indicates that the control is selected
+   */
+  const selected = computed(() => props.checked);
+</script>
+```
 
 **Computed Property Entry Interface**
 
@@ -539,37 +622,46 @@ type Keyword = {
 
 ### Annotate methods
 
-To document methods, annotate your code like:
+To document methods, simply use JSDoc tags
+[`@param`](http://usejsdoc.org/tags-param.html) and
+[`@returns`](http://usejsdoc.org/tags-returns.html):
 
-```js
-export default {
-  methods: {
-    /**
-     * Submit form
-     */
-    submit () {},
-  },
-};
+**Legacy usage**
+
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  export default {
+    methods: {
+      /**
+       * Submit form
+       *
+       * @param {object} data - Data to submit
+       * @returns {boolean} true on success; otherwise, false
+       */
+      submit(data) {
+        return true;
+      },
+    },
+  };
+</script>
 ```
 
-Use the JSDoc [`@param`](http://usejsdoc.org/tags-param.html) and
-[`@returns`](http://usejsdoc.org/tags-returns.html) tags to define parameters
-and returning type:
+**Composition usage**
 
-```js
-export default {
-  methods: {
-    /**
-     * Submit form
-     *
-     * @param {object} data - Data to submit
-     * @returns {boolean} true on success; otherwise, false
-     */
-    submit (data) {
-      return true;
-    },
-  },
-};
+```html
+<!-- CheckboxInput.vue -->
+<script setup>
+  /**
+   * Submit form
+   *
+   * @param {object} data - Data to submit
+   * @returns {boolean} true on success; otherwise, false
+   */
+  function submit(data) {
+    return true;
+  }
+</script>
 ```
 
 **Special tags for methods**
@@ -618,17 +710,19 @@ export default {
   You can overwrite syntax generation by using tag `@syntax`. You can also
   define multiple syntax examples:
 
-  ```js
-  export default {
-    methods: {
-      /**
-       * @syntax target.addEventListener(type, listener [, options]);
-       * @syntax target.addEventListener(type, listener [, useCapture]);
-       * @syntax target.addEventListener(type, listener [, useCapture, wantsUntrusted  ]); // Gecko/Mozilla only
-       */
-      addEventListener(type, listener, options, useCapture) {},
-    },
-  };
+  ```html
+  <script>
+    export default {
+      methods: {
+        /**
+         * @syntax target.addEventListener(type, listener [, options]);
+        * @syntax target.addEventListener(type, listener [, useCapture]);
+        * @syntax target.addEventListener(type, listener [, useCapture, wantsUntrusted  ]); // Gecko/Mozilla only
+        */
+        addEventListener(type, listener, options, useCapture) {},
+      },
+    };
+  </script>
   ```
 
 **Method Entry Interface**
@@ -669,37 +763,11 @@ type MethodReturn = {
 
 ### Annotate events
 
-Vuedoc Parser automatically extracts events from component template, hooks and
-methods:
+**Legacy usage**
 
-```html
-<template>
-  <div>
-    <!-- Emit the `click` event on submit -->
-    <button @click="$emit('click', $event)">Submit</button>
-  </div>
-</template>
-<script>
-  export default {
-    created () {
-      /**
-      * Emit on Vue `created` hook
-      */
-      this.$emit('created', true);
-    },
-    methods: {
-      submit () {
-        /**
-        * Emit the `input` event on submit
-        */
-        this.$emit('input', true);
-      },
-    },
-  };
-</script>
-```
-
-Use `@arg` tag to define arguments of an event:
+To document events using the legacy syntax, use the
+[emits](https://vuejs.org/api/options-state.html#emits)
+field and tags `@arg` or `@argument` to define arguments:
 
 ```js
 export default {
@@ -716,7 +784,157 @@ export default {
 };
 ```
 
-> Note: `@arg` is an alias of `@argument`.
+Array syntax:
+
+```html
+<script>
+  export default {
+    emits: [
+      /**
+       * Emit the `loading` event on submit
+       *
+       * @arg {boolean} status - The loading status
+       */
+      'loading',
+      /**
+       * Emit the `input` event on submit
+       */
+      'input',
+    ],
+  };
+</script>
+```
+
+Object syntax with validation:
+
+```html
+<script>
+  export default {
+    emits: {
+      /**
+       * Emit the `loading` event on submit
+       *
+       * @arg {boolean} status - The loading status
+       */
+      loading: null, // no validation
+
+      /**
+       * Emit the `input` event on submit
+       */
+      input: (payload) => {
+        if (payload.email && payload.password) {
+          return true
+        } else {
+          console.warn(`Invalid submit event payload!`)
+          return false
+        }
+      },
+    },
+  };
+</script>
+```
+
+**Composition usage**
+
+Array syntax:
+
+```html
+<script setup>
+  const emit = defineEmits([
+    /**
+     * Emit the `loading` event on submit
+     *
+     * @arg {boolean} status - The loading status
+     */
+    'loading',
+    /**
+     * Emit the `input` event on submit
+     */
+    'input',
+  ]);
+</script>
+```
+
+Object syntax with validation:
+
+```html
+<script setup>
+  const emit = defineEmits({
+    /**
+     * Emit the `loading` event on submit
+     *
+     * @arg {boolean} status - The loading status
+     */
+    loading: null, // no validation
+
+    /**
+     * Emit the `input` event on submit
+     */
+    input: (payload) => {
+      if (payload.email && payload.password) {
+        return true
+      } else {
+        console.warn(`Invalid submit event payload!`)
+        return false
+      }
+    },
+  });
+</script>
+```
+
+**Composition usage with TypeScript**
+
+```html
+<script setup>
+  const emit = defineEmits<{
+    /**
+     * Emit the `loading` event on submit
+     *
+     * @arg {boolean} status - The loading status
+     */
+    (e: 'loading', value: boolean): void
+
+    /**
+     * Emit the `input` event on submit
+     */
+    (e: 'input', value: boolean): void
+  }>()
+</script>
+```
+
+**Vue 2 usage**
+
+Vuedoc Parser automatically extracts events from component template, hooks and
+methods when using Vue 2:
+
+```html
+<script>
+  export default {
+    created() {
+      /**
+       * Emit the `loading` event on submit
+       * @arg {boolean} status - The loading status
+       */
+      this.$emit('loading', true);
+    },
+    methods: {
+      submit() {
+        /**
+        * Emit the `input` event on submit
+        */
+        this.$emit('input', true);
+      },
+    },
+  };
+</script>
+
+<template>
+  <div>
+    <!-- Emit the `click` event on submit -->
+    <button @click="$emit('click', $event)">Submit</button>
+  </div>
+</template>
+```
 
 You can use special keyword `@event` for non primitive name:
 
@@ -794,27 +1012,29 @@ tag to define properties of a slot:
 
 **Annotate slots defined in Render Functions**
 
-To annotate slots defined in Render Functions, just attach the keyword `@slot`
+To annotate slots defined in Render Functions, just attach the tag `@slot`
 to the component definition:
 
-```js
-/**
- * A functional component with slots defined in render function
- * @slot title - A title slot
- * @slot default - A default slot
- */
-export default {
-  functional: true,
-  render(h, { slots }) {
-    return h('div', [
-      h('h1', slots().title),
-      h('p', slots().default),
-    ]);
-  },
-};
+```html
+<script>
+  /**
+   * A functional component with slots defined in render function
+   * @slot title - A title slot
+   * @slot default - A default slot
+   */
+  export default {
+    functional: true,
+    render(h, { slots }) {
+      return h('div', [
+        h('h1', slots().title),
+        h('p', slots().default),
+      ]);
+    },
+  };
+</script>
 ```
 
-You can also use the keyword `@slot` to define dynamic slots on template:
+You can also use the tag `@slot` to define dynamic slots on template:
 
 ```html
 <template>
@@ -857,38 +1077,44 @@ type SlotProp = {
 };
 ```
 
-### Ignore item from parsing
+### Ignore items from parsing
 
 Use the [JSDoc's tag `@ignore`](https://jsdoc.app/tags-ignore.html) to keeps the
 subsequent code from being documented.
 
-```js
-export default {
-  data: () => ({
-    /**
-     * This will be ignored on parsing
-     * @ignore
-     */
-    isChecked: false,
-  }),
-};
+```html
+<!-- CheckboxInput.vue -->
+<script>
+  export default {
+    data: () => ({
+      /**
+       * This will be ignored on parsing
+       * @ignore
+       */
+      checked: false,
+    }),
+  };
+</script>
 ```
 
 You can also use the [TypeDoc's tag `@hidden`](https://typedoc.org/guides/doccomments/#hidden-and-ignore).
 
-## Keywords Extraction
+## Tags Extraction
 
-You can attach keywords to any comment and then extract them using the parser.
+You can attach keywords (or tags) to any comment and then extract them using
+the parser.
 
 **Usage**
 
-```js
-/**
- * Component description
- *
- * @license MIT
- */
-export default { /* ... */ };
+```html
+<script>
+  /**
+   * Component description
+   *
+   * @license MIT
+   */
+  export default { /* ... */ };
+</script>
 ```
 
 > Note that the description must always appear before keywords definition.
@@ -908,14 +1134,13 @@ Parsing result:
 }
 ```
 
-## Supported tags
+## Supported Tags
 
-| Keyword               | Scope                       | Description                                                                               |
+| Tag                   | Scope                       | Description                                                                               |
 | --------------------- | --------------------------- | ----------------------------------------------------------------------------------------- |
 | `@name`               | `component`                 | Provide a custom name of the component                                                    |
 | `@type`               | `props`, `data`, `computed` | Provide a type expression identifying the type of value that a prop or a data may contain |
 | `@default`            | `props`                     | Provide a default value of a prop                                                         |
-| `@model`              | `props`                     | Mark a prop as `v-model`                                                                  |
 | `@kind`               | `props`                     | Used to document what kind of symbol is being documented                                  |
 | `@initialValue`       | `data`                      | Provide an initial value of a data                                                        |
 | `@method`             | `methods`                   | Force the name of a specific method                                                       |
@@ -966,7 +1191,7 @@ Promise.all(parsers)
   .catch((err) => console.error(err));
 ```
 
-**Using the keyword `@mixin`**
+**Using the tag `@mixin`**
 
 You can use the special keyword `@mixin` to force parsing named exported
 component:
