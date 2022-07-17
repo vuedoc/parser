@@ -346,6 +346,24 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
+      name: 'useSlots()',
+      options: {
+        filecontent: `
+          <script setup>
+            import { useSlots } from 'vue'
+
+            const slots = useSlots()
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [],
+      },
+    });
+
+    ComponentTestCase({
       name: 'Composition API - State: Handle expose',
       options: {
         ignoredVisibilities: [],
