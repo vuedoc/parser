@@ -1,15 +1,12 @@
+import { describe, expect, it } from '@jest/globals';
 import { parseComponent, Parser } from '../../index.js';
-
-/* global describe it expect */
-/* eslint-disable quote-props */
-/* eslint-disable indent */
 
 /**
  * Code samples from lukehoban/es6features
  * @see https://github.com/lukehoban/es6features
  */
 const Feature = {
-  'Arrows': `
+  Arrows: `
     // Expression bodies
     var odds = evens.map(v => v + 1);
     var nums = evens.map((v, i) => v + i);
@@ -65,7 +62,7 @@ const Feature = {
         { "foo": \${foo},
           "bar": \${bar}}\`(myOnReadyStateChangeHandler);
   `,
-  'Destructuring': `
+  Destructuring: `
     // list matching
     var [a, , b] = [1,2,3];
 
@@ -91,21 +88,21 @@ const Feature = {
     var [a = 1] = [];
     a === 1;
   `,
-  'Default': `
+  Default: `
     function f(x, y=12) {
       // y is 12 if not passed (or passed as undefined)
       return x + y;
     }
     f(3) == 15
   `,
-  'Rest': `
+  Rest: `
     function f(x, ...y) {
       // y is an Array
       return x * y.length;
     }
     f(3, "hello", true) == 6
   `,
-  'Spread': `
+  Spread: `
     function f(x, y, z) {
       return x + y + z;
     }
@@ -145,7 +142,7 @@ const Feature = {
       console.log(n);
     }
   `,
-  'Generators': `
+  Generators: `
     var fibonacci = {
       [Symbol.iterator]: function*() {
         var pre = 0, cur = 1;
@@ -165,7 +162,7 @@ const Feature = {
       console.log(n);
     }
   `,
-  'Unicode': `
+  Unicode: `
     // same as ES5.1
     "𠮷".length == 2
 
@@ -183,7 +180,7 @@ const Feature = {
       console.log(c);
     }
   `,
-  'Modules': `
+  Modules: `
     // lib/math.js
     export function sum(x, y) {
       return x + y;
@@ -246,7 +243,7 @@ const Feature = {
     var ws = new WeakSet();
     ws.add({ data: 42 });
   `,
-  'Proxies': `
+  Proxies: `
     // Proxying a normal object
     var target = {};
     var handler = {
@@ -269,7 +266,7 @@ const Feature = {
     var p = new Proxy(target, handler);
     p() === 'I am the proxy';
   `,
-  'Symbols': `
+  Symbols: `
     var MyClass = (function() {
       // module scoped symbol
       var key = Symbol("key");
@@ -340,7 +337,7 @@ const Feature = {
     0b111110111 === 503 // true
     0o767 === 503 // true
   `,
-  'BigInt': `
+  BigInt: `
     const theBiggestInt = 9007199254740991n
 
     const alsoHuge = BigInt(9007199254740991)
@@ -379,7 +376,7 @@ const Feature = {
     bigN * -1n
     // ↪ –18014398509481984n
   `,
-  'Promises': `
+  Promises: `
     function timeout(duration = 0) {
       return new Promise((resolve, reject) => {
         setTimeout(resolve, duration);

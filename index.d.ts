@@ -12,6 +12,7 @@ declare module '@vuedoc/parser' {
 
   export async function parseComponent(options: Options): Promise<ComponentAST>;
   export async function parseOptions(options: Options): Promise<void>;
+  export function synchronizeParsingResult(options: Options, component: ComponentAST): void;
 
   type FileOptions = {
     /**

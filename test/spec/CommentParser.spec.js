@@ -1,8 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
 import { CommentParser } from '../../lib/parser/CommentParser.js';
-
-/* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable indent */
 
 const comment = `
   /**

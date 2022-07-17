@@ -197,7 +197,7 @@ properties.
 #### Annotate a `v-model` prop
 
 To document a `v-model` prop, a proper way is to use the Vue's
-[model field](https://vuejs.org/v2/api/#model) if you use Vue +2.2.0.
+[model field](https://v2.vuejs.org/v2/api/#model) if you use Vue +2.2.0.
 
 ```js
 export default {

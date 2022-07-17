@@ -1,7 +1,5 @@
-/* eslint-disable no-template-curly-in-string */
 import { ComponentTestCase } from '../lib/TestUtils.js';
-
-/* global describe */
+import { describe } from '@jest/globals';
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [

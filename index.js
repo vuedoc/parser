@@ -89,7 +89,7 @@ export async function parseOptions(options) {
   }
 }
 
-function synchronizeParsingResult(options, component) {
+export function synchronizeParsingResult(options, component) {
   const defaultModelProp = options.source.script.attrs.setup ? 'model-value' : 'value';
   const additionalProps = [];
 

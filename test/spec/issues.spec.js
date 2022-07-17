@@ -1,6 +1,4 @@
-/* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable indent */
+import { describe, expect, it } from '@jest/globals';
 
 import { parseComponent } from '../../index.js';
 import { ComponentTestCase } from '../lib/TestUtils.js';

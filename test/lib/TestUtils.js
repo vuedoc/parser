@@ -1,6 +1,5 @@
 import { parseComponent } from '../../index.js';
-
-/* global describe beforeAll it expect */
+import { beforeAll, describe, expect, it } from '@jest/globals';
 
 export const ComponentTestCase = ({ name, description, expected, options }) => {
   describe(description ? `${name}: ${description}` : name, () => {

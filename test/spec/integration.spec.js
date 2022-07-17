@@ -1,13 +1,8 @@
-/* global describe it expect beforeAll */
-/* eslint-disable max-len */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-return-assign */
-
 import assert from 'assert';
-
+import { beforeAll, describe, expect, it } from '@jest/globals';
 import { parseComponent, parseOptions } from '../../index.js';
 import { ComponentTestCase } from '../lib/TestUtils.js';
-import { JSDocTypeSpec } from './JSDocTypeSpec.js';
+import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 import { Fixture } from '../lib/Fixture.js';
 import { Loader } from '../../lib/Loader.js';
 import { JavaScriptLoader } from '../../loaders/javascript.js';
@@ -78,7 +73,6 @@ const optionsForPropsArray = {
   },
 };
 
-/* eslint-disable no-unused-vars */
 function testComponentMethods(optionsToParse) {
   let component = {};
 

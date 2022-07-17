@@ -298,7 +298,7 @@ describe('Vue 3', () => {
             import { createApp } from 'vue'
 
             const app = createApp({
-              data() {
+              setup() {
                 return {
                   count: 0
                 }
@@ -512,25 +512,19 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
-      name: 'setup() with Render Functions and expose()',
+      name: 'defineExpose()',
       options: {
         ignoredVisibilities: [],
         filecontent: `
           <script setup>
             import { h, ref } from 'vue'
 
-            export default {
-              setup(props, { expose }) {
-                const count = ref(0)
-                const increment = () => ++count.value
+            const count = ref(0)
+            const increment = () => ++count.value
 
-                expose({
-                  increment
-                })
-
-                return () => h('div', count.value)
-              }
-            }
+            defineExpose({
+              increment,
+            })
           </script>
         `,
       },
@@ -538,6 +532,8 @@ describe('Vue 3', () => {
         errors: [],
         warnings: [],
         data: [],
+        props: [],
+        events: [],
         methods: [
           {
             kind: 'method',
@@ -545,10 +541,124 @@ describe('Vue 3', () => {
             name: 'increment',
             params: [],
             returns: {
-              type: 'void',
+              type: 'number',
             },
             syntax: [
-              'increment(): void',
+              'increment(): number',
+            ],
+            visibility: 'public',
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'export default defineComponent() with external data',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script>
+            import { h, ref } from 'vue'
+
+            const count = ref(0)
+            const increment = () => ++count.value
+
+            export default defineComponent({
+              setup() {
+                return {}
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [],
+        props: [],
+        events: [],
+        methods: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'export default defineComponent() data defined inside setup() and no return expose',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script>
+            import { h, ref } from 'vue'
+
+            export default defineComponent({
+              setup() {
+                const count = ref(0)
+                const increment = () => ++count.value
+                
+                return {}
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [],
+        props: [],
+        events: [],
+        methods: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'export default defineComponent() data defined inside setup() and return expose',
+      options: {
+        ignoredVisibilities: [],
+        filecontent: `
+          <script>
+            import { h, ref } from 'vue'
+
+            export default defineComponent({
+              setup() {
+                const index = ref(0)
+                const count = ref(0)
+                const increment = () => (++count.value + index.value)
+                
+                return {
+                  count,
+                  increment,
+                }
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'count',
+            type: 'number',
+            keywords: [],
+            visibility: 'public',
+            initialValue: '0',
+          },
+        ],
+        props: [],
+        events: [],
+        methods: [
+          {
+            kind: 'method',
+            keywords: [],
+            name: 'increment',
+            params: [],
+            returns: {
+              type: 'unknown',
+            },
+            syntax: [
+              'increment(): unknown',
             ],
             visibility: 'public',
           },
@@ -1008,43 +1118,188 @@ describe('Vue 3', () => {
         ],
       },
     });
+
+    ComponentTestCase({
+      name: 'complexe example with global variables with irelevant properties model and watch which will be ignored on parsing',
+      options: {
+        filecontent: `
+          <script>
+            import { ref, watchEffect } from 'vue';
+
+            const API_URL = 'https://api.github.com/repos/vuejs/core/commits?per_page=3&sha=';
+            const branches = ['main', 'v2-compat'];
+            
+            export default {
+              model: {
+                prop: 'branches',
+                event: 'input',
+              },
+              setup() {
+                const currentBranch = ref(branches[0]);
+                const commits = ref(null);
+            
+                watchEffect(async () => {
+                  // this effect will run immediately and then
+                  // re-run whenever currentBranch.value changes
+                  const url = \`\${API_URL}\${currentBranch.value}\`;
+            
+                  commits.value = await (await fetch(url)).json();
+                });
+            
+                function truncate(v) {
+                  const newline = v.indexOf('\\n');
+            
+                  return newline > 0 ? v.slice(0, newline) : v;
+                }
+            
+                function formatDate(v) {
+                  return v.replace(/T|Z/g, ' ');
+                }
+            
+                return {
+                  branches,
+                  currentBranch,
+                  commits,
+                  truncate,
+                  formatDate,
+                };
+              },
+              watch: {
+                branches(newVal) {
+                  /**
+                   * Emitted when fooProp changes
+                   *
+                   * @arg {Boolean} newVal - The new value
+                   */
+                  this.$emit("foo-changed", newVal)
+                },
+              },
+            };          
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        props: [],
+        data: [
+          {
+            category: undefined,
+            initialValue: '["main","v2-compat"]',
+            keywords: [],
+            kind: 'data',
+            name: 'branches',
+            type: 'array',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: '"main"',
+            keywords: [],
+            kind: 'data',
+            name: 'currentBranch',
+            type: 'string',
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            initialValue: 'null',
+            keywords: [],
+            kind: 'data',
+            name: 'commits',
+            type: 'unknown',
+            version: undefined,
+            visibility: 'public',
+          },
+        ],
+        computed: [],
+        methods: [
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'truncate',
+            params: [
+              {
+                name: 'v',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            returns: {
+              description: undefined,
+              type: 'unknown',
+            },
+            syntax: [
+              'truncate(v: unknown): unknown',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+          {
+            category: undefined,
+            keywords: [],
+            kind: 'method',
+            name: 'formatDate',
+            params: [
+              {
+                name: 'v',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            returns: {
+              description: undefined,
+              type: 'unknown',
+            },
+            syntax: [
+              'formatDate(v: unknown): unknown',
+            ],
+            version: undefined,
+            visibility: 'public',
+          },
+        ],
+      },
+    });
   });
 
   describe('Composition API', () => {
     describe('data', () => {
-      ComponentTestCase({
-        name: 'simple declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              import { ref } from 'vue'
+      // ComponentTestCase({
+      //   name: 'simple declaration',
+      //   options: {
+      //     filecontent: `
+      //       <script setup>
+      //         import { ref } from 'vue'
 
-              /**
-               * Message value
-               */
-              const message = 'Hello World!';
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          data: [
-            {
-              kind: 'data',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
-          ],
-          props: [],
-        },
-      });
+      //         /**
+      //          * Message value
+      //          */
+      //         const message = 'Hello World!';
+      //       </script>
+      //     `,
+      //   },
+      //   expected: {
+      //     errors: [],
+      //     warnings: [],
+      //     computed: [],
+      //     data: [
+      //       {
+      //         kind: 'data',
+      //         name: 'message',
+      //         type: 'string',
+      //         category: undefined,
+      //         version: undefined,
+      //         description: 'Message value',
+      //         initialValue: '"Hello World!"',
+      //         keywords: [],
+      //         visibility: 'public' },
+      //     ],
+      //     props: [],
+      //   },
+      // });
 
       ComponentTestCase({
         name: 'simple declaration with typing',
@@ -1056,7 +1311,7 @@ describe('Vue 3', () => {
               /**
                * Message value
                */
-              const message: number = 'Hello World!';
+              const message: CustomString = 'Hello World!';
 
               /**
                * Message value
@@ -1075,7 +1330,7 @@ describe('Vue 3', () => {
             {
               kind: 'data',
               name: 'message',
-              type: 'number',
+              type: 'CustomString',
               category: undefined,
               version: undefined,
               description: 'Message value',
@@ -1249,7 +1504,7 @@ describe('Vue 3', () => {
               /**
                * Message value
                */
-              const message = ref<number>('Hello World!');
+              const message = ref<CustomString>('Hello World!');
             </script>
           `,
         },
@@ -1261,7 +1516,7 @@ describe('Vue 3', () => {
             {
               kind: 'data',
               name: 'message',
-              type: 'number',
+              type: 'CustomString',
               category: undefined,
               version: undefined,
               description: 'Message value',

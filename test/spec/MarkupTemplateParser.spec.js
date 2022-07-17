@@ -1,6 +1,5 @@
 import { ComponentTestCase } from '../lib/TestUtils.js';
-
-/* global describe */
+import { describe } from '@jest/globals';
 
 describe('MarkupTemplateParser', () => {
   ComponentTestCase({

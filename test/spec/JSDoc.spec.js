@@ -1,8 +1,7 @@
 import { JSDoc } from '../../lib/JSDoc.js';
 import { ComponentTestCase } from '../lib/TestUtils.js';
-import { JSDocTypeSpec } from './JSDocTypeSpec.js';
-
-/* global describe it expect */
+import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
+import { describe, expect, it } from '@jest/globals';
 
 describe('JSDoc', () => {
   describe('parseTypeParam(type)', () => {

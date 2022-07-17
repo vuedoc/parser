@@ -1,6 +1,4 @@
-/* eslint-disable max-len */
-/* global describe */
-
+import { describe } from '@jest/globals';
 import { ComponentTestCase } from '../lib/TestUtils.js';
 
 describe('DataParser', () => {

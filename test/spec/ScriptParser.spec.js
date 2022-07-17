@@ -1,6 +1,5 @@
+import { describe } from '@jest/globals';
 import { ComponentTestCase } from '../lib/TestUtils.js';
-
-/* global describe */
 
 describe('ScriptParser', () => {
   ComponentTestCase({
@@ -242,7 +241,7 @@ describe('ScriptParser', () => {
     },
     expected: {
       errors: [
-        'Unexpected token (1:4)',
+        'Unexpected token (2:14)',
       ],
     },
   });

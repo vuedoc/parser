@@ -1,8 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
 import { parseComponent } from '../../index.js';
-
-/* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable indent */
 
 describe('#43 - InheritAttrs Field', () => {
   it('should successfully parse inheritAttrs === true', () => {

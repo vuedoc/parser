@@ -1,6 +1,5 @@
+import { describe } from '@jest/globals';
 import { ComponentTestCase } from '../lib/TestUtils.js';
-
-/* global describe */
 
 describe('EventParser', () => {
   ComponentTestCase({

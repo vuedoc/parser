@@ -1,8 +1,5 @@
 import { ComponentTestCase } from '../lib/TestUtils.js';
-
-/* eslint-disable max-len */
-/* eslint-disable indent */
-/* global describe */
+import { describe } from '@jest/globals';
 
 const script = `
   <script>

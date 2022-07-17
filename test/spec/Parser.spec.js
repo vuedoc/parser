@@ -1,9 +1,6 @@
 import assert from 'assert';
 import { Parser } from '../../lib/parser/Parser.js';
-
-/* global describe it expect */
-/* eslint-disable max-len */
-/* eslint-disable indent */
+import { describe, expect, it } from '@jest/globals';
 
 const template = `
   <div>
@@ -2330,9 +2327,8 @@ describe('Parser', () => {
         },
       };
 
-      /* eslint-disable no-unused-vars */
       new Parser(options).walk()
-        .on('unknown', (prop) => {
+        .on('unknown', () => {
           throw new Error('Should ignore unknow entry');
         })
         .on('end', done);
@@ -2363,7 +2359,7 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk()
-        .on('unknown', (prop) => {
+        .on('unknown', () => {
           throw new Error('Should ignore unknow entry');
         })
         .on('end', done);
@@ -2757,7 +2753,7 @@ describe('Parser', () => {
       };
 
       new Parser(options).walk()
-        .on('event', (e) => {
+        .on('event', () => {
           throw new Error('Should ignore the component events');
         })
         .on('end', done);

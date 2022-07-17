@@ -1,6 +1,5 @@
 import { parseComponent } from '../../index.js';
-
-/* global describe it expect */
+import { describe, expect, it } from '@jest/globals';
 
 const filecontent = `
   <script>

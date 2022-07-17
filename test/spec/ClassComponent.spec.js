@@ -1,8 +1,5 @@
+import { describe } from '@jest/globals';
 import { ComponentTestCase } from '../lib/TestUtils.js';
-
-/* eslint-disable max-len */
-/* eslint-disable indent */
-/* global describe */
 
 describe('Class Component', () => {
   ComponentTestCase({
