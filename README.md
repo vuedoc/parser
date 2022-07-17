@@ -34,7 +34,6 @@ Generate a JSON documentation for a Vue file component.
 - [Language Processing](#language-processing)
   * [Loader API](#loader-api)
   * [Build-in loaders](#build-in-loaders)
-  * [TypeScript usage](#typescript-usage)
   * [Create a custom loader](#create-a-custom-loader)
 - [Parsing Output Interface](#parsing-output-interface)
 - [Related projects](#related-projects)
@@ -287,7 +286,7 @@ the type definition.
 **Composition usage**
 
 To document a `v-model` prop using Composition API, use
-[defineProps](https://vuejs.org/guide/components/events.html#usage-with-v-model)
+[defineProps()](https://vuejs.org/guide/components/events.html#usage-with-v-model)
 macro.
 
 ```html
@@ -304,7 +303,7 @@ macro.
 </script>
 ```
 
-**Vue 2 Usage**
+**Vue 2 usage**
 
 To document a `v-model` prop legacy Vue, use the Vue's
 [model field](https://v2.vuejs.org/v2/api/#model).
@@ -543,6 +542,9 @@ To document computed properties, annotate your code like:
 <!-- CheckboxInput.vue -->
 <script>
   export default {
+    props: {
+      checked: Boolean,
+    },
     computed: {
       /**
        * Indicates that the control is selected
@@ -768,21 +770,6 @@ type MethodReturn = {
 To document events using the legacy syntax, use the
 [emits](https://vuejs.org/api/options-state.html#emits)
 field and tags `@arg` or `@argument` to define arguments:
-
-```js
-export default {
-  methods: {
-    submit (data) {
-      /**
-       * Emit the `loading` event on submit
-       *
-       * @arg {boolean} status - The loading status
-       */
-      this.$emit('loading', true);
-    },
-  },
-};
-```
 
 Array syntax:
 
@@ -1286,11 +1273,6 @@ Please see [TypeScript definition file](https://gitlab.com/vuedoc/parser/blob/ma
 | Pug         | No                | [@vuedoc/parser/loaders/pug](https://gitlab.com/vuedoc/parser/blob/main/loaders/pug.js)                |
 | TypeScript  | Yes               | [@vuedoc/parser/loaders/typescript](https://gitlab.com/vuedoc/parser/blob/main/loaders/typescript.js)  |
 | Vue         | Yes               | [@vuedoc/parser/loaders/vue](https://gitlab.com/vuedoc/parser/blob/main/loaders/vue.js)                |
-
-### TypeScript usage
-
-Vuedoc Parser implements a full TypeScript support since `v3.0.0`.
-You no longer need to load a specific loader or install additional packages.
 
 ### Create a custom loader
 
