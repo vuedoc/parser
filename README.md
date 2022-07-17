@@ -1262,7 +1262,7 @@ parseComponent(options)
 
 ### Loader API
 
-Please see [TypeScript definition file](https://gitlab.com/vuedoc/parser/blob/main/lib/Loader.d.ts).
+Please see [TypeScript definition file for the Loader class](https://gitlab.com/vuedoc/parser/blob/main/lib/Loader.d.ts).
 
 ### Build-in loaders
 
