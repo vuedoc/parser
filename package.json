@@ -20,7 +20,6 @@
     "./entity/RestValue": "./lib/entity/RestValue.js",
     "./entity/SlotEntry": "./lib/entity/SlotEntry.js",
     "./entity/Value": "./lib/entity/Value.js",
-    "./entity/Comment": "./lib/entity/Comment.js",
     "./JSDoc": "./lib/JSDoc.js",
     "./loaders/html": "./loaders/html.js",
     "./loaders/javascript": "./loaders/javascript.js",

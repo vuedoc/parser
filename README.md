@@ -139,9 +139,21 @@ See the bellow [Parsing Output Interface](#parsing-output-interface) section.
 By default, Vuedoc Parser uses the component's filename to generate the
 component name.
 
-To set a custom name, use the `@name` tag like:
+To set a custom name, use the [`name` option](https://vuejs.org/api/options-misc.html#name):
 
 ```html
+<!-- CheckboxInput.vue -->
+<script>
+  export default {
+    name: 'my-checkbox',
+  };
+</script>
+```
+
+You can also use the `@name` tag if you're using Vue 2.
+
+```html
+<!-- CheckboxInput.vue -->
 <script>
   /**
    * @name my-checkbox
@@ -152,13 +164,21 @@ To set a custom name, use the `@name` tag like:
 </script>
 ```
 
-You can also use the `@name` tag if you're using Vue 2.
+**Composition usage**
+
+When using `<script setup>`, you need to define a comment block as a first
+node of your script.
 
 ```html
-<script>
-  export default {
-    name: 'my-checkbox',
-  };
+<!-- CheckboxInput.vue -->
+<script setup>
+  /**
+   * @name my-checkbox
+   */
+  
+  import { ref } from 'vue';
+
+  const checked = ref(false);
 </script>
 ```
 
@@ -176,6 +196,23 @@ statement like:
   export default {
     // ...
   };
+</script>
+```
+
+When using `<script setup>`, you need to define a comment block as a first
+node of your script.
+
+```html
+<!-- CheckboxInput.vue -->
+<script setup>
+  /**
+   * My awesome custom checkbox component
+   * @name my-checkbox
+   */
+  
+  import { ref } from 'vue';
+
+  const checked = ref(false);
 </script>
 ```
 
@@ -1125,7 +1162,7 @@ Parsing result:
 
 | Tag                   | Scope                       | Description                                                                               |
 | --------------------- | --------------------------- | ----------------------------------------------------------------------------------------- |
-| `@name`               | `component`                 | Provide a custom name of the component                                                    |
+| `@name`          | `component`                 | Provide a custom name of the component                                                    |
 | `@type`               | `props`, `data`, `computed` | Provide a type expression identifying the type of value that a prop or a data may contain |
 | `@default`            | `props`                     | Provide a default value of a prop                                                         |
 | `@kind`               | `props`                     | Used to document what kind of symbol is being documented                                  |

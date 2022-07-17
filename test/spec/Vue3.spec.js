@@ -3,6 +3,49 @@ import { ComponentTestCase } from '../lib/TestUtils.js';
 
 describe('Vue 3', () => {
   describe('General Usage', () => {
+    describe('data', () => {
+      ComponentTestCase({
+        name: 'name & description',
+        options: {
+          filecontent: `
+            <script setup>
+              /**
+               * My custom component
+               * @name MyCustomComponent
+               */
+
+              import { ref } from 'vue'
+
+              /**
+               * Message value
+               */
+              const message = 'Hello World!';
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          name: 'MyCustomComponent',
+          description: 'My custom component',
+          computed: [],
+          data: [
+            {
+              kind: 'data',
+              name: 'message',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: 'Message value',
+              initialValue: '"Hello World!"',
+              keywords: [],
+              visibility: 'public' },
+          ],
+          props: [],
+        },
+      });
+    });
+
     ComponentTestCase({
       name: 'defineComponent()',
       options: {
