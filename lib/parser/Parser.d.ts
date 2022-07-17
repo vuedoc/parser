@@ -1,7 +1,7 @@
 declare module '@vuedoc/parser/parser/Parser.js' {
   import EventEmitter from 'node:events';
 
-  type Options = {
+  export type Options = {
     /**
      * Source to parse
      */
@@ -17,7 +17,7 @@ declare module '@vuedoc/parser/parser/Parser.js' {
 
     /**
      * The component features to parse and extract
-     * @default ['name', 'description', 'slots', 'model', 'props', 'data', 'computed', 'events', 'methods']
+     * @default ['name', 'description', 'slots', 'props', 'data', 'computed', 'events', 'methods']
      */
     features?: Feature[];
 
@@ -28,42 +28,52 @@ declare module '@vuedoc/parser/parser/Parser.js' {
     ignoredVisibilities?: Visibility[];
 
     /**
+     * Additional composition tokens for advanced components
+     */
+    composition?: {
+      data?: string[];
+      props?: string[];
+      computed?: string[];
+      methods?: string[];
+    };
+
+    /**
      * Set to `true` to enable JSX parsing
      * @default false
      */
     jsx?: boolean;
   };
 
-  type Feature = 'name' | 'description' | 'slots' | 'model' | 'props' | 'data' | 'computed' | 'events' | 'methods';
-  type Visibility = 'public' | 'protected' | 'private';
+  export type Feature = 'name' | 'description' | 'slots' | 'props' | 'data' | 'computed' | 'events' | 'methods';
+  export type Visibility = 'public' | 'protected' | 'private';
 
-  declare class Parser extends EventEmitter {
+  export declare class Parser extends EventEmitter {
     static SUPPORTED_FEATURES: Feature[];
     constructor(options: Options);
     walk(): Parser;
   }
 
-  interface NameEntry {
+  export interface NameEntry {
     kind: 'name';
     value: string;
   }
   
-  interface DescriptionEntry {
+  export interface DescriptionEntry {
     kind: 'description'
     value: string;
   }
   
-  interface InheritAttrsEntry {
+  export interface InheritAttrsEntry {
     kind: 'inheritAttrs'
     value: boolean;
   }
   
-  interface KeywordsEntry {
+  export interface KeywordsEntry {
     kind: 'keywords';
     value: Keyword[];
   }
   
-  interface ModelEntry {
+  export interface ModelEntry {
     kind: 'model';
     prop: string;
     event: string;
@@ -71,7 +81,7 @@ declare module '@vuedoc/parser/parser/Parser.js' {
     keywords: Keyword[];
   }
   
-  type Keyword = {
+  export type Keyword = {
     name: string;
     description?: string;
   };

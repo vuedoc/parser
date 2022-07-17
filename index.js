@@ -8,6 +8,7 @@ import { JavaScriptLoader } from './loaders/javascript.js';
 import { TypeScriptLoader } from './loaders/typescript.js';
 import { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING } from './lib/Enum.js';
 import { KeywordsUtils } from './lib/utils/KeywordsUtils.js';
+import { PropEntry } from './lib/entity/PropEntry.js';
 
 export { Loader } from './lib/Loader.js';
 export { Parser } from './lib/parser/Parser.js';
@@ -38,9 +39,14 @@ export async function parseOptions(options) {
     options.ignoredVisibilities = DEFAULT_IGNORED_VISIBILITIES;
   }
 
+  options.composition = {
+    data: options.composition?.data || [],
+    methods: options.composition?.methods || [],
+    computed: options.composition?.computed || [],
+    props: options.composition?.props || [],
+  };
+
   options.source = {
-    template: '',
-    script: '',
     errors: [],
   };
 
@@ -65,11 +71,70 @@ export async function parseOptions(options) {
 
     const loader = new LoaderClass(loaderOptions);
 
-    await loader.load(source);
+    await loader.load({
+      attrs: {
+        lang: loaderName,
+      },
+      content: source,
+    });
   } else {
     const loader = new VueLoader(loaderOptions);
 
-    await loader.load(options.filecontent);
+    await loader.load({
+      attrs: {
+        lang: 'vue',
+      },
+      content: options.filecontent,
+    });
+  }
+}
+
+export function synchronizeParsingResult(options, component) {
+  const defaultModelProp = options.source.script.attrs.setup ? 'model-value' : 'value';
+  const additionalProps = [];
+
+  if (!component.props) {
+    component.props = [];
+  }
+
+  component.model.forEach((model) => {
+    const props = component.props.filter((prop) => prop.name === model.prop);
+
+    if (props.length) {
+      props.forEach((prop) => {
+        prop.describeModel = true;
+      });
+    } else {
+      const prop = new PropEntry(model.prop, { describeModel: true });
+
+      prop.description = model.description;
+      prop.keywords = model.keywords;
+
+      additionalProps.push(prop);
+    }
+  });
+
+  component.props.push(...additionalProps);
+
+  delete component.model;
+
+  if (Feature.props in component) {
+    component.props.forEach((prop) => {
+      if (prop.name === defaultModelProp) {
+        prop.describeModel = true;
+      }
+
+      if (prop.describeModel) {
+        prop.name = 'v-model';
+      } else if (options.source.script.attrs.setup && Feature.events in component) {
+        const hasUpdateEvent = component.events.some((event) => event.name === `update:${prop.name}`);
+
+        if (hasUpdateEvent) {
+          prop.name = `v-model:${prop.name}`;
+          prop.describeModel = true;
+        }
+      }
+    });
   }
 }
 
@@ -79,16 +144,12 @@ export async function parseComponent(options) {
   return new Promise((resolve) => {
     const component = {
       inheritAttrs: true,
-      errors: [],
+      errors: [...options.source.errors],
       warnings: [],
       keywords: [],
     };
 
     const parser = new Parser(options);
-
-    if (options.source.errors.length) {
-      component.errors = options.source.errors;
-    }
 
     parser.on('error', ({ message }) => {
       component.errors.push(message);
@@ -103,24 +164,21 @@ export async function parseComponent(options) {
       KeywordsUtils.parseCommonEntryTags(component);
     });
 
-    parser.on('end', () => resolve(component));
+    parser.on('end', () => {
+      synchronizeParsingResult(options, component);
+      resolve(component);
+    });
 
     parser.on('inheritAttrs', ({ value }) => {
       component.inheritAttrs = value;
     });
 
-    parser.features.forEach((feature) => {
+    [...parser.features, 'model'].forEach((feature) => {
       switch (feature) {
         case Feature.name:
         case Feature.description:
           parser.on(feature, ({ value }) => {
             component[feature] = value;
-          });
-          break;
-
-        case Feature.model:
-          parser.on(feature, (model) => {
-            component[feature] = model;
           });
           break;
 

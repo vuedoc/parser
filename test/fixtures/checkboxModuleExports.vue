@@ -25,10 +25,12 @@ const dynamic2 = 'dynamicMode'
  */
 module.exports = {
   name: 'checkbox',
+  model: {
+    prop: 'model',
+  },
   props: {
     /**
      * The checkbox model
-     * @model
      */
     model: {
       type: Array,

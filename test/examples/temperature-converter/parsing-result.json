@@ -1,0 +1,83 @@
+{
+  "inheritAttrs": true,
+  "errors": [
+    "tag <input> has no matching end tag.",
+    "tag <input> has no matching end tag."
+  ],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "number",
+      "name": "c",
+      "initialValue": "0"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "number",
+      "name": "f",
+      "initialValue": "32"
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": [
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "setC",
+      "params": [
+        {
+          "name": "e",
+          "type": "unknown",
+          "rest": false
+        },
+        {
+          "name": "v",
+          "type": "unknown",
+          "defaultValue": "+e.target.value",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "setC(e: unknown, v: unknown = +e.target.value): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
+      "kind": "method",
+      "keywords": [],
+      "visibility": "public",
+      "name": "setF",
+      "params": [
+        {
+          "name": "e",
+          "type": "unknown",
+          "rest": false
+        },
+        {
+          "name": "v",
+          "type": "unknown",
+          "defaultValue": "+e.target.value",
+          "rest": false
+        }
+      ],
+      "syntax": [
+        "setF(e: unknown, v: unknown = +e.target.value): void"
+      ],
+      "returns": {
+        "type": "void"
+      }
+    }
+  ]
+}

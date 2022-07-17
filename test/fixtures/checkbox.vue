@@ -11,7 +11,6 @@
     -->
     <slot name="multiline">Unamed checkbox</slot>
     <slot name="undescribed"></slot>
-    <template v-for=""></template>
   </label>
 </template>
 
@@ -25,10 +24,12 @@ const dynamic2 = 'dynamicMode'
  */
 export default {
   name: 'checkbox',
+  model: {
+    prop: 'model',
+  },
   props: {
     /**
      * The checkbox model
-     * @model
      */
     model: {
       type: Array,

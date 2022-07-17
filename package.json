@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "4.0.0-beta7",
+  "version": "4.0.0-beta8",
   "description": "Generate a JSON documentation for a Vue file",
   "type": "module",
   "exports": {
@@ -20,7 +20,6 @@
     "./entity/RestValue": "./lib/entity/RestValue.js",
     "./entity/SlotEntry": "./lib/entity/SlotEntry.js",
     "./entity/Value": "./lib/entity/Value.js",
-    "./entity/Comment": "./lib/entity/Comment.js",
     "./JSDoc": "./lib/JSDoc.js",
     "./loaders/html": "./loaders/html.js",
     "./loaders/javascript": "./loaders/javascript.js",
@@ -34,6 +33,7 @@
   "scripts": {
     "preversion": "yarn test",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage",
+    "update-examples": "UPDATE_EXAMPLES_RESULTS=true node --experimental-vm-modules node_modules/.bin/jest --no-coverage Compatibility.spec.js",
     "lint": "eslint .",
     "gimtoc": "gimtoc -f README.md -s 'Table of Contents' -o README.md"
   },
@@ -81,7 +81,7 @@
   },
   "homepage": "https://gitlab.com/vuedoc/parser",
   "dependencies": {
-    "@b613/utils": "^1.0.0-beta17",
+    "@b613/utils": "^1.0.0-beta21",
     "@babel/parser": "^7.15.5",
     "vue-template-compiler": "^2.6.14"
   },

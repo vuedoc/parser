@@ -1,0 +1,39 @@
+{
+  "inheritAttrs": true,
+  "errors": [
+    "tag <input> has no matching end tag."
+  ],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "searchQuery",
+      "initialValue": "\"\""
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "array",
+      "name": "gridColumns",
+      "initialValue": "[\"name\",\"power\"]"
+    },
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "array",
+      "name": "gridData",
+      "initialValue": "[{ name: 'Chuck Norris', power: Infinity },{ name: 'Bruce Lee', power: 9000 },{ name: 'Jackie Chan', power: 7000 },{ name: 'Jet Li', power: 8000 }]"
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": []
+}

@@ -1,0 +1,14 @@
+<label>
+  <input :disabled="disabled" type="text" v-model="checkbox"/>
+  <!-- Default slot -->
+  <slot></slot>
+  <!-- Use this slot to set the checkbox label -->
+  <slot name="label">Unamed checkbox</slot>
+  <!--
+    This
+    is multiline description
+  -->
+  <slot name="multiline">Unamed checkbox</slot>
+  <slot name="undescribed"></slot>
+  <template v-for=""></template>
+</label>

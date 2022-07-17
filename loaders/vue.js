@@ -5,8 +5,8 @@ const DEFAULT_TEMPLATE_LANG = 'html';
 const DEFAULT_SCRIPT_LANG = 'js';
 
 export class VueLoader extends Loader {
-  async load(source) {
-    const result = parseComponent(source);
+  async load(data) {
+    const result = parseComponent(data.content);
 
     const template = result.template || {
       attrs: {
@@ -14,7 +14,7 @@ export class VueLoader extends Loader {
       },
     };
 
-    const script = result.script || {
+    const script = result.script || result.scriptSetup || {
       attrs: {
         lang: DEFAULT_SCRIPT_LANG,
       },
@@ -33,8 +33,8 @@ export class VueLoader extends Loader {
     }
 
     await Promise.all([
-      this.pipe(script.attrs.lang, script.content),
-      this.pipe(template.attrs.lang, template.content),
+      this.pipe(script.attrs.lang, script),
+      this.pipe(template.attrs.lang, template),
     ]);
   }
 }

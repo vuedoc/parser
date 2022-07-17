@@ -1,3 +1,49 @@
+## Vuedoc Parser 4.0.0-beta8
+
+This release comes with breaking changes and important new features.
+
+### Important Features
+
+- Handle Vue 3 syntax
+- Handle Vue Composition API
+
+### Breaking Changes
+
+- **Pure ESM package**
+
+  Vuedoc Parser 4.0.0 is now [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
+  This means that Node 16+ is needed to use it and it must be imported instead of
+  required.
+
+  Please see [this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) for migration guide.
+
+- **Rename `exports.parse()` to `exports.parseComponent()`**
+
+  `exports.parse()` has been renamed to `exports.parseComponent()`.
+  
+  Please see [usage on documentation](https://gitlab.com/vuedoc/parser/-/tree/main#usage).
+
+- **Add TypeScript definitions**
+
+  This release now includes [TypeScript definition](https://gitlab.com/vuedoc/parser/blob/main/index.d.ts).
+
+- **Standardize extracted types**
+
+  All extracted types has been standardized to be TypeScript-like. This means:
+  * Type `String` is now parsed as `string`
+  * Type `Number` is now parsed as `number`
+  * Type `Boolean` is now parsed as `boolean`
+  * Type `Array` is now parsed as `array`
+  * Type `Object` is now parsed as `object`
+  * Type `Function` is now parsed as `function`
+  * Type `Symbol` is now parsed as `symbol`
+
+- **Remove deprecated `@model` tag**
+  
+  Tag deprecated `@model` was removed. You now need to use the Vue standard way
+  to define `v-model`.
+  Please see [official documentation about annotating a `v-model` prop](https://gitlab.com/vuedoc/parser/-/tree/main#annotate-a-v-model-prop)
+
 ## Vuedoc Parser v3.4.0
 
 This release fixes some parsing issues and upgrades `@babel/parser` to

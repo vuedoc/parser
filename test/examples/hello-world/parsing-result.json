@@ -1,0 +1,21 @@
+{
+  "inheritAttrs": true,
+  "errors": [],
+  "warnings": [],
+  "keywords": [],
+  "slots": [],
+  "props": [],
+  "data": [
+    {
+      "kind": "data",
+      "keywords": [],
+      "visibility": "public",
+      "type": "string",
+      "name": "message",
+      "initialValue": "\"Hello World!\""
+    }
+  ],
+  "computed": [],
+  "events": [],
+  "methods": []
+}
