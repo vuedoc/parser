@@ -25,10 +25,12 @@
    */
   export default Vue.extends({
     name: 'checkbox',
+    model: {
+      prop: 'model',
+    },
     props: {
       /**
        * The checkbox model
-       * @model
        */
       model: {
         type: Array,

@@ -112,7 +112,7 @@ parseComponent(options)
 
 This will print this JSON output:
 
-```js
+```json
 {
   "name": "checkbox" // The component name
   "description": "A simple checkbox component" // The component description
@@ -120,12 +120,12 @@ This will print this JSON output:
   "keywords": [
     { "name": "contributor", "description": "Sébastien" }
   ],
-  "props": [ ... ],
-  "data": [ ... ],
-  "computed": [ ... ],
-  "slots": [ ... ],
-  "events": [ ... ],
-  "methods": [ ... ]
+  "props": [ /* ... */ ],
+  "data": [ /* ... */ ],
+  "computed": [ /* ... */ ],
+  "slots": [ /* ... */ ],
+  "events": [ /* ... */ ],
+  "methods": [ /* ... */ ]
 }
 ```
 
@@ -177,9 +177,41 @@ export default {
 
 To document props, annotate your code like:
 
-```js
-export default {
-  props: {
+**Legacy usage**
+
+```html
+<!-- CustomInput.vue -->
+<script>
+  export default {
+    props: {
+      /**
+       * Element ID
+       */
+      id: {
+        type: String,
+        required: true,
+      },
+      /**
+       * Element initial value
+       */
+      value: {
+        type: String,
+        default: '',
+      },
+    },
+  };
+</script>
+```
+
+Vuedoc Parser will automatically extract `type`, `required` and `default` values for
+properties.
+
+**Composition usage**
+
+```html
+<!-- CustomInput.vue -->
+<script setup>
+  const props = defineProps({
     /**
      * Element ID
      */
@@ -187,65 +219,148 @@ export default {
       type: String,
       required: true,
     },
-  },
-};
+    /**
+     * Element initial value
+     */
+    value: {
+      type: String,
+      default: '',
+    },
+  });
+</script>
 ```
 
-Vuedoc Parser will automatically extract `required` and `default` values for
+Vuedoc Parser will automatically extract `type`, `required` and `default` values for
 properties.
+
+**Composition usage with TypeScript**
+
+```html
+<!-- CustomInput.vue -->
+<script lang="ts" setup>
+  type Props = {
+    /**
+     * Element ID
+     */
+    id: string;
+    /**
+     * Element initial value
+     */
+    value?: string;
+  };
+
+  const props = withDefaults(defineProps<Props>(), {
+    value: '',
+  });
+</script>
+```
+
+Vuedoc Parser will automatically extract `type`, `required` and `default` values from
+the type definition.
 
 #### Annotate a `v-model` prop
 
-To document a `v-model` prop, a proper way is to use the Vue's
-[model field](https://v2.vuejs.org/v2/api/#model) if you use Vue +2.2.0.
+**Legacy usage**
 
-```js
-export default {
-  /**
-   * Use `v-model` to define a reactive value of the checkbox
-   */
-  model: {
-    prop: 'checked',
-    event: 'change',
-  },
-  props: {
-    checked: Boolean,
-  },
-};
+```html
+<!-- CustomInput.vue -->
+<script>
+  export default {
+    props: [
+      /**
+      * The input model value
+      */
+      'modelValue',
+    ],
+    emits: ['update:modelValue'],
+  };
+</script>
 ```
 
-You can also use the `@model` keyword on a prop if you use an old Vue version:
+**Composition usage**
 
-```js
-export default {
-  props: {
+To document a `v-model` prop using Composition API, use
+[defineProps](https://vuejs.org/guide/components/events.html#usage-with-v-model)
+macro.
+
+```html
+<!-- CustomInput.vue -->
+<script setup>
+  const props = defineProps([
     /**
-     * The checkbox model
-     * @model
-     */
-    checked: Boolean,
-  },
-};
+    * The input model value
+    */
+    'modelValue',
+  ]);
+
+  const emit = defineEmits(['update:modelValue']);
+</script>
+```
+
+**Vue 2 Usage**
+
+To document a `v-model` prop legacy Vue, use the Vue's
+[model field](https://v2.vuejs.org/v2/api/#model).
+
+```html
+<!-- CustomInput.vue -->
+<script>
+  export default {
+    /**
+    * Use `v-model` to define a reactive value of the checkbox
+    */
+    model: {
+      prop: 'checked',
+      event: 'change',
+    },
+    props: {
+      checked: Boolean,
+    },
+  };
+</script>
 ```
 
 #### Annotate Vue Array String Props
 
 To document Vue array string props, just attach a Vuedoc comment to each prop:
 
-```js
-export default {
-  props: [
+**Legacy usage**
+
+```html
+<!-- CustomInput.vue -->
+<script>
+  export default {
+    props: [
+      /**
+       * ELement ID
+       */
+      'id',
+
+      /**
+       * The element model value
+       */
+      'value',
+    ],
+  };
+</script>
+```
+
+**Composition usage**
+
+```html
+<script setup>
+  const props = defineProps([
     /**
-     * Checkbox ID
+     * ELement ID
      */
     'id',
 
     /**
-     * The checkbox model
+     * The element model value
      */
     'value',
-  ],
-};
+  ]);
+</script>
 ```
 
 #### Special tags for props

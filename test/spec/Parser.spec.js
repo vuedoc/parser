@@ -48,8 +48,6 @@ const script = `
    * @slot inputs - Use this slot to define form inputs ontrols
    * @slot actions - Use this slot to define form action buttons controls
    * @slot footer - Use this slot to define form footer content.
-   *
-   * @model
    */
   export default Vue.extend({
     name: 'checkbox',
@@ -63,7 +61,6 @@ const script = `
     props: {
       /**
        * The checkbox model
-       * @model
        */
       model: {
         type: Array,
@@ -1820,9 +1817,14 @@ describe('Parser', () => {
       new Parser(options).walk().on('prop', (prop) => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('value');
-        expect(prop.describeModel).toBe(true);
+        expect(prop.describeModel).toBe(false);
         expect(prop.description).toBeUndefined();
-        expect(prop.keywords).toEqual([]);
+        expect(prop.keywords).toEqual([
+          {
+            name: 'model',
+            description: 'v-model keyword. Keyword description is ignored',
+          },
+        ]);
         expect(prop.type).toBe('string');
         done();
       });

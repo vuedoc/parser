@@ -5,10 +5,12 @@
 <script>
   export default {
     name: 'checkbox',
+    model: {
+      prop: 'model',
+    },
     props: [
       /**
        * The checkbox model
-       * @model
        */
       'model',
       'disabled',

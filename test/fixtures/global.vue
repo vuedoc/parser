@@ -51,17 +51,16 @@
    * @slot inputs - Use this slot to define form inputs ontrols
    * @slot actions - Use this slot to define form action buttons controls
    * @slot footer - Use this slot to define form footer content.
-   *
-   * @model
    */
   export default Vue.extend({
     name: 'checkbox',
     ['name']: componentName,
-
+    model: {
+      prop: 'model',
+    },
     props: {
       /**
        * The checkbox model
-       * @model
        */
       model: {
         type: Array,
