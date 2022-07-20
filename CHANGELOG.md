@@ -1,3 +1,7 @@
+## Vuedoc Parser 4.0.0-beta9
+
+This release fixes an ESM import bug and upgrades to @babel/parser@7.18.9.
+
 ## Vuedoc Parser 4.0.0-beta8
 
 This release comes with breaking changes and important new features.
