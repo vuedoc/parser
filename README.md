@@ -113,7 +113,7 @@ parseComponent(options)
 
 This will print this JSON output:
 
-```json
+```js
 {
   "name": "checkbox" // The component name
   "description": "A simple checkbox component" // The component description
