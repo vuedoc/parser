@@ -8,3 +8,6 @@ result.json
 *.nix
 *.yml
 *.yaml
+*.odp
+*.pdf
+*.png

@@ -50,3 +50,7 @@ jspm_packages
 
 # Archives
 *.tgz
+
+*.odp
+*.pdf
+*.png
