@@ -5,6 +5,7 @@ env:
 extends:
   - eslint:recommended
   - airbnb-base
+  - plugin:import/recommended
 parserOptions:
   ecmaVersion: 13
   sourceType: module
@@ -35,7 +36,7 @@ rules:
   import/extensions:
     - 'error'
     - 'always'
-    - ignorePackages: true
+    - ignorePackages: false
   import/named: 'off'
   import/no-cycle: 'off'
   import/no-dynamic-require: 'off'
