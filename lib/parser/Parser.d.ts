@@ -1,6 +1,7 @@
 declare module '@vuedoc/parser/parser/Parser.js' {
   import EventEmitter from 'node:events';
 
+
   export type Options = {
     /**
      * Source to parse
@@ -53,36 +54,106 @@ declare module '@vuedoc/parser/parser/Parser.js' {
     walk(): Parser;
   }
 
-  export interface NameEntry {
-    kind: 'name';
-    value: string;
-  }
-  
-  export interface DescriptionEntry {
-    kind: 'description'
-    value: string;
-  }
-  
-  export interface InheritAttrsEntry {
-    kind: 'inheritAttrs'
-    value: boolean;
-  }
-  
-  export interface KeywordsEntry {
-    kind: 'keywords';
-    value: Keyword[];
-  }
-  
-  export interface ModelEntry {
-    kind: 'model';
-    prop: string;
-    event: string;
-    description?: string;
-    keywords: Keyword[];
-  }
+  export type ParsingEntry = ComputedEntry
+    | DataEntry
+    | DescriptionEntry
+    | EventEntry
+    | InheritAttrsEntry
+    | KeywordsEntry
+    | MethodEntry
+    | ModelEntry
+    | NameEntry
+    | PropEntry
+    | SlotEntry;
   
   export type Keyword = {
     name: string;
     description?: string;
   };
+
+  export interface AbstractEntry<Kind extends string> {
+    kind: Kind;
+    description?: string;
+    category?: string;
+    version?: string;
+    visibility: Visibility;
+    keywords: Keyword[];
+  }
+
+  export interface ComputedEntry extends AbstractEntry<'computed'> {
+    type: string;
+    name: string;
+    dependencies: string[];
+  }
+
+  export interface DataEntry extends AbstractEntry<'data'> {
+    type: string;
+    name: string;
+    initialValue: string;
+  }
+  
+  export interface DescriptionEntry extends AbstractEntry<'description'> {
+    value: string;
+  }
+
+  export interface EventEntry extends AbstractEntry<'event'> {
+    name: string;
+    arguments: Array<{
+      name: string;
+      type: string;
+      description: string;
+      rest: boolean;
+    }>;
+  }
+  
+  export interface InheritAttrsEntry extends AbstractEntry<'inheritAttrs'> {
+    value: boolean;
+  }
+  
+  export interface KeywordsEntry extends AbstractEntry<'keywords'> {
+    value: Keyword[];
+  }
+
+  export interface MethodEntry extends AbstractEntry<'method'> {
+    name: string;
+    syntax: string[];
+    params: Array<{
+      name: string;
+      type: string;
+      description: string;
+      defaultValue: string;
+      rest: boolean;
+    }>;
+    returns: {
+      type: string;
+      description?: string;
+    };
+  }
+  
+  export interface ModelEntry extends AbstractEntry<'model'> {
+    prop: string;
+    event: string;
+  }
+
+  export interface NameEntry extends AbstractEntry<'name'> {
+    value: string;
+  }
+
+  export interface PropEntry extends AbstractEntry<'prop'> {
+    type: string;
+    name: string;
+    default: string;
+    required: boolean;
+    describeModel: boolean;
+  }
+
+  export interface SlotEntry extends AbstractEntry<'slot'> {
+    name: string;
+    description?: string;
+    props: Array<{
+      name: string;
+      type: string;
+      description?: string;
+    }>;
+  }
 }
