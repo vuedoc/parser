@@ -5,7 +5,7 @@ export type Options = Pick<Vuedoc.Parser.ResolvedOptions, 'source'> & {
   definitions: Vuedoc.Loader.Definition[];
 };
 
-export class Loader implements Vuedoc.Loader.Interface {
+export abstract class Loader implements Vuedoc.Loader.Interface {
   options: Options;
 
   static extend(name: string, loader: any) {
@@ -32,12 +32,7 @@ export class Loader implements Vuedoc.Loader.Interface {
     this.options = options;
   }
 
-  /* istanbul ignore next */
-  /* eslint-disable-next-line class-methods-use-this */
-  // eslint-disable-next-line no-unused-vars
-  async load(data: Vuedoc.Loader.TemplateData | Vuedoc.Loader.ScriptData) {
-    throw new Error('Cannot call abstract Loader.load() method');
-  }
+  abstract load(data: Vuedoc.Loader.TemplateData | Vuedoc.Loader.ScriptData): Promise<void>;
 
   emitTemplate(data: Vuedoc.Loader.TemplateData) {
     this.options.source.template = data;

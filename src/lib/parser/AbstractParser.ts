@@ -56,7 +56,7 @@ export class AbstractParser<Source extends Vuedoc.Parser.Source, Root> {
 
   emit(entry: Vuedoc.Entry.Type) {
     if (this.root) {
-      this.root.emit(entry);
+      (this.root as any).emit(entry);
     }
   }
 

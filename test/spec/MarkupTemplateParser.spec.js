@@ -1,7 +1,51 @@
-import { ComponentTestCase } from '../lib/TestUtils.js';
 import { describe } from 'vitest';
+import { ComponentTestCase } from '../lib/TestUtils.js';
+import { PugLoader } from '../../src/loaders/pug.ts';
+import { Loader } from '../../src/lib/Loader.ts';
 
 describe('MarkupTemplateParser', () => {
+  ComponentTestCase({
+    name: 'Pug',
+    options: {
+      filecontent: `
+        <template lang="pug">
+          div
+            label(:for='id')
+              // Use this slot to set the label
+              slot(name='label')
+            .editor(contenteditable='true')
+              // Use this slot to set the textarea value
+              slot      
+        </template>
+      `,
+      loaders: [
+        Loader.extend('pug', PugLoader),
+      ],
+    },
+    expected: {
+      slots: [
+        {
+          kind: 'slot',
+          name: 'label',
+          visibility: 'public',
+          category: undefined,
+          description: 'Use this slot to set the label',
+          keywords: [],
+          props: [],
+        },
+        {
+          kind: 'slot',
+          name: 'default',
+          visibility: 'public',
+          category: undefined,
+          description: 'Use this slot to set the textarea value',
+          keywords: [],
+          props: [],
+        },
+      ],
+    },
+  });
+
   ComponentTestCase({
     name: 'slots',
     options: {
