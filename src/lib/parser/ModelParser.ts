@@ -10,7 +10,7 @@ export class ModelParser extends AbstractExpressionParser {
 
     this.root.defaultModelPropName = prop;
 
-    this.root.setScopeValue(entry.prop, prop, UndefinedValue);
+    this.setScopeValue(entry.prop, prop, UndefinedValue, { global: true });
     this.parseEntryComment(entry, node);
     this.emit(entry);
   }

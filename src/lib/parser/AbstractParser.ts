@@ -55,12 +55,9 @@ export class AbstractParser<Source extends Vuedoc.Parser.Source, Root> {
   }
 
   emit(entry: Vuedoc.Entry.Type) {
-    // if ('parseExposedEntry' in this.root) {
-    //   // TODO Handle this.root.parseExposedEntry(entry);
-    //   // this.root.parseExposedEntry(entry);
-    // }
-
-    this.emitter.emitEntry(entry);
+    if (this.root) {
+      this.root.emit(entry);
+    }
   }
 
   emitWarning(message: string) {
@@ -288,7 +285,17 @@ export class AbstractParser<Source extends Vuedoc.Parser.Source, Root> {
     object.raw = JSON.stringify(object.value);
   }
 
-  setScopeValue(key: string, node, value: Value<any>, { nodeComment = node, nodeTyping = node, forceType = false } = {}) {
+  setScopeValue(
+    key: string,
+    node,
+    value: Value<any>,
+    {
+      nodeComment = node,
+      nodeTyping = node,
+      forceType = false,
+      global = false,
+    } = {}
+  ) {
     if (!forceType && key in this.scope && this.scope[key].value.type !== value.type) {
       if (!IGNORED_SCOPED_TYPES.includes(this.scope[key].value.type)) {
         value.type = Type.unknown;
@@ -303,6 +310,10 @@ export class AbstractParser<Source extends Vuedoc.Parser.Source, Root> {
         comment: nodeComment,
       },
     };
+
+    if (global && this.root) {
+      (this.root as any).scope[key] = this.scope[key];
+    }
   }
 
   parseVariableDeclaration(node: Vuedoc.Parser.AST.VariableDeclaration) {

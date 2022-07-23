@@ -170,7 +170,7 @@ export class ComputedParser extends AbstractExpressionParser {
 
     value.member = true;
 
-    this.root.setScopeValue(entry.name, body, value);
+    this.setScopeValue(entry.name, body, value, { global: true });
     this.parseEntryComment(entry, nodeComment);
     KeywordsUtils.mergeEntryKeyword(entry, Tag.type);
     KeywordsUtils.parseCommonEntryTags(entry);

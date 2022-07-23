@@ -36,7 +36,7 @@ export class ClassComponentDataParser extends DataParser {
       initialValue: ref.raw,
     });
 
-    this.root.setScopeValue(entry.name, value, ref);
+    this.setScopeValue(entry.name, value, ref, { global: true });
     this.parseEntryComment(entry, node);
     DataParser.mergeEntryKeywords(entry);
 

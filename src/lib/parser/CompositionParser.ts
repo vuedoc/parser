@@ -80,6 +80,11 @@ export class CompositionParser extends ScriptParser {
     return false;
   }
 
+  emit(entry: Vuedoc.Entry.Type) {
+    this.parseExposedEntry(entry);
+    super.emit(entry);
+  }
+
   get compositionComputedKeys() {
     // FIXME FIx handleling of options.composition
     // return CompositionAPIComputedValues.concat(this.options.composition.computed);

@@ -8,4 +8,8 @@ export abstract class AbstractSourceParser<
   Root = never
 > extends AbstractParser<Source, Root> {
   abstract findComment(node: Babel.Node): string | null;
+
+  emit(entry: Vuedoc.Entry.Type) {
+    this.emitter.emitEntry(entry);
+  }
 }

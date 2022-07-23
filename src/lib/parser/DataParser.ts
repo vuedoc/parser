@@ -77,7 +77,7 @@ export class DataParser extends AbstractExpressionParser {
 
       value.member = true;
 
-      this.root.setScopeValue(name, nodeTyping, value);
+      this.setScopeValue(name, nodeTyping, value, { global: true });
       this.parseEntryComment(entry, nodeComment);
       DataParser.mergeEntryKeywords(entry);
       this.emit(entry);

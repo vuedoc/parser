@@ -6,7 +6,7 @@ import { JSDoc } from '../JSDoc.js';
 import { Syntax, Type, Tag } from '../Enum.js';
 
 import { KeywordsUtils } from '../utils/KeywordsUtils.js';
-import { MethodReturns, MethodParamGenerator, MethodEntry } from '../entity/MethodEntry.js';
+import { MethodReturns, MethodParamGenerator } from '../entity/MethodEntry.js';
 import { MethodParser } from './MethodParser.js';
 import * as Babel from '@babel/types';
 
@@ -35,6 +35,8 @@ function parsePropTypeMemberProperty(property) {
 }
 
 export class PropParser extends AbstractExpressionParser {
+  defaultsProperties: Record<string, Babel.ObjectProperty> = {};
+
   static parseEntryCommentType(entry) {
     const items = KeywordsUtils.extract(entry.keywords, Tag.type);
     const item = items.pop();
@@ -109,10 +111,25 @@ export class PropParser extends AbstractExpressionParser {
 
   parseClassMember(member) {
     const type = this.getTSType(member);
-    const variable = this.scope[member.key.name];
-    const value = variable?.value.type === type
-      ? variable.value
-      : this.getPropValueNode(variable?.node?.value, type);
+    let value: Value;
+
+    if (member.key.name in this.defaultsProperties) {
+      const defaultNode = this.defaultsProperties[member.key.name];
+
+      value = this.getPropValueNode(defaultNode.value, type);
+
+      this.setScopeValue(member.key.name, member, value, { global: true });
+    } else {
+      const variable = this.scope[member.key.name];
+
+      value = variable?.value.type === type
+        ? variable.value
+        : this.getPropValueNode(variable?.node?.value, type);
+
+      if (value && value === variable?.value) {
+        this.setScopeValue(member.key.name, member, value, { global: true });
+      }
+    }
 
     const entry = new PropEntry({
       type,
@@ -125,21 +142,17 @@ export class PropParser extends AbstractExpressionParser {
       value.member = true;
     }
 
-    if (value === variable?.value) {
-      this.root.setScopeValue(member.key.name, member, value);
-    }
-
     this.parseEntry(entry, member, member.key.name);
   }
 
   parseWithDefaultsCall(node) {
     if (node.arguments[0]?.type === Syntax.CallExpression) {
-      const defaults = node.arguments[1];
+      const defaultsNode = node.arguments[1];
 
-      if (defaults && defaults.type === Syntax.ObjectExpression) {
-        defaults.properties.forEach((property) => {
-          this.root.setScopeValue(property.key.name, property, this.getValue(property.value));
-        });
+      if (defaultsNode && defaultsNode.type === Syntax.ObjectExpression) {
+        for (const property of defaultsNode.properties) {
+          this.defaultsProperties[property.key.name] = property;
+        }
       }
 
       this.parse(node.arguments[0]);
@@ -195,7 +208,7 @@ export class PropParser extends AbstractExpressionParser {
     node.elements.forEach((item) => {
       const entry = new PropEntry({ name: item.value, required: true });
 
-      this.root.setScopeValue(entry.name, item, UndefinedValue);
+      this.setScopeValue(entry.name, item, UndefinedValue, { global: true });
       this.parseEntry(entry, item, item.value);
     });
   }
@@ -221,7 +234,7 @@ export class PropParser extends AbstractExpressionParser {
 
     ref.member = true;
 
-    this.root.setScopeValue(name, property.value, ref);
+    this.setScopeValue(name, property.value, ref, { global: true });
     this.parseEntry(entry, property, name);
   }
 
