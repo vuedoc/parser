@@ -67,6 +67,8 @@ package:
   stage: publish
   needs: *security-jobs
   script:
+    - yarn install
+    - yarn build
     - yarn pack
   artifacts:
     paths:
@@ -80,6 +82,8 @@ publish:
     - triggers
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
+    - yarn install
+    - yarn build
     - yarn publish
   environment:
     name: npm
