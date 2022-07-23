@@ -2844,106 +2844,106 @@ describe('Vue 3', () => {
         },
       });
 
-      // ComponentTestCase({
-      //   name: 'declaration with withDefaults()',
-      //   options: {
-      //     filecontent: `
-      //       <script setup lang="ts">
-      //         enum Bool {
-      //           oui = 1,
-      //           non
-      //         }
+      ComponentTestCase({
+        name: 'declaration with withDefaults()',
+        options: {
+          filecontent: `
+            <script setup lang="ts">
+              enum Bool {
+                oui = 1,
+                non
+              }
 
-      //         interface Iface {}
+              interface Iface {}
 
-      //         type Name = string;
+              type Name = string;
 
-      //         interface Props {
-      //           msg: string
-      //           labels: string[]
-      //           enum?: Bool
-      //           iface?: Iface
-      //           /**
-      //            * type description
-      //            */
-      //           type?: Name
-      //         }
+              interface Props {
+                msg: string
+                labels: string[]
+                enum?: Bool
+                iface?: Iface
+                /**
+                 * type description
+                 */
+                type?: Name
+              }
 
-      //         const props = withDefaults(defineProps<Props>(), {
-      //           msg: 'hello',
-      //           labels: () => ['one', 'two']
-      //         })
-      //       </script>
-      //     `,
-      //   },
-      //   expected: {
-      //     errors: [],
-      //     warnings: [],
-      //     computed: [],
-      //     props: [
-      //       {
-      //         kind: 'prop',
-      //         name: 'msg',
-      //         type: 'string',
-      //         category: undefined,
-      //         version: undefined,
-      //         description: undefined,
-      //         default: '"hello"',
-      //         describeModel: false,
-      //         required: true,
-      //         keywords: [],
-      //         visibility: 'public' },
-      //       {
-      //         kind: 'prop',
-      //         name: 'labels',
-      //         type: 'string[]',
-      //         category: undefined,
-      //         version: undefined,
-      //         description: undefined,
-      //         default: '["one","two"]',
-      //         describeModel: false,
-      //         required: true,
-      //         keywords: [],
-      //         visibility: 'public' },
-      //       {
-      //         kind: 'prop',
-      //         name: 'enum',
-      //         type: 'Bool',
-      //         category: undefined,
-      //         version: undefined,
-      //         description: undefined,
-      //         default: undefined,
-      //         describeModel: false,
-      //         required: false,
-      //         keywords: [],
-      //         visibility: 'public' },
-      //       {
-      //         kind: 'prop',
-      //         name: 'iface',
-      //         type: 'Iface',
-      //         category: undefined,
-      //         version: undefined,
-      //         description: undefined,
-      //         default: undefined,
-      //         describeModel: false,
-      //         required: false,
-      //         keywords: [],
-      //         visibility: 'public' },
-      //       {
-      //         kind: 'prop',
-      //         name: 'type',
-      //         type: 'Name',
-      //         category: undefined,
-      //         version: undefined,
-      //         description: 'type description',
-      //         default: undefined,
-      //         describeModel: false,
-      //         required: false,
-      //         keywords: [],
-      //         visibility: 'public' },
-      //     ],
-      //   },
-      // });
+              const props = withDefaults(defineProps<Props>(), {
+                msg: 'hello',
+                labels: () => ['one', 'two']
+              })
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [],
+          props: [
+            {
+              kind: 'prop',
+              name: 'msg',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: '"hello"',
+              describeModel: false,
+              required: true,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'labels',
+              type: 'string[]',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: '["one","two"]',
+              describeModel: false,
+              required: true,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'enum',
+              type: 'Bool',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: undefined,
+              describeModel: false,
+              required: false,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'iface',
+              type: 'Iface',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              default: undefined,
+              describeModel: false,
+              required: false,
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'prop',
+              name: 'type',
+              type: 'Name',
+              category: undefined,
+              version: undefined,
+              description: 'type description',
+              default: undefined,
+              describeModel: false,
+              required: false,
+              keywords: [],
+              visibility: 'public' },
+          ],
+        },
+      });
     });
 
     describe('events', () => {
