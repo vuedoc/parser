@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { readFile, stat, writeFile } from 'fs/promises';
-import { beforeAll, describe, expect, it } from '@jest/globals';
-import { parseComponent } from '../../index.js';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { parseComponent } from '../../src/index.ts';
 
 async function loadFileContent(path) {
   try {

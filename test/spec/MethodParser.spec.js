@@ -1,5 +1,5 @@
 import { ComponentTestCase } from '../lib/TestUtils.js';
-import { describe } from '@jest/globals';
+import { describe } from 'vitest';
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [

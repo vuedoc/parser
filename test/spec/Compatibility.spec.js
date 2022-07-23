@@ -1,5 +1,5 @@
 import { readdir } from 'fs/promises';
-import { describe } from '@jest/globals';
+import { describe } from 'vitest';
 import { fileURLToPath } from 'url';
 import { join, dirname, basename } from 'path';
 import { VueDocExample } from '../lib/VueDocExample.js';

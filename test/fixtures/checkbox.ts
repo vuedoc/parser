@@ -1,4 +1,4 @@
 /**
  * A ts component
  */
-export default {}
+export default {};

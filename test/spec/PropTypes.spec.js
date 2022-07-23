@@ -1,4 +1,4 @@
-import { describe } from '@jest/globals';
+import { describe } from 'vitest';
 import { ComponentTestCase } from '../lib/TestUtils.js';
 
 describe('@znck/prop-types', () => {

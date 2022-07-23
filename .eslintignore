@@ -2,5 +2,5 @@ test/MethodParser.spec.js
 test/issues.spec.js
 test/examples
 test/tutorial
-jest.config.js
 sample.js
+esm/

@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "target": "ES2019",
+    "module": "NodeNext",
+    "strict": false,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": false,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "listEmittedFiles": true,
+    "rootDir": "src",
+    "outDir": "esm",
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ES2019"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "esm",
+    "test",
+    "coverage",
+    "node_modules",
+    "**/__mocks__"
+  ]
+}

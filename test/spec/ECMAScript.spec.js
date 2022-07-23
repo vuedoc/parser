@@ -1,5 +1,5 @@
-import { describe, expect, it } from '@jest/globals';
-import { parseComponent, Parser } from '../../index.js';
+import { describe, expect, it } from 'vitest';
+import { parseComponent, Parser } from '../../src/index.ts';
 
 /**
  * Code samples from lukehoban/es6features
@@ -425,7 +425,7 @@ const Feature = {
 function testPropertyFunction(property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
-      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
         const script = `
           export default {
             ${property}: function () {
@@ -441,11 +441,11 @@ function testPropertyFunction(property) {
 
         parser.on('end', done);
         parser.walk();
-      }));
+      })));
     });
 
     describe('es6', () => {
-      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
         const script = `
           export default {
             ${property} () {
@@ -461,11 +461,11 @@ function testPropertyFunction(property) {
 
         parser.on('end', done);
         parser.walk();
-      }));
+      })));
     });
 
     describe('arrow', () => {
-      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
         const script = `
           export default {
             ${property}: () => {
@@ -481,7 +481,7 @@ function testPropertyFunction(property) {
 
         parser.on('end', done);
         parser.walk();
-      }));
+      })));
     });
   });
 }
@@ -489,7 +489,7 @@ function testPropertyFunction(property) {
 function testPropertyObject(property) {
   describe(`should parse ${property} without errors`, () => {
     describe('es2015', () => {
-      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
         const script = `
           export default {
             ${property}: {
@@ -507,11 +507,11 @@ function testPropertyObject(property) {
 
         parser.on('end', done);
         parser.walk();
-      }));
+      })));
     });
 
     describe('es6', () => {
-      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
         const script = `
           export default {
             ${property}: {
@@ -529,11 +529,11 @@ function testPropertyObject(property) {
 
         parser.on('end', done);
         parser.walk();
-      }));
+      })));
     });
 
     describe('arrow', () => {
-      Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+      Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
         const script = `
           export default {
             ${property}: {
@@ -551,14 +551,14 @@ function testPropertyObject(property) {
 
         parser.on('end', done);
         parser.walk();
-      }));
+      })));
     });
   });
 }
 
 describe('ECMAScript Feature Parsing', () => {
   describe('should parse without errors', () => {
-    Object.keys(Feature).forEach((feature) => it(feature, (done) => {
+    Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
       const script = Feature[feature];
       const source = { script };
       const options = { source };
@@ -566,7 +566,7 @@ describe('ECMAScript Feature Parsing', () => {
 
       parser.on('end', done);
       parser.walk();
-    }));
+    })));
   });
 
   testPropertyFunction('name');

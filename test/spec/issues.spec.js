@@ -1,6 +1,6 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it } from 'vitest';
 
-import { parseComponent } from '../../index.js';
+import { parseComponent } from '../../src/index.ts';
 import { ComponentTestCase } from '../lib/TestUtils.js';
 import { Fixture } from '../lib/Fixture.js';
 

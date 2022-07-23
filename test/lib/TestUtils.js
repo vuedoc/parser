@@ -1,8 +1,8 @@
-import { parseComponent } from '../../index.js';
-import { beforeAll, describe, expect, it } from '@jest/globals';
+import { parseComponent } from '../../src/index.ts';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 export const ComponentTestCase = ({ name, description, expected, options }) => {
-  describe(description ? `${name}: ${description}` : name, () => {
+  describe.concurrent(description ? `${name}: ${description}` : name, () => {
     let component = null;
 
     beforeAll(async () => {

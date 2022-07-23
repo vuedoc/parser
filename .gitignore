@@ -54,3 +54,5 @@ jspm_packages
 *.odp
 *.pdf
 *.png
+esm/
+sample.js

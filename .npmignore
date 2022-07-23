@@ -1,9 +1,11 @@
+src
 test
 coverage
 .*
 sample.js
-jest.config.js
+vitest.ts
 result.json
+tsconfig.json
 *.tgz
 *.nix
 *.yml
