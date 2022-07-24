@@ -6,7 +6,7 @@ import { MarkupTemplateParser } from './MarkupTemplateParser.js';
 import { CompositionParser } from './CompositionParser.js';
 
 import { NameEntry } from '../entity/NameEntry.js';
-import { Feature, Features, DEFAULT_IGNORED_VISIBILITIES, CompositionAPIValues, FeatureEvent, TypedocTag, JSDocTag } from '../Enum.js';
+import { Feature, Features, DEFAULT_IGNORED_VISIBILITIES, CompositionAPIValues, TypedocTag, JSDocTag } from '../Enum.js';
 import { Vuedoc } from '../../../types/index.js';
 
 type AsyncOperation = () => Promise<void>;

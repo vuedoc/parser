@@ -6,9 +6,9 @@ import { Value } from '../entity/Value.js';
 
 import { Syntax, Tag, Type, Visibility } from '../Enum.js';
 import { KeywordsUtils } from '../utils/KeywordsUtils.js';
+import { Vuedoc } from '../../../types/index.js';
 
 import * as Babel from '@babel/types';
-import { Vuedoc } from '../../../types/index.js';
 
 const RE_THIS_EXPRESSION = /this\.([a-z0-9_$]+)/ig;
 const RE_THIS_DESTRUCTURING_EXPRESSION = /\{(([a-z0-9_$.,\s]+)((\s*:\s*[a-z0-9_$.,\s]+)|(\s*=\s*.+))?)\}\s*=\s*this;?/ig;

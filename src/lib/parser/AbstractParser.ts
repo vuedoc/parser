@@ -3,7 +3,7 @@ import { Value, UndefinedValue, NullValue } from '../entity/Value.js';
 import { Syntax, Type, TypeList, ScalarTypeList } from '../Enum.js';
 import { get } from '@b613/utils/lib/object.js';
 import { Vuedoc } from '../../../types/index.js';
-import type { Parser } from './Parser.js';
+import { Parser } from './Parser.js';
 import * as Babel from '@babel/types';
 
 const DUPLICATED_SPACES_RE = /\s+/g;

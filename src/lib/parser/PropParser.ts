@@ -8,6 +8,7 @@ import { Syntax, Type, Tag } from '../Enum.js';
 import { KeywordsUtils } from '../utils/KeywordsUtils.js';
 import { MethodReturns, MethodParamGenerator } from '../entity/MethodEntry.js';
 import { MethodParser } from './MethodParser.js';
+
 import * as Babel from '@babel/types';
 
 const PROP_TYPES_OBJECT_NAME = 'PropTypes';

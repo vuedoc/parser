@@ -3,12 +3,12 @@ import EventEmitter from 'node:events';
 // eslint-disable-next-line import/extensions
 import { PropType } from '@b613/utils/typings';
 import { ParseResult } from '@babel/parser';
-import { Value } from '../src/lib/entity/Value.js';
+import { Value } from '../esm/lib/entity/Value.js';
 
 import * as Babel from '@babel/types';
 
-export { Loader } from './lib/Loader.js';
-export { Parser } from './lib/parser/Parser.js';
+export { Loader } from '../esm/lib/Loader.js';
+export { Parser } from '../esm/lib/parser/Parser.js';
 
 export declare namespace Vuedoc {
   namespace Parser {
@@ -413,9 +413,10 @@ export declare namespace Vuedoc {
   }
 }
 
-export declare function parseOptions(options: Vuedoc.Index.Options): Promise<Vuedoc.Parser.ResolvedOptions>;
 declare type ExtendedParsingResult = Vuedoc.Index.ParsingResult & {
-    model?: Vuedoc.Entry.ModelEntry[];
+  model?: Vuedoc.Entry.ModelEntry[];
 };
+
+export declare function parseOptions(options: Vuedoc.Index.Options): Promise<Vuedoc.Parser.ResolvedOptions>;
 export declare function synchronizeParsingResult(options: Vuedoc.Index.Options, component: ExtendedParsingResult): void;
 export declare function parseComponent(options: Vuedoc.Index.Options): Promise<Vuedoc.Index.ParsingResult>;

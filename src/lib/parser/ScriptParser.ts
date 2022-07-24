@@ -1,4 +1,4 @@
-import { parse as BabelParser, ParseResult, ParserPlugin } from '@babel/parser';
+import { parse as BabelParser, ParserPlugin } from '@babel/parser';
 
 import { AbstractSourceParser } from './AbstractSourceParser.js';
 import { SlotParser } from './SlotParser.js';
@@ -18,10 +18,10 @@ import { DescriptionEntry } from '../entity/DescriptionEntry.js';
 import { KeywordsEntry } from '../entity/KeywordsEntry.js';
 import { UndefinedValue } from '../entity/Value.js';
 
-import { Syntax, Properties, Feature, Tag, PropTypesTag, CompositionAPIValues } from '../Enum.js';
+import { Syntax, Properties, Feature, Tag, PropTypesTag } from '../Enum.js';
 import { KeywordsUtils } from '../utils/KeywordsUtils.js';
 import { JSXParser } from './JSXParser.js';
-import type { Parser } from './Parser.js';
+import { Parser } from './Parser.js';
 import { Vuedoc } from '../../../types/index.js';
 
 import * as Babel from '@babel/types';

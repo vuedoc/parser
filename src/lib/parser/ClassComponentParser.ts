@@ -16,7 +16,7 @@ import { ComputedEntry } from '../entity/ComputedEntry.js';
 import { Syntax, Type, Feature, Visibility, PropTypesTag } from '../Enum.js';
 import { Value } from '../entity/Value.js';
 import { Vuedoc } from '../../../types/index.js';
-import type { Parser } from './Parser.js';
+import { Parser } from './Parser.js';
 
 import * as Babel from '@babel/types';
 

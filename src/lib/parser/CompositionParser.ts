@@ -10,10 +10,10 @@ import { EventParser } from './EventParser.js';
 
 import { Value } from '../entity/Value.js';
 
-import { Syntax, Properties, Feature, Type, Visibility, CompositionAPI, CompositionHooks, RouterKeys, CompositionProperties, CompositionAPIComputedValues } from '../Enum.js';
+import { Syntax, Properties, Feature, Type, Visibility, CompositionAPI, RouterKeys, CompositionProperties, CompositionAPIComputedValues } from '../Enum.js';
 import { CommentParser } from './CommentParser.js';
 import { Vuedoc } from '../../../types/index.js';
-import type { Parser } from './Parser.js';
+import { Parser } from './Parser.js';
 
 export type ParseDataValueOptions = {
   name: string;

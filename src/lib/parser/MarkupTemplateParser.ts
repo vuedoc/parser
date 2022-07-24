@@ -10,7 +10,7 @@ import { EventEntry, EventArgumentGenerator } from '../entity/EventEntry.js';
 import { JSDoc } from '../JSDoc.js';
 import { Feature, Tag } from '../Enum.js';
 import { Vuedoc } from '../../../types/index.js';
-import type { Parser } from './Parser.js';
+import { Parser } from './Parser.js';
 
 const EVENT_EMIT_RE = /^\$emit\(['"](.+)['"]/;
 

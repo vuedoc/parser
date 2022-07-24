@@ -1,6 +1,6 @@
 import { DataParser, ParseDataValueOptions } from './DataParser.js';
 import { ComputedParser } from './ComputedParser.js';
-import { CompositionHooks, Feature, Syntax, Type } from '../Enum.js';
+import { Feature, Syntax, Type } from '../Enum.js';
 import { MethodParser } from './MethodParser.js';
 import * as Babel from '@babel/types';
 
