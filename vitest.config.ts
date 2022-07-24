@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     watchExclude: [
       'test/examples/**',
+      'esm/**',
     ],
     passWithNoTests: true,
   },

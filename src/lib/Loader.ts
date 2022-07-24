@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises';
 import { Vuedoc } from '../../types/index.js';
 
 export type Options = Pick<Vuedoc.Parser.ResolvedOptions, 'source'> & {
@@ -20,12 +19,6 @@ export abstract class Loader implements Vuedoc.Loader.Interface {
     }
 
     return item.loader;
-  }
-
-  static async getFileContent(filename: string, encoding?: string) {
-    const buffer = await readFile(filename, encoding as any);
-
-    return buffer.toString();
   }
 
   constructor(options: Options) {

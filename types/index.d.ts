@@ -7,6 +7,9 @@ import { Value } from '../src/lib/entity/Value.js';
 
 import * as Babel from '@babel/types';
 
+export { Loader } from './lib/Loader.js';
+export { Parser } from './lib/parser/Parser.js';
+
 export declare namespace Vuedoc {
   namespace Parser {
     type Options = {
@@ -365,10 +368,6 @@ export declare namespace Vuedoc {
 
     type Options = (PartialFilenameOptions | PartialFilecontentOptions) & BasicOptions;
 
-    function parseComponent(options: Options): Promise<ParsingResult>;
-    function parseOptions(options: Options): Promise<void>;
-    function synchronizeParsingResult(options: Options, component: ParsingResult): void;
-
     type ParsingResult = {
       name?: string;
       description?: string;
@@ -391,8 +390,6 @@ export declare namespace Vuedoc {
   namespace Loader {
     abstract class Interface {
       static extend(name: LoaderName, loader: Interface): Definition;
-      static getFileContent(filename: string, options?: GetFileContentOptions): Promise<string>;
-
       abstract load(data: ScriptData | TemplateData): Promise<void>;
       emitTemplate(data: TemplateData): void;
       emitScript(data: ScriptData): void;
@@ -413,12 +410,12 @@ export declare namespace Vuedoc {
       name: LoaderName;
       loader: Interface;
     };
-
-    type GetFileContentOptions = {
-      /**
-       * The file encoding
-       */
-      encoding?: string;
-    };
   }
 }
+
+export declare function parseOptions(options: Vuedoc.Index.Options): Promise<Vuedoc.Parser.ResolvedOptions>;
+declare type ExtendedParsingResult = Vuedoc.Index.ParsingResult & {
+    model?: Vuedoc.Entry.ModelEntry[];
+};
+export declare function synchronizeParsingResult(options: Vuedoc.Index.Options, component: ExtendedParsingResult): void;
+export declare function parseComponent(options: Vuedoc.Index.Options): Promise<Vuedoc.Index.ParsingResult>;

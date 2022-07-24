@@ -1,5 +1,6 @@
-import path from 'path';
+import path from 'node:path';
 
+import { readFile } from 'node:fs/promises';
 import { Loader, Options } from './lib/Loader.js';
 import { Parser } from './lib/parser/Parser.js';
 import { VueLoader } from './loaders/vue.js';
@@ -34,7 +35,7 @@ export async function parseOptions(options: Vuedoc.Index.Options) {
 
   if ('filename' in options) {
     if (options.filename) {
-      filecontent = await Loader.getFileContent(options.filename, options.encoding);
+      filecontent = await readFile(options.filename, options.encoding as 'utf8');
     } else {
       throw new Error('options.filename cannot be empty');
     }

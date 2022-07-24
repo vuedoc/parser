@@ -52,7 +52,7 @@ pages:
   dependencies:
     - tests & coverage
   script:
-    - mv coverage/lcov-report/ public/
+    - mv coverage/ public/
   artifacts:
     paths:
       - public
@@ -63,13 +63,12 @@ pages:
     name: coverage report
     url: https://vuedoc.gitlab.io/parser
 
-package:
-  stage: publish
+build:
+  stage: tests
   needs: *security-jobs
   script:
     - yarn install
     - yarn build
-    - yarn pack
   artifacts:
     paths:
       - ./*.tgz
@@ -83,7 +82,6 @@ publish:
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
     - yarn install
-    - yarn build
     - yarn publish
   environment:
     name: npm

@@ -96,12 +96,9 @@ export type Options = {
 };
 
 export class ScriptParser<ParseNode = void, Root = never> extends AbstractSourceParser<Vuedoc.Parser.Script, Root> {
-  source: Vuedoc.Parser.Script;
   options: Options;
   ast: Vuedoc.Parser.AST.Result;
   ignoredMothods: never[];
-  features: Vuedoc.Parser.Feature[];
-  scope: Vuedoc.Parser.Scope<any, any>;
   defaultModelPropName = 'value';
 
   constructor(emitter: Parser, ast: Vuedoc.Parser.AST.Result, source: Vuedoc.Parser.Script, options: Options) {

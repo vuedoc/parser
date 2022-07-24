@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "target": "ES2019",
-    "module": "NodeNext",
+    "target": "ES2020",
+    "module": "ES2020",
     "strict": false,
     "importHelpers": true,
     "moduleResolution": "node",
@@ -18,9 +18,6 @@
     "outDir": "esm",
     "types": [
       "node"
-    ],
-    "lib": [
-      "ES2019"
     ],
     "typeRoots": [
       "node_modules/@types"

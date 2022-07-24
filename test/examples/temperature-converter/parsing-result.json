@@ -43,8 +43,8 @@
         {
           "name": "v",
           "type": "unknown",
-          "defaultValue": "+e.target.value",
-          "rest": false
+          "rest": false,
+          "defaultValue": "+e.target.value"
         }
       ],
       "syntax": [
@@ -68,8 +68,8 @@
         {
           "name": "v",
           "type": "unknown",
-          "defaultValue": "+e.target.value",
-          "rest": false
+          "rest": false,
+          "defaultValue": "+e.target.value"
         }
       ],
       "syntax": [
