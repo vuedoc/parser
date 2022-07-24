@@ -65,7 +65,6 @@ pages:
 
 build:
   stage: tests
-  needs: *security-jobs
   script:
     - yarn install
     - yarn build
