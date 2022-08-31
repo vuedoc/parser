@@ -1,8 +1,8 @@
 import { Loader } from '../lib/Loader.js';
-import { Vuedoc } from '../../types/index.js';
+import { Loader as LoaderNS } from '../../types/Loader.js';
 
 export class JavaScriptLoader extends Loader {
-  async load(data: Vuedoc.Loader.ScriptData) {
+  load(data: LoaderNS.ScriptData) {
     this.emitScript(data);
   }
 }

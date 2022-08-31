@@ -1,9 +1,10 @@
 import { describe } from 'vitest';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 
 describe('Class Component', () => {
   ComponentTestCase({
     name: '#37 - Class Component',
+    // only: true,
     options: {
       filecontent: `
         <script>
@@ -548,7 +549,7 @@ describe('Class Component', () => {
         {
           kind: 'data',
           name: 'historyLength',
-          type: 'object',
+          type: 'number',
           description: undefined,
           category: undefined,
           version: undefined,

@@ -1,59 +1,112 @@
 {
+  "name": "CircleDrawer",
+  "description": "Circle Drawer’s goal is, among other things, to test how good the common\nchallenge of implementing an undo/redo functionality for a GUI application\ncan be solved.",
+  "see": "https://eugenkiss.github.io/7guis/tasks/#circle",
   "inheritAttrs": true,
-  "errors": [
-    "tag <input> has no matching end tag."
-  ],
+  "errors": [],
   "warnings": [],
-  "keywords": [],
-  "slots": [],
-  "props": [],
+  "keywords": [
+    {
+      "name": "usage",
+      "description": "Click on the canvas to draw a circle. Click on a circle to select it.\nRight-click on the canvas to adjust the radius of the selected circle."
+    }
+  ],
+  "props": [
+    {
+      "kind": "prop",
+      "keywords": [],
+      "visibility": "public",
+      "name": "v-model",
+      "type": "Array<{ cx: number; cy: number; r: number; }>",
+      "default": "[]",
+      "required": false,
+      "describeModel": true
+    },
+    {
+      "kind": "prop",
+      "description": "The canvas's width",
+      "keywords": [],
+      "visibility": "public",
+      "name": "width",
+      "type": [
+        "number",
+        "string"
+      ],
+      "default": "\"100%\"",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "description": "The canvas's height",
+      "keywords": [],
+      "visibility": "public",
+      "name": "height",
+      "type": [
+        "number",
+        "string"
+      ],
+      "default": "\"200\"",
+      "required": false,
+      "describeModel": false
+    }
+  ],
   "data": [
     {
       "kind": "data",
+      "description": "History object",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
       "name": "history",
+      "type": "array",
       "initialValue": "[[]]"
     },
     {
       "kind": "data",
+      "description": "The active history index",
       "keywords": [],
       "visibility": "public",
-      "type": "number",
       "name": "index",
+      "type": "number",
       "initialValue": "0"
     },
     {
       "kind": "data",
+      "description": "The selected circle",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
-      "name": "circles",
-      "initialValue": "[]"
-    },
-    {
-      "kind": "data",
-      "keywords": [],
-      "visibility": "public",
-      "type": "unknown",
       "name": "selected",
+      "type": [
+        "null",
+        "{ cx: number; cy: number; r: number; }"
+      ],
       "initialValue": "null"
     },
     {
       "kind": "data",
+      "description": "Whether the active circle is adjusted or not",
       "keywords": [],
       "visibility": "public",
-      "type": "boolean",
       "name": "adjusting",
+      "type": "boolean",
       "initialValue": "false"
     }
   ],
-  "computed": [],
-  "events": [],
+  "computed": [
+    {
+      "kind": "computed",
+      "description": "Circles list",
+      "keywords": [],
+      "visibility": "public",
+      "name": "circles",
+      "type": "Array<{ cx: number; cy: number; r: number; }>",
+      "dependencies": []
+    }
+  ],
   "methods": [
     {
       "kind": "method",
+      "description": "Handle user click events to draw circle",
       "keywords": [],
       "visibility": "public",
       "name": "onClick",
@@ -73,18 +126,20 @@
     },
     {
       "kind": "method",
+      "description": "Adjust radius of circle",
       "keywords": [],
       "visibility": "public",
       "name": "adjust",
       "params": [
         {
           "name": "circle",
-          "type": "unknown",
-          "rest": false
+          "type": "{ cx: number; cy: number; r: number; }",
+          "rest": false,
+          "description": "The circle object to ajust"
         }
       ],
       "syntax": [
-        "adjust(circle: unknown): void"
+        "adjust(circle: { cx: number; cy: number; r: number; }): void"
       ],
       "returns": {
         "type": "void"
@@ -92,6 +147,7 @@
     },
     {
       "kind": "method",
+      "description": "Push the current object state to the history array",
       "keywords": [],
       "visibility": "public",
       "name": "push",
@@ -105,6 +161,7 @@
     },
     {
       "kind": "method",
+      "description": "Undo the last operation",
       "keywords": [],
       "visibility": "public",
       "name": "undo",
@@ -118,6 +175,7 @@
     },
     {
       "kind": "method",
+      "description": "Redo the last undo operation",
       "keywords": [],
       "visibility": "public",
       "name": "redo",
@@ -129,5 +187,26 @@
         "type": "void"
       }
     }
-  ]
+  ],
+  "events": [
+    {
+      "kind": "event",
+      "description": "Emitted when the circle selection change",
+      "keywords": [],
+      "visibility": "public",
+      "name": "selection-change",
+      "arguments": [
+        {
+          "name": "selected",
+          "type": [
+            "null",
+            "{ cx: number; cy: number; r: number; }"
+          ],
+          "description": "Selected circle",
+          "rest": false
+        }
+      ]
+    }
+  ],
+  "slots": []
 }

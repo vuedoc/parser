@@ -1,16 +1,16 @@
 {
+  "name": "TreeItem",
   "inheritAttrs": true,
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [
     {
       "kind": "prop",
       "keywords": [],
       "visibility": "public",
-      "type": "object",
       "name": "model",
+      "type": "object",
       "required": false,
       "describeModel": false
     }
@@ -20,8 +20,8 @@
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "boolean",
       "name": "isOpen",
+      "type": "boolean",
       "initialValue": "false"
     }
   ],
@@ -30,12 +30,11 @@
       "kind": "computed",
       "keywords": [],
       "visibility": "public",
-      "type": "boolean",
       "name": "isFolder",
+      "type": "boolean",
       "dependencies": []
     }
   ],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -77,5 +76,6 @@
       }
     }
   ],
-  "name": "TreeItem"
+  "events": [],
+  "slots": []
 }

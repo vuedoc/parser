@@ -1,10 +1,8 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { parseComponent, parseOptions } from '../../src/index.ts';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 import { Fixture } from '../lib/Fixture.js';
-import { Loader } from '../../src/lib/Loader.ts';
-import { JavaScriptLoader } from '../../src/loaders/javascript.ts';
 
 const options = {
   filename: Fixture.resolve('checkbox.vue'),
@@ -440,136 +438,8 @@ describe('Integration', () => {
       expect(parseOptions()).rejects.toThrow(/Missing options argument/);
     });
 
-    it('should fail to parse with missing minimum required options', () => {
-      expect(parseOptions({})).rejects.toThrow(/Missing options.filename of options.filecontent/);
-    });
-
-    it('should parse with minimum required options', async () => {
-      const filecontent = ' ';
-      const options = { filecontent };
-      const expected = {
-        filecontent,
-        encoding: 'utf8',
-        ignoredVisibilities: ['protected', 'private'],
-        source: {
-          template: {
-            attrs: { lang: 'html' },
-          },
-          script: {
-            attrs: { lang: 'js' },
-          },
-          errors: [],
-        },
-        composition: {
-          data: [],
-          methods: [],
-          computed: [],
-          props: [],
-        },
-      };
-
-      await parseOptions(options);
-      expect(options).toEqual(expected);
-    });
-
-    it('should parse with user options', async () => {
-      const options = {
-        filecontent: ' ',
-        ignoredVisibilities: ['private'],
-        loaders: [
-          Loader.extend('coffee', JavaScriptLoader),
-        ],
-      };
-
-      const expected = {
-        filecontent: options.filecontent,
-        encoding: 'utf8',
-        ignoredVisibilities: [...options.ignoredVisibilities],
-        source: {
-          template: {
-            attrs: { lang: 'html' },
-          },
-          script: {
-            attrs: { lang: 'js' },
-          },
-          errors: [],
-        },
-        loaders: [
-          Loader.extend('coffee', JavaScriptLoader),
-        ],
-        composition: {
-          data: [],
-          methods: [],
-          computed: [],
-          props: [],
-        },
-      };
-
-      await parseOptions(options);
-      expect(options).toEqual(expected);
-    });
-
-    it('should parse with options.filename', async () => {
-      const options = {
-        filename: Fixture.resolve('checkbox.js'),
-        ignoredVisibilities: ['private'],
-        loaders: [],
-      };
-
-      const expected = {
-        filename: options.filename,
-        encoding: 'utf8',
-        ignoredVisibilities: [...options.ignoredVisibilities],
-        source: {
-          script: {
-            attrs: { lang: 'js' },
-            content: await Fixture.get('checkbox.js'),
-          },
-          errors: [],
-        },
-        loaders: [],
-        composition: {
-          data: [],
-          methods: [],
-          computed: [],
-          props: [],
-        },
-      };
-
-      await parseOptions(options);
-      expect(options).toEqual(expected);
-    });
-
-    it('should parse with options.filecontent', async () => {
-      const options = {
-        filecontent: ' ',
-        ignoredVisibilities: ['private'],
-        loaders: [],
-      };
-
-      await parseOptions(options);
-
-      expect(options).toEqual({
-        filecontent: options.filecontent,
-        encoding: 'utf8',
-        ignoredVisibilities: [...options.ignoredVisibilities],
-        source: {
-          template: {
-            attrs: { lang: 'html' },
-          },
-          script: {
-            attrs: { lang: 'js' },
-          },
-          errors: [],
-        },
-        loaders: [],
-        composition: {
-          data: [],
-          methods: [],
-          computed: [],
-          props: [],
-        },
-      });
+    it('should fail to parse empty options.filename', () => {
+      expect(parseOptions({ filename: '' })).rejects.toThrow(/options.filename cannot be empty/);
     });
   });
 
@@ -1024,7 +894,7 @@ describe('Integration', () => {
   });
 
   describe('errors', () => {
-    it('should throw error for non html template', () => new Promise((resolve, reject) => {
+    it('should throw error for unknown html lang', async () => {
       const filecontent = `
         <template lang="pug">
           div
@@ -1032,13 +902,30 @@ describe('Integration', () => {
         </template>
       `;
       const options = { filecontent };
+      const component = await parseComponent(options);
 
-      parseComponent(options)
-        .then(() => reject(new Error('should throw an error for non html script')))
-        .catch(() => resolve());
-    }));
+      expect(component).toEqual({
+        name: undefined,
+        description: undefined,
+        category: undefined,
+        since: undefined,
+        version: undefined,
+        see: undefined,
+        inheritAttrs: true,
+        errors: ['Missing loader for pug'],
+        warnings: [],
+        keywords: [],
+        model: [],
+        props: [],
+        data: [],
+        computed: [],
+        methods: [],
+        events: [],
+        slots: [],
+      });
+    });
 
-    it('should throw error for non javascript script', () => new Promise((resolve, reject) => {
+    it('should throw error for unknown script lang', async () => {
       const filecontent = `
         <script lang="coffee">
           export default {
@@ -1051,35 +938,66 @@ describe('Integration', () => {
         </script>
       `;
       const options = { filecontent };
+      const component = await parseComponent(options);
 
-      parseComponent(options)
-        .then(() => reject(new Error('should throw an error for non js script')))
-        .catch(() => resolve());
-    }));
+      expect(component).toEqual({
+        name: undefined,
+        description: undefined,
+        category: undefined,
+        since: undefined,
+        version: undefined,
+        see: undefined,
+        inheritAttrs: true,
+        errors: ['Missing loader for coffee'],
+        warnings: [],
+        keywords: [],
+        model: [],
+        props: [],
+        data: [],
+        computed: [],
+        methods: [],
+        events: [],
+        slots: [],
+      });
+    });
 
-    it('should throw error for non js files', () => new Promise((resolve, reject) => {
+    it('should throw error for non js files', async () => {
       const filename = Fixture.resolve('checkbox.coffee');
-      const options = { filename };
+      const component = await parseComponent({ filename });
 
-      parseComponent(options)
-        .then(() => reject(new Error('should throw an error for non js file')))
-        .catch(() => resolve());
-    }));
+      expect(component).toEqual({
+        name: undefined,
+        description: undefined,
+        category: undefined,
+        since: undefined,
+        version: undefined,
+        see: undefined,
+        inheritAttrs: true,
+        errors: ['Missing loader for coffee'],
+        warnings: [],
+        keywords: [],
+        model: [],
+        props: [],
+        data: [],
+        computed: [],
+        methods: [],
+        events: [],
+        slots: [],
+      });
+    });
 
-    it('should return component syntax error', async () => {
-      const filecontent = `
+    it('should return component syntax warning', async () => {
+      const { warnings } = await parseComponent({
+        filecontent: `
           <template>
             <input>
           </template>
-        `;
-      const options = { filecontent };
-      const expected = [
+        `,
+      });
+
+      expect(warnings).toEqual([
         'tag <input> has no matching end tag.',
-      ];
-
-      const { errors } = await parseComponent(options);
-
-      expect(errors).toEqual(expected);
+      ]);
     });
 
     it('should emit event with @event and no description', async () => {
@@ -1114,66 +1032,67 @@ describe('Integration', () => {
     });
   });
 
-  // FIXME Fix test for options.hooks
-  // ComponentTestCase({
-  //   name: 'options.hooks',
-  //   options: {
-  //     filecontent: `
-  //       <script>
-  //         export default {
-  //           props: {
-  //             /**
-  //              * Custom default value with @default keyword.
-  //              * Only the last defined keyword will be used
-  //              * @default { key: 'value' }
-  //              * @default { last: 'keyword' }
-  //              */
-  //             complex: {
-  //               type: Object,
-  //               default: () => {
-  //                 // complex operations
-  //                 return complexOperationsResultObject
-  //               }
-  //             }
-  //           }
-  //         }
-  //       </script>
-  //     `,
-  //     hooks: {
-  //       handleParsingResult(component) {
-  //         component.props.push({ ...component.props[0], name: 'additional-prop' });
-  //       },
-  //     },
-  //   },
-  //   expected: {
-  //     props: [
-  //       {
-  //         default: '{ last: \'keyword\' }',
-  //         describeModel: false,
-  //         category: undefined,
-  //         version: undefined,
-  //         description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
-  //         keywords: [],
-  //         kind: 'prop',
-  //         name: 'complex',
-  //         required: false,
-  //         type: 'object',
-  //         visibility: 'public' },
-  //       {
-  //         default: '{ last: \'keyword\' }',
-  //         describeModel: false,
-  //         category: undefined,
-  //         version: undefined,
-  //         description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
-  //         keywords: [],
-  //         kind: 'prop',
-  //         name: 'additional-prop',
-  //         required: false,
-  //         type: 'object',
-  //         visibility: 'public' },
-  //     ],
-  //   },
-  // });
+  ComponentTestCase({
+    name: 'options.hooks',
+    options: {
+      filecontent: `
+        <script>
+          export default {
+            props: {
+              /**
+               * Custom default value with @default keyword.
+               * Only the last defined keyword will be used
+               * @default { key: 'value' }
+               * @default { last: 'keyword' }
+               */
+              complex: {
+                type: Object,
+                default: () => {
+                  // complex operations
+                  return complexOperationsResultObject
+                }
+              }
+            }
+          }
+        </script>
+      `,
+      plugins: [
+        () => ({
+          handleParsingResult(component) {
+            component.props.push({ ...component.props[0], name: 'additional-prop' });
+          },
+        }),
+      ],
+    },
+    expected: {
+      props: [
+        {
+          default: '{ last: \'keyword\' }',
+          describeModel: false,
+          category: undefined,
+          version: undefined,
+          description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
+          keywords: [],
+          kind: 'prop',
+          name: 'complex',
+          required: false,
+          type: 'object',
+          visibility: 'public' },
+        {
+          default: '{ last: \'keyword\' }',
+          describeModel: false,
+          category: undefined,
+          version: undefined,
+          description: 'Custom default value with @default keyword.\nOnly the last defined keyword will be used',
+          keywords: [],
+          kind: 'prop',
+          name: 'additional-prop',
+          required: false,
+          type: 'object',
+          visibility: 'public' },
+      ],
+    },
+  });
 
   ComponentTestCase({
     name: '#50 - @default keyword in props',
@@ -1706,4 +1625,314 @@ describe('Integration', () => {
       });
     });
   }
+
+  ComponentTestCase({
+    name: 'complexe todo example',
+    // only: true,
+    options: {
+      filecontent: `
+        <script>
+          const STORAGE_KEY = 'vue-todomvc';
+
+          const filters = {
+            all: (todos) => todos,
+            active: (todos) => todos.filter((todo) => !todo.completed),
+            completed: (todos) => todos.filter((todo) => todo.completed),
+          };
+          
+          export default {
+            // app initial state
+            data: () => ({
+              // state
+              todos: JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'),
+              editedTodo: null,
+              visibility: 'all',
+            }),
+          
+            // watch todos change for localStorage persistence
+            watch: {
+              todos: {
+                handler(todos) {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+                },
+                deep: true,
+              },
+            },
+          
+            mounted() {
+              window.addEventListener('hashchange', this.onHashChange);
+              this.onHashChange();
+            },
+          
+            computed: {
+              // derived state
+              filteredTodos() {
+                return filters[this.visibility](this.todos);
+              },
+              remaining() {
+                return filters.active(this.todos).length;
+              },
+            },
+          
+            // methods that implement data logic.
+            // note there's no DOM manipulation here at all.
+            methods: {
+              toggleAll(e) {
+                this.todos.forEach((todo) => (todo.completed = e.target.checked));
+              },
+          
+              addTodo(e) {
+                const value = e.target.value.trim();
+          
+                if (!value) {
+                  return;
+                }
+          
+                this.todos.push({
+                  id: Date.now(),
+                  title: value,
+                  completed: false,
+                });
+                e.target.value = '';
+              },
+          
+              removeTodo(todo) {
+                this.todos.splice(this.todos.indexOf(todo), 1);
+              },
+          
+              editTodo(todo) {
+                this.beforeEditCache = todo.title;
+                this.editedTodo = todo;
+              },
+          
+              doneEdit(todo) {
+                if (!this.editedTodo) {
+                  return;
+                }
+          
+                this.editedTodo = null;
+                todo.title = todo.title.trim();
+          
+                if (!todo.title) {
+                  this.removeTodo(todo);
+                }
+              },
+          
+              cancelEdit(todo) {
+                this.editedTodo = null;
+                todo.title = this.beforeEditCache;
+              },
+          
+              removeCompleted() {
+                this.todos = filters.active(this.todos);
+              },
+          
+              /**
+               * @ignore
+               */
+              onHashChange() {
+                const visibility = window.location.hash.replace(/#\\/?/, '');
+          
+                if (filters[visibility]) {
+                  this.visibility = visibility;
+                } else {
+                  window.location.hash = '';
+                  this.visibility = 'all';
+                }
+              },
+            },
+          };
+        </script>
+      `,
+    },
+    expected: {
+      inheritAttrs: true,
+      errors: [],
+      warnings: [],
+      keywords: [],
+      props: [],
+      data: [
+        {
+          kind: 'data',
+          description: 'state',
+          keywords: [],
+          visibility: 'public',
+          name: 'todos',
+          type: 'unknown',
+          initialValue: "JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')",
+        },
+        {
+          kind: 'data',
+          keywords: [],
+          visibility: 'public',
+          name: 'editedTodo',
+          type: 'unknown',
+          initialValue: 'null',
+        },
+        {
+          kind: 'data',
+          keywords: [],
+          visibility: 'public',
+          name: 'visibility',
+          type: 'string',
+          initialValue: '"all"',
+        },
+      ],
+      computed: [
+        {
+          kind: 'computed',
+          description: 'derived state',
+          keywords: [],
+          visibility: 'public',
+          name: 'filteredTodos',
+          type: 'unknown',
+          dependencies: [
+            'visibility',
+            'todos',
+          ],
+        },
+        {
+          kind: 'computed',
+          keywords: [],
+          visibility: 'public',
+          name: 'remaining',
+          type: 'number',
+          dependencies: [
+            'todos',
+          ],
+        },
+      ],
+      methods: [
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'toggleAll',
+          params: [
+            {
+              name: 'e',
+              type: 'unknown',
+              rest: false,
+            },
+          ],
+          syntax: [
+            'toggleAll(e: unknown): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'addTodo',
+          params: [
+            {
+              name: 'e',
+              type: 'unknown',
+              rest: false,
+            },
+          ],
+          syntax: [
+            'addTodo(e: unknown): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'removeTodo',
+          params: [
+            {
+              name: 'todo',
+              type: 'unknown',
+              rest: false,
+            },
+          ],
+          syntax: [
+            'removeTodo(todo: unknown): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'editTodo',
+          params: [
+            {
+              name: 'todo',
+              type: 'unknown',
+              rest: false,
+            },
+          ],
+          syntax: [
+            'editTodo(todo: unknown): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'doneEdit',
+          params: [
+            {
+              name: 'todo',
+              type: 'unknown',
+              rest: false,
+            },
+          ],
+          syntax: [
+            'doneEdit(todo: unknown): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'cancelEdit',
+          params: [
+            {
+              name: 'todo',
+              type: 'unknown',
+              rest: false,
+            },
+          ],
+          syntax: [
+            'cancelEdit(todo: unknown): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+        {
+          kind: 'method',
+          keywords: [],
+          visibility: 'public',
+          name: 'removeCompleted',
+          params: [],
+          syntax: [
+            'removeCompleted(): void',
+          ],
+          returns: {
+            type: 'void',
+          },
+        },
+      ],
+      events: [],
+      slots: [],
+    },
+  });
 });

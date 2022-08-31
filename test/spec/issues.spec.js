@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { parseComponent } from '../../src/index.ts';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { Fixture } from '../lib/Fixture.js';
 
 describe('issues', () => {
@@ -905,14 +905,14 @@ describe('issues', () => {
 
   ComponentTestCase({
     name: '#56 - Cannot read property \'type\' of null (UiAutocomplete.vue)',
+    // only: true,
     options: {
       filecontent: Fixture.get('UiAutocomplete.vue'),
     },
     expected: {
       inheritAttrs: true,
-      errors: [
-        'tag <input> has no matching end tag.',
-      ],
+      errors: [],
+      warnings: [],
       name: 'ui-autocomplete',
       description: undefined,
       keywords: [],
@@ -2661,7 +2661,7 @@ describe('issues', () => {
             },
             {
               name: 'model',
-              type: ['Number', 'String', 'Array', 'Object', 'Boolean'],
+              type: ['number', 'string', 'array', 'object', 'boolean'],
               description: 'The initial data for the schema.',
               defaultValue: '"hello"',
               rest: false,
@@ -3004,6 +3004,7 @@ describe('issues', () => {
 
   ComponentTestCase({
     name: '#97 - @vuedoc/parser parse class component with error',
+    // only: true,
     options: {
       filecontent: `
         <template>
@@ -3024,7 +3025,7 @@ describe('issues', () => {
           @State('pageTreeList') pageTreeList!: any;
 
           @Prop() groups!: any;
-
+          
           token: any = localStorage.getItem('devToken');
         }
         </script>
@@ -3608,6 +3609,7 @@ describe('issues', () => {
 
   ComponentTestCase({
     name: '#104 - error if $emit param has the same name as a prop',
+    // only: true,
     options: {
       filecontent: `
         <script>

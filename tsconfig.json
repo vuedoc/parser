@@ -28,7 +28,6 @@
   ],
   "exclude": [
     "esm",
-    "test",
     "coverage",
     "node_modules",
     "**/__mocks__"

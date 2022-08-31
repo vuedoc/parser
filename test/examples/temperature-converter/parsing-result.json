@@ -1,33 +1,28 @@
 {
   "inheritAttrs": true,
-  "errors": [
-    "tag <input> has no matching end tag.",
-    "tag <input> has no matching end tag."
-  ],
+  "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "number",
       "name": "c",
+      "type": "number",
       "initialValue": "0"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "number",
       "name": "f",
+      "type": "number",
       "initialValue": "32"
     }
   ],
   "computed": [],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -79,5 +74,7 @@
         "type": "void"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

@@ -1,5 +1,6 @@
 import { describe } from 'vitest';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
+import { join } from 'path';
 
 describe('ScriptParser', () => {
   ComponentTestCase({
@@ -232,6 +233,7 @@ describe('ScriptParser', () => {
 
   ComponentTestCase({
     name: 'Parsing error',
+    // only: true,
     options: {
       filecontent: `
         <script>
@@ -329,7 +331,7 @@ describe('ScriptParser', () => {
       `,
     },
     expected: {
-      name: undefined,
+      name: '',
       props: [
         {
           kind: 'prop',
@@ -394,6 +396,132 @@ describe('ScriptParser', () => {
   });
 
   ComponentTestCase({
+    name: 'empty options.resolver.alias',
+    // only: true,
+    options: {
+      resolver: {
+        alias: {},
+      },
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+          import componentName from './myMixin';   
+          import { myMixin as myMixin2 } from '@/myMixin';
+          
+          // define a component that uses this mixin
+          export default Vue.extend({
+            name: componentName,
+            mixins: [myMixin2],
+            props: {
+              somePropCall: MethodThanReturnAString(),
+            },
+          })
+        </script>
+      `,
+    },
+    expected: {
+      name: '',
+      errors: [
+        "Cannot find module '@/myMixin'. Make sure to define options.resolver",
+        "Cannot find module './myMixin'. Make sure to define options.resolver",
+      ],
+      warnings: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: 'unknown',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+      ],
+      methods: [],
+    },
+  });
+
+  ComponentTestCase({
+    name: 'non empty options.resolver.alias',
+    options: {
+      resolver: {
+        alias: {
+          '@/': join(__dirname, '../fixtures'),
+          './myMixin': join(__dirname, '../fixtures/myMixin.js'),
+        },
+      },
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+          import componentName from './myMixin';   
+          import { myMixin as myMixin2 } from '@/myMixin';
+          
+          // define a component that uses this mixin
+          export default Vue.extend({
+            name: componentName,
+            mixins: [myMixin2],
+            props: {
+              somePropCall: MethodThanReturnAString(),
+            },
+          })
+        </script>
+      `,
+    },
+    expected: {
+      name: 'MyComponentName',
+      warnings: [],
+      errors: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'some-prop-ref',
+          type: 'CallsSomeOtherMethod',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: 'unknown',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+      ],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'hello(): void',
+          ],
+          name: 'hello',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          params: [],
+          returns: {
+            type: 'void',
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
+
+  ComponentTestCase({
     name: 'Mixin exported as default',
     options: {
       filecontent: `
@@ -430,6 +558,280 @@ describe('ScriptParser', () => {
           },
         },
       ],
+    },
+  });
+
+  ComponentTestCase({
+    name: 'mixins defined on the same file',
+    // only: true,
+    options: {
+      filecontent: `
+        <script>
+          import Vue     from 'vue'
+          
+          var myMixin = {
+            props: {
+              somePropRef: CallsSomeOtherMethod,
+            },
+            created: function () {
+              this.hello()
+            },
+            methods: {
+              hello: function () {
+                console.log('hello from mixin!')
+              }
+            }
+          }
+          
+          // define a component that uses this mixin
+          export default Vue.extend({
+            mixins: [myMixin],
+            props: {
+              somePropCall: MethodThanReturnAString(),
+            },
+          })
+        </script>
+      `,
+    },
+    expected: {
+      keywords: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'some-prop-ref',
+          type: 'CallsSomeOtherMethod',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: 'unknown',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+      ],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'hello(): void',
+          ],
+          name: 'hello',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          params: [],
+          returns: {
+            type: 'void',
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
+
+  ComponentTestCase({
+    name: 'mixins defined on an external file',
+    options: {
+      resolver: {
+        basedir: join(__dirname, '../fixtures'),
+      },
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+          import componentName, { myMixin } from './myMixin';       
+          
+          // define a component that uses this mixin
+          export default Vue.extend({
+            name: componentName,
+            mixins: [myMixin],
+            props: {
+              somePropCall: MethodThanReturnAString(),
+            },
+          })
+        </script>
+      `,
+    },
+    expected: {
+      name: 'MyComponentName',
+      warnings: [],
+      errors: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'some-prop-ref',
+          type: 'CallsSomeOtherMethod',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: 'unknown',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+      ],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'hello(): void',
+          ],
+          name: 'hello',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          params: [],
+          returns: {
+            type: 'void',
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
+
+  ComponentTestCase({
+    name: 'mixins defined on an external SFC file',
+    // only: true,
+    options: {
+      resolver: {
+        basedir: join(__dirname, '../fixtures'),
+      },
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+          import componentName, { myMixin } from './myMixinComponent.vue';       
+          
+          // define a component that uses this mixin
+          export default Vue.extend({
+            name: componentName,
+            mixins: [myMixin],
+            props: {
+              somePropCall: MethodThanReturnAString(),
+            },
+          })
+        </script>
+      `,
+    },
+    expected: {
+      name: 'MyComponentName',
+      warnings: [],
+      errors: [],
+      props: [
+        {
+          kind: 'prop',
+          name: 'name',
+          type: 'string',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: 'unknown',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+      ],
+      methods: [
+        {
+          kind: 'method',
+          syntax: [
+            'hello(): void',
+          ],
+          name: 'hello',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          params: [],
+          returns: {
+            type: 'void',
+            description: undefined,
+          },
+        },
+      ],
+    },
+  });
+
+  ComponentTestCase({
+    name: 'mixins defined on an external SFC file which containing errors',
+    options: {
+      resolver: {
+        basedir: join(__dirname, '../fixtures'),
+      },
+      filecontent: `
+        <script>
+          import Vue from 'vue'
+          import componentName, { myMixin } from './myMixinComponentError.vue';       
+          
+          // define a component that uses this mixin
+          export default Vue.extend({
+            name: componentName,
+            mixins: [myMixin],
+            props: {
+              somePropCall: MethodThanReturnAString(),
+            },
+          })
+        </script>
+      `,
+    },
+    expected: {
+      name: '',
+      warnings: [],
+      errors: [
+        "Mal-formatted tag at end of template: \"\n  export const myMixin = {};\n  export default 'MyComponentName';\n\n\n<template>\n  <p>Hello {{name}}!</p>\n</template>\n\"",
+      ],
+      props: [
+        {
+          kind: 'prop',
+          name: 'some-prop-call',
+          type: 'unknown',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          default: undefined,
+          required: false,
+          describeModel: false,
+        },
+      ],
+      methods: [],
     },
   });
 
@@ -867,6 +1269,7 @@ describe('ScriptParser', () => {
 
   ComponentTestCase({
     name: '@mixin: Mixin exported as factory arrow function with arguments and referenced Vue.extend',
+    // only: true,
     options: {
       filecontent: `
         <script>

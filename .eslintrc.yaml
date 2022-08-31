@@ -5,6 +5,7 @@ env:
 parser: '@typescript-eslint/parser'
 plugins:
   - import
+  - unused-imports
   - '@typescript-eslint'
 extends:
   - eslint:recommended
@@ -155,11 +156,22 @@ rules:
     - anonymous: never
       named: never
       asyncArrow: always
+  unused-imports/no-unused-imports: 'error'
+  unused-imports/no-unused-vars:
+    - warn
+    - vars: all
+      varsIgnorePattern: '^_'
+      args: after-used
+      argsIgnorePattern: '^_'
 overrides:
   - files:
+      - '**/*.d.ts'
+    rules:
+      import/extensions: 'off'
+      max-len: 'off'
+      unused-imports/no-unused-vars: 'off'
+  - files:
       - '**/test/**'
-    env:
-      jest: true
     rules:
       max-len: 'off'
       indent: 'off'

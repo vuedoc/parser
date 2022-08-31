@@ -1,5 +1,5 @@
 import { describe } from 'vitest';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { PugLoader } from '../../src/loaders/pug.ts';
 import { Loader } from '../../src/lib/Loader.ts';
 
@@ -136,6 +136,7 @@ describe('MarkupTemplateParser', () => {
 
   ComponentTestCase({
     name: '#89 - dynamic slot names aren\'t supported',
+    // only: true,
     options: {
       filecontent: `
         <template>

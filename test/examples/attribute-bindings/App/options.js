@@ -1,3 +1,7 @@
+/**
+ * Here we are reactively binding element attributes / properties to the state.
+ * The :title syntax is short for v-bind:title.
+ */
 export default {
   data() {
     return {

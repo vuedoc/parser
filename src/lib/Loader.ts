@@ -1,37 +1,49 @@
-import { Vuedoc } from '../../types/index.js';
+import { Parser } from '../../types/Parser.js';
+import { Loader as LoaderNS } from '../../types/Loader.js';
 
-export type Options = Pick<Vuedoc.Parser.ResolvedOptions, 'source'> & {
-  definitions: Vuedoc.Loader.Definition[];
+export type LoaderOptions = {
+  source: {
+    template?: Parser.Source;
+    script?: Omit<Parser.Script, 'ast'>;
+    errors: string[];
+  };
+  definitions: LoaderNS.Definition[];
 };
 
-export abstract class Loader implements Vuedoc.Loader.Interface {
-  options: Options;
+export class MissingLoaderError extends Error {}
+
+export abstract class Loader implements LoaderNS.Interface {
+  options: LoaderOptions;
 
   static extend(name: string, loader: any) {
     return { name, loader };
   }
 
-  static get(name: string, options: Options) {
-    const item = options.definitions.find((loader) => name === loader.name);
+  static get(name: string, options: LoaderOptions) {
+    const item = options.definitions.find((loader) => loader.name === name);
 
     if (!item) {
-      throw new Error(`Missing loader for ${name}`);
+      throw new MissingLoaderError(`Missing loader for ${name}`);
     }
 
     return item.loader;
   }
 
-  constructor(options: Options) {
+  constructor(options: LoaderOptions) {
     this.options = options;
   }
 
-  abstract load(data: Vuedoc.Loader.TemplateData | Vuedoc.Loader.ScriptData): Promise<void>;
+  get source() {
+    return this.options.source;
+  }
 
-  emitTemplate(data: Vuedoc.Loader.TemplateData) {
+  abstract load(data: LoaderNS.TemplateData | LoaderNS.ScriptData): void;
+
+  emitTemplate(data: LoaderNS.TemplateData) {
     this.options.source.template = data;
   }
 
-  emitScript(data: Vuedoc.Loader.ScriptData) {
+  emitScript(data: LoaderNS.ScriptData) {
     this.options.source.script = data;
   }
 
@@ -39,7 +51,7 @@ export abstract class Loader implements Vuedoc.Loader.Interface {
     this.options.source.errors.push(...errors);
   }
 
-  async pipe(name: string, data: Vuedoc.Loader.TemplateData | Vuedoc.Loader.ScriptData) {
+  pipe(name: string, data: LoaderNS.TemplateData | LoaderNS.ScriptData) {
     const LoaderClass: any = Loader.get(name, this.options);
 
     return new LoaderClass(this.options).load(data);

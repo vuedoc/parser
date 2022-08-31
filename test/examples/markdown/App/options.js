@@ -11,8 +11,8 @@ export default {
     },
   },
   methods: {
-    update: debounce(function(e) {
+    update: function(e) {
       this.input = e.target.value;
-    }, 100),
+    },
   },
 };

@@ -1,12 +1,12 @@
 import { parseComponent } from 'vue-template-compiler';
 import { Loader } from '../lib/Loader.js';
-import { Vuedoc } from '../../types/index.js';
+import { Loader as LoaderNS } from '../../types/Loader.js';
 
 const DEFAULT_TEMPLATE_LANG = 'html';
 const DEFAULT_SCRIPT_LANG = 'js';
 
 export class VueLoader extends Loader {
-  async load(data: Vuedoc.Loader.TemplateData) {
+  load(data: LoaderNS.TemplateData) {
     const result: any = parseComponent(data.content);
 
     const template = result.template || {
@@ -33,9 +33,7 @@ export class VueLoader extends Loader {
       this.emitErrors(result.errors);
     }
 
-    await Promise.all([
-      this.pipe(script.attrs.lang, script),
-      this.pipe(template.attrs.lang, template),
-    ]);
+    this.pipe(script.attrs.lang, script);
+    this.pipe(template.attrs.lang, template);
   }
 }
