@@ -1,6 +1,6 @@
 {
   "name": "@vuedoc/parser",
-  "version": "4.0.0-beta10",
+  "version": "4.0.0-beta11",
   "description": "Generate a JSON documentation for a Vue file",
   "type": "module",
   "exports": {
