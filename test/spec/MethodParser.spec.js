@@ -1,4 +1,4 @@
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { describe } from 'vitest';
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
@@ -349,7 +349,7 @@ describe('MethodParser', () => {
         {
           kind: 'method',
           syntax: [
-            'async nameOnly(): Promise',
+            'async nameOnly(): Promise<void>',
           ],
           visibility: 'public',
           category: undefined,
@@ -358,7 +358,7 @@ describe('MethodParser', () => {
           name: 'nameOnly',
           params: [],
           returns: {
-            type: 'Promise',
+            type: 'Promise<void>',
             description: undefined,
           },
         },

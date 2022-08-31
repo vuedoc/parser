@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CommentParser } from '../../src/lib/parser/CommentParser.ts';
+import { CommentParser } from '../../src/parsers/CommentParser.ts';
 
 const comment = `
   /**

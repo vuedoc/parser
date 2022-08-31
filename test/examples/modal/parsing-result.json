@@ -3,6 +3,29 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
+  "props": [
+    {
+      "kind": "prop",
+      "keywords": [],
+      "visibility": "public",
+      "name": "show",
+      "type": "boolean",
+      "required": false,
+      "describeModel": false
+    }
+  ],
+  "data": [],
+  "computed": [],
+  "methods": [],
+  "events": [
+    {
+      "kind": "event",
+      "keywords": [],
+      "visibility": "public",
+      "name": "close",
+      "arguments": []
+    }
+  ],
   "slots": [
     {
       "kind": "slot",
@@ -25,28 +48,5 @@
       "name": "footer",
       "props": []
     }
-  ],
-  "props": [
-    {
-      "kind": "prop",
-      "keywords": [],
-      "visibility": "public",
-      "type": "boolean",
-      "name": "show",
-      "required": false,
-      "describeModel": false
-    }
-  ],
-  "data": [],
-  "computed": [],
-  "events": [
-    {
-      "kind": "event",
-      "keywords": [],
-      "visibility": "public",
-      "name": "close",
-      "arguments": []
-    }
-  ],
-  "methods": []
+  ]
 }

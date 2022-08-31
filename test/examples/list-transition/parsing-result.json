@@ -3,20 +3,18 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "items",
+      "type": "unknown",
       "initialValue": "getInitialItems()"
     }
   ],
   "computed": [],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -76,5 +74,7 @@
         "type": "void"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

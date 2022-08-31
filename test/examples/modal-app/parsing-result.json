@@ -3,19 +3,19 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "boolean",
       "name": "showModal",
+      "type": "boolean",
       "initialValue": "false"
     }
   ],
   "computed": [],
+  "methods": [],
   "events": [],
-  "methods": []
+  "slots": []
 }

@@ -1,41 +1,36 @@
 {
   "inheritAttrs": true,
-  "errors": [
-    "tag <input> has no matching end tag.",
-    "tag <br> has no matching end tag."
-  ],
+  "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
       "name": "branches",
+      "type": "array",
       "initialValue": "[\"main\",\"v2-compat\"]"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
       "name": "currentBranch",
+      "type": "string",
       "initialValue": "\"main\""
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "commits",
+      "type": "unknown",
       "initialValue": "null"
     }
   ],
   "computed": [],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -75,5 +70,7 @@
         "type": "unknown"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

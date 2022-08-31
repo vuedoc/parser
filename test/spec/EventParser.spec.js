@@ -1,5 +1,5 @@
 import { describe } from 'vitest';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 
 describe('EventParser', () => {
   ComponentTestCase({
@@ -532,7 +532,7 @@ describe('EventParser', () => {
           arguments: [
             {
               name: 'newVal',
-              type: 'Boolean',
+              type: 'boolean',
               description: 'The new value',
               rest: false,
             },
@@ -549,7 +549,7 @@ describe('EventParser', () => {
           arguments: [
             {
               name: 'newVal',
-              type: 'Boolean',
+              type: 'boolean',
               description: 'The new value',
               rest: false,
             },
@@ -566,7 +566,7 @@ describe('EventParser', () => {
           arguments: [
             {
               name: 'newVal',
-              type: 'Boolean',
+              type: 'boolean',
               description: 'The new value',
               rest: false,
             },
@@ -583,7 +583,7 @@ describe('EventParser', () => {
           arguments: [
             {
               name: 'newVal',
-              type: 'Boolean',
+              type: 'boolean',
               description: 'The new value',
               rest: false,
             },
@@ -600,7 +600,7 @@ describe('EventParser', () => {
           arguments: [
             {
               name: 'newVal',
-              type: 'Boolean',
+              type: 'boolean',
               description: 'The new value',
               rest: false,
             },

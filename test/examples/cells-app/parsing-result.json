@@ -1,29 +1,31 @@
 {
   "inheritAttrs": true,
-  "errors": [],
+  "errors": [
+    "Cannot find module './store.js'. Make sure to define options.resolver"
+  ],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "cols",
+      "type": "unknown",
       "initialValue": "cells.map((_, i) => String.fromCharCode(65 + i))"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "cells",
-      "initialValue": "cells"
+      "type": "unknown",
+      "initialValue": "\"cells\""
     }
   ],
   "computed": [],
+  "methods": [],
   "events": [],
-  "methods": []
+  "slots": []
 }

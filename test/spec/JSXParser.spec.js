@@ -1,4 +1,4 @@
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { describe } from 'vitest';
 
 describe('JSXParser', () => {

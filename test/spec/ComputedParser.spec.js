@@ -1,9 +1,10 @@
 import { describe } from 'vitest';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 
 describe('ComputedParser', () => {
   ComponentTestCase({
     name: 'property function',
+    // only: true,
     options: {
       filecontent: `
         <script>
@@ -39,6 +40,7 @@ describe('ComputedParser', () => {
 
   ComponentTestCase({
     name: 'getter, setter and event (property function)',
+    // only: true,
     options: {
       filecontent: `
         <script>
@@ -99,6 +101,7 @@ describe('ComputedParser', () => {
 
   ComponentTestCase({
     name: 'getter, setter and event (object method)',
+    // only: true,
     options: {
       filecontent: `
         <script>

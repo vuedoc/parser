@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseComponent, Parser } from '../../src/index.ts';
+import { parseComponent, VuedocParser } from '../../src/index.ts';
 
 /**
  * Code samples from lukehoban/es6features
@@ -435,11 +435,11 @@ function testPropertyFunction(property) {
             }
           }
         `;
-        const source = { script };
-        const options = { source };
-        const parser = new Parser(options);
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
 
-        parser.on('end', done);
+        parser.addEventListener('end', done);
         parser.walk();
       })));
     });
@@ -455,11 +455,11 @@ function testPropertyFunction(property) {
             }
           }
         `;
-        const source = { script };
-        const options = { source };
-        const parser = new Parser(options);
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
 
-        parser.on('end', done);
+        parser.addEventListener('end', done);
         parser.walk();
       })));
     });
@@ -475,11 +475,11 @@ function testPropertyFunction(property) {
             }
           }
         `;
-        const source = { script };
-        const options = { source };
-        const parser = new Parser(options);
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
 
-        parser.on('end', done);
+        parser.addEventListener('end', done);
         parser.walk();
       })));
     });
@@ -501,11 +501,11 @@ function testPropertyObject(property) {
             }
           }
         `;
-        const source = { script };
-        const options = { source };
-        const parser = new Parser(options);
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
 
-        parser.on('end', done);
+        parser.addEventListener('end', done);
         parser.walk();
       })));
     });
@@ -523,11 +523,11 @@ function testPropertyObject(property) {
             }
           }
         `;
-        const source = { script };
-        const options = { source };
-        const parser = new Parser(options);
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
 
-        parser.on('end', done);
+        parser.addEventListener('end', done);
         parser.walk();
       })));
     });
@@ -545,11 +545,11 @@ function testPropertyObject(property) {
             }
           }
         `;
-        const source = { script };
-        const options = { source };
-        const parser = new Parser(options);
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
 
-        parser.on('end', done);
+        parser.addEventListener('end', done);
         parser.walk();
       })));
     });
@@ -560,11 +560,11 @@ describe('ECMAScript Feature Parsing', () => {
   describe('should parse without errors', () => {
     Object.keys(Feature).forEach((feature) => it(feature, () => new Promise((done) => {
       const script = Feature[feature];
-      const source = { script };
-      const options = { source };
-      const parser = new Parser(options);
+      const parser = new VuedocParser({
+        filecontent: `<script>${script}</script>`,
+      });
 
-      parser.on('end', done);
+      parser.addEventListener('end', done);
       parser.walk();
     })));
   });
@@ -631,7 +631,7 @@ describe('ECMAScript Feature Parsing', () => {
           category: undefined,
           description: undefined,
           type: 'unknown',
-          initialValue: 'undefined',
+          initialValue: '',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
@@ -671,7 +671,7 @@ describe('ECMAScript Feature Parsing', () => {
           category: undefined,
           description: undefined,
           type: 'unknown',
-          initialValue: 'undefined',
+          initialValue: '',
           keywords: [] },
         { kind: 'data',
           visibility: 'public',
@@ -679,7 +679,7 @@ describe('ECMAScript Feature Parsing', () => {
           category: undefined,
           description: undefined,
           type: 'unknown',
-          initialValue: 'undefined',
+          initialValue: '',
           keywords: [] },
       ];
 

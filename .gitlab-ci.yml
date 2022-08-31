@@ -1,8 +1,5 @@
 image: node:lts-alpine
 
-include:
-  - template: SAST.gitlab-ci.yml
-
 stages:
   - tests
   - security
@@ -33,20 +30,16 @@ tests & coverage:
 
 security audit:
   stage: security
-  needs: &tests-jobs
+  needs:
     - code quality
     - dependencies outdated
     - tests & coverage
   script:
     - yarn audit --level high --groups dependencies
 
-sast:
-  stage: security
-  needs: *tests-jobs
-
 pages:
   stage: publish
-  needs: &security-jobs
+  needs:
     - tests & coverage
     - security audit
   dependencies:
@@ -63,24 +56,29 @@ pages:
     name: coverage report
     url: https://vuedoc.gitlab.io/parser
 
-build:
-  stage: tests
+package:
+  stage: publish
+  needs:
+    - security audit
   script:
     - yarn install
     - yarn build
+    - yarn pack
   artifacts:
     paths:
       - ./*.tgz
 
 publish:
   stage: publish
-  needs: *security-jobs
+  needs:
+    - security audit
   only:
     - tags
     - triggers
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
     - yarn install
+    - yarn build
     - yarn publish
   environment:
     name: npm

@@ -1,4 +1,5 @@
-import { Vuedoc } from '../../types/index.js';
+import { Entry } from '../../types/Entry.js';
+import { Parser } from '../../types/Parser.js';
 
 export const ScalarType = {
   string: 'string',
@@ -24,10 +25,9 @@ export const Type = {
   symbol: 'symbol',
 } as const;
 
-export const ScalarTypeList = Object.freeze(Object.values(ScalarType));
 export const TypeList = Object.freeze(Object.values(Type));
 
-export const Visibility: Record<Vuedoc.Parser.Visibility, Vuedoc.Parser.Visibility> = {
+export const Visibility: Record<Entry.Visibility, Entry.Visibility> = {
   public: 'public',
   protected: 'protected',
   private: 'private',
@@ -126,7 +126,7 @@ export const DEFAULT_IGNORED_VISIBILITIES = [
 
 export const DEFAULT_ENCODING = 'utf8';
 
-export const Feature: Record<Vuedoc.Parser.Feature, Vuedoc.Parser.Feature> = Object.freeze({
+export const Feature: Record<Parser.Feature, Parser.Feature> = Object.freeze({
   name: 'name',
   description: 'description',
   keywords: 'keywords',
@@ -138,7 +138,15 @@ export const Feature: Record<Vuedoc.Parser.Feature, Vuedoc.Parser.Feature> = Obj
   methods: 'methods',
 });
 
-export const FeatureEvent: Record<Vuedoc.Parser.Feature, Vuedoc.Entry.Kind> = Object.freeze({
+export const CompositionFeature: Record<Parser.CompositionFeature, Parser.CompositionFeature> = Object.freeze({
+  props: 'props',
+  data: 'data',
+  computed: 'computed',
+  events: 'events',
+  methods: 'methods',
+});
+
+export const FeatureEvent: Record<Parser.Feature, Entry.Kind> = Object.freeze({
   name: 'name',
   description: 'description',
   keywords: 'keyword',
@@ -153,6 +161,7 @@ export const FeatureEvent: Record<Vuedoc.Parser.Feature, Vuedoc.Entry.Kind> = Ob
 export const Features = Object.values(Feature);
 
 export const CompositionProperties = {
+  mixins: 'mixins',
   setup: 'setup',
   extends: 'extends',
   expose: 'expose',
@@ -182,25 +191,6 @@ export const Properties = {
   render: 'render',
   methods: 'methods',
   watch: 'watch',
-} as const;
-
-export const CompositionAPI = {
-  ref: 'ref',
-  $ref: '$ref',
-  unref: 'unref',
-  reactive: 'reactive',
-  computed: 'computed',
-  $computed: '$computed',
-  readonly: 'readonly',
-  shallowRef: 'shallowRef',
-  $shallowRef: '$shallowRef',
-  shallowReactive: 'shallowReactive',
-  shallowReadonly: 'shallowReadonly',
-  triggerRef: 'triggerRef',
-  toRaw: 'toRaw',
-  markRaw: 'markRaw',
-  toRef: 'toRef',
-  $toRef: '$toRef',
 } as const;
 
 export const RouterKeys = {
@@ -243,11 +233,17 @@ export const CompositionHooks = [
   'onBeforeRouteUpdate',
 ];
 
-export const CompositionAPIValues = Object.freeze(Object.values(CompositionAPI));
-export const CompositionAPIComputedValues = Object.freeze([
-  CompositionAPI.computed,
-  CompositionAPI.$computed,
-]);
+export const CompositionComputedTypes = [
+  'ComputedRef',
+];
+
+export const CompositionTypes = [
+  ...CompositionComputedTypes,
+  'Ref',
+  'ShallowRef',
+  'ShallowReactive',
+  'ToRef',
+];
 
 export const Syntax = Object.freeze({
   BinaryExpression: 'BinaryExpression',
@@ -259,6 +255,7 @@ export const Syntax = Object.freeze({
   ClassPrivateProperty: 'ClassPrivateProperty',
   FunctionExpression: 'FunctionExpression',
   FunctionDeclaration: 'FunctionDeclaration',
+  FunctionTypeParam: 'FunctionTypeParam',
   ImportDeclaration: 'ImportDeclaration',
   Super: 'Super',
   StringLiteral: 'StringLiteral',
@@ -281,6 +278,7 @@ export const Syntax = Object.freeze({
   UpdateExpression: 'UpdateExpression',
   ReturnStatement: 'ReturnStatement',
   CallExpression: 'CallExpression',
+  ConditionalExpression: 'ConditionalExpression',
   MemberExpression: 'MemberExpression',
   NewExpression: 'NewExpression',
   VariableDeclaration: 'VariableDeclaration',
@@ -288,6 +286,8 @@ export const Syntax = Object.freeze({
   ExportAllDeclaration: 'ExportAllDeclaration',
   ExportNamedDeclaration: 'ExportNamedDeclaration',
   ExportDefaultDeclaration: 'ExportDefaultDeclaration',
+  ImportDefaultSpecifier: 'ImportDefaultSpecifier',
+  ImportNamespaceSpecifier: 'ImportNamespaceSpecifier',
   ObjectProperty: 'ObjectProperty',
   BlockStatement: 'BlockStatement',
   TemplateLiteral: 'TemplateLiteral',
@@ -314,6 +314,7 @@ export const Syntax = Object.freeze({
   ForOfStatement: 'ForOfStatement',
   SpreadElement: 'SpreadElement',
   TSFunctionType: 'TSFunctionType',
+  TSUnionType: 'TSUnionType',
   TSAsExpression: 'TSAsExpression',
   TSTypeReference: 'TSTypeReference',
   TSTypeAnnotation: 'TSTypeAnnotation',
@@ -323,6 +324,8 @@ export const Syntax = Object.freeze({
   TSInterfaceDeclaration: 'TSInterfaceDeclaration',
   TSEnumDeclaration: 'TSEnumDeclaration',
   TSInterfaceBody: 'TSInterfaceBody',
+  TSPropertySignature: 'TSPropertySignature',
   TSTypeLiteral: 'TSTypeLiteral',
+  TSDeclareFunction: 'TSDeclareFunction',
   JSXElement: 'JSXElement',
 });

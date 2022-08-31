@@ -3,20 +3,18 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
       "name": "message",
+      "type": "string",
       "initialValue": "\"Hello World!\""
     }
   ],
   "computed": [],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -44,5 +42,7 @@
         "type": "void"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

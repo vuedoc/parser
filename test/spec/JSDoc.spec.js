@@ -1,5 +1,5 @@
 import { JSDoc } from '../../src/lib/JSDoc.ts';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 import { describe, expect, it } from 'vitest';
 
@@ -620,7 +620,7 @@ describe('JSDoc', () => {
           name: 'withParameterProperties',
           params: [
             {
-              type: 'Object',
+              type: 'object',
               name: 'employee',
               description: 'The employee who is responsible for the project.',
               defaultValue: undefined,
@@ -687,7 +687,7 @@ describe('JSDoc', () => {
           name: 'withDestructuringParameter',
           params: [
             {
-              type: 'Object',
+              type: 'object',
               name: 'employee',
               description: 'The employee who is responsible for the project.',
               defaultValue: undefined,
@@ -754,7 +754,7 @@ describe('JSDoc', () => {
           name: 'withPropertiesOfValuesInAnArray',
           params: [
             {
-              type: 'Object[]',
+              type: 'object[]',
               name: 'employees',
               description: 'The employees who are responsible for the project.',
               defaultValue: undefined,
@@ -1257,7 +1257,7 @@ describe('JSDoc', () => {
           returns: {
             type: [
               'number',
-              'Array',
+              'array',
             ],
             description: 'Sum of a and b or an array that contains a, b and the sum of a and b.',
           },

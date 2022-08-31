@@ -1,113 +1,55 @@
-import path from 'node:path';
-
-import { readFile } from 'node:fs/promises';
-import { Loader, Options } from './lib/Loader.js';
-import { Parser } from './lib/parser/Parser.js';
-import { VueLoader } from './loaders/vue.js';
-import { HtmlLoader } from './loaders/html.js';
-import { JavaScriptLoader } from './loaders/javascript.js';
-import { TypeScriptLoader } from './loaders/typescript.js';
+import { VuedocParser } from './parsers/VuedocParser.js';
+import { Parser } from '../types/Parser.js';
+import { Entry } from '../types/Entry.js';
 import { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING, FeatureEvent } from './lib/Enum.js';
-import { KeywordsUtils } from './lib/utils/KeywordsUtils.js';
-import { PropEntry } from './lib/entity/PropEntry.js';
-import { Vuedoc } from '../types/index.js';
+import { KeywordsUtils } from './utils/KeywordsUtils.js';
+import { PropEntry } from './entity/PropEntry.js';
+import { ParsingOptions, ParsingResult } from '../types/index.js';
 
+export * from './lib/Enum.js';
 export { Loader } from './lib/Loader.js';
-export { Parser } from './lib/parser/Parser.js';
+export { VuedocParser } from './parsers/VuedocParser.js';
 
-const DEFAULT_LOADERS: Vuedoc.Loader.Definition[] = [
-  Loader.extend('js', JavaScriptLoader),
-  Loader.extend('ts', TypeScriptLoader),
-  Loader.extend('html', HtmlLoader),
-  Loader.extend('vue', VueLoader),
-];
+type ExtendedParsingResult = ParsingResult & {
+  model?: Entry.ModelEntry[];
+};
 
-export async function parseOptions(options: Vuedoc.Index.Options) {
+export async function parseOptions(options: ParsingOptions) {
   if (!options) {
     throw new Error('Missing options argument');
   }
 
-  if (!options.encoding) {
-    options.encoding = DEFAULT_ENCODING;
+  const _options = { ...options };
+
+  if (!_options.encoding) {
+    _options.encoding = DEFAULT_ENCODING;
   }
 
-  let filecontent: string | null = null;
-
-  if ('filename' in options) {
-    if (options.filename) {
-      filecontent = await readFile(options.filename, options.encoding as 'utf8');
-    } else {
-      throw new Error('options.filename cannot be empty');
-    }
+  if ('filename' in _options && !_options.filename) {
+    throw new Error('options.filename cannot be empty');
   }
 
-  if ('filecontent' in options) {
-    filecontent = options.filecontent;
+  if (!_options.ignoredVisibilities) {
+    _options.ignoredVisibilities = DEFAULT_IGNORED_VISIBILITIES;
   }
 
-  if (filecontent === null) {
-    throw new Error('Missing options.filename of options.filecontent');
-  }
-
-  if (!options.ignoredVisibilities) {
-    options.ignoredVisibilities = DEFAULT_IGNORED_VISIBILITIES;
-  }
-
-  options.composition = {
-    data: options.composition?.data || [],
-    methods: options.composition?.methods || [],
-    computed: options.composition?.computed || [],
-    props: options.composition?.props || [],
+  _options.composition = {
+    data: _options.composition?.data || [],
+    methods: _options.composition?.methods || [],
+    computed: _options.composition?.computed || [],
+    props: _options.composition?.props || [],
   };
 
-  options.source = {
-    errors: [],
-  };
-
-  const loaderOptions: Options = {
-    source: options.source,
-    definitions: [
-      ...DEFAULT_LOADERS,
-    ],
-  };
-
-  if (options.loaders instanceof Array) {
-    loaderOptions.definitions.unshift(...options.loaders);
+  if (!_options.resolver) {
+    _options.resolver = {};
   }
 
-  if ('filename' in options) {
-    const ext = path.extname(options.filename);
-    const loaderName = ext.substring(1);
-    const LoaderClass: any = Loader.get(loaderName, loaderOptions);
-    const loader = new LoaderClass(loaderOptions);
-
-    await loader.load({
-      attrs: {
-        lang: loaderName,
-      },
-      content: filecontent,
-    });
-  } else {
-    const loader = new VueLoader(loaderOptions);
-
-    await loader.load({
-      attrs: {
-        lang: 'vue',
-      },
-      content: filecontent,
-    });
-  }
-
-  return options as Vuedoc.Parser.ResolvedOptions;
+  return _options as Parser.Options;
 }
 
-type ExtendedParsingResult = Vuedoc.Index.ParsingResult & {
-  model?: Vuedoc.Entry.ModelEntry[];
-};
-
-export function synchronizeParsingResult(options: Vuedoc.Index.Options, component: ExtendedParsingResult) {
-  const defaultModelProp = options.source.script?.attrs.setup ? 'model-value' : 'value';
-  const additionalProps: Vuedoc.Entry.PropEntry[] = [];
+export function synchronizeParsingResult(parser: VuedocParser, component: ExtendedParsingResult) {
+  const defaultModelProp = parser.file.script?.attrs.setup ? 'model-value' : 'value';
+  const additionalProps: Entry.PropEntry[] = [];
 
   if (!component.props) {
     component.props = [];
@@ -144,7 +86,7 @@ export function synchronizeParsingResult(options: Vuedoc.Index.Options, componen
 
       if (prop.describeModel) {
         prop.name = 'v-model';
-      } else if (options.source.script?.attrs.setup && Feature.events in component) {
+      } else if (parser.file.script?.attrs.setup && Feature.events in component) {
         const hasUpdateEvent = component.events?.some((event) => event.name === `update:${prop.name}`);
 
         if (hasUpdateEvent) {
@@ -156,56 +98,73 @@ export function synchronizeParsingResult(options: Vuedoc.Index.Options, componen
   }
 }
 
-export async function parseComponent(options: Vuedoc.Index.Options): Promise<Vuedoc.Index.ParsingResult> {
+export async function parseComponent(options: ParsingOptions): Promise<ParsingResult> {
   const resolvedOptions = await parseOptions(options);
 
   return new Promise((resolve) => {
     const component: ExtendedParsingResult = {
+      name: undefined,
+      description: undefined,
+      category: undefined,
+      since: undefined,
+      version: undefined,
+      see: undefined,
       inheritAttrs: true,
-      errors: [...options.source.errors],
+      errors: [],
       warnings: [],
       keywords: [],
       model: [],
+      props: undefined,
+      data: undefined,
+      computed: undefined,
+      methods: undefined,
+      events: undefined,
+      slots: undefined,
     };
 
-    const parser = new Parser(resolvedOptions);
+    const parser: Parser.Private = new VuedocParser(resolvedOptions);
 
-    parser.on('error', ({ message }) => {
-      component.errors.push(message);
+    parser.addEventListener('error', (event) => {
+      component.errors.push(event.message);
     });
 
-    parser.on('warning', (message) => {
-      component.warnings.push(message);
+    parser.addEventListener('warning', (event) => {
+      component.warnings.push(event.message);
     });
 
-    parser.on(FeatureEvent.keywords, ({ value }) => {
-      component.keywords.push(...value);
+    parser.addEventListener<Entry.KeywordsEntry>('keyword', ({ entry }) => {
+      component.keywords.push(...entry.value);
       KeywordsUtils.parseCommonEntryTags(component);
     });
 
-    parser.on('inheritAttrs', ({ value }) => {
-      component.inheritAttrs = value;
+    parser.addEventListener<Entry.InheritAttrsEntry>('inheritAttrs', ({ entry }) => {
+      component.inheritAttrs = entry.value;
     });
 
-    parser.on('model', handleEventEntry(component.model));
+    parser.addEventListener<Entry.ModelEntry>('model', handleEventEntry(component.model));
 
-    parser.on('end', () => {
-      synchronizeParsingResult(options, component);
+    parser.addEventListener('end', () => {
+      if ('file' in parser) {
+        synchronizeParsingResult(parser as any, component);
+      }
 
-      // FIXME Handle options.hooks
-      // if (options.hooks?.handleParsingResult) {
-      //   options.hooks.handleParsingResult(component);
-      // }
+      for (const plugin of (parser as VuedocParser).plugins) {
+        if ('handleParsingResult' in plugin) {
+          plugin.handleParsingResult(component);
+        }
+      }
 
       resolve(component);
     });
 
     for (const feature of parser.features) {
+      const eventName: any = FeatureEvent[feature];
+
       switch (feature) {
         case Feature.name:
         case Feature.description:
-          parser.on(feature, ({ value }) => {
-            component[feature] = value;
+          parser.addEventListener<Entry.NameEntry | Entry.DescriptionEntry>(eventName, ({ entry }) => {
+            component[feature as any] = entry.value;
           });
           break;
 
@@ -214,12 +173,11 @@ export async function parseComponent(options: Vuedoc.Index.Options): Promise<Vue
           break;
 
         default: {
-          const eventName = FeatureEvent[feature];
-          const items: Vuedoc.Entry.TypeKeywords[] = [];
+          const items: Entry.TypeKeywords[] = [];
 
           component[feature as string] = items;
 
-          parser.on(eventName, handleEventEntry(items));
+          parser.addEventListener<Entry.TypeKeywords>(eventName, handleEventEntry(items));
           break;
         }
       }
@@ -229,8 +187,8 @@ export async function parseComponent(options: Vuedoc.Index.Options): Promise<Vue
   });
 }
 
-function handleEventEntry(items: Vuedoc.Entry.TypeKeywords[]) {
-  return (entry: Vuedoc.Entry.TypeKeywords) => {
+function handleEventEntry(items: Entry.TypeKeywords[]) {
+  return ({ entry }: Parser.EntryEvent<Entry.TypeKeywords>) => {
     const index = items.findIndex((item) => item.name === entry.name);
 
     if (index > -1) {

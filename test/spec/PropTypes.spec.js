@@ -1,5 +1,5 @@
 import { describe } from 'vitest';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 
 describe('@znck/prop-types', () => {
   ComponentTestCase({

@@ -1,7 +1,8 @@
-import { Vuedoc } from '../../types/index.js';
+import { Entry } from '../../types/Entry.js';
+import { Parser } from '../../types/Parser.js';
 import { Type, TagAlias } from './Enum.js';
-import type { AbstractParser } from './parser/AbstractParser.js';
-import { KeywordsUtils } from './utils/KeywordsUtils.js';
+import { AbstractParser } from '../parsers/AbstractParser.js';
+import { KeywordsUtils } from '../utils/KeywordsUtils.js';
 
 const PARAM_NAME = '[a-zA-Z0-9$&\\.\\[\\]_\'"]+';
 
@@ -20,7 +21,7 @@ function parseDescriptionText(text) {
     : '';
 }
 
-function* paramGenerator(): Generator<Vuedoc.Entry.Param> {
+function* paramGenerator(): Generator<Entry.Param> {
   while (true) {
     yield { name: '', type: Type.unknown };
   }
@@ -29,7 +30,7 @@ function* paramGenerator(): Generator<Vuedoc.Entry.Param> {
 const paramGeneratorInstance = paramGenerator();
 
 export const JSDoc = {
-  parseTypeParam(type: Vuedoc.Parser.Type, param: Pick<Vuedoc.Entry.Param, 'type' | 'rest'>) {
+  parseTypeParam(type: Parser.Type, param: Pick<Entry.Param, 'type' | 'rest'>) {
     if (type.indexOf('|') > -1) {
       param.type = type.split('|').map((item) => item.trim());
     } else if (type === '*') {
@@ -41,7 +42,7 @@ export const JSDoc = {
       param.type = type;
     }
   },
-  parseParams(parser: AbstractParser<any, any>, keywords: Vuedoc.Entry.Keyword[], params: Vuedoc.Entry.Param[], generator) {
+  parseParams(parser: AbstractParser<any, any>, keywords: Entry.Keyword[], params: Entry.Param[], generator) {
     let initialParamsAltered = false;
 
     KeywordsUtils.extract(keywords, TagAlias.param, true).forEach(({ description }) => {
@@ -91,13 +92,13 @@ export const JSDoc = {
       indexToRemove.reverse().forEach((index) => params.splice(index, 1));
     }
   },
-  parseReturns(keywords: Vuedoc.Entry.Keyword[], returns: Vuedoc.Entry.MethodReturns) {
+  parseReturns(keywords: Entry.Keyword[], returns: Entry.MethodReturns) {
     KeywordsUtils.extract(keywords, TagAlias.returns, true).forEach(({ description }) => {
       Object.assign(returns, JSDoc.parseReturnsKeyword(description || '', returns.type));
     });
   },
   parseType(description: string) {
-    let type: Vuedoc.Parser.Type | Vuedoc.Parser.Type[] = `${description}`.trim();
+    let type: Parser.Type | Parser.Type[] = `${description}`.trim();
     const matches = TYPE_RE.exec(type);
 
     if (matches) {
@@ -168,8 +169,8 @@ export const JSDoc = {
 
     return param;
   },
-  parseReturnsKeyword(text: string, type: Vuedoc.Parser.Type | Vuedoc.Parser.Type[] = Type.unknown) {
-    const output: Vuedoc.Entry.MethodReturns = { type, description: text };
+  parseReturnsKeyword(text: string, type: Parser.Type | Parser.Type[] = Type.unknown) {
+    const output: Entry.MethodReturns = { type, description: text };
     const matches = RETURNS_RE.exec(`${text}\n`);
 
     if (matches) {

@@ -1,8 +1,8 @@
 import { Loader } from '../lib/Loader.js';
-import { Vuedoc } from '../../types/index.js';
+import { Loader as LoaderNS } from '../../types/Loader.js';
 
 export class HtmlLoader extends Loader {
-  async load(data: Vuedoc.Loader.TemplateData) {
+  load(data: LoaderNS.TemplateData) {
     this.emitTemplate(data);
   }
 }

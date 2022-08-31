@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "fabiospampinato.vscode-todo-plus",
+    "wayou.vscode-todo-highlight",
+    "ZixuanChen.vitest-explorer"
+  ]
+}

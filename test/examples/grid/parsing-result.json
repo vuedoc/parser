@@ -3,23 +3,13 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [
     {
       "kind": "prop",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
       "name": "data",
-      "required": false,
-      "describeModel": false
-    },
-    {
-      "kind": "prop",
-      "keywords": [],
-      "visibility": "public",
       "type": "array",
-      "name": "columns",
       "required": false,
       "describeModel": false
     },
@@ -27,8 +17,17 @@
       "kind": "prop",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
+      "name": "columns",
+      "type": "array",
+      "required": false,
+      "describeModel": false
+    },
+    {
+      "kind": "prop",
+      "keywords": [],
+      "visibility": "public",
       "name": "filter-key",
+      "type": "string",
       "required": false,
       "describeModel": false
     }
@@ -38,16 +37,16 @@
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
       "name": "sortKey",
+      "type": "string",
       "initialValue": "\"\""
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "sortOrders",
+      "type": "unknown",
       "initialValue": "props.columns.reduce((o, key) => ((o[key] = 1), o), {})"
     }
   ],
@@ -56,12 +55,11 @@
       "kind": "computed",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
       "name": "filteredData",
+      "type": "array",
       "dependencies": []
     }
   ],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -101,5 +99,7 @@
         "type": "unknown"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

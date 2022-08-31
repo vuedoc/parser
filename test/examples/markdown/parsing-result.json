@@ -3,15 +3,14 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
       "name": "input",
+      "type": "string",
       "initialValue": "\"# hello\""
     }
   ],
@@ -20,25 +19,32 @@
       "kind": "computed",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "output",
+      "type": "unknown",
       "dependencies": []
     }
   ],
-  "events": [],
   "methods": [
     {
       "kind": "method",
       "keywords": [],
       "visibility": "public",
       "name": "update",
-      "params": [],
+      "params": [
+        {
+          "name": "e",
+          "type": "unknown",
+          "rest": false
+        }
+      ],
       "syntax": [
-        "update(): unknown"
+        "update(e: unknown): void"
       ],
       "returns": {
-        "type": "unknown"
+        "type": "void"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }
