@@ -82,18 +82,18 @@ npm install --save @vuedoc/parser
 
 ## Options
 
-| Name                  | Description                                                                                                                                                               |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                                                                          |
-| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                                                                                         |
-| `encoding`            | The file encoding. Default is `'utf8'`                                                                                                                                    |
-| `features`            | The component features to parse and extract.<br/>Default features: `['name', 'description', 'slots', 'props', 'data', 'computed', 'events', 'methods']`                   |
-| `loaders`             | Use this option to define [custom loaders](https://gitlab.com/vuedoc/parser/blob/main/README.md#language-processing) for specific languages                               |
-| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                                                                                         |
-| `composition`         | Additional composition tokens for advanced components.<br/>Default value: `{ data: [], methods: [], computed: [], props: [] }`                                            |
-| `jsx`                 | Set to `true` to enable JSX parsing. Default `false`                                                                                                                      |
-| `resolvers`           | Array of entries to use to resolve imports sources. See definition file [types/ImportResolver.d.ts](https://gitlab.com/vuedoc/parser/blob/main/types/ImportResolver.d.ts) |
-| `plugins`             | An array of plugins to activate. See [Using Plugins](#using-plugins) section                                                                                              |
+| Name                  | Description                                                                                                                                                                 |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `filename`            | The filename to parse. *Required* unless `filecontent` is passed                                                                                                            |
+| `filecontent`         | The file content to parse. *Required* unless `filename` is passed                                                                                                           |
+| `encoding`            | The file encoding. Default is `'utf8'`                                                                                                                                      |
+| `features`            | The component features to parse and extract.<br/>Default features: `['name', 'description', 'slots', 'props', 'data', 'computed', 'events', 'methods']`                     |
+| `loaders`             | Use this option to define [custom loaders](https://gitlab.com/vuedoc/parser/blob/main/README.md#language-processing) for specific languages                                 |
+| `ignoredVisibilities` | List of ignored visibilities. Default: `['protected', 'private']`                                                                                                           |
+| `composition`         | Additional composition tokens for advanced components.<br/>Default value: `{ data: [], methods: [], computed: [], props: [] }`                                              |
+| `resolver`            | A resolver object used to resolve imports statements. See definition file [types/ImportResolver.d.ts](https://gitlab.com/vuedoc/parser/blob/main/types/ImportResolver.d.ts) |
+| `plugins`             | An array of plugins to activate. See [Using Plugins](#using-plugins) section                                                                                                |
+| `jsx`                 | Set to `true` to enable JSX parsing. Default `false`                                                                                                                        |
 
 Found [TypeScript definition here](https://gitlab.com/vuedoc/parser/blob/main/types/index.d.ts).
 

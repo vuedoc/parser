@@ -1,3 +1,29 @@
+## Vuedoc Parser 4.0.0-beta10
+
+This release introduces Vuedoc Plugins and many other new features and
+improvements:
+
+**New features**
+
+- Introduce Vuedoc Plugins
+- Add support of Vue Mixins
+- Load imports automatically when needed
+- Add `options.resolver` used to resolve imports
+- Extensible Parsing with `options.composition`
+- Add `@vuedoc/parser/test-utils` for testing
+
+**Improvements**
+
+- Use `EventTarget` as base class for the main parser class. This help for a
+  better events handling and useful for preventing event propagation.
+- Improve parsing of variable declarations
+- Improve parsing performance by reducing internal instances
+- Improve documentation by adding more examples
+
+**Dependencies Changes***
+
+- Upgrade to `@babel/parser@7.18.13`
+
 ## Vuedoc Parser 4.0.0-beta9
 
 This release fixes an ESM import bug and upgrades to @babel/parser@7.18.9.
