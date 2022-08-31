@@ -1,5 +1,5 @@
-import { parseComponent } from '../../index.js';
-import { describe, expect, it } from '@jest/globals';
+import { parseComponent } from '../../src/index.ts';
+import { describe, expect, it } from 'vitest';
 
 const filecontent = `
   <script>

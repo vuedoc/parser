@@ -3,19 +3,19 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
       "name": "groceryList",
-      "initialValue": "[{ id: 0, text: 'Vegetables' },{ id: 1, text: 'Cheese' },{ id: 2, text: 'Whatever else humans are supposed to eat' }]"
+      "type": "array",
+      "initialValue": "[{\"id\":0,\"text\":\"Vegetables\"},{\"id\":1,\"text\":\"Cheese\"},{\"id\":2,\"text\":\"Whatever else humans are supposed to eat\"}]"
     }
   ],
   "computed": [],
+  "methods": [],
   "events": [],
-  "methods": []
+  "slots": []
 }

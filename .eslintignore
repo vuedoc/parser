@@ -1,6 +1,8 @@
 test/MethodParser.spec.js
 test/issues.spec.js
+test/fake_node_modules
 test/examples
+test/fixtures
 test/tutorial
-jest.config.js
 sample.js
+esm/

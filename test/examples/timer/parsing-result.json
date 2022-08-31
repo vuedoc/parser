@@ -1,31 +1,29 @@
 {
   "inheritAttrs": true,
-  "errors": [
-    "tag <input> has no matching end tag."
-  ],
+  "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "number",
       "name": "duration",
+      "type": "number",
       "initialValue": "15 * 1000"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "number",
       "name": "elapsed",
+      "type": "number",
       "initialValue": "0"
     }
   ],
   "computed": [],
+  "methods": [],
   "events": [],
-  "methods": []
+  "slots": []
 }

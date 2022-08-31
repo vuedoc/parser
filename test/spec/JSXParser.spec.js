@@ -1,5 +1,5 @@
-import { ComponentTestCase } from '../lib/TestUtils.js';
-import { describe } from '@jest/globals';
+import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe } from 'vitest';
 
 describe('JSXParser', () => {
   ComponentTestCase({

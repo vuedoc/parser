@@ -9,6 +9,7 @@ const filters = {
 export default {
   // app initial state
   data: () => ({
+    // state
     todos: JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'),
     editedTodo: null,
     visibility: 'all',
@@ -30,6 +31,7 @@ export default {
   },
 
   computed: {
+    // derived state
     filteredTodos() {
       return filters[this.visibility](this.todos);
     },

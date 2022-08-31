@@ -2,13 +2,33 @@
 root: true
 env:
   node: true
+parser: '@typescript-eslint/parser'
+plugins:
+  - import
+  - unused-imports
+  - '@typescript-eslint'
 extends:
   - eslint:recommended
   - airbnb-base
+  - plugin:import/recommended
+  - plugin:import/typescript
+  - plugin:@typescript-eslint/recommended
+  - plugin:security/recommended
 parserOptions:
-  ecmaVersion: 13
+  ecmaVersion: 2019
   sourceType: module
 rules:
+  '@typescript-eslint/ban-types': 'off'
+  '@typescript-eslint/indent': 'off'
+  '@typescript-eslint/explicit-function-return-type': 'off'
+  '@typescript-eslint/explicit-member-accessibility': 'off'
+  '@typescript-eslint/interface-name-prefix': 'off'
+  '@typescript-eslint/no-empty-function': 'off'
+  '@typescript-eslint/no-explicit-any': 'off'
+  '@typescript-eslint/no-empty-interface': 'off'
+  '@typescript-eslint/no-this-alias': 'off'
+  '@typescript-eslint/no-unused-vars': 'off'
+  '@typescript-eslint/no-var-requires': 'off'
   arrow-body-style: 'off'
   array-bracket-spacing:
     - error
@@ -24,9 +44,6 @@ rules:
       imports: never
       exports: never
       functions: never
-  complexity:
-    - error
-    - max: 40
   class-methods-use-this: 'off'
   default-case: 'off'
   global-require: 'off'
@@ -35,7 +52,7 @@ rules:
   import/extensions:
     - 'error'
     - 'always'
-    - ignorePackages: true
+    - ignorePackages: false
   import/named: 'off'
   import/no-cycle: 'off'
   import/no-dynamic-require: 'off'
@@ -43,7 +60,7 @@ rules:
   import/no-named-as-default: 'off'
   import/no-named-as-default-member: 'off'
   import/no-unresolved:
-    - 'error'
+    - 'off'
   import/order: 'off'
   import/prefer-default-export: 'off'
   jest/expect-expect: 'off'
@@ -61,12 +78,13 @@ rules:
   no-use-before-define: 'off'
   no-restricted-syntax: 'off'
   no-shadow: 'off'
+  no-trailing-spaces: 'error'
   no-useless-constructor: 'off'
   no-var: error
   max-classes-per-file: 'off'
   max-len:
     - error
-    - code: 128
+    - code: 148
       comments: 128
       tabWidth: 2
       ignoreUrls: true
@@ -126,6 +144,10 @@ rules:
     - error
     - single
     - avoidEscape: true
+  security/detect-non-literal-fs-filename: 'off'
+  security/detect-non-literal-regexp: 'off'
+  security/detect-object-injection: 'off'
+  security/detect-unsafe-regex: 'off'
   semi:
     - error
     - always
@@ -134,11 +156,22 @@ rules:
     - anonymous: never
       named: never
       asyncArrow: always
+  unused-imports/no-unused-imports: 'error'
+  unused-imports/no-unused-vars:
+    - warn
+    - vars: all
+      varsIgnorePattern: '^_'
+      args: after-used
+      argsIgnorePattern: '^_'
 overrides:
   - files:
+      - '**/*.d.ts'
+    rules:
+      import/extensions: 'off'
+      max-len: 'off'
+      unused-imports/no-unused-vars: 'off'
+  - files:
       - '**/test/**'
-    env:
-      jest: true
     rules:
       max-len: 'off'
       indent: 'off'

@@ -3,27 +3,27 @@
   "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "boolean",
       "name": "show",
+      "type": "boolean",
       "initialValue": "true"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "array",
       "name": "list",
+      "type": "array",
       "initialValue": "[1,2,3]"
     }
   ],
   "computed": [],
+  "methods": [],
   "events": [],
-  "methods": []
+  "slots": []
 }

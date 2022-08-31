@@ -2,9 +2,13 @@ test
 coverage
 .*
 sample.js
-jest.config.js
+vitest.config.ts
 result.json
+tsconfig.json
 *.tgz
 *.nix
 *.yml
 *.yaml
+*.odp
+*.pdf
+*.png

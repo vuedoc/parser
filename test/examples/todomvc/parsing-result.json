@@ -1,60 +1,55 @@
 {
   "inheritAttrs": true,
-  "errors": [
-    "tag <input> has no matching end tag.",
-    "tag <input> has no matching end tag.",
-    "tag <input> has no matching end tag.",
-    "tag <input> has no matching end tag."
-  ],
+  "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
+      "description": "state",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "todos",
+      "type": "unknown",
       "initialValue": "JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "editedTodo",
+      "type": "unknown",
       "initialValue": "null"
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
       "name": "visibility",
+      "type": "string",
       "initialValue": "\"all\""
     }
   ],
   "computed": [
     {
       "kind": "computed",
+      "description": "derived state",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "filteredTodos",
+      "type": "unknown",
       "dependencies": []
     },
     {
       "kind": "computed",
       "keywords": [],
       "visibility": "public",
-      "type": "object",
       "name": "remaining",
+      "type": "number",
       "dependencies": []
     }
   ],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -183,5 +178,7 @@
         "type": "void"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

@@ -1,5 +1,5 @@
-import { describe, expect, it } from '@jest/globals';
-import { CommentParser } from '../../lib/parser/CommentParser.js';
+import { describe, expect, it } from 'vitest';
+import { CommentParser } from '../../src/parsers/CommentParser.ts';
 
 const comment = `
   /**

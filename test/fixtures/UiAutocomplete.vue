@@ -51,7 +51,7 @@
                     @keydown.up.prevent="highlightSuggestion(highlightedIndex - 1)"
 
                     v-autofocus="autofocus"
-                >
+                />
 
                 <ul class="ui-autocomplete__suggestions" v-show="showDropdown">
                     <ui-autocomplete-suggestion

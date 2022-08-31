@@ -1,5 +1,5 @@
-import { describe } from '@jest/globals';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { describe } from 'vitest';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 
 describe('PropParser', () => {
   ComponentTestCase({
@@ -185,6 +185,7 @@ describe('PropParser', () => {
 
   ComponentTestCase({
     name: 'with multiple types',
+    // only: true,
     options: {
       filecontent: `
         <script>

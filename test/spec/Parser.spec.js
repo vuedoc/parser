@@ -1,6 +1,6 @@
 import assert from 'assert';
-import { Parser } from '../../lib/parser/Parser.js';
-import { describe, expect, it } from '@jest/globals';
+import { VuedocParser } from '../../src/parsers/VuedocParser.ts';
+import { describe, expect, it } from 'vitest';
 
 const template = `
   <div>
@@ -361,199 +361,148 @@ const events = [
   'event', 'slot',
 ];
 
-describe('Parser', () => {
+describe('VuedocParser', () => {
   describe('validateOptions(options)', () => {
-    it('should failed with missing options.source', () => {
+    it('should failed with missing options.filename or options.filecontent', () => {
       const options = {};
 
-      assert.throws(() => Parser.validateOptions(options), /options.source is required/);
+      assert.throws(() => VuedocParser.validateOptions(options), /options.filename or options.filecontent is required/);
     });
 
     it('should successfully parse options', () => {
-      const options = { source: {} };
+      const options = { filecontent: '' };
 
-      assert.doesNotThrow(() => Parser.validateOptions(options));
+      assert.doesNotThrow(() => VuedocParser.validateOptions(options));
     });
 
     it('should parse with an invalid type of options.features', () => {
-      const options = { source: {}, features: 'events' };
+      const options = { filecontent: '', features: 'events' };
 
       assert.throws(
-        () => Parser.validateOptions(options),
+        () => VuedocParser.validateOptions(options),
         /options\.features must be an array/
       );
     });
 
     it('should parse with an invalid options.features', () => {
-      const options = { source: {}, features: ['invalid-feature'] };
+      const options = { filecontent: '', features: ['invalid-feature'] };
 
       assert.throws(
-        () => Parser.validateOptions(options),
+        () => VuedocParser.validateOptions(options),
         /Unknow 'invalid-feature' feature\. Supported features:/
       );
     });
 
     it('should parse with a valid options.features', () => {
-      const options = { source: {}, features: ['name', 'events'] };
+      const options = { filecontent: '', features: ['name', 'events'] };
 
-      assert.doesNotThrow(() => Parser.validateOptions(options));
-    });
-  });
-
-  describe('getEventName(feature)', () => {
-    it('should succed with a singular name', () => {
-      const feature = 'name';
-      const expected = feature;
-
-      expect(Parser.getEventName(feature)).toBe(expected);
-    });
-
-    it('should succed with a plural name', () => {
-      const feature = 'methods';
-      const expected = 'method';
-
-      expect(Parser.getEventName(feature)).toBe(expected);
-    });
-  });
-
-  describe('constructor(options)', () => {
-    it('should successfully create new object', () => {
-      const filename = './fixtures/checkbox.vue';
-      const options = {
-        source: { script, template },
-        filename,
-      };
-
-      const parser = new Parser(options);
-
-      expect(parser.options.source.template).toBe(template);
-      expect(parser.options.source.script).toBe(script);
-      expect(parser.scope).toEqual({});
-    });
-
-    it('should successfully create new object with missing script', () => {
-      const options = {
-        source: { template },
-      };
-
-      const parser = new Parser(options);
-
-      expect(parser.options.source.script).toBeUndefined();
-      expect(parser.options.source.template).toBe(template);
-    });
-
-    it('should successfully create new object with empty script', () => {
-      const options = {
-        source: { template, script: '' },
-      };
-
-      const parser = new Parser(options);
-
-      expect(parser.options.source.script).toBe('');
-      expect(parser.options.source.template).toBe(template);
+      assert.doesNotThrow(() => VuedocParser.validateOptions(options));
     });
   });
 
   describe('walk()', () => {
-    it('should successfully create new object', (done) => {
+    it('should successfully create new object', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const options = {
-        source: { script, template },
         filename,
-      };
-
-      const parser = new Parser(options);
-
-      parser.on('end', done);
-      parser.walk();
-    });
-
-    describe('features.length === 0', () => {
-      it('should ignore all features', (done) => {
-        const options = { source: { script }, features: [] };
-        const parser = new Parser(options);
-
-        const walker = parser.walk().on('end', done);
-
-        Parser.SUPPORTED_FEATURES.forEach((feature) => {
-          walker.on(feature, () => {
-            throw new Error(`Should ignore the component '${feature}' feature`);
-          });
-        });
-      });
-    });
-
-    describe('description', () => {
-      const script = {
-        attrs: {
-          lang: 'js',
-        },
-        content: `
-          /**
-           * Component description
-           * on multiline
-           *
-           * with preserve
-           *
-           *
-           * whitespaces
-           */
-          export default {}
+        filecontent: `
+          <script>${script}</script>
+          <template>${template}</template>
         `,
       };
 
-      it('should successfully emit component description', (done) => {
-        const options = { source: { script } };
+      const parser = new VuedocParser(options);
 
-        new Parser(options).walk().on('description', ({ value }) => {
+      parser.addEventListener('end', done);
+      parser.walk();
+    }));
+
+    describe('features.length === 0', () => {
+      it('should ignore all features', () => new Promise((done, reject) => {
+        const options = {
+          features: [],
+          filecontent: `<script>${script}</script>`,
+        };
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('end', done);
+
+        VuedocParser.SUPPORTED_FEATURES.forEach((feature) => {
+          parser.addEventListener(feature, () => reject(new Error(`Should ignore the component '${feature}' feature`)));
+        });
+
+        parser.walk();
+      }));
+    });
+
+    describe('description', () => {
+      const script = `
+        /**
+         * Component description
+         * on multiline
+         *
+         * with preserve
+         *
+         *
+         * whitespaces
+         */
+        export default {}
+      `;
+
+      it('should successfully emit component description', () => new Promise((done) => {
+        const parser = new VuedocParser({
+          filecontent: `<script>${script}</script>`,
+        });
+
+        parser.addEventListener('description', ({ entry: { value } }) => {
           expect(value).toBe('Component description\non multiline\n\nwith preserve\n\n\nwhitespaces');
-
           done();
         });
-      });
 
-      it('should ignore the component description with missing `description` in options.features', (done) => {
+        parser.walk();
+      }));
+
+      it('should ignore the component description with missing `description` in options.features', () => new Promise((done, reject) => {
         const filename = './fixtures/checkbox.vue';
         const options = {
-          source: { script },
           filename,
           features: ['name'],
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk()
-          .on('description', () => {
-            throw new Error('Should ignore the component description');
-          })
-          .on('end', done);
-      });
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('description', () => reject(new Error('Should ignore the component description')));
+        parser.addEventListener('end', () => done());
+
+        parser.walk();
+      }));
     });
 
     describe('keywords', () => {
-      it('should successfully emit component keywords by ignoring name, slot and mixin', (done) => {
-        const script = {
-          attrs: {
-            lang: 'js',
-          },
-          content: `
-            /**
-             * @name my-checkbox
-             * @mixin
-             * @slot default slot
-             * @tagtest 1.0.0
-             */
-            export default {}
+      it('should successfully emit component keywords by ignoring name, slot and mixin', () => new Promise((done) => {
+        const parser = new VuedocParser({
+          filecontent: `
+            <script>
+              /**
+               * @name my-checkbox
+               * @slot default slot
+               * @tagtest 1.0.0
+               */
+              export default {}
+            </script>
           `,
-        };
+        });
 
-        const options = { source: { script } };
-
-        new Parser(options).walk().on('keywords', ({ value }) => {
+        parser.addEventListener('keyword', ({ entry: { value } }) => {
           expect(value).toEqual([{ name: 'tagtest', description: '1.0.0' }]);
           done();
         });
-      });
 
-      it('should ignore the component keywords with missing `description` in options.features', (done) => {
+        parser.walk();
+      }));
+
+      it('should ignore the component keywords with missing `description` in options.features', () => new Promise((done, reject) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           /**
@@ -562,106 +511,151 @@ describe('Parser', () => {
           export default {}
         `;
         const options = {
-          source: { script },
           filename,
           features: ['name'],
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk()
-          .on('description', () => done(new Error('Should ignore the component description')))
-          .on('end', done);
-      });
+        const parser = new VuedocParser(options);
+
+          parser.addEventListener('description', () => reject(new Error('Should ignore the component description')));
+          parser.addEventListener('end', () => done());
+
+        parser.walk();
+      }));
+    });
+
+    describe('event propagation', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              name: 'hello'
+            }
+          </script>
+        `,
+      };
+
+      it('should successfully emit event `name` twice', () => new Promise((done) => {
+        const parser = new VuedocParser(options);
+
+          parser.addEventListener('name', ({ entry: { value } }) => {
+            expect(value).toBe('hello');
+          });
+          parser.addEventListener('name', ({ entry: { value } }) => {
+            expect(value).toBe('hello');
+            done();
+          });
+          parser.walk();
+      }));
+
+      it('should successfully emit event `name` once', () => new Promise((done, reject) => {
+        const parser = new VuedocParser(options);
+
+          parser.addEventListener('name', (event) => {
+            expect(event.entry.value).toBe('hello');
+            event.stopImmediatePropagation();
+          });
+          parser.addEventListener('name', () => {
+            reject(new Error('should emit event `name` once with event.stopImmediatePropagation()'));
+          });
+          parser.addEventListener('end', () => {
+            done();
+          });
+          parser.walk();
+      }));
     });
 
     describe('export default expression', () => {
-      it('should successfully emit component name', (done) => {
+      it('should successfully emit component name', () => new Promise((done) => {
         const options = {
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: `
-                import child from 'child.vue'
-      
-                const component = {
-                  name: 'hello'
-                }
-      
-                export default component
-              `,
-            },
-          },
+          filecontent: `
+            <script>
+              import child from 'child.vue'
+    
+              const component = {
+                name: 'hello'
+              }
+    
+              export default component
+            </script>
+          `,
         };
 
-        new Parser(options).walk().on('name', ({ value }) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('name', ({ entry: { value } }) => {
           expect(value).toBe('hello');
           done();
         });
-      });
 
-      it('should failed with missing exporting identifier', (done) => {
-        const script = `
-          export default component
-        `;
-        const options = { source: { script } };
+        parser.walk();
+      }));
 
-        new Parser(options).walk().on('end', () => done());
-      });
+      it('should failed with missing exporting identifier', () => new Promise((done) => {
+        const parser = new VuedocParser({
+          filecontent: `
+            <script>
+              export default component
+            </script>
+          `,
+        });
 
-      it('should not fail when there is a top-level non-assignment expression', (done) => {
+        parser.addEventListener('end', () => done());
+        parser.walk();
+      }));
+
+      it('should not fail when there is a top-level non-assignment expression', () => new Promise((done) => {
         const options = {
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: `
-                import library from 'library'
-      
-                library.init()
-      
-                const component = {
-                  name: 'hello'
-                }
-      
-                export default component
-              `,
-            },
-          },
+          filecontent: `
+            <script>
+              import library from 'library'
+    
+              library.init()
+    
+              const component = {
+                name: 'hello'
+              }
+    
+              export default component
+            </script>
+          `,
         };
 
-        new Parser(options).walk().on('name', ({ value }) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('name', ({ entry: { value } }) => {
           expect(value).toBe('hello');
           done();
         });
-      });
+
+        parser.walk();
+      }));
     });
 
     describe('parseTemplate()', () => {
-      it('should successfully emit default slot', (done) => {
+      it('should successfully emit default slot', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const template = '<slot/>';
         const options = {
           filename,
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `
+            <template>${template}</template>
+          `,
         };
 
-        new Parser(options).walk().on('slot', (slot) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('slot', ({ entry: slot }) => {
           expect(slot.name).toBe('default');
           expect(slot.description).toBeUndefined();
           done();
         });
-      });
 
-      it('should successfully emit default slot with description', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit default slot with description', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
@@ -674,24 +668,21 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk().on('slot', (slot) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('slot', ({ entry: slot }) => {
           expect(slot.name).toBe('default');
           expect(slot.description).toBe('default slot');
           done();
         });
-      });
 
-      it('should ignore the component slots with missing `slots` in options.features', (done) => {
+        parser.walk();
+      }));
+
+      it('should ignore the component slots with missing `slots` in options.features', () => new Promise((done, reject) => {
         const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
@@ -704,24 +695,18 @@ describe('Parser', () => {
         const options = {
           filename,
           features: ['name'],
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk()
-          .on('slot', () => {
-            throw new Error('Should ignore the component slots');
-          })
-          .on('end', done);
-      });
+        const parser = new VuedocParser(options);
 
-      it('should successfully emit defining template event with v-on: prefix', (done) => {
+        parser.addEventListener('slot', () => reject(new Error('Should ignore the component slots')));
+        parser.addEventListener('end', done);
+
+        parser.walk();
+      }));
+
+      it('should successfully emit defining template event with v-on: prefix', () => new Promise((done) => {
         const template = `
           <div>
             <input
@@ -734,27 +719,23 @@ describe('Parser', () => {
         const options = {
           filename,
           features,
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk()
-          .on('event', (event) => {
-            expect(event.name).toBe('input');
-            expect(event.description).toBeUndefined();
-            expect(event.visibility).toBe('public');
-            expect(event.keywords).toEqual([]);
-            done();
-          });
-      });
+        const parser = new VuedocParser(options);
 
-      it('should successfully emit defining template event with v-on: prefix and a description', (done) => {
+        parser.addEventListener('event', ({ entry: event }) => {
+          expect(event.name).toBe('input');
+          expect(event.description).toBeUndefined();
+          expect(event.visibility).toBe('public');
+          expect(event.keywords).toEqual([]);
+          done();
+        });
+
+        parser.walk();
+      }));
+
+      it('should successfully emit defining template event with v-on: prefix and a description', () => new Promise((done) => {
         const template = `
           <div>
             <!-- Emit the input event -->
@@ -768,27 +749,23 @@ describe('Parser', () => {
         const options = {
           filename,
           features,
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk()
-          .on('event', (event) => {
-            expect(event.name).toBe('input');
-            expect(event.description).toBe('Emit the input event');
-            expect(event.visibility).toBe('public');
-            expect(event.keywords).toEqual([]);
-            done();
-          });
-      });
+        const parser = new VuedocParser(options);
 
-      it('should successfully emit defining template event with v-on: prefix and a visibility', (done) => {
+        parser.addEventListener('event', ({ entry: event }) => {
+          expect(event.name).toBe('input');
+          expect(event.description).toBe('Emit the input event');
+          expect(event.visibility).toBe('public');
+          expect(event.keywords).toEqual([]);
+          done();
+        });
+
+        parser.walk();
+      }));
+
+      it('should successfully emit defining template event with v-on: prefix and a visibility', () => new Promise((done) => {
         const template = `
           <div>
             <!-- @private -->
@@ -803,27 +780,23 @@ describe('Parser', () => {
           filename,
           features,
           ignoredVisibilities: ['protected'],
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk()
-          .on('event', (event) => {
-            expect(event.name).toBe('input');
-            expect(event.description).toBe(undefined);
-            expect(event.visibility).toBe('private');
-            expect(event.keywords).toEqual([]);
-            done();
-          });
-      });
+        const parser = new VuedocParser(options);
 
-      it('should successfully emit defining template event with v-on: prefix and meta info', (done) => {
+        parser.addEventListener('event', ({ entry: event }) => {
+          expect(event.name).toBe('input');
+          expect(event.description).toBe(undefined);
+          expect(event.visibility).toBe('private');
+          expect(event.keywords).toEqual([]);
+          done();
+        });
+
+        parser.walk();
+      }));
+
+      it('should successfully emit defining template event with v-on: prefix and meta info', () => new Promise((done) => {
         const template = `
           <div>
             <!--
@@ -843,29 +816,25 @@ describe('Parser', () => {
           filename,
           features,
           ignoredVisibilities: ['private'],
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk()
-          .on('event', (event) => {
-            expect(event.name).toBe('input');
-            expect(event.description).toBe('Emit the input event');
-            expect(event.visibility).toBe('protected');
-            expect(event.keywords).toEqual([
-              { name: 'value', description: 'A input value' },
-            ]);
-            done();
-          });
-      });
+        const parser = new VuedocParser(options);
 
-      it('should successfully emit defining template event with the @ prefix and meta info', (done) => {
+        parser.addEventListener('event', ({ entry: event }) => {
+          expect(event.name).toBe('input');
+          expect(event.description).toBe('Emit the input event');
+          expect(event.visibility).toBe('protected');
+          expect(event.keywords).toEqual([
+            { name: 'value', description: 'A input value' },
+          ]);
+          done();
+        });
+
+        parser.walk();
+      }));
+
+      it('should successfully emit defining template event with the @ prefix and meta info', () => new Promise((done) => {
         const template = `
           <div>
             <!--
@@ -885,29 +854,25 @@ describe('Parser', () => {
           filename,
           features,
           ignoredVisibilities: ['private'],
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
-        new Parser(options).walk()
-          .on('event', (event) => {
-            expect(event.name).toBe('input');
-            expect(event.description).toBe('Emit the input event');
-            expect(event.visibility).toBe('protected');
-            expect(event.keywords).toEqual([
-              { name: 'value', description: 'A input value' },
-            ]);
-            done();
-          });
-      });
+        const parser = new VuedocParser(options);
 
-      it('should successfully emit defining template events with both v-on: and @ prefixes', (done) => {
+        parser.addEventListener('event', ({ entry: event }) => {
+          expect(event.name).toBe('input');
+          expect(event.description).toBe('Emit the input event');
+          expect(event.visibility).toBe('protected');
+          expect(event.keywords).toEqual([
+            { name: 'value', description: 'A input value' },
+          ]);
+          done();
+        });
+
+        parser.walk();
+      }));
+
+      it('should successfully emit defining template events with both v-on: and @ prefixes', () => new Promise((done) => {
         const template = `
           <div>
             <!--
@@ -928,14 +893,7 @@ describe('Parser', () => {
           filename,
           features,
           ignoredVisibilities: ['private'],
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `<template>${template}</template>`,
         };
 
         const expected = [
@@ -958,19 +916,21 @@ describe('Parser', () => {
         ];
 
         const result = [];
+        const parser = new VuedocParser(options);
 
-        new Parser(options).walk()
-          .on('event', (event) => result.push(event))
-          .on('end', () => {
-            expect(result).toEqual(expected);
-            done();
-          });
-      });
+        parser.addEventListener('event', ({ entry: event }) => result.push(event));
+        parser.addEventListener('end', () => {
+          expect(result).toEqual(expected);
+          done();
+        });
+
+        parser.walk();
+      }));
     });
 
     describe('parseKeywords()', () => {
       ['arg', 'prop', 'param', 'argument'].forEach((tag) => {
-        it(`should successfully emit param with @${tag}`, (done) => {
+        it(`should successfully emit param with @${tag}`, () => new Promise((done) => {
           const filename = './fixtures/checkbox.vue';
           const script = `
             export default {
@@ -985,14 +945,7 @@ describe('Parser', () => {
           `;
           const options = {
             filename,
-            source: {
-              script: {
-                attrs: {
-                  lang: 'js',
-                },
-                content: script,
-              },
-            },
+            filecontent: `<script>${script}</script>`,
           };
           const expected = [
             {
@@ -1004,16 +957,20 @@ describe('Parser', () => {
             },
           ];
 
-          new Parser(options).walk().on('method', (method) => {
+          const parser = new VuedocParser(options);
+
+          parser.addEventListener('method', ({ entry: method }) => {
             expect(method.name).toBe('getX');
             expect(method.description).toBe('Get the x value.');
             expect(method.params).toEqual(expected);
             done();
           });
-        });
+
+          parser.walk();
+        }));
       });
 
-      it('should successfully emit param with parameter\'s properties', (done) => {
+      it('should successfully emit param with parameter\'s properties', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1030,18 +987,11 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
-            type: 'Object',
+            type: 'object',
             name: 'employee',
             description: 'The employee who is responsible for the project.',
             defaultValue: undefined,
@@ -1060,15 +1010,19 @@ describe('Parser', () => {
             rest: false },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('assign');
           expect(method.description).toBe('Assign the project to an employee.');
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit param with array type', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit param with array type', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1083,33 +1037,30 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
-            type: 'Object[]',
+            type: 'object[]',
             name: 'employees',
             description: 'The employees who are responsible for the project.',
             defaultValue: undefined,
             rest: false },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('assign');
           expect(method.description).toBe('Assign the project to a list of employees.');
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit param with properties of values in an array', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit param with properties of values in an array', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1126,18 +1077,11 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
-            type: 'Object[]',
+            type: 'object[]',
             name: 'employees',
             description: 'The employees who are responsible for the project.',
             defaultValue: undefined,
@@ -1156,15 +1100,19 @@ describe('Parser', () => {
             rest: false },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('assign');
           expect(method.description).toBe('Assign the project to a list of employees.');
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit optional param', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit optional param', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1178,14 +1126,7 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
@@ -1198,15 +1139,19 @@ describe('Parser', () => {
           },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('sayHello');
           expect(method.description).toBe(undefined);
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit optional parameter (using Google Closure Compiler syntax)', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit optional parameter (using Google Closure Compiler syntax)', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1220,14 +1165,7 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
@@ -1240,15 +1178,19 @@ describe('Parser', () => {
           },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('sayHello');
           expect(method.description).toBe(undefined);
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit optional param and one type OR another type (type union)', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit optional param and one type OR another type (type union)', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1262,14 +1204,7 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
@@ -1282,15 +1217,19 @@ describe('Parser', () => {
           },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('sayHello');
           expect(method.description).toBe(undefined);
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit optional param and default value', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit optional param and default value', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1304,14 +1243,7 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           {
@@ -1324,15 +1256,19 @@ describe('Parser', () => {
           },
         ];
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('sayHello');
           expect(method.description).toBe(undefined);
           expect(method.params).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit param in a event', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit param in a event', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1349,14 +1285,7 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = [
           { type: 'number',
@@ -1365,15 +1294,19 @@ describe('Parser', () => {
             rest: false },
         ];
 
-        new Parser(options).walk().on('event', (event) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('event', ({ entry: event }) => {
           expect(event.name).toBe('input');
           expect(event.description).toBe('Emit the x value.');
           expect(event.arguments).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit return', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit return', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1388,29 +1321,26 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = {
           type: 'number',
           description: 'The x value.',
         };
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('getX');
           expect(method.description).toBe('Get the x value.');
           expect(method.returns).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit alias @returns', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit alias @returns', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1425,29 +1355,26 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = {
           type: 'number',
           description: 'The x value.',
         };
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('getX');
           expect(method.description).toBe('Get the x value.');
           expect(method.returns).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit return with array type', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit return with array type', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1462,29 +1389,26 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = {
           type: 'number[]',
           description: 'The x values.',
         };
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('getX');
           expect(method.description).toBe('Get the x values.');
           expect(method.returns).toEqual(expected);
           done();
         });
-      });
 
-      it('should successfully emit return with one type OR another returning type (type union)', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit return with one type OR another returning type (type union)', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1498,30 +1422,27 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
         const expected = {
           type: ['string', 'string[]'],
           description: 'The x values.',
         };
 
-        new Parser(options).walk().on('method', (method) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('method', ({ entry: method }) => {
           expect(method.name).toBe('getX');
           expect(method.returns).toEqual(expected);
           done();
         });
-      });
+
+        parser.walk();
+      }));
     });
 
     describe('parseComponentName()', () => {
-      it('should successfully emit component name with only template', (done) => {
+      it('should successfully emit component name with only template', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
@@ -1531,23 +1452,22 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `
+            <template>${template}</template>
+          `,
         };
 
-        new Parser(options).walk().on('name', ({ value }) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('name', ({ entry: { value } }) => {
           expect(value).toBe('checkbox');
           done();
         });
-      });
 
-      it('should successfully emit component name with explicit name', (done) => {
+        parser.walk();
+      }));
+
+      it('should successfully emit component name with explicit name', () => new Promise((done) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1556,23 +1476,20 @@ describe('Parser', () => {
         `;
         const options = {
           filename,
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk().on('name', ({ value }) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('name', ({ entry: { value } }) => {
           expect(value).toBe('myInput');
           done();
         });
-      });
 
-      it('should ignore the component name with missing `name` in options.features', (done) => {
+        parser.walk();
+      }));
+
+      it('should ignore the component name with missing `name` in options.features', () => new Promise((done, reject) => {
         const filename = './fixtures/checkbox.vue';
         const script = `
           export default {
@@ -1582,24 +1499,18 @@ describe('Parser', () => {
         const options = {
           filename,
           features: ['description'],
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk()
-          .on('name', () => {
-            throw new Error('Should ignore the component name');
-          })
-          .on('end', done);
-      });
+        const parser = new VuedocParser(options);
 
-      it('should ignore the component name with missing `name` in options.features and options.source.script', (done) => {
+        parser.addEventListener('name', () => reject(new Error('Should ignore the component name')));
+        parser.addEventListener('end', done);
+
+        parser.walk();
+      }));
+
+      it('should ignore the component name with missing `name` in options.features and script', () => new Promise((done, reject) => {
         const filename = './fixtures/checkbox.vue';
         const template = `
           <div>
@@ -1610,26 +1521,22 @@ describe('Parser', () => {
         const options = {
           filename,
           features: ['description'],
-          source: {
-            template: {
-              attrs: {
-                lang: 'html',
-              },
-              content: template,
-            },
-          },
+          filecontent: `
+            <template>${template}</template>
+          `,
         };
 
-        new Parser(options).walk()
-          .on('name', () => {
-            throw new Error('Should ignore the component name');
-          })
-          .on('end', done);
-      });
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('name', () => reject(new Error('Should ignore the component name')));
+        parser.addEventListener('end', done);
+
+        parser.walk();
+      }));
     });
 
     describe('should successfully emit model', () => {
-      it('with all fields set', (done) => {
+      it('with all fields set', () => new Promise((done) => {
         const script = `
           export default {
             model: {
@@ -1639,20 +1546,16 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk().on('model', (model) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('model', ({ entry: model }) => {
           expect(model).toEqual({
             kind: 'model',
             prop: 'model',
+            name: 'model',
             event: 'change',
             description: undefined,
             visibility: 'public',
@@ -1660,9 +1563,11 @@ describe('Parser', () => {
           });
           done();
         });
-      });
 
-      it('with only model.prop', (done) => {
+        parser.walk();
+      }));
+
+      it('with only model.prop', () => new Promise((done) => {
         const script = `
           export default {
             model: {
@@ -1671,20 +1576,16 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk().on('model', (model) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('model', ({ entry: model }) => {
           expect(model).toEqual({
             kind: 'model',
             prop: 'model',
+            name: 'model',
             event: 'input',
             description: undefined,
             visibility: 'public',
@@ -1692,9 +1593,11 @@ describe('Parser', () => {
           });
           done();
         });
-      });
 
-      it('with only model.event', (done) => {
+        parser.walk();
+      }));
+
+      it('with only model.event', () => new Promise((done) => {
         const script = `
           export default {
             model: {
@@ -1703,20 +1606,16 @@ describe('Parser', () => {
           }
         `;
         const options = {
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk().on('model', (model) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('model', ({ entry: model }) => {
           expect(model).toEqual({
             kind: 'model',
             prop: 'value',
+            name: 'value',
             event: 'change',
             description: undefined,
             visibility: 'public',
@@ -1724,29 +1623,27 @@ describe('Parser', () => {
           });
           done();
         });
-      });
 
-      it('with empty object', (done) => {
+        parser.walk();
+      }));
+
+      it('with empty object', () => new Promise((done) => {
         const script = `
           export default {
             model: {}
           }
         `;
         const options = {
-          source: {
-            script: {
-              attrs: {
-                lang: 'js',
-              },
-              content: script,
-            },
-          },
+          filecontent: `<script>${script}</script>`,
         };
 
-        new Parser(options).walk().on('model', (model) => {
+        const parser = new VuedocParser(options);
+
+        parser.addEventListener('model', ({ entry: model }) => {
           expect(model).toEqual({
             kind: 'model',
             prop: 'value',
+            name: 'value',
             event: 'input',
             description: undefined,
             visibility: 'public',
@@ -1754,10 +1651,12 @@ describe('Parser', () => {
           });
           done();
         });
-      });
+
+        parser.walk();
+      }));
     });
 
-    it('should successfully emit generic prop', (done) => {
+    it('should successfully emit generic prop', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -1768,17 +1667,12 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('id');
         expect(prop.default).toBe('"$id"');
@@ -1788,9 +1682,11 @@ describe('Parser', () => {
         expect(prop.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should successfully emit v-model prop', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit v-model prop', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -1804,20 +1700,15 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('value');
-        expect(prop.describeModel).toBe(false);
+        expect(prop.describeModel).toBeTruthy();
         expect(prop.description).toBeUndefined();
         expect(prop.keywords).toEqual([
           {
@@ -1828,9 +1719,11 @@ describe('Parser', () => {
         expect(prop.type).toBe('string');
         done();
       });
-    });
 
-    it('should successfully emit v-model prop with the model field', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit v-model prop with the model field', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -1844,28 +1737,25 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('checked');
         expect(prop.description).toBeUndefined();
-        expect(prop.describeModel).toBeFalsy();
+        expect(prop.describeModel).toBeTruthy();
         expect(prop.type).toBe('string');
         expect(prop.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should successfully emit prop with truthy describeModel for prop.name === "value"', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit prop with truthy describeModel for prop.name === "value"', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -1876,24 +1766,21 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop.name).toBe('value');
-        expect(prop.describeModel).toBeFalsy();
+        expect(prop.describeModel).toBeTruthy();
         done();
       });
-    });
 
-    it('should successfully emit generic prop declared in array', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit generic prop declared in array', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -1902,17 +1789,12 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop.visibility).toBe('public');
         expect(prop.name).toBe('id');
         expect(prop.type).toBe('unknown');
@@ -1922,9 +1804,11 @@ describe('Parser', () => {
         expect(prop.describeModel).toBeFalsy();
         done();
       });
-    });
 
-    it('should successfully emit prop with multiple types (array syntax)', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit prop with multiple types (array syntax)', () => new Promise((done) => {
       const script = `
         export default {
           props: {
@@ -1933,17 +1817,12 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-a',
@@ -1959,9 +1838,11 @@ describe('Parser', () => {
 
         done();
       });
-    });
 
-    it('should successfully emit prop with multiple types (object syntax)', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit prop with multiple types (object syntax)', () => new Promise((done) => {
       const script = `
         export default {
           props: {
@@ -1972,17 +1853,12 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('prop', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('prop', ({ entry: prop }) => {
         expect(prop).toEqual({
           kind: 'prop',
           name: 'opacity-o',
@@ -1998,9 +1874,11 @@ describe('Parser', () => {
 
         done();
       });
-    });
 
-    it('should successfully emit a data item from an component.data object', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit a data item from an component.data object', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2014,14 +1892,7 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       const expected = {
@@ -2036,13 +1907,17 @@ describe('Parser', () => {
         name: 'id',
       };
 
-      new Parser(options).walk().on('data', (entry) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('data', ({ entry }) => {
         expect(entry).toEqual(expected);
         done();
       });
-    });
 
-    it('should successfully emit a data item from an component.data arrow function', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit a data item from an component.data arrow function', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2056,14 +1931,7 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       const expected = {
@@ -2078,13 +1946,17 @@ describe('Parser', () => {
         name: 'enabled',
       };
 
-      new Parser(options).walk().on('data', (entry) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('data', ({ entry }) => {
         expect(entry).toEqual(expected);
         done();
       });
-    });
 
-    it('should successfully emit a data item from an component.data es5 function', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit a data item from an component.data es5 function', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2100,14 +1972,7 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       const expected = {
@@ -2122,13 +1987,17 @@ describe('Parser', () => {
         name: 'id',
       };
 
-      new Parser(options).walk().on('data', (entry) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('data', ({ entry }) => {
         expect(entry).toEqual(expected);
         done();
       });
-    });
 
-    it('should successfully emit a data item from an component.data es6 function', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit a data item from an component.data es6 function', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2144,14 +2013,7 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       const expected = {
@@ -2166,13 +2028,17 @@ describe('Parser', () => {
         name: 'id',
       };
 
-      new Parser(options).walk().on('data', (entry) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('data', ({ entry }) => {
         expect(entry).toEqual(expected);
         done();
       });
-    });
 
-    it('should successfully emit a computed property item', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit a computed property item', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2192,14 +2058,7 @@ describe('Parser', () => {
       const options = {
         filename,
         ignoredVisibilities: ['protected'],
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       const expected = {
@@ -2213,7 +2072,9 @@ describe('Parser', () => {
         dependencies: ['value', 'name'],
       };
 
-      new Parser(options).walk().on('computed', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('computed', ({ entry: prop }) => {
         expect(prop.name).toBe(expected.name);
         expect(prop.keywords).toEqual(expected.keywords);
         expect(prop.visibility).toBe(expected.visibility);
@@ -2222,9 +2083,11 @@ describe('Parser', () => {
         expect(prop.dependencies).toEqual(expected.dependencies);
         done();
       });
-    });
 
-    it('should successfully emit a computed property item with a getter', (done) => {
+      parser.walk();
+    }));
+
+    it('should successfully emit a computed property item with a getter', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2243,14 +2106,7 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
       const expected = {
         name: 'idGetter',
@@ -2264,13 +2120,17 @@ describe('Parser', () => {
         dependencies: ['value', 'name'],
       };
 
-      new Parser(options).walk().on('computed', (prop) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('computed', ({ entry: prop }) => {
         expect(prop).toEqual(expected);
         done();
       });
-    });
 
-    it('should ignore functions other than get on computed property', (done) => {
+      parser.walk();
+    }));
+
+    it('should ignore functions other than get on computed property', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2289,23 +2149,20 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('computed', (prop) => {
-        expect(prop.dependencies).toEqual([]);
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('computed', ({ entry: computed }) => {
+        expect(computed.dependencies).toEqual([]);
         done();
       });
-    });
 
-    it('shouldn\'t emit an unknow item (object)', (done) => {
+      parser.walk();
+    }));
+
+    it('shouldn\'t emit an unknow item (object)', () => new Promise((done, reject) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2319,24 +2176,18 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk()
-        .on('unknown', () => {
-          throw new Error('Should ignore unknow entry');
-        })
-        .on('end', done);
-    });
+      const parser = new VuedocParser(options);
 
-    it('shouldn\'t emit an unknow item (array)', (done) => {
+      parser.addEventListener('unknown', () => reject(new Error('Should ignore unknow entry')));
+      parser.addEventListener('end', done);
+
+      parser.walk();
+    }));
+
+    it('shouldn\'t emit an unknow item (array)', () => new Promise((done, reject) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2350,24 +2201,18 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk()
-        .on('unknown', () => {
-          throw new Error('Should ignore unknow entry');
-        })
-        .on('end', done);
-    });
+      const parser = new VuedocParser(options);
 
-    it('should successfully emit methods', (done) => {
+      parser.addEventListener('unknown', () => reject(new Error('Should ignore unknow entry')));
+      parser.addEventListener('end', done);
+
+      parser.walk();
+    }));
+
+    it('should successfully emit methods', () => new Promise((done) => {
       const filename = './fixtures/checkbox.vue';
       const script = `
         export default {
@@ -2378,22 +2223,17 @@ describe('Parser', () => {
       `;
       const options = {
         filename,
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('method', (prop) => {
-        expect(prop.visibility).toBe('public');
-        expect(prop.name).toBe('getValue');
-        expect(prop.description).toBeUndefined();
-        expect(prop.keywords).toEqual([]);
-        expect(prop.params).toEqual([
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('method', ({ entry: method }) => {
+        expect(method.visibility).toBe('public');
+        expect(method.name).toBe('getValue');
+        expect(method.description).toBeUndefined();
+        expect(method.keywords).toEqual([]);
+        expect(method.params).toEqual([
           {
             name: 'ctx',
             type: 'unknown',
@@ -2405,35 +2245,32 @@ describe('Parser', () => {
 
         done();
       });
-    });
 
-    it('should emit nothing', (done) => {
+      parser.walk();
+    }));
+
+    it('should emit nothing', () => new Promise((done) => {
       const script = `
         export default {
           description: 'desc-v'
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      const parser = new Parser(options);
+      const parser = new VuedocParser(options);
 
-      events.forEach((event) => parser.on(event, () => {
+      parser.addEventListener('end', () => done());
+
+      events.forEach(({ entry: event }) => parser.addEventListener(event, () => {
         done(new Error(`should not emit ${event} event`));
       }));
 
-      parser.walk().on('end', () => done());
-    });
+      parser.walk();
+    }));
 
-    it('should emit event without description', (done) => {
+    it('should emit event without description', () => new Promise((done) => {
       const script = `
         export default {
           mounted: () => {
@@ -2442,26 +2279,23 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('loading');
         expect(event.description).toBeUndefined();
         expect(event.visibility).toBe('public');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should emit event with description', (done) => {
+      parser.walk();
+    }));
+
+    it('should emit event with description', () => new Promise((done) => {
       const script = `
         export default {
           created: () => {
@@ -2476,26 +2310,23 @@ describe('Parser', () => {
       `;
       const options = {
         ignoredVisibilities: ['private'],
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('loading');
         expect(event.description).toBe('loading event');
         expect(event.visibility).toBe('protected');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should emit event with @event keyword', (done) => {
+      parser.walk();
+    }));
+
+    it('should emit event with @event keyword', () => new Promise((done) => {
       const script = `
         export default {
           created () {
@@ -2509,26 +2340,23 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('loading');
         expect(event.description).toBe('Event description');
         expect(event.visibility).toBe('public');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should emit event with identifier name', (done) => {
+      parser.walk();
+    }));
+
+    it('should emit event with identifier name', () => new Promise((done) => {
       const script = `
         export default {
           beforeRouteEnter: (to, from, next) => {
@@ -2541,26 +2369,23 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('loading');
         expect(event.description).toBe('loading event');
         expect(event.visibility).toBe('public');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should emit event with recursive identifier name', (done) => {
+      parser.walk();
+    }));
+
+    it('should emit event with recursive identifier name', () => new Promise((done) => {
       const script = `
         export default {
           mounted: () => {
@@ -2577,26 +2402,23 @@ describe('Parser', () => {
       `;
       const options = {
         ignoredVisibilities: ['private'],
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('loading');
         expect(event.description).toBe('loading event');
         expect(event.visibility).toBe('protected');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should emit event with external identifier name', (done) => {
+      parser.walk();
+    }));
+
+    it('should emit event with external identifier name', () => new Promise((done) => {
       const script = `
         const ppname = 'loading'
 
@@ -2612,26 +2434,23 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('loading');
         expect(event.description).toBe('loading event');
         expect(event.visibility).toBe('public');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should failed to found identifier name', (done) => {
+      parser.walk();
+    }));
+
+    it('should failed to found identifier name', () => new Promise((done) => {
       const script = `
         export default {
           created: () => {
@@ -2645,26 +2464,23 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk().on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+      parser.addEventListener('event', ({ entry: event }) => {
         expect(event.name).toBe('ppname');
         expect(event.description).toBe('loading event');
         expect(event.visibility).toBe('public');
         expect(event.keywords).toEqual([]);
         done();
       });
-    });
 
-    it('should skip already sent event', (done) => {
+      parser.walk();
+    }));
+
+    it('should skip already sent event', () => new Promise((done) => {
       const script = `
         export default {
           created () {
@@ -2676,32 +2492,28 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       let eventCount = 0;
 
-      new Parser(options).walk()
-        .on('event', (event) => {
+      const parser = new VuedocParser(options);
+
+        parser.addEventListener('event', ({ entry: event }) => {
           expect(event.name).toBe('loading');
 
           eventCount++;
-        })
-        .on('end', () => {
+        });
+        parser.addEventListener('end', () => {
           expect(eventCount).toBe(1);
 
           done();
         });
-    });
 
-    it('should skip malformated event emission', (done) => {
+      parser.walk();
+    }));
+
+    it('should skip malformated event emission', () => new Promise((done) => {
       const script = `
         export default {
           loading2: () => {
@@ -2710,28 +2522,24 @@ describe('Parser', () => {
         }
       `;
       const options = {
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
       let eventCount = 0;
 
-      new Parser(options).walk()
-        .on('event', () => eventCount++)
-        .on('end', () => {
+      const parser = new VuedocParser(options);
+
+        parser.addEventListener('event', () => eventCount++);
+        parser.addEventListener('end', () => {
           expect(eventCount).toBe(0);
 
           done();
         });
-    });
 
-    it('should ignore the component events with missing `events` in options.features', (done) => {
+      parser.walk();
+    }));
+
+    it('should ignore the component events with missing `events` in options.features', () => new Promise((done, reject) => {
       const script = `
         export default {
           created: () => {
@@ -2744,21 +2552,15 @@ describe('Parser', () => {
       `;
       const options = {
         features: ['name'],
-        source: {
-          script: {
-            attrs: {
-              lang: 'js',
-            },
-            content: script,
-          },
-        },
+        filecontent: `<script>${script}</script>`,
       };
 
-      new Parser(options).walk()
-        .on('event', () => {
-          throw new Error('Should ignore the component events');
-        })
-        .on('end', done);
-    });
+      const parser = new VuedocParser(options);
+
+        parser.addEventListener('event', () => reject(new Error('Should ignore the component events')));
+        parser.addEventListener('end', done);
+
+      parser.walk();
+    }));
   });
 });

@@ -1,28 +1,24 @@
 {
   "inheritAttrs": true,
-  "errors": [
-    "tag <input> has no matching end tag.",
-    "tag <input> has no matching end tag."
-  ],
+  "errors": [],
   "warnings": [],
   "keywords": [],
-  "slots": [],
   "props": [],
   "data": [
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "string",
       "name": "flightType",
+      "type": "string",
       "initialValue": "\"one-way flight\""
     },
     {
       "kind": "data",
       "keywords": [],
       "visibility": "public",
-      "type": "unknown",
       "name": "departureDate",
+      "type": "unknown",
       "initialValue": "dateToString(new Date())"
     }
   ],
@@ -31,20 +27,19 @@
       "kind": "computed",
       "keywords": [],
       "visibility": "public",
-      "type": "binary",
       "name": "isReturn",
+      "type": "binary",
       "dependencies": []
     },
     {
       "kind": "computed",
       "keywords": [],
       "visibility": "public",
-      "type": "boolean",
       "name": "canBook",
+      "type": "boolean",
       "dependencies": []
     }
   ],
-  "events": [],
   "methods": [
     {
       "kind": "method",
@@ -59,5 +54,7 @@
         "type": "void"
       }
     }
-  ]
+  ],
+  "events": [],
+  "slots": []
 }

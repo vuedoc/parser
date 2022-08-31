@@ -1,53 +1,109 @@
-import { describe } from '@jest/globals';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { describe } from 'vitest';
+import { ComponentTestCase } from '../../src/test/utils.ts';
+import { join } from 'node:path';
 
 describe('Vue 3', () => {
   describe('General Usage', () => {
-    describe('data', () => {
-      ComponentTestCase({
-        name: 'name & description',
-        options: {
-          filecontent: `
-            <script setup>
-              /**
-               * My custom component
-               * @name MyCustomComponent
-               */
+    ComponentTestCase({
+      name: 'name & description',
+      options: {
+        filecontent: `
+          <script setup>
+            /**
+             * My custom component
+             * @name MyCustomComponent
+             */
 
-              import { ref } from 'vue'
+            import { ref } from 'vue'
 
-              /**
-               * Message value
-               */
-              const message = 'Hello World!';
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          name: 'MyCustomComponent',
-          description: 'My custom component',
-          computed: [],
+            /**
+             * Message value
+             */
+            const message = 'Hello World!';
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        name: 'MyCustomComponent',
+        description: 'My custom component',
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'message',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: 'Message value',
+            initialValue: '"Hello World!"',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'vue-router',
+      // only: true,
+      options: {
+        composition: {
           data: [
             {
-              kind: 'data',
-              name: 'message',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Message value',
-              initialValue: '"Hello World!"',
-              keywords: [],
-              visibility: 'public' },
+              fname: 'useRoute',
+              returningType: 'RouteLocationNormalized',
+              returningValue: '',
+            },
           ],
-          props: [],
         },
-      });
+        filecontent: `
+          <script setup>
+            import { useRouter, useRoute } from 'vue-router'
+
+            export default {
+              setup() {
+                const router = useRouter()
+                const route = useRoute()
+            
+                function pushWithQuery(query) {
+                  router.push({
+                    name: 'search',
+                    query: {
+                      ...route.query,
+                    },
+                  })
+                }
+
+                return { route }
+              },
+            }          
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        computed: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'route',
+            type: 'RouteLocationNormalizedLoaded',
+            category: undefined,
+            version: undefined,
+            initialValue: '',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        props: [],
+      },
     });
 
     ComponentTestCase({
       name: 'defineComponent()',
+      // only: true,
       options: {
         filecontent: `
           <script>
@@ -96,7 +152,6 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
             describeModel: false,
             required: false,
             keywords: [],
@@ -108,7 +163,6 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
             describeModel: false,
             required: true,
             keywords: [],
@@ -167,7 +221,6 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
             describeModel: false,
             required: false,
             keywords: [],
@@ -179,7 +232,6 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
             describeModel: false,
             required: true,
             keywords: [],
@@ -237,7 +289,6 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
             describeModel: false,
             required: false,
             keywords: [],
@@ -249,7 +300,6 @@ describe('Vue 3', () => {
             category: undefined,
             version: undefined,
             description: undefined,
-            default: undefined,
             describeModel: false,
             required: true,
             keywords: [],
@@ -389,6 +439,343 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
+      name: 'should handle explicit import for composition fname',
+      options: {
+        filecontent: `
+          <script setup>
+            import { ref as renamedRef } from 'vue'
+
+            /**
+             * Message value
+             */
+            const message = renamedRef('Hello World!');
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'message',
+            type: 'string',
+            category: undefined,
+            version: undefined,
+            description: 'Message value',
+            initialValue: '"Hello World!"',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'PropType<T>',
+      options: {
+        filecontent: `
+          <script setup>
+            import { PropType } from 'vue'
+
+            interface Book {
+              title: string
+              author: string
+              year: number
+            }
+            
+            export default {
+              props: {
+                book: {
+                  // provide more specific type to \`Object\`
+                  type: Object as PropType<Book>,
+                  required: true
+                }
+              }
+            }
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        props: [
+          {
+            kind: 'prop',
+            name: 'book',
+            type: 'Book',
+            category: undefined,
+            version: undefined,
+            required: true,
+            describeModel: false,
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'should handle custom composition useMouse() and destructuring variable declaration',
+      // only: true,
+      options: {
+        filecontent: `
+          <script lang="ts">
+            import { defineComponent } from 'vue';
+            import useMouse from './useMouse';
+            
+            export default defineComponent({
+              setup() {
+                const {
+                  /**
+                   * The state of the mouse
+                   * @type object
+                   * @initialValue {"x":0,"y":0,"buttonHeld":false}
+                   */
+                  mouseState,
+                  /**
+                   * Get scalar distance of mouse position from (0,0)
+                   * @type function
+                   */
+                  mouseDistance
+                } = useMouse();
+            
+                return {
+                  mouseState,
+                  mouseDistance,
+                }
+              }
+            })
+          </script>        
+        `,
+      },
+      expected: {
+        warnings: [],
+        errors: [
+          "Cannot find module './useMouse'. Make sure to define options.resolver",
+        ],
+        data: [
+          {
+            kind: 'data',
+            name: 'mouseState',
+            type: 'object',
+            category: undefined,
+            version: undefined,
+            description: 'The state of the mouse',
+            initialValue: '{"x":0,"y":0,"buttonHeld":false}',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'mouseDistance',
+            type: 'function',
+            category: undefined,
+            version: undefined,
+            description: 'Get scalar distance of mouse position from (0,0)',
+            initialValue: '',
+            keywords: [],
+            visibility: 'public' },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'should handle custom composition useMouse() using function declaration useMouse()',
+      // only: true,
+      options: {
+        filecontent: `
+          <script lang="ts">
+            import { defineComponent } from 'vue';
+
+            function useMouse() {
+              /**
+               * The state of the mouse
+               */
+              const mouseState: IMouseState = reactive({ x: 0, y: 0, buttonHeld: false });
+            
+              function update(event: MouseEvent) {
+                mouseState.x = event.pageX;
+                mouseState.y = event.pageY;
+                mouseState.buttonHeld = (event.buttons & 0x1) !== 0;
+              }
+            
+              /**
+               * Get scalar distance of mouse position from (0,0)
+               * @returns {number} Distance of pointer from (0,0)
+               */
+              const mouseDistance = () => Math.sqrt(mouseState.x ** 2 + mouseState.y ** 2);
+            
+              onMounted(() => {
+                window.addEventListener('mousemove', update);
+                window.addEventListener('mousedown', update);
+                window.addEventListener('mouseup', update);
+              })
+              onUnmounted(() => {
+                window.removeEventListener('mousemove', update);
+                window.removeEventListener('mousedown', update);
+                window.removeEventListener('mouseup', update);
+              })
+            
+              return {
+                mouseState,
+                mouseDistance,
+              }
+            }            
+            
+            export default defineComponent({
+              setup() {
+                const { mouseState, mouseDistance } = useMouse();
+            
+                return {
+                  mouseState,
+                  mouseDistance,
+                }
+              }
+            })
+          </script>        
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'mouseState',
+            type: 'IMouseState',
+            category: undefined,
+            version: undefined,
+            description: 'The state of the mouse',
+            initialValue: '{"x":0,"y":0,"buttonHeld":false}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        methods: [
+          {
+            kind: 'method',
+            description: 'Get scalar distance of mouse position from (0,0)',
+            keywords: [],
+            visibility: 'public',
+            name: 'mouseDistance',
+            params: [],
+            syntax: [
+              'mouseDistance(): number',
+            ],
+            returns: {
+              type: 'number',
+              description: 'Distance of pointer from (0,0)',
+            },
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'should handle custom composition useMouse() defined on another imported file and missing options.resolver',
+      // only: true,
+      options: {
+        filecontent: `
+          <script lang="ts">
+            import { defineComponent } from 'vue.js';
+            import useMouse from './useMouse';       
+            
+            export default defineComponent({
+              setup() {
+                const { mouseState, mouseDistance } = useMouse();
+            
+                return {
+                  mouseState,
+                  mouseDistance,
+                }
+              }
+            })
+          </script>        
+        `,
+      },
+      expected: {
+        warnings: [],
+        errors: [
+          "Cannot find module './useMouse'. Make sure to define options.resolver",
+        ],
+        data: [
+          {
+            kind: 'data',
+            name: 'mouseState',
+            type: 'unknown',
+            initialValue: '',
+            keywords: [],
+            visibility: 'public' },
+          {
+            kind: 'data',
+            name: 'mouseDistance',
+            type: 'unknown',
+            initialValue: '',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        methods: [],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'should handle custom composition useMouse() defined on another imported file and options.resolver',
+      // only: true,
+      options: {
+        resolver: {
+          basedir: join(__dirname, '../fixtures'),
+        },
+        filecontent: `
+          <script lang="ts">
+            import { defineComponent } from 'vue';
+            import useMouse from './useMouse';       
+            
+            export default defineComponent({
+              setup() {
+                const { mouseState, mouseDistance } = useMouse();
+            
+                return {
+                  mouseState,
+                  mouseDistance,
+                }
+              }
+            })
+          </script>
+        `,
+      },
+      expected: {
+        errors: [],
+        warnings: [],
+        data: [
+          {
+            kind: 'data',
+            name: 'mouseState',
+            type: 'IMouseState',
+            category: undefined,
+            version: undefined,
+            description: 'The state of the mouse',
+            initialValue: '{"x":0,"y":0,"buttonHeld":false}',
+            keywords: [],
+            visibility: 'public' },
+        ],
+        methods: [
+          {
+            kind: 'method',
+            description: 'Get scalar distance of mouse position from (0,0)',
+            keywords: [],
+            visibility: 'public',
+            name: 'mouseDistance',
+            params: [],
+            syntax: [
+              'mouseDistance(): number',
+            ],
+            returns: {
+              type: 'number',
+              description: 'Distance of pointer from (0,0)',
+            },
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
       name: 'useSlots()',
       options: {
         filecontent: `
@@ -407,7 +794,101 @@ describe('Vue 3', () => {
     });
 
     ComponentTestCase({
+      name: 'undefined third library vueuse with useStorage()',
+      // only: true,
+      options: {
+        filecontent: `
+          <script setup>
+            import { useStorage } from 'vueuse';
+
+            const store = useStorage()
+          </script>
+        `,
+      },
+      expected: {
+        warnings: [],
+        errors: [
+          "Cannot find module 'vueuse'. Make sure to define options.resolver",
+        ],
+        data: [
+          {
+            kind: 'data',
+            name: 'store',
+            type: 'unknown',
+            initialValue: 'useStorage()',
+            visibility: 'public',
+            keywords: [],
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
+      name: 'third library vueuse with useStorage() with defined options.composition',
+      // only: true,
+      options: {
+        composition: {
+          data: [
+            {
+              fname: 'useStorage',
+              typeParameterIndex: 0,
+              valueIndex: 1,
+            },
+          ],
+        },
+        filecontent: `
+          <script setup>
+            import { useSlots } from 'vue'
+            import { useStorage } from 'vueuse';
+
+            type Store = {
+              /**
+               * The user name
+               */
+              username: string;
+              /**
+               * The user session token
+               */
+              token?: string;
+            };
+
+            const { username, token } = useStorage<Store>('my-store', {
+              username: 'demouser',
+            });
+          </script>
+        `,
+      },
+      expected: {
+        warnings: [],
+        errors: [
+          "Cannot find module 'vueuse'. Make sure to define options.resolver",
+        ],
+        data: [
+          {
+            kind: 'data',
+            name: 'username',
+            type: 'string',
+            description: 'The user name',
+            keywords: [],
+            visibility: 'public',
+            initialValue: '"demouser"',
+          },
+          {
+            kind: 'data',
+            name: 'token',
+            type: ['string', 'undefined'],
+            description: 'The user session token',
+            initialValue: 'undefined',
+            keywords: [],
+            visibility: 'public',
+          },
+        ],
+      },
+    });
+
+    ComponentTestCase({
       name: 'Composition API - State: Handle expose',
+      // only: true,
       options: {
         ignoredVisibilities: [],
         filecontent: `
@@ -475,6 +956,7 @@ describe('Vue 3', () => {
             ],
             returns: {
               type: 'void',
+              description: undefined,
             },
             visibility: 'public',
           },
@@ -488,6 +970,7 @@ describe('Vue 3', () => {
             ],
             returns: {
               type: 'void',
+              description: undefined,
             },
             visibility: 'private',
           },
@@ -501,6 +984,7 @@ describe('Vue 3', () => {
             ],
             returns: {
               type: 'void',
+              description: undefined,
             },
             visibility: 'private',
           },
@@ -510,6 +994,7 @@ describe('Vue 3', () => {
 
     ComponentTestCase({
       name: 'setup()',
+      // only: true,
       options: {
         ignoredVisibilities: [],
         filecontent: `
@@ -673,6 +1158,7 @@ describe('Vue 3', () => {
 
     ComponentTestCase({
       name: 'export default defineComponent() data defined inside setup() and return expose',
+      // only: true,
       options: {
         ignoredVisibilities: [],
         filecontent: `
@@ -831,7 +1317,6 @@ describe('Vue 3', () => {
             description: undefined,
             keywords: [],
             type: 'number',
-            default: undefined,
             name: 'age',
             describeModel: false,
             required: false,
@@ -844,7 +1329,6 @@ describe('Vue 3', () => {
             description: undefined,
             keywords: [],
             type: 'string',
-            default: undefined,
             name: 'name',
             describeModel: false,
             required: false,
@@ -855,6 +1339,7 @@ describe('Vue 3', () => {
 
     ComponentTestCase({
       name: 'complexe example',
+      // only: true,
       options: {
         filecontent: `
           <script>
@@ -1324,12 +1809,310 @@ describe('Vue 3', () => {
         ],
       },
     });
+
+    ComponentTestCase({
+      name: 'complexe todo example with composition api',
+      // only: true,
+      options: {
+        filecontent: `
+          <script>
+            import { ref, computed, watchEffect } from 'vue';
+            
+            const STORAGE_KEY = 'vue-todomvc';
+            
+            const filters = {
+              all: (todos) => todos,
+              active: (todos) => todos.filter((todo) => !todo.completed),
+              completed: (todos) => todos.filter((todo) => todo.completed),
+            };
+            
+            export default {
+              setup() {
+                // state
+                const todos = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+                const visibility = ref('all');
+                const editedTodo = ref(null);
+            
+                // derived state
+                const filteredTodos = computed(() => filters[visibility.value](todos.value));
+                const remaining = computed(() => Math.sqr(2));
+            
+                // handle routing
+                window.addEventListener('hashchange', onHashChange);
+                onHashChange();
+            
+                // persist state
+                watchEffect(() => {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos.value));
+                });
+            
+                function toggleAll(e) {
+                  todos.value.forEach((todo) => (todo.completed = e.target.checked));
+                }
+            
+                function addTodo(e) {
+                  const value = e.target.value.trim();
+            
+                  if (value) {
+                    todos.value.push({
+                      id: Date.now(),
+                      title: value,
+                      completed: false,
+                    });
+                    e.target.value = '';
+                  }
+                }
+            
+                function removeTodo(todo) {
+                  todos.value.splice(todos.value.indexOf(todo), 1);
+                }
+            
+                let beforeEditCache = '';
+            
+                function editTodo(todo) {
+                  beforeEditCache = todo.title;
+                  editedTodo.value = todo;
+                }
+            
+                function cancelEdit(todo) {
+                  editedTodo.value = null;
+                  todo.title = beforeEditCache;
+                }
+            
+                function doneEdit(todo) {
+                  if (editedTodo.value) {
+                    editedTodo.value = null;
+                    todo.title = todo.title.trim();
+                    if (!todo.title) removeTodo(todo);
+                  }
+                }
+            
+                function removeCompleted() {
+                  todos.value = filters.active(todos.value);
+                }
+            
+                function onHashChange() {
+                  const route = window.location.hash.replace(/#\\/?/, '');
+            
+                  if (filters[route]) {
+                    visibility.value = route;
+                  } else {
+                    window.location.hash = '';
+                    visibility.value = 'all';
+                  }
+                }
+            
+                return {
+                  todos,
+                  editedTodo,
+                  visibility,
+                  filteredTodos,
+                  remaining,
+                  toggleAll,
+                  addTodo,
+                  removeTodo,
+                  editTodo,
+                  doneEdit,
+                  cancelEdit,
+                  removeCompleted,
+                };
+              },
+            };
+          </script>
+        `,
+      },
+      expected: {
+        inheritAttrs: true,
+        errors: [],
+        warnings: [],
+        keywords: [],
+        props: [],
+        data: [
+          {
+            kind: 'data',
+            description: 'state',
+            keywords: [],
+            visibility: 'public',
+            name: 'todos',
+            type: 'unknown',
+            initialValue: "JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')",
+          },
+          {
+            kind: 'data',
+            keywords: [],
+            visibility: 'public',
+            name: 'editedTodo',
+            type: 'unknown',
+            initialValue: 'null',
+          },
+          {
+            kind: 'data',
+            keywords: [],
+            visibility: 'public',
+            name: 'visibility',
+            type: 'string',
+            initialValue: '"all"',
+          },
+        ],
+        computed: [
+          {
+            kind: 'computed',
+            description: 'derived state',
+            keywords: [],
+            visibility: 'public',
+            name: 'filteredTodos',
+            type: 'unknown',
+            dependencies: [],
+          },
+          {
+            kind: 'computed',
+            keywords: [],
+            visibility: 'public',
+            name: 'remaining',
+            type: 'number',
+            dependencies: [],
+          },
+        ],
+        methods: [
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'toggleAll',
+            params: [
+              {
+                name: 'e',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            syntax: [
+              'toggleAll(e: unknown): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'addTodo',
+            params: [
+              {
+                name: 'e',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            syntax: [
+              'addTodo(e: unknown): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'removeTodo',
+            params: [
+              {
+                name: 'todo',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            syntax: [
+              'removeTodo(todo: unknown): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'editTodo',
+            params: [
+              {
+                name: 'todo',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            syntax: [
+              'editTodo(todo: unknown): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'doneEdit',
+            params: [
+              {
+                name: 'todo',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            syntax: [
+              'doneEdit(todo: unknown): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'cancelEdit',
+            params: [
+              {
+                name: 'todo',
+                type: 'unknown',
+                rest: false,
+              },
+            ],
+            syntax: [
+              'cancelEdit(todo: unknown): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+          {
+            kind: 'method',
+            keywords: [],
+            visibility: 'public',
+            name: 'removeCompleted',
+            params: [],
+            syntax: [
+              'removeCompleted(): void',
+            ],
+            returns: {
+              type: 'void',
+            },
+          },
+        ],
+        events: [],
+        slots: [],
+      },
+    });
   });
 
   describe('Composition API', () => {
     describe('data', () => {
       ComponentTestCase({
         name: 'simple declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -1508,6 +2291,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'multiple ref declarations',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -1591,6 +2375,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'reactive declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -1601,6 +2386,10 @@ describe('Vue 3', () => {
                */
               const obj = reactive({ count: 0 })
               const map = reactive(new Map([['count', ref(0)]]))
+              /**
+               * The state of the mouse
+               */
+              const mouseState: IMouseState = reactive({ x: 0, y: 0, buttonHeld: false });
             </script>
           `,
         },
@@ -1627,6 +2416,16 @@ describe('Vue 3', () => {
               version: undefined,
               description: undefined,
               initialValue: 'new Map([[\'count\', ref(0)]])',
+              keywords: [],
+              visibility: 'public' },
+            {
+              kind: 'data',
+              name: 'mouseState',
+              type: 'IMouseState',
+              category: undefined,
+              version: undefined,
+              description: 'The state of the mouse',
+              initialValue: '{"x":0,"y":0,"buttonHeld":false}',
               keywords: [],
               visibility: 'public' },
           ],
@@ -1813,6 +2612,28 @@ describe('Vue 3', () => {
       });
 
       ComponentTestCase({
+        name: 'useAttrs() declaration',
+        options: {
+          filecontent: `
+            <script setup>
+              import { useAttrs } from 'vue'
+
+              const shallow = useAttrs({
+                greet: 'Hello, world'
+              })
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [],
+          data: [],
+          props: [],
+        },
+      });
+
+      ComponentTestCase({
         name: 'toRaw() declaration',
         options: {
           filecontent: `
@@ -1867,6 +2688,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'markRaw() declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -1915,6 +2737,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'unref() declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -1959,7 +2782,99 @@ describe('Vue 3', () => {
       });
 
       ComponentTestCase({
-        name: 'unref() declaration',
+        name: 'methods composition with debounce()',
+        // only: true,
+        options: {
+          composition: {
+            methods: [
+              {
+                fname: 'debounce',
+                valueIndex: 0,
+              },
+            ],
+          },
+          filecontent: `
+            <script>
+              import { marked } from 'marked';
+              import { debounce } from 'lodash-es';
+              import { ref, computed } from 'vue';
+              
+              export default {
+                setup() {
+                  const input = ref('# hello');
+              
+                  const output = computed(() => marked(input.value));
+              
+                  const update = debounce((e) => {
+                    input.value = e.target.value;
+                  }, 100);
+              
+                  return {
+                    input,
+                    output,
+                    update,
+                  };
+                },
+              };            
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          props: [],
+          computed: [
+            {
+              kind: 'computed',
+              name: 'output',
+              type: 'unknown',
+              dependencies: [],
+              keywords: [],
+              visibility: 'public',
+            },
+          ],
+          data: [
+            {
+              kind: 'data',
+              name: 'input',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              initialValue: '"# hello"',
+              keywords: [],
+              visibility: 'public' },
+          ],
+          methods: [
+            {
+              kind: 'method',
+              name: 'update',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              syntax: [
+                'update(e: unknown): void',
+              ],
+              keywords: [],
+              params: [
+                {
+                  name: 'e',
+                  rest: false,
+                  type: 'unknown',
+                },
+              ],
+              returns: {
+                type: 'void',
+                description: undefined,
+              },
+              visibility: 'public' },
+          ],
+        },
+      });
+
+      ComponentTestCase({
+        name: 'toRef() declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -2005,7 +2920,8 @@ describe('Vue 3', () => {
       });
 
       ComponentTestCase({
-        name: 'unref() declaration',
+        name: 'setup() with return',
+        // only: true,
         options: {
           filecontent: `
             <script>
@@ -2080,6 +2996,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'explicit exposing ref()',
+        // only: true,
         options: {
           filecontent: `
             <script>
@@ -2123,6 +3040,7 @@ describe('Vue 3', () => {
     describe('computed', () => {
       ComponentTestCase({
         name: 'simple declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -2157,7 +3075,43 @@ describe('Vue 3', () => {
       });
 
       ComponentTestCase({
+        name: 'simple declaration #2',
+        options: {
+          filecontent: `
+            <script setup>
+              import { computed, ref } from 'vue'
+
+              const messagex = ref('Hello World!');
+
+              /**
+               * Message value
+               */
+              const message = computed(() => messagex.value);
+            </script>
+          `,
+        },
+        expected: {
+          errors: [],
+          warnings: [],
+          computed: [
+            {
+              kind: 'computed',
+              name: 'message',
+              type: 'string',
+              category: undefined,
+              version: undefined,
+              description: 'Message value',
+              dependencies: [],
+              keywords: [],
+              visibility: 'public' },
+          ],
+          props: [],
+        },
+      });
+
+      ComponentTestCase({
         name: 'simple declaration with typing',
+        // only: true,
         options: {
           filecontent: `
             <script lang="ts" setup>
@@ -2223,6 +3177,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'writable computed',
+        // only: true,
         options: {
           filecontent: `
             <script lang="ts" setup>
@@ -2270,7 +3225,7 @@ describe('Vue 3', () => {
             {
               kind: 'computed',
               name: 'fullName',
-              type: 'unknown',
+              type: 'string',
               category: undefined,
               version: undefined,
               description: 'Message value',
@@ -2294,6 +3249,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'effectScope() declaration',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -2301,7 +3257,7 @@ describe('Vue 3', () => {
 
               const scope = effectScope()
 
-              scope.run(() => {
+              scope.run((props, { expose }) => {
                 /**
                  * @type number
                  */
@@ -2336,581 +3292,191 @@ describe('Vue 3', () => {
           props: [],
         },
       });
-    });
 
-    describe('props', () => {
       ComponentTestCase({
-        name: 'simple declaration',
+        name: 'effectScope() declaration with expose()',
         options: {
           filecontent: `
             <script setup>
-              const props = defineProps(['foo'])
+              import { effectScope } from 'vue'
 
-              console.log(props.foo)
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          props: [
-            {
-              kind: 'prop',
-              name: 'foo',
-              type: 'unknown',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-          ],
-        },
-      });
+              const scope = effectScope()
 
-      ComponentTestCase({
-        name: 'object declaration',
-        options: {
-          filecontent: `
-            <script setup>
-              defineProps({
+              scope.run((props, { expose }) => {
                 /**
-                 * Title description
+                 * @type number
                  */
-                title: String,
-                likes: Number
+                const doubled = computed(() => counter.value * 2)
+                const modulo = computed(() => counter.value % 2)
+
+                watch(doubled, () => console.log(doubled.value))
+
+                watchEffect(() => console.log('Count: ', doubled.value))
+
+                expose({ doubled })
               })
+
+              // to dispose all effects in the scope
+              scope.stop()
             </script>
           `,
         },
         expected: {
           errors: [],
           warnings: [],
-          props: [
+          computed: [
             {
-              kind: 'prop',
-              name: 'title',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Title description',
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'likes',
+              kind: 'computed',
+              name: 'doubled',
               type: 'number',
               category: undefined,
               version: undefined,
               description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: false,
+              dependencies: [],
               keywords: [],
               visibility: 'public' },
           ],
-        },
-      });
-
-      ComponentTestCase({
-        name: 'declaration with TSTypeLiteral',
-        options: {
-          filecontent: `
-            <script setup lang="ts">
-              defineProps<{
-                /**
-                 * Title description
-                 */
-                title?: string
-                likes?: number
-                modelValue: number
-              }>()
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          props: [
-            {
-              kind: 'prop',
-              name: 'title',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Title description',
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'likes',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'v-model',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: true,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-          ],
-        },
-      });
-
-      ComponentTestCase({
-        name: 'declaration with TSTypeLiteral #2',
-        options: {
-          filecontent: `
-            <script setup lang="ts">
-              defineProps<{
-                /**
-                 * Title description
-                 */
-                title?: string
-                likes?: number
-                modelValue: number
-              }>()
-
-              defineEmits(['update:modelValue'])
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          props: [
-            {
-              kind: 'prop',
-              name: 'title',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Title description',
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'likes',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'v-model',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: true,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-          ],
-        },
-      });
-
-      ComponentTestCase({
-        name: 'declaration with external TSTypeLiteral',
-        options: {
-          filecontent: `
-            <script setup lang="ts">
-              type Props = {
-                /**
-                 * Title description
-                 */
-                title?: string
-                likes: number
-                modelValue: number
-              };
-
-              defineProps<Props>()
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          props: [
-            {
-              kind: 'prop',
-              name: 'title',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Title description',
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'likes',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'v-model',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: true,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-          ],
-        },
-      });
-
-      ComponentTestCase({
-        name: 'declaration with class',
-        options: {
-          filecontent: `
-            <script setup lang="ts">
-              declare class Props {
-                /**
-                 * Title description
-                 */
-                title?: string
-                likes: number
-                modelValue: number
-                get getter() { return this.title }
-              };
-
-              defineProps<Props>()
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
-          props: [
-            {
-              kind: 'prop',
-              name: 'title',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'Title description',
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'likes',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'v-model',
-              type: 'number',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: true,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'getter',
-              type: 'unknown',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-          ],
-        },
-      });
-
-      ComponentTestCase({
-        name: 'declaration with empty TSTypeLiteral',
-        options: {
-          filecontent: `
-            <script setup lang="ts">
-              defineProps<string>()
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          computed: [],
+          data: [],
           props: [],
         },
       });
 
       ComponentTestCase({
-        name: 'declaration with missing type declaration',
+        name: 'effectScope() declaration with return',
         options: {
           filecontent: `
-            <script setup lang="ts">
-              defineProps<MissingTyping>()
+            <script setup>
+              import { effectScope } from 'vue'
+
+              const scope = effectScope()
+
+              scope.run((props, { expose }) => {
+                /**
+                 * @type number
+                 */
+                const doubled = computed(() => counter.value * 2)
+                const modulo = computed(() => counter.value % 2)
+
+                watch(doubled, () => console.log(doubled.value))
+
+                watchEffect(() => console.log('Count: ', doubled.value))
+
+                return { doubled }
+              })
+
+              // to dispose all effects in the scope
+              scope.stop()
             </script>
           `,
         },
         expected: {
           errors: [],
           warnings: [],
+          computed: [
+            {
+              kind: 'computed',
+              name: 'doubled',
+              type: 'number',
+              category: undefined,
+              version: undefined,
+              description: undefined,
+              dependencies: [],
+              keywords: [],
+              visibility: 'public' },
+          ],
+          data: [],
           props: [],
         },
       });
 
       ComponentTestCase({
-        name: 'declaration with modelValue',
+        name: 'effectScope() declaration with inline return',
+        // only: true,
         options: {
           filecontent: `
-            <script setup lang="ts">
-              defineProps(['modelValue'])
+            <script setup>
+              import { effectScope } from 'vue'
+
+              const scope = effectScope()
+
+              scope.run((props, { expose }) => ({
+                /**
+                 * @type number
+                 */
+                doubled: computed(() => counter.value * 2),
+              }))
+
+              // to dispose all effects in the scope
+              scope.stop()
             </script>
           `,
         },
         expected: {
           errors: [],
           warnings: [],
-          props: [
+          computed: [
             {
-              kind: 'prop',
-              name: 'v-model',
-              type: 'unknown',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: true,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-          ],
-        },
-      });
-
-      ComponentTestCase({
-        name: 'Reactive Props Destructure',
-        options: {
-          filecontent: `
-            <script setup lang="ts">
-              interface Props {
-                msg: string
-                // default value just works
-                count?: number
-                // local aliasing also just works
-                // here we are aliasing \`props.foo\` to \`bar\`
-                foo?: string
-              }
-
-              const {
-                msg,
-                count = 1,
-                foo: bar
-              } = defineProps<Props>()
-
-              watchEffect(() => {
-                // will log whenever the props change
-                console.log(msg, count, bar)
-              })
-            </script>
-          `,
-        },
-        expected: {
-          errors: [],
-          warnings: [],
-          props: [
-            {
-              kind: 'prop',
-              name: 'msg',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'count',
+              kind: 'computed',
+              name: 'doubled',
               type: 'number',
               category: undefined,
               version: undefined,
-              description: 'default value just works',
-              default: '1',
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'foo',
-              type: 'string',
-              category: undefined,
-              version: undefined,
-              description: 'here we are aliasing `props.foo` to `bar`',
-              default: undefined,
-              describeModel: false,
-              required: false,
+              description: undefined,
+              dependencies: [],
               keywords: [],
               visibility: 'public' },
           ],
+          data: [],
+          props: [],
         },
       });
 
       ComponentTestCase({
-        name: 'declaration with withDefaults()',
+        name: 'effectScope() declaration with defineExpose()',
+        // only: true,
         options: {
           filecontent: `
-            <script setup lang="ts">
-              enum Bool {
-                oui = 1,
-                non
-              }
+            <script setup>
+              import { effectScope, defineExpose } from 'vue'
 
-              interface Iface {}
+              const scope = effectScope()
 
-              type Name = string;
-
-              interface Props {
-                msg: string
-                labels: string[]
-                enum?: Bool
-                iface?: Iface
+              scope.run(function () {
                 /**
-                 * type description
+                 * @type number
                  */
-                type?: Name
-              }
+                const doubled = computed(() => counter.value * 2)
+                const modulo = computed(() => counter.value % 2)
 
-              const props = withDefaults(defineProps<Props>(), {
-                msg: 'hello',
-                labels: () => ['one', 'two']
+                watch(doubled, () => console.log(doubled.value))
+
+                watchEffect(() => console.log('Count: ', doubled.value))
+
+                defineExpose({ doubled })
               })
+
+              // to dispose all effects in the scope
+              scope.stop()
             </script>
           `,
         },
         expected: {
           errors: [],
           warnings: [],
-          computed: [],
-          props: [
+          computed: [
             {
-              kind: 'prop',
-              name: 'msg',
-              type: 'string',
+              kind: 'computed',
+              name: 'doubled',
+              type: 'number',
               category: undefined,
               version: undefined,
               description: undefined,
-              default: '"hello"',
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'labels',
-              type: 'string[]',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: '["one","two"]',
-              describeModel: false,
-              required: true,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'enum',
-              type: 'Bool',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'iface',
-              type: 'Iface',
-              category: undefined,
-              version: undefined,
-              description: undefined,
-              default: undefined,
-              describeModel: false,
-              required: false,
-              keywords: [],
-              visibility: 'public' },
-            {
-              kind: 'prop',
-              name: 'type',
-              type: 'Name',
-              category: undefined,
-              version: undefined,
-              description: 'type description',
-              default: undefined,
-              describeModel: false,
-              required: false,
+              dependencies: [],
               keywords: [],
               visibility: 'public' },
           ],
+          data: [],
+          props: [],
         },
       });
     });
@@ -3128,6 +3694,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'Usage with v-model',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -3140,11 +3707,23 @@ describe('Vue 3', () => {
           errors: [],
           warnings: [],
           events: [],
+          props: [
+            {
+              kind: 'prop',
+              name: 'v-model',
+              type: 'unknown',
+              required: true,
+              visibility: 'public',
+              describeModel: true,
+              keywords: [],
+            },
+          ],
         },
       });
 
       ComponentTestCase({
         name: 'Multiple v-model bindings',
+        // only: true,
         options: {
           filecontent: `
             <script setup>
@@ -3163,7 +3742,6 @@ describe('Vue 3', () => {
           props: [
             {
               category: undefined,
-              default: undefined,
               describeModel: true,
               keywords: [],
               kind: 'prop',
@@ -3175,7 +3753,6 @@ describe('Vue 3', () => {
             },
             {
               category: undefined,
-              default: undefined,
               describeModel: true,
               keywords: [],
               kind: 'prop',
@@ -3308,6 +3885,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'method with setup property as declaration',
+        // only: true,
         options: {
           filecontent: `
             <script>
@@ -3361,6 +3939,7 @@ describe('Vue 3', () => {
 
       ComponentTestCase({
         name: 'method with setup property',
+        // only: true,
         options: {
           filecontent: `
             <script>

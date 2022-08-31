@@ -1,5 +1,5 @@
-import { describe, expect, it } from '@jest/globals';
-import { parseComponent } from '../../index.js';
+import { describe, expect, it } from 'vitest';
+import { parseComponent } from '../../src/index.ts';
 
 describe('#43 - InheritAttrs Field', () => {
   it('should successfully parse inheritAttrs === true', () => {

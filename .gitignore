@@ -42,11 +42,14 @@ jspm_packages
 # CodeLineX
 .codeline/
 
-# vscode
-.vscode/
-
 # Nix
 .nix-node
 
 # Archives
 *.tgz
+
+*.odp
+*.pdf
+*.png
+esm/
+sample.js

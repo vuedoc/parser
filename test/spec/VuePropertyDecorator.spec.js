@@ -1,5 +1,5 @@
-import { ComponentTestCase } from '../lib/TestUtils.js';
-import { describe } from '@jest/globals';
+import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe } from 'vitest';
 
 const script = `
   <script>
@@ -362,7 +362,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'onInputChange(e: unknown): void',
+            'onInputChange(e: unknown): object',
           ],
           params: [
             {
@@ -375,7 +375,7 @@ describe('Vue Property Decorator', () => {
           ],
           returns: {
             description: undefined,
-            type: 'void',
+            type: 'object',
           },
           visibility: 'public',
         },

@@ -1,7 +1,7 @@
-import { JSDoc } from '../../lib/JSDoc.js';
-import { ComponentTestCase } from '../lib/TestUtils.js';
+import { JSDoc } from '../../src/lib/JSDoc.ts';
+import { ComponentTestCase } from '../../src/test/utils.ts';
 import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it } from 'vitest';
 
 describe('JSDoc', () => {
   describe('parseTypeParam(type)', () => {
@@ -115,7 +115,7 @@ describe('JSDoc', () => {
 
     it('should parse @param keyword with malformated input', () => {
       const comment = '{ !x=> The x value.';
-      const expected = { type: 'unknown', name: null, description: undefined };
+      const expected = { type: 'unknown', name: '', description: undefined };
       const result = JSDoc.parseParamKeyword(comment);
 
       expect(result).toEqual(expected);
@@ -620,7 +620,7 @@ describe('JSDoc', () => {
           name: 'withParameterProperties',
           params: [
             {
-              type: 'Object',
+              type: 'object',
               name: 'employee',
               description: 'The employee who is responsible for the project.',
               defaultValue: undefined,
@@ -687,7 +687,7 @@ describe('JSDoc', () => {
           name: 'withDestructuringParameter',
           params: [
             {
-              type: 'Object',
+              type: 'object',
               name: 'employee',
               description: 'The employee who is responsible for the project.',
               defaultValue: undefined,
@@ -754,7 +754,7 @@ describe('JSDoc', () => {
           name: 'withPropertiesOfValuesInAnArray',
           params: [
             {
-              type: 'Object[]',
+              type: 'object[]',
               name: 'employees',
               description: 'The employees who are responsible for the project.',
               defaultValue: undefined,
@@ -1257,7 +1257,7 @@ describe('JSDoc', () => {
           returns: {
             type: [
               'number',
-              'Array',
+              'array',
             ],
             description: 'Sum of a and b or an array that contains a, b and the sum of a and b.',
           },

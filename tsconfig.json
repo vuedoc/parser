@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "target": "ES2020",
+    "module": "ES2020",
+    "strict": false,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": false,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "listEmittedFiles": true,
+    "rootDir": "src",
+    "outDir": "esm",
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "esm",
+    "coverage",
+    "node_modules",
+    "**/__mocks__"
+  ]
+}
