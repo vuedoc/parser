@@ -30,8 +30,8 @@ type CompositionValue = {
 };
 
 const DUPLICATED_SPACES_RE = /\s+/g;
-const BOOLEAN_OPERATOR_RE = /(&&|\|\|)/;
-const BITWISE_OPERATOR_RE = /(&|\||^|<<|>>>?)/;
+const BOOLEAN_OPERATORS = ['&&', '||', '==', '===', '!=', '!==', 'in', 'instanceof', '>', '>=', '<', '<='];
+const BITWISE_OPERATORS = ['&', '|', '^', '<<', '>>', '>>>', '|>'];
 const NUMERIC_OPERATORS = ['*', '+', '-', '/', '**', '%'];
 const IGNORED_SCOPED_TYPES: string[] = [Type.any, Type.unknown];
 
@@ -742,18 +742,19 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         type = Type.number;
         break;
 
-      case Syntax.BinaryExpression:
-        type = this.getBinaryExpression(node).type;
-        break;
-
       case Syntax.StringLiteral:
       case Syntax.TemplateLiteral:
         type = Type.string;
         break;
 
       case Syntax.BooleanLiteral:
-      case Syntax.LogicalExpression:
         type = Type.boolean;
+        break;
+
+      case Syntax.LogicalExpression:
+      case Syntax.BinaryExpression:
+      case Syntax.AssignmentExpression:
+        type = this.getExpressionType(node);
         break;
 
       case Syntax.NumericLiteral:
@@ -1113,8 +1114,13 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
 
       case Syntax.BooleanLiteral:
-      case Syntax.LogicalExpression:
         type = Type.boolean;
+        break;
+
+      case Syntax.LogicalExpression:
+      case Syntax.BinaryExpression:
+      case Syntax.AssignmentExpression:
+        type = this.getExpressionType(node);
         break;
 
       case Syntax.NumericLiteral:
@@ -1482,34 +1488,37 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return this.getSourceValue(node, type);
   }
 
-  getAssignmentExpression(node: Babel.AssignmentExpression): Value {
-    let type: Parser.Type;
-
-    if (BOOLEAN_OPERATOR_RE.test(node.operator)) {
-      type = Type.boolean;
-    } else if (BITWISE_OPERATOR_RE.test(node.operator)) {
-      type = Type.binary;
-    } else {
-      type = this.parseType(node.left);
+  getExpressionType(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression) {
+    if (BITWISE_OPERATORS.includes(node.operator)) {
+      return Type.binary;
     }
 
-    return new Value(type, this.getSourceString(node));
-  }
+    const types = [this.parseType(node.left), this.parseType(node.right)];
 
-  getBinaryExpression(node: Babel.BinaryExpression): Value {
-    let type: string = Type.binary;
+    if (types.includes(Type.string)) {
+      return Type.string;
+    }
 
     if (NUMERIC_OPERATORS.includes(node.operator)) {
-      const types = [this.parseType(node.left), this.parseType(node.right)];
-
-      if (types.includes(Type.string)) {
-        type = Type.string;
-      } else {
-        type = types[0];
-      }
+      return Type.number;
     }
 
-    return new Value(type, this.getSourceString(node));
+    if (types[0] === types[1]) {
+      return BOOLEAN_OPERATORS.includes(node.operator) ? Type.boolean : types[0];
+    }
+
+    if (BOOLEAN_OPERATORS.includes(node.operator)) {
+      return Type.boolean;
+    }
+
+    return types[0];
+  }
+
+  getExpressionValue(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression): Value {
+    const type = this.getExpressionType(node);
+    const value = this.getSourceString(node);
+
+    return new Value(type, value, value);
   }
 
   getArrayExpression(node: Babel.ArrayExpression): Value<any[]> {
@@ -1544,9 +1553,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       case Syntax.StringLiteral:
         return new Value(Type.string, node.value, JSON.stringify(node.value));
 
-      case Syntax.LogicalExpression:
-        return new Value(Type.boolean, this.getSourceString(node));
-
       case Syntax.BooleanLiteral:
         return new Value(Type.boolean, node.value, `${node.value}`);
 
@@ -1567,6 +1573,11 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
       case Syntax.UnaryExpression:
         return this.getUnaryExpression(node);
+
+      case Syntax.BinaryExpression:
+      case Syntax.LogicalExpression:
+      case Syntax.AssignmentExpression:
+        return this.getExpressionValue(node);
 
       case Syntax.CallExpression:
         return this.getCallExpression(node);
@@ -1600,12 +1611,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
       case Syntax.TSAsExpression:
         return this.getValue(node.expression);
-
-      case Syntax.AssignmentExpression:
-        return this.getAssignmentExpression(node);
-
-      case Syntax.BinaryExpression:
-        return this.getBinaryExpression(node);
 
       default:
         if (AbstractParser.isFunction(node)) {
