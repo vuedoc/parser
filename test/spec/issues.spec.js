@@ -1521,7 +1521,7 @@ describe('issues', () => {
           arguments: [
             {
               name: 'index',
-              type: 'unknown',
+              type: 'number',
               description: undefined,
               rest: false,
             },
@@ -1544,7 +1544,7 @@ describe('issues', () => {
             },
             {
               name: 'index',
-              type: 'unknown',
+              type: 'number',
               description: undefined,
               rest: false,
             },

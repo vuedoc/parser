@@ -1202,10 +1202,10 @@ describe('Vue 3', () => {
             name: 'increment',
             params: [],
             returns: {
-              type: 'unknown',
+              type: 'number',
             },
             syntax: [
-              'increment(): unknown',
+              'increment(): number',
             ],
             visibility: 'public',
           },
