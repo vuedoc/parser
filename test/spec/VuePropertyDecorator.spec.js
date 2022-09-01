@@ -362,7 +362,7 @@ describe('Vue Property Decorator', () => {
           category: undefined,
           version: undefined,
           syntax: [
-            'onInputChange(e: unknown): object',
+            'onInputChange(e: unknown): unknown',
           ],
           params: [
             {
@@ -375,7 +375,7 @@ describe('Vue Property Decorator', () => {
           ],
           returns: {
             description: undefined,
-            type: 'object',
+            type: 'unknown',
           },
           visibility: 'public',
         },

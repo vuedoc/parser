@@ -698,16 +698,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
             type = this.getMemberExpression(returnNode).type;
             break;
 
-          case Syntax.ConditionalExpression: {
-            const consequentType = this.getNodeType(returnNode.consequent);
-            const alternateType = this.getNodeType(returnNode.alternate);
-
-            if (consequentType && alternateType && consequentType === alternateType) {
-              type = consequentType;
-            }
-            break;
-          }
-
           default:
             type = this.getNodeType(returnNode, Type.void);
             break;
@@ -724,7 +714,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return type;
   }
 
-  getNodeType(node: Babel.Node, defaultType?: Parser.Type) {
+  getNodeType(node: Babel.Node, defaultType?: Parser.Type | Parser.Type[]) {
     let type: Parser.Type | Parser.Type[] = defaultType;
 
     switch (node.type) {
@@ -757,6 +747,10 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         type = this.getExpressionType(node);
         break;
 
+      case Syntax.ConditionalExpression:
+        type = this.getConditionalExpressionType(node);
+        break;
+
       case Syntax.NumericLiteral:
         type = Type.number;
         break;
@@ -778,9 +772,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
 
       case Syntax.MemberExpression:
-        type = node.property.type === Syntax.Identifier && node.property.name === 'length'
-          ? Type.number
-          : Type.object;
+        type = this.getMemberExpression(node).type;
         break;
 
       default:
@@ -1109,47 +1101,20 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         }
         break;
 
-      case Syntax.StringLiteral:
-        type = Type.string;
-        break;
-
-      case Syntax.BooleanLiteral:
-        type = Type.boolean;
-        break;
-
-      case Syntax.LogicalExpression:
-      case Syntax.BinaryExpression:
-      case Syntax.AssignmentExpression:
-        type = this.getExpressionType(node);
-        break;
-
-      case Syntax.NumericLiteral:
-        type = Type.number;
-        break;
-
-      case Syntax.BigIntLiteral:
-        type = Type.bigint;
-        break;
-
-      case Syntax.RegExpLiteral:
-        type = Type.regexp;
-        break;
-
-      case Syntax.ArrayExpression:
-        type = Type.array;
-        break;
-
-      case Syntax.NullLiteral:
-        type = Type.null;
-        break;
-
-      default:
+      default: {
         if ('typeAnnotation' in node && 'typeAnnotation' in node.typeAnnotation) {
           type = this.getInlineSourceString(node.typeAnnotation.typeAnnotation);
         } else if (node.type.startsWith('TS')) {
           type = this.getInlineSourceString(node);
+        } else {
+          const guestType = this.getNodeType(node, type);
+
+          if (guestType && guestType !== Type.unknown) {
+            type = guestType;
+          }
         }
         break;
+      }
     }
 
     return type;
@@ -1418,9 +1383,9 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     const exp = this.getSourceString(node);
     const type = exp.startsWith('Math.') || exp.startsWith('Number.') || (node.property.type === Syntax.Identifier && node.property.name === 'length')
       ? Type.number
-      : Type.object;
+      : Type.unknown;
 
-    if (type === Type.object) {
+    if (type === Type.unknown) {
       switch (node.object.type) {
         case Syntax.Identifier: {
           const key = 'name' in node.property ? node.property.name : this.getValue(node.property).value as string;
@@ -1514,8 +1479,17 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return types[0];
   }
 
-  getExpressionValue(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression): Value {
-    const type = this.getExpressionType(node);
+  getConditionalExpressionType(node: Babel.ConditionalExpression) {
+    const consequentType = this.getNodeType(node.consequent);
+    const alternateType = this.getNodeType(node.alternate);
+
+    return consequentType === alternateType
+      ? consequentType
+      : [consequentType, alternateType] as string[];
+  }
+
+  getExpressionValue(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression | Babel.ConditionalExpression): Value {
+    const type = this.getNodeType(node);
     const value = this.getSourceString(node);
 
     return new Value(type, value, value);
@@ -1577,6 +1551,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       case Syntax.BinaryExpression:
       case Syntax.LogicalExpression:
       case Syntax.AssignmentExpression:
+      case Syntax.ConditionalExpression:
         return this.getExpressionValue(node);
 
       case Syntax.CallExpression:

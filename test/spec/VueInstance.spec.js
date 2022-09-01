@@ -44,7 +44,7 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'url',
-        type: 'object',
+        type: 'unknown',
         category: undefined,
         version: undefined,
         description: undefined,
@@ -54,7 +54,7 @@ ComponentTestCase({
       {
         kind: 'data',
         name: 'contextUrl',
-        type: 'object',
+        type: 'unknown',
         category: undefined,
         version: undefined,
         description: 'data contextUrl description',

@@ -1291,7 +1291,7 @@ describe('issues', () => {
           version: undefined,
           keywords: [],
           name: 'initialValue',
-          type: 'object',
+          type: 'unknown',
           initialValue: 'this.value',
         },
         {
@@ -1419,7 +1419,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknown',
+          type: 'number',
           category: undefined,
           description: undefined,
           version: undefined,

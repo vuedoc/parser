@@ -353,7 +353,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'unknown',
+          type: 'number',
           category: undefined,
           description: undefined,
           keywords: [],
