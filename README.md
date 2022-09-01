@@ -1261,17 +1261,17 @@ Vuedoc can be extended using plugins.
 
 To use a plugin, it needs to be added to the `devDependencies` of the project
 and included in the plugins array `options.plugins`. For example, to provide
-support of Vue Router, the official [`@vuedoc/vue-router-plugin`](https://gitlab.com/vuedoc/vue-router-plugin)
+support of Vue Router, the official [`@vuedoc/plugin-vue-router`](https://gitlab.com/vuedoc/plugin-vue-router)
 can be used:
 
 ```sh
-$ npm add -D @vuedoc/vue-router-plugin
+$ npm add -D @vuedoc/plugin-vue-router
 ```
 
 ```js
 // main.js
 import { parseComponent } from '@vuedoc/parser';
-import { VueRouterPlugin } from '@vuedoc/vue-router-plugin';
+import { VueRouterPlugin } from '@vuedoc/plugin-vue-router';
 
 const component = await parseComponent({
   plugins: [
@@ -1285,8 +1285,8 @@ const component = await parseComponent({
 
 | Name              | Description                      | Documentation                                                              |
 | ----------------- | -------------------------------- | -------------------------------------------------------------------------- |
-| Vue Router Plugin | The Vue Router plugin for Vuedoc | [`@vuedoc/vue-router-plugin`](https://gitlab.com/vuedoc/vue-router-plugin) |
-| Vuex Plugin       | The Vuex plugin for Vuedoc       | [`@vuedoc/vuex-plugin`](https://gitlab.com/vuedoc/vuex-plugin)             |
+| Vue Router Plugin | The Vue Router plugin for Vuedoc | [`@vuedoc/plugin-vue-router`](https://gitlab.com/vuedoc/plugin-vue-router) |
+| Vuex Plugin       | The Vuex plugin for Vuedoc       | [`@vuedoc/plugin-vuex`](https://gitlab.com/vuedoc/plugin-vuex)             |
 
 ### Building Plugins
 
