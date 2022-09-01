@@ -824,7 +824,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
     if (init.type === Syntax.CallExpression && 'callee' in init && 'name' in init.callee) {
       const fname = init.callee.name;
-      const composition = this.composition.get(fname, [
+      let composition = this.composition.get(fname, [
         // order is important
         CompositionFeature.props,
         CompositionFeature.data,
@@ -869,6 +869,26 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
           ref = this.getValue(argument);
           argumentNode = argument;
+
+          if (argument.type === Syntax.CallExpression) {
+            const nested = this.getCompositionValue({ ...options, init: argument });
+
+            if (nested.ref) {
+              ref = nested.ref;
+            }
+
+            if (nested.node) {
+              argumentNode = nested.node;
+            }
+
+            if (nested.tsValue) {
+              tsValue = nested.tsValue;
+            }
+
+            if (nested.composition) {
+              composition = nested.composition;
+            }
+          }
 
           if (tsValue) {
             ref.type = this.getTypeParameterValue(argumentNode, composition.typeParameterIndex)
