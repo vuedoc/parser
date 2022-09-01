@@ -29,7 +29,7 @@ improvements:
 - Improve parsing performance by reducing internal instances
 - Improve documentation by adding more examples
 
-**Dependencies Changes***
+**Dependencies Changes**
 
 - Upgrade to `@babel/parser@7.18.13`
 

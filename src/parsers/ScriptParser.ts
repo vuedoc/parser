@@ -374,7 +374,8 @@ export class ScriptParser<ParseNode = void, Root = never>
               result.node = tsValue.node[options.key];
             }
           } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
-            value.type = ScriptParser.parseTsValueType(tsValue);
+            value.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
+              || ScriptParser.parseTsValueType(tsValue);
 
             if (!Array.isArray(tsValue.node)) {
               result.node = tsValue.node as Babel.Node;
@@ -386,12 +387,21 @@ export class ScriptParser<ParseNode = void, Root = never>
           } else {
             result.ref = value;
             result.tsValue = tsValue;
+            result.ref.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
+              || ScriptParser.parseTsValueType(tsValue);
           }
         } else if (result.ref) {
-          result.ref.type = ref.value.type;
+          if (ref.value.type !== Type.unknown) {
+            result.ref.type = ref.value.type;
+          }
         } else {
           result.ref = ref.value;
           result.tsValue = ref.tsValue;
+
+          if (ref.tsValue) {
+            result.ref.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
+              || ScriptParser.parseTsValueType(ref.tsValue);
+          }
         }
 
         if (result.node) {

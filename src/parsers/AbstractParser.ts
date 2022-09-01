@@ -133,6 +133,18 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return JSON.stringify(raw);
   }
 
+  getTypeParameterValue(node: Babel.Node, typeParameterIndex: number) {
+    if (typeParameterIndex >= 0 && 'typeParameters' in node && 'params' in node.typeParameters) {
+      if (typeParameterIndex < node.typeParameters.params.length) {
+        const tsValue = this.getTSValue(node.typeParameters.params[typeParameterIndex]);
+
+        return AbstractParser.parseTsValueType(tsValue);
+      }
+    }
+
+    return null;
+  }
+
   parseNodeRef(
     rawType: string | string[] | Record<string, string>,
     rawNode: Babel.Node | Babel.Node[] | Record<string, Babel.Node>
@@ -866,14 +878,16 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           argumentNode = argument;
 
           if (tsValue) {
-            ref.type = AbstractParser.parseTsValueType(tsValue);
+            ref.type = this.getTypeParameterValue(argumentNode, composition.typeParameterIndex)
+              || AbstractParser.parseTsValueType(tsValue);
 
             if (options.key) {
               if (typeof tsValue.type === 'object') {
                 ref.type = Array.isArray(tsValue.type) ? tsValue.type : tsValue.type[options.key];
               }
             } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
-              ref.type = AbstractParser.parseTsValueType(tsValue);
+              ref.type = this.getTypeParameterValue(argumentNode, composition.typeParameterIndex)
+                || AbstractParser.parseTsValueType(tsValue);
             }
           } else if (composition.feature === Feature.computed) {
             if (AbstractParser.isFunction(argument)) {
@@ -1210,6 +1224,14 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           node: node.types,
           type: node.types.map((item) => this.getTSTypeRaw(item)),
         };
+        break;
+
+      case Syntax.TSTypeParameter:
+        if (node.constraint) {
+          node.extra.$tsvalue = this.getTSValue(node.constraint, force);
+        } else {
+          node.extra.$tsvalue = { type: node.name, node };
+        }
         break;
 
       case Syntax.TSTypeLiteral: {

@@ -47,6 +47,10 @@ export class ScriptRegisterParser extends CompositionParser {
         this.parseExportNamedDeclaration(node);
         break;
 
+      case Syntax.ExportAllDeclaration:
+        this.parseExportAllDeclaration(node);
+        break;
+
       case Syntax.FunctionDeclaration:
         for (const item of node.body.body) {
           this.parseAstStatement(item);
@@ -65,6 +69,34 @@ export class ScriptRegisterParser extends CompositionParser {
 
   parseExportDefaultDeclaration(item: Babel.ExportDefaultDeclaration) {
     this.exposeDeclaration('default', item.declaration || item);
+  }
+
+  parseExportSpecifier(item: Babel.ExportSpecifier) {
+    const name = 'name' in item.exported
+      ? item.exported.name
+      : this.getValue(item.exported).value as string;
+
+    this.exposeDeclaration(name, item.local);
+  }
+
+  parseExportNamespaceSpecifier(_item: Babel.ExportNamespaceSpecifier) {
+    // TODO Implement parseExportNamespaceSpecifier
+  }
+
+  parseExportDefaultSpecifier(item: Babel.ExportDefaultSpecifier) {
+    this.exposeDeclaration('default', item.exported);
+  }
+
+  parseExportAllDeclaration(item: Babel.ExportAllDeclaration) {
+    if (item.assertions) {
+      for (const assertion of item.assertions) {
+        const name = 'name' in assertion.key
+          ? assertion.key.name
+          : this.getValue(assertion.key).value as string;
+
+        this.exposeDeclaration(name, assertion);
+      }
+    }
   }
 
   parseExportNamedDeclaration(item: Babel.ExportNamedDeclaration) {
@@ -87,6 +119,22 @@ export class ScriptRegisterParser extends CompositionParser {
             this.exposeDeclaration(name, item.declaration);
           }
           break;
+        }
+      }
+    } else {
+      for (const specifier of item.specifiers) {
+        switch (specifier.type) {
+          case Syntax.ExportSpecifier:
+            this.parseExportSpecifier(specifier);
+            break;
+
+          case Syntax.ExportDefaultSpecifier:
+            this.parseExportDefaultSpecifier(specifier);
+            break;
+
+          case Syntax.ExportNamespaceSpecifier:
+            this.parseExportNamespaceSpecifier(specifier);
+            break;
         }
       }
     }
