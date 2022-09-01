@@ -1,3 +1,12 @@
+## Vuedoc Parser 4.0.0-beta12
+
+This release fixes the plugins section on the README documentation.
+
+## Vuedoc Parser 4.0.0-beta11
+
+This release fixes packaging by adding the missing `@vuedoc/parser/test-utils`
+module.
+
 ## Vuedoc Parser 4.0.0-beta10
 
 This release introduces Vuedoc Plugins and many other new features and
