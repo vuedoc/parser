@@ -1,11 +1,11 @@
-import { FAKE_NODEMODULES_PATHS } from '../../src/test/utils.ts';
 import { VuedocParser } from '../../src/parsers/VuedocParser.ts';
 
 export function loadSFC(sfc) {
   const root = new VuedocParser({
     filecontent: '',
     resolver: {
-      paths: FAKE_NODEMODULES_PATHS,
+      // eslint-disable-next-line no-undef
+      paths: globalThis.VUEDOC_FAKE_NODEMODULES_PATHS,
     },
   });
 

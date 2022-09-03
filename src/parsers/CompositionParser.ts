@@ -1,9 +1,9 @@
 import { Options, ScriptParser } from './ScriptParser.js';
-import { generateUndefineValue, Value } from '../entity/Value.js';
 import { RegisterFactory } from './ScriptRegisterParser.js';
 import { Syntax, Properties, Feature, Type, Visibility, CompositionProperties, CompositionHooks, CompositionFeature } from '../lib/Enum.js';
 import { CompositionValueOptions, generateName } from './AbstractParser.js';
 import { CommentParser } from './CommentParser.js';
+import { Value } from '../entity/Value.js';
 
 import { Parser } from '../../types/Parser.js';
 import { Entry } from '../../types/Entry.js';
@@ -125,6 +125,7 @@ export class CompositionParser extends ScriptParser {
   }
 
   parse() {
+    this.transverse(this.source.ast.program.body);
     this.parseComponentComment();
     super.parse();
   }
@@ -159,10 +160,6 @@ export class CompositionParser extends ScriptParser {
 
   parseAstStatement(item) {
     switch (item.type) {
-      case Syntax.FunctionDeclaration:
-        this.parseFunctionDeclaration(item);
-        break;
-
       case Syntax.ReturnStatement:
         this.parseReturnStatement(item);
         break;
@@ -247,8 +244,15 @@ export class CompositionParser extends ScriptParser {
     const decoratorValue = this.getDeclaratorValue(options);
 
     if (decoratorValue.ref && decoratorValue.composition) {
-      this.setScopeValue(key, decoratorValue.node || options.id, decoratorValue.ref);
-      this.parseCompositionFeatureEntry(key, decoratorValue.composition, options);
+      if (typeof decoratorValue.composition.parseEntryNode === 'function') {
+        decoratorValue.composition.parseEntryNode(options.init as Babel.CallExpression, this);
+      } else if (!decoratorValue.composition.ignoreVariableIdentifier) {
+        this.setScopeValue(key, decoratorValue.argument || options.id, decoratorValue.ref, {
+          nodeComment: options.id,
+        });
+
+        this.parseCompositionFeatureEntry(key, decoratorValue.composition, options);
+      }
 
       return true;
     }
@@ -261,6 +265,7 @@ export class CompositionParser extends ScriptParser {
       const shouldEmitOnDeclarationsBackup = this.shouldEmitOnDeclarations;
 
       this.shouldEmitOnDeclarations = !checkExpliciExpose(node);
+      this.transverse(node.body);
       node.body.forEach((item) => this.parseAstStatement(item));
       this.shouldEmitOnDeclarations = shouldEmitOnDeclarationsBackup;
     } else if (node.type === Syntax.ObjectExpression) {
@@ -301,17 +306,11 @@ export class CompositionParser extends ScriptParser {
             this.parseCompositionFeature(node.callee.name, node);
           } else {
             const key = generateVarName.next().value;
-            const options: CompositionValueOptions = {
+
+            this.parseCompositionCallExpression(key, {
               id: node,
               init: node,
-            };
-
-            const decoratorValue = this.getDeclaratorValue(options);
-
-            if (decoratorValue.ref && decoratorValue.composition) {
-              this.setScopeValue(key, decoratorValue.argument || options.id, decoratorValue.ref);
-              this.parseCompositionFeatureEntry(key, decoratorValue.composition, options);
-            }
+            });
           }
           break;
       }
@@ -575,13 +574,6 @@ export class CompositionParser extends ScriptParser {
     } else {
       this.registerFunctionDeclaration(node);
     }
-  }
-
-  registerFunctionDeclaration(node) {
-    const fname = this.parseKey(node);
-    const value = generateUndefineValue.next().value;
-
-    this.setScopeValue(fname, node, value);
   }
 
   parseVariableDeclaration(node) {

@@ -359,6 +359,9 @@ export class PropParser extends AbstractExpressionParser {
         type = this.getTSTypeRaw(nodeType, type);
         break;
 
+      case Syntax.ObjectExpression:
+        break;
+
       case Syntax.MemberExpression:
         switch (nodeType.object.type) {
           case Syntax.Identifier:
@@ -388,9 +391,15 @@ export class PropParser extends AbstractExpressionParser {
         break;
     }
 
+    if (nodeType.type === Syntax.ObjectExpression && ref.value.type === undefined) {
+      type = Type.unknown;
+    } else {
+      type = type instanceof Array ? type : this.getTSType(nodeType, type);
+    }
+
     return {
       required,
-      value: type instanceof Array ? type : this.getTSType(nodeType, type),
+      value: type,
     };
   }
 

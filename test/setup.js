@@ -1,6 +1,9 @@
-import { join } from 'node:path';
+/* eslint-disable no-undef */
 
-// eslint-disable-next-line no-undef
-globalThis.FAKE_NODEMODULES_PATHS = [
+import { join } from 'node:path';
+import * as vuedoc from '../src/index.ts';
+
+globalThis.VUEDOC_PACKAGE = vuedoc;
+globalThis.VUEDOC_FAKE_NODEMODULES_PATHS = [
   join(__dirname, './fake_node_modules'),
 ];

@@ -137,11 +137,19 @@ export class VuedocParser extends EventTarget implements Parser.Interface {
         throw new TypeError('options.features must be an array');
       }
 
-      options.features.forEach((feature) => {
+      for (const feature of options.features) {
         if (!Features.includes(feature)) {
           throw new Error(`Unknow '${feature}' feature. Supported features: ${JSON.stringify(Features)}`);
         }
-      });
+      }
+    }
+
+    if (options.plugins) {
+      for (const plugin of options.plugins) {
+        if (typeof plugin !== 'function') {
+          throw new TypeError('options.plugins must be a list of functions');
+        }
+      }
     }
   }
 
@@ -158,17 +166,19 @@ export class VuedocParser extends EventTarget implements Parser.Interface {
   parsePlugins() {
     if (this.options.plugins) {
       for (const plugin of this.options.plugins) {
-        const def = plugin(this);
+        if (typeof plugin === 'function') {
+          const def = plugin(this);
 
-        if (def) {
-          this.plugins.push(def);
+          if (def) {
+            this.plugins.push(def);
 
-          if (def.resolver) {
-            merge(this.options.resolver, def.resolver);
-          }
+            if (def.resolver) {
+              merge(this.options.resolver, def.resolver);
+            }
 
-          if (def.composition) {
-            this.composition.unshift(def.composition);
+            if (def.composition) {
+              this.composition.unshift(def.composition);
+            }
           }
         }
       }

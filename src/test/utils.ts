@@ -12,13 +12,13 @@ export const ComponentTestCase = ({ name, description, only = false, expected, o
         options.filecontent = await options.filecontent;
       }
 
-      if (globalThis.FAKE_NODEMODULES_PATHS) {
+      if (globalThis.VUEDOC_FAKE_NODEMODULES_PATHS) {
         if (!options.resolver) {
           options.resolver = {};
         }
 
         merge(options.resolver, {
-          paths: globalThis.FAKE_NODEMODULES_PATHS,
+          paths: globalThis.VUEDOC_FAKE_NODEMODULES_PATHS,
         });
       }
 

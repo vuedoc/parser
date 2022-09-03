@@ -1,6 +1,6 @@
 import { RestValue } from '../entity/RestValue.js';
 import { Value, generateUndefineValue, generateNullGenerator, generateObjectGenerator, generateArrayGenerator } from '../entity/Value.js';
-import { Syntax, Type, TypeList, CompositionTypes, Feature, CompositionFeature } from '../lib/Enum.js';
+import { Syntax, Type, CompositionTypes, Feature, CompositionFeature } from '../lib/Enum.js';
 import { clear, get } from '@b613/utils/lib/object.js';
 import { Entry } from '../../types/Entry.js';
 import { Parser } from '../../types/Parser.js';
@@ -11,7 +11,7 @@ import { DTS } from '../lib/DTS.js';
 
 import * as Babel from '@babel/types';
 
-export type CompositionValueOptions = Pick<Babel.VariableDeclarator, 'init'> & {
+export type CompositionValueOptions = Required<Pick<Babel.VariableDeclarator, 'init'>> & {
   key?: string;
   local?: string;
   id: {
@@ -29,6 +29,7 @@ type CompositionValue = {
   composition?: Parser.CompiledComposition;
 };
 
+const NATIVE_OBJECTS = ['Symbol', 'BigInt', 'Boolean', 'Number'];
 const DUPLICATED_SPACES_RE = /\s+/g;
 const BOOLEAN_OPERATORS = ['&&', '||', '==', '===', '!=', '!==', 'in', 'instanceof', '>', '>=', '<', '<='];
 const BITWISE_OPERATORS = ['&', '|', '^', '<<', '>>', '>>>', '|>'];
@@ -246,10 +247,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         this.parseExpressionStatement(node);
         break;
 
-      case Syntax.FunctionDeclaration:
-        this.parseFunctionDeclaration(node);
-        break;
-
       default:
         if (AbstractParser.isFunction(node)) {
           this.parseFunctionExpression(node.body);
@@ -258,10 +255,18 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     }
   }
 
-  /* istanbul ignore next */
-  /* eslint-disable no-unused-vars */
-  /* eslint-disable class-methods-use-this */
-  parseFunctionDeclaration(_node: Babel.FunctionDeclaration) {}
+  parseFunctionDeclaration(node: Babel.FunctionDeclaration) {
+    this.registerFunctionDeclaration(node);
+  }
+
+  registerFunctionDeclaration(node) {
+    if (node.id) {
+      const fname = this.parseKey(node);
+      const value = generateUndefineValue.next().value;
+
+      this.setScopeValue(fname, node, value);
+    }
+  }
 
   /* istanbul ignore next */
   /* eslint-disable no-unused-vars */
@@ -359,7 +364,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     declarator.id.name = generateArrayName.next().value;
 
     this.setScopeValue(declarator.id.name, declarator.init, array);
-    this.parseVariableDeclarationElements(id.elements, declarator);
+    this.parseVariableDeclarationElements(id.elements, declarator as any);
   }
 
   parseVariableDeclarationObjectPattern(declarator: Parser.AST.VariableDeclarator, id: Babel.ObjectPattern) {
@@ -368,7 +373,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     declarator.id.name = generateObjectName.next().value;
 
     this.setScopeValue(declarator.id.name, declarator.init, object);
-    this.parseVariableDeclarationElements(id.properties, declarator);
+    this.parseVariableDeclarationElements(id.properties, declarator as any);
   }
 
   getVariableDeclarationElementIdentifier(
@@ -681,13 +686,9 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       if (returnNode) {
         switch (returnNode.type) {
           case Syntax.ReturnStatement:
-            if ('argument' in returnNode) {
-              const returnValue = this.getValue(returnNode.argument);
-
-              type = returnValue.type;
-            } else {
-              type = Type.unknown;
-            }
+            type = 'argument' in returnNode
+              ? this.getNodeType(returnNode.argument, type)
+              : Type.unknown;
             break;
 
           case Syntax.Identifier:
@@ -767,8 +768,22 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         type = Type.array;
         break;
 
+      case Syntax.ObjectExpression:
+        type = Type.object;
+        break;
+
       case Syntax.NullLiteral:
-        type = Type.null;
+        type = Type.unknown;
+        break;
+
+      case Syntax.UnaryExpression:
+        type = this.getUnaryExpressionType(node);
+        break;
+
+      case Syntax.NewExpression:
+        type = 'name' in node.callee
+          ? Value.parseNativeType(node.callee.name)
+          : Type.unknown;
         break;
 
       case Syntax.MemberExpression:
@@ -1085,12 +1100,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return keyName;
   }
 
-  parseType(node: any) {
-    const ref = this.getValue(node);
-
-    return ref.kind;
-  }
-
   getTSTypeRaw(node: Babel.Node, defaultType: Parser.Type | Parser.Type[] = Type.unknown) {
     let type = defaultType;
 
@@ -1355,8 +1364,34 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return new Value(type, node.name, JSON.stringify(node.name));
   }
 
-  getUnaryExpression(node): Value {
+  getUnaryExpressionType(node: Babel.UnaryExpression) {
     let type;
+
+    switch (node.operator) {
+      case 'typeof':
+      case '!':
+        type = Type.boolean;
+        break;
+
+      case '~':
+        type = Type.binary;
+        break;
+
+      case '+':
+      case '-':
+        type = Type.number;
+        break;
+
+      default:
+        type = Type.unknown;
+        break;
+    }
+
+    return type;
+  }
+
+  getUnaryExpression(node): Value {
+    let type = this.getUnaryExpressionType(node);
     let raw;
     let value;
 
@@ -1370,23 +1405,8 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
         try {
           value = JSON.parse(raw);
-          type = typeof value;
         } catch (e) {
           value = raw;
-
-          switch (raw[0]) {
-            case '!':
-              type = Type.boolean;
-              break;
-
-            case '~':
-              type = Type.binary;
-              break;
-
-            default:
-              type = Type.unknown;
-              break;
-          }
         }
         break;
 
@@ -1466,37 +1486,60 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   }
 
   getCallExpression(node: Babel.CallExpression): Parser.Value<any> {
-    const type = node.callee.type === Syntax.Identifier && TypeList.includes(node.callee.name.toLowerCase() as any)
-      ? node.callee.name
-      : Type.unknown;
+    let type: string | string[] = Type.unknown;
+
+    if ('name' in node.callee) {
+      const ref = this.getScopeValue(node.callee.name);
+
+      if (ref && 'node' in ref) {
+        type = this.getReturnType(ref.node.value, type);
+      } else if (NATIVE_OBJECTS.includes(node.callee.name)) {
+        type = Value.parseNativeType(node.callee.name);
+      }
+    }
 
     return this.getSourceValue(node, type);
   }
 
-  getExpressionType(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression) {
+  getExpressionType(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression): Parser.Type | Parser.Type[] {
     if (BITWISE_OPERATORS.includes(node.operator)) {
       return Type.binary;
     }
 
-    const types = [this.parseType(node.left), this.parseType(node.right)];
+    if (BOOLEAN_OPERATORS.includes(node.operator)) {
+      return node.operator === '||' ? this.getExpressionTypeAlternate(node) : Type.boolean;
+    }
+
+    if (BOOLEAN_OPERATORS.includes(node.operator)) {
+      return node.operator === '+' ? this.getExpressionTypeAlternate(node) : Type.number;
+    }
+
+    return this.getExpressionTypeAlternate(node);
+  }
+
+  private getExpressionTypeAlternate(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression) {
+    const types = [
+      this.getNodeType(node.left, Type.unknown),
+      this.getNodeType(node.right, Type.unknown),
+    ];
 
     if (types.includes(Type.string)) {
       return Type.string;
-    }
-
-    if (NUMERIC_OPERATORS.includes(node.operator)) {
-      return Type.number;
-    }
-
-    if (types[0] === types[1]) {
-      return BOOLEAN_OPERATORS.includes(node.operator) ? Type.boolean : types[0];
     }
 
     if (BOOLEAN_OPERATORS.includes(node.operator)) {
       return Type.boolean;
     }
 
-    return types[0];
+    if (node.operator === '+') {
+      return types.every((item) => item === Type.number) ? Type.number : Type.string;
+    }
+
+    if (types[0] === types[1]) {
+      return types[0];
+    }
+
+    return types as Parser.Type | Parser.Type[];
   }
 
   getConditionalExpressionType(node: Babel.ConditionalExpression) {

@@ -104,6 +104,7 @@
     "@typescript-eslint/parser": "^5.30.7",
     "@vitest/coverage-c8": "^0.22.0",
     "@vitest/ui": "^0.22.0",
+    "@vuedoc/test-utils": "^1.1.1",
     "eslint": "^8.20.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",

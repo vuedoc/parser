@@ -90,7 +90,7 @@ describe('Vue 3', () => {
           {
             kind: 'data',
             name: 'route',
-            type: 'RouteLocationNormalizedLoaded',
+            type: 'RouteLocationNormalized',
             category: undefined,
             version: undefined,
             initialValue: '',

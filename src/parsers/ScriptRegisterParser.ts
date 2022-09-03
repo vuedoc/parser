@@ -63,10 +63,6 @@ export class ScriptRegisterParser extends CompositionParser {
     }
   }
 
-  parseFunctionDeclaration(node) {
-    this.registerFunctionDeclaration(node);
-  }
-
   parseExportDefaultDeclaration(item: Babel.ExportDefaultDeclaration) {
     this.exposeDeclaration('default', item.declaration || item);
   }

@@ -25,8 +25,6 @@ export const Type = {
   symbol: 'symbol',
 } as const;
 
-export const TypeList = Object.freeze(Object.values(Type));
-
 export const Visibility: Record<Entry.Visibility, Entry.Visibility> = {
   public: 'public',
   protected: 'protected',

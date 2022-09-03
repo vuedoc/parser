@@ -1,29 +1,7 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { loadSFC } from '../lib/SFC.js';
 
-const mockfs = {
-  'foo.js': `
-    export default "Hello, World!"
-  `,
-  'bar.js': `
-    export const text = "Hello, World!"
-  `,
-};
-
 describe('ImportDeclaration', () => {
-  beforeAll(() => {
-    vi.mock('resolve/sync.js', async () => ({
-      default: vi.fn().mockImplementation((path) => path),
-    }));
-
-    vi.mock('node:fs', async () => ({
-      ...(await vi.importActual < typeof import('node:fs') > ('node:fs')),
-      readFileSync: vi.fn().mockImplementation((path) => mockfs[path]),
-    }));
-  });
-
-  afterAll(() => vi.restoreAllMocks());
-
   it('should successfully register variable with identifier from another file #0', () => {
     const { scope } = loadSFC(`
       <script>

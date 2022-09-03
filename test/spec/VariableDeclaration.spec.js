@@ -489,4 +489,79 @@ describe('VariableDeclaration', () => {
       });
     });
   });
+
+  it('should successfully register variable with call expression as init value', () => {
+    const { scope } = loadSFC(`
+      <script>
+        function getCurrentThread(state) {
+          return state.currentThreadID
+            ? state.threads[state.currentThreadID]
+            : {}
+        }
+
+        const currentThread = getCurrentThread()
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('currentThread');
+    expect(scope.currentThread.value).toEqual({
+      type: ['unknown', 'object'],
+      value: 'getCurrentThread()',
+      raw: 'getCurrentThread()',
+      member: false,
+      function: false,
+      $kind: 'getCurrentThread',
+    });
+  });
+
+  it('should successfully register variable with class instantiation as init value', () => {
+    const { scope } = loadSFC(`
+      <script>
+        class CustomeObject {}
+
+        const currentThread = new CustomeObject();
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('currentThread');
+    expect(scope.currentThread.value).toEqual({
+      type: 'CustomeObject',
+      value: 'new CustomeObject()',
+      raw: 'new CustomeObject()',
+      member: false,
+    });
+  });
+
+  it('should successfully register variable with unary expression typeof', () => {
+    const { scope } = loadSFC(`
+      <script>
+        const url = 'https://wikipedia.com';
+        const isHttpUrl = typeof url === 'string' && url.startsWith('http');
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('isHttpUrl');
+    expect(scope.isHttpUrl.value).toEqual({
+      type: 'boolean',
+      value: "typeof url === 'string' && url.startsWith('http')",
+      raw: "typeof url === 'string' && url.startsWith('http')",
+      member: false,
+    });
+  });
+
+  it('should successfully register variable with complex binary expression', () => {
+    const { scope } = loadSFC(`
+      <script>
+        const hasFeedback = Boolean(this.help) || Boolean(this.error) || Boolean(this.$slots.error);
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('hasFeedback');
+    expect(scope.hasFeedback.value).toEqual({
+      type: 'boolean',
+      value: 'Boolean(this.help) || Boolean(this.error) || Boolean(this.$slots.error)',
+      raw: 'Boolean(this.help) || Boolean(this.error) || Boolean(this.$slots.error)',
+      member: false,
+    });
+  });
 });

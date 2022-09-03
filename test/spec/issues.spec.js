@@ -2056,6 +2056,7 @@ describe('issues', () => {
 
   ComponentTestCase({
     name: '#59 - Parser fails when props have an empty validator block',
+    // only: true,
     options: {
       filecontent: `
         <template>
@@ -2470,7 +2471,7 @@ describe('issues', () => {
           description: undefined,
           keywords: [],
           name: 'f',
-          type: 'unknown',
+          type: 'boolean',
           initialValue: '!!d',
         },
       ],

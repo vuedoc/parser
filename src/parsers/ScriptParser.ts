@@ -192,7 +192,16 @@ export class ScriptParser<ParseNode = void, Root = never>
   }
 
   parse(_node: ParseNode) {
+    this.transverse(this.source.ast.program.body);
     this.parseAst(this.source.ast.program);
+  }
+
+  transverse(nodes: Babel.Statement[]) {
+    for (const node of nodes) {
+      if (node.type === Syntax.FunctionDeclaration) {
+        this.parseFunctionDeclaration(node);
+      }
+    }
   }
 
   parseCommentNode(node: Babel.Node) {
@@ -388,7 +397,7 @@ export class ScriptParser<ParseNode = void, Root = never>
             result.ref = value;
             result.tsValue = tsValue;
             result.ref.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
-              || ScriptParser.parseTsValueType(tsValue);
+              || (result.ref.type === Type.unknown ? ScriptParser.parseTsValueType(tsValue) : result.ref.type);
           }
         } else if (result.ref) {
           if (ref.value.type !== Type.unknown) {
@@ -411,6 +420,19 @@ export class ScriptParser<ParseNode = void, Root = never>
     }
 
     return result;
+  }
+
+  parseCallExpression(node) {
+    const decoratorValue = this.getDeclaratorValue({
+      id: node,
+      init: node,
+    });
+
+    if (decoratorValue.ref && decoratorValue.composition) {
+      if (typeof decoratorValue.composition.parseEntryNode === 'function') {
+        decoratorValue.composition.parseEntryNode(node, this);
+      }
+    }
   }
 
   parseIdentifierImport(node: Babel.Identifier) {
@@ -907,6 +929,10 @@ export class ScriptParser<ParseNode = void, Root = never>
           break;
 
         case Properties.data:
+          if ('body' in property) {
+            this.transverse(property.body.body);
+          }
+
           this.parsers.data.sync().parse(property);
           break;
 
