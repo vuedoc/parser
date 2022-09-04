@@ -1,10 +1,8 @@
-import { ComponentTestCase } from '../../src/test/utils.ts';
-import { describe } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('JSXParser', () => {
-  ComponentTestCase({
-    name: 'JSX with no slot',
-    options: {
+  it('JSX with no slot', async () => {
+    const options = {
       jsx: true,
       filecontent: `
         <script type="ts">
@@ -16,8 +14,9 @@ describe('JSXParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       keywords: [],
       props: [],
@@ -26,12 +25,11 @@ describe('JSXParser', () => {
       events: [],
       methods: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'JSX with dynamic content',
-    options: {
+  it('JSX with dynamic content', async () => {
+    const options = {
       jsx: true,
       filecontent: `
         <script type="ts">
@@ -43,8 +41,9 @@ describe('JSXParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       keywords: [],
       props: [],
@@ -53,12 +52,11 @@ describe('JSXParser', () => {
       events: [],
       methods: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'JSX',
-    options: {
+  it('JSX', async () => {
+    const options = {
       jsx: true,
       filecontent: `
         <script type="ts">
@@ -77,8 +75,9 @@ describe('JSXParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       keywords: [],
       props: [],
@@ -92,18 +91,14 @@ describe('JSXParser', () => {
           name: 'default',
           props: [],
           keywords: [],
-          version: undefined,
-          category: undefined,
-          description: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'JSX #2',
-    options: {
+  it('JSX #2', async () => {
+    const options = {
       jsx: true,
       filecontent: `
         <script type="ts">
@@ -122,8 +117,9 @@ describe('JSXParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       keywords: [],
       props: [],
@@ -137,18 +133,14 @@ describe('JSXParser', () => {
           name: 'default',
           props: [],
           keywords: [],
-          version: undefined,
-          category: undefined,
-          description: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'JSX #3',
-    options: {
+  it('JSX #3', async () => {
+    const options = {
       jsx: true,
       filecontent: `
         <script type="ts">
@@ -167,8 +159,9 @@ describe('JSXParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       keywords: [],
       props: [],
@@ -182,18 +175,14 @@ describe('JSXParser', () => {
           name: 'default',
           props: [],
           keywords: [],
-          version: undefined,
-          category: undefined,
-          description: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'JSX #4',
-    options: {
+  it('JSX #4', async () => {
+    const options = {
       jsx: true,
       filecontent: `
         <script type="ts">
@@ -210,8 +199,9 @@ describe('JSXParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       keywords: [],
       props: [],
@@ -225,12 +215,9 @@ describe('JSXParser', () => {
           name: 'default',
           props: [],
           keywords: [],
-          version: undefined,
-          category: undefined,
-          description: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 });

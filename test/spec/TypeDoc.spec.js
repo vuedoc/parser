@@ -1,10 +1,8 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 
 describe('TypeDoc', () => {
-  ComponentTestCase({
-    name: '@param <param name>',
-    options: {
+  it('@param <param name>', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -17,8 +15,9 @@ describe('TypeDoc', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -27,37 +26,31 @@ describe('TypeDoc', () => {
             'doSomething(target: any, text: string): number',
           ],
           name: 'doSomething',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [
             {
               name: 'target',
               type: 'any',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               name: 'text',
               type: 'string',
               description: 'Comment for parameter ´text´.',
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'number',
-            description: undefined,
           },
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@return(s)',
-    options: {
+  it('@return(s)', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -70,8 +63,9 @@ describe('TypeDoc', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -80,22 +74,16 @@ describe('TypeDoc', () => {
             'doSomething(target: any, value: number): number',
           ],
           name: 'doSomething',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [
             {
               name: 'target',
               type: 'any',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               name: 'value',
               type: 'number',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
@@ -103,14 +91,14 @@ describe('TypeDoc', () => {
             type: 'number',
             description: 'Comment for special return value.',
           },
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@hidden and @ignore',
-    options: {
+  it('@hidden and @ignore', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -127,16 +115,16 @@ describe('TypeDoc', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@category',
-    options: {
+  it('@category', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -151,8 +139,9 @@ describe('TypeDoc', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       props: [],
       methods: [
@@ -168,11 +157,10 @@ describe('TypeDoc', () => {
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 });

@@ -1,10 +1,8 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 
 describe('PropParser', () => {
-  ComponentTestCase({
-    name: 'Props with @type',
-    options: {
+  it('Props with @type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -21,27 +19,26 @@ describe('PropParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
-          default: undefined,
           describeModel: false,
-          category: undefined,
           description: 'The input format callback',
           keywords: [],
           kind: 'prop',
           name: 'format',
           required: false,
           type: 'TextInput.FormatCallback',
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Props with @default',
-    options: {
+  it('Props with @default', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -59,27 +56,27 @@ describe('PropParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
           default: 'value.trim()',
           describeModel: false,
-          category: undefined,
           description: 'The input format callback',
           keywords: [],
           kind: 'prop',
           name: 'format',
           required: false,
           type: 'function',
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Props with multiple @type',
-    options: {
+  it('Props with multiple @type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -93,27 +90,25 @@ describe('PropParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
-          default: undefined,
           describeModel: false,
-          category: undefined,
-          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'complex',
           required: false,
           type: 'Complex.Object',
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Props with multiple @default',
-    options: {
+  it('Props with multiple @default', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -135,8 +130,9 @@ describe('PropParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
           default: '{ last: \'keyword\' }',
@@ -150,43 +146,40 @@ describe('PropParser', () => {
           type: 'object',
           visibility: 'public' },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Falsy default value',
-    options: {
+  it('Falsy default value', async () => {
+    const options = {
       filecontent: `
-        <script>
-          export default {
-            props: {
-              disabled: { type: Boolean, default: false }
+          <script>
+            export default {
+              props: {
+                disabled: { type: Boolean, default: false }
+              }
             }
-          }
-        </script>
-      `,
-    },
-    expected: {
+          </script>
+        `,
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
           default: 'false',
           describeModel: false,
-          category: undefined,
-          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'disabled',
           required: false,
           type: 'boolean',
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'with multiple types',
-    // only: true,
-    options: {
+  it('with multiple types', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -196,27 +189,28 @@ describe('PropParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
-          default: undefined,
           describeModel: false,
-          category: undefined,
-          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'disabled',
           required: false,
-          type: ['boolean', 'number'],
-          visibility: 'public' },
+          type: [
+            'boolean',
+            'number',
+          ],
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@kind function',
-    options: {
+  it('@kind function', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -246,15 +240,13 @@ describe('PropParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
           default: 'identity function',
           describeModel: false,
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           kind: 'prop',
           name: 'function-prop-with-default-as-keyword',
@@ -263,7 +255,6 @@ describe('PropParser', () => {
           visibility: 'public',
           function: {
             name: 'functionPropWithDefaultAsKeyword',
-            description: undefined,
             keywords: [],
             syntax: [
               'regexObj.exec(str: string): any[]',
@@ -273,7 +264,6 @@ describe('PropParser', () => {
                 name: 'x',
                 type: 'string',
                 description: 'the x param description',
-                defaultValue: undefined,
                 rest: false,
               },
             ],
@@ -286,8 +276,6 @@ describe('PropParser', () => {
         {
           default: '(value) => !Number.isNaN(value)',
           describeModel: false,
-          category: undefined,
-          version: undefined,
           description: 'The input validation function',
           keywords: [],
           kind: 'prop',
@@ -307,7 +295,6 @@ describe('PropParser', () => {
                 name: 'value',
                 type: 'any',
                 description: 'User input value to validate',
-                defaultValue: undefined,
                 rest: false,
               },
             ],
@@ -318,12 +305,11 @@ describe('PropParser', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'TSAsExpression',
-    options: {
+  it('TSAsExpression', async () => {
+    const options = {
       filecontent: `
         <script lang='ts'>
             import mixins         from 'vue-typed-mixins'
@@ -377,8 +363,9 @@ describe('PropParser', () => {
             })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       name: 'TestComponent',
@@ -386,9 +373,6 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'Record<string, any>',
           default: '{"a":1,"b":2}',
@@ -399,9 +383,6 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'number[]',
           default: '[1,2]',
@@ -412,9 +393,6 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'any',
           default: '{"a":1,"b":2}',
@@ -425,9 +403,6 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'any',
           default: '{"a":1,"b":2}',
@@ -438,23 +413,18 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'any',
-          default: undefined,
           name: 'test-prop5',
           describeModel: false,
           required: false,
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Multiline type',
-    options: {
+  it('Multiline type', async () => {
+    const options = {
       filecontent: `
         <script lang="ts">
           import mixins         from 'vue-typed-mixins'
@@ -492,8 +462,9 @@ describe('PropParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       name: 'TestComponent',
@@ -501,12 +472,9 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
           description: 'private get context(): void {}',
           keywords: [],
           type: '(selectedItemsData: Array<any>) => Array<any>',
-          default: undefined,
           name: 'context-factory',
           describeModel: false,
           required: false,
@@ -514,12 +482,8 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'FactoryFunction',
-          default: undefined,
           name: 'context-factory2',
           describeModel: false,
           required: false,
@@ -527,12 +491,8 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
-          default: undefined,
           name: 'menu-factory',
           describeModel: false,
           required: false,
@@ -540,9 +500,6 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
           default: 'new Function()',
@@ -553,9 +510,6 @@ describe('PropParser', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: '(selectedItemsData: Array<any>) => Array<IContextMenuItem<any>>',
           default: 'function() { return 1 }',
@@ -564,6 +518,6 @@ describe('PropParser', () => {
           required: false,
         },
       ],
-    },
+    });
   });
 });

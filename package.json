@@ -29,10 +29,7 @@
     "./loaders/typescript": "./esm/loaders/typescript.js",
     "./loaders/vue": "./esm/loaders/vue.js",
     "./parser": "./esm/parsers/VuedocParser.js",
-    "./plugins/vue-router": "./esm/plugins/VueRouterPlugin.js",
-    "./plugins/vuex": "./esm/plugins/VuexPlugin.js",
     "./schema/options": "./esm/schema/options.js",
-    "./test-utils": "./esm/test/utils.js",
     "./utils/KeywordsUtils": "./esm/utils/KeywordsUtils.js"
   },
   "main": "./esm/index.js",

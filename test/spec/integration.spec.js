@@ -1,6 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { parseComponent, parseOptions } from '../../src/index.ts';
-import { ComponentTestCase } from '../../src/test/utils.ts';
 import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 import { Fixture } from '../lib/Fixture.js';
 
@@ -292,7 +291,7 @@ function testComponentEvents(optionsToParse) {
   });
 }
 
-describe('Integration', () => {
+describe('integration', () => {
   describe('Generic tests', () => {
     it('should successfully parse', () => {
       const options = {
@@ -1032,9 +1031,8 @@ describe('Integration', () => {
     });
   });
 
-  ComponentTestCase({
-    name: 'options.hooks',
-    options: {
+  it('options.hooks', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1063,8 +1061,9 @@ describe('Integration', () => {
           },
         }),
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
           default: '{ last: \'keyword\' }',
@@ -1091,12 +1090,11 @@ describe('Integration', () => {
           type: 'object',
           visibility: 'public' },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#50 - @default keyword in props',
-    options: {
+  it('#50 - @default keyword in props', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1118,8 +1116,9 @@ describe('Integration', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       props: [
         {
           default: '{ last: \'keyword\' }',
@@ -1134,12 +1133,11 @@ describe('Integration', () => {
           type: 'object',
           visibility: 'public' },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Dynamic object key',
-    options: {
+  it('Dynamic object key', async () => {
+    const options = {
       filecontent: `
         <script>
           const name = 'blabla'
@@ -1171,34 +1169,30 @@ describe('Integration', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'blabla',
       props: [
         {
-          default: undefined,
           describeModel: false,
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'complex-value',
           required: false,
           type: 'object',
-          visibility: 'public' },
+          visibility: 'public',
+        },
         {
           default: 'true',
           describeModel: false,
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           kind: 'prop',
           name: 'bool-false',
           required: false,
           type: 'boolean',
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
       methods: [
         {
@@ -1208,15 +1202,13 @@ describe('Integration', () => {
           ],
           name: 'dynamic',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Make component dynamic',
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
-          visibility: 'public' },
+          visibility: 'public',
+        },
         {
           kind: 'method',
           syntax: [
@@ -1224,22 +1216,19 @@ describe('Integration', () => {
           ],
           name: 'dynamic2Value',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Enter to dynamic mode',
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@slot',
-    options: {
+  it('@slot', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -1250,14 +1239,13 @@ describe('Integration', () => {
           export default {}
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       slots: [
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
           description: 'Use this slot to define form inputs ontrols',
           keywords: [],
           name: 'inputs',
@@ -1266,8 +1254,6 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
           description: 'Use this slot to define form action buttons controls',
           keywords: [],
           name: 'actions',
@@ -1276,15 +1262,13 @@ describe('Integration', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
           description: 'Use this slot to define form footer content',
           keywords: [],
           name: 'footer',
           props: [],
         },
       ],
-    },
+    });
   });
 
   JSDocTypeSpec.forEach(({ name, values, expected }) => {
@@ -1310,10 +1294,8 @@ describe('Integration', () => {
       dataB${index}: null,
     `).join('');
 
-    ComponentTestCase({
-      name: '@type',
-      description: name,
-      options: {
+    it(`@type {${name}}`, async () => {
+      const options = {
         filecontent: `
           <script>
             export default {
@@ -1326,8 +1308,9 @@ describe('Integration', () => {
             };
           </script>
         `,
-      },
-      expected: {
+      };
+
+      await expect(options).toParseAs({
         errors: [],
         props: expected.map((value, index) => [
           {
@@ -1381,7 +1364,7 @@ describe('Integration', () => {
             visibility: 'public',
           },
         ]).flat(),
-      },
+      });
     });
   });
 
@@ -1517,119 +1500,116 @@ describe('Integration', () => {
         ],
       };
 
-      ComponentTestCase({
-        name: '@description',
-        description: 'object definition',
-        options: {
-          filecontent: `
-            <script>
-              ${dotlet}
-              export default {
-                props: {
-                  ${dotlet}
-                  prop: String,
-                },
-                data: () => ({
-                  ${dotlet}
-                  data: null,
-                }),
-                computed: {
-                  ${dotlet}
-                  computed() {
-                    return ''
+      describe('@description', () => {
+        it('object definition', async () => {
+          const options = {
+            filecontent: `
+              <script>
+                ${dotlet}
+                export default {
+                  props: {
+                    ${dotlet}
+                    prop: String,
                   },
-                },
-                methods: {
+                  data: () => ({
+                    ${dotlet}
+                    data: null,
+                  }),
+                  computed: {
+                    ${dotlet}
+                    computed() {
+                      return ''
+                    },
+                  },
+                  methods: {
+                    ${dotlet}
+                    method() {
+                      ${dotlet}
+                      this.$emit('input')
+                    },
+                  },
+                };
+              </script>
+            `,
+          };
+
+          await expect(options).toParseAs(expectedOutput);
+        });
+
+        it('class component definition', async () => {
+          const options = {
+            filecontent: `
+              <script>
+                ${dotlet}
+                @Component({
+                  props: {
+                    ${dotlet}
+                    prop: String,
+                  },
+                  computed: {
+                    ${dotlet}
+                    computed() {
+                      return ''
+                    },
+                  }
+                })
+                export default class App extends Vue {
+                  constructor() {
+                    ${dotlet}
+                    this.data = null
+                  }
+  
                   ${dotlet}
                   method() {
                     ${dotlet}
                     this.$emit('input')
-                  },
-                },
-              };
-            </script>
-          `,
-        },
-        expected: expectedOutput,
-      });
+                  }
+                };
+              </script>
+            `,
+          };
 
-      ComponentTestCase({
-        name: '@description',
-        description: 'class component definition',
-        options: {
-          filecontent: `
-            <script>
-              ${dotlet}
-              @Component({
-                props: {
+          await expect(options).toParseAs(expectedOutput);
+        });
+
+        it('vue property decorator definition', async () => {
+          const options = {
+            filecontent: `
+              <script>
+                ${dotlet}
+                @Component
+                class App extends Vue {
                   ${dotlet}
-                  prop: String,
-                },
-                computed: {
+                  @Prop(String) prop!: String
+  
                   ${dotlet}
-                  computed() {
+                  data = null
+  
+                  ${dotlet}
+                  get computed() {
                     return ''
-                  },
-                }
-              })
-              export default class App extends Vue {
-                constructor() {
+                  }
+  
                   ${dotlet}
-                  this.data = null
-                }
+                  method() {
+                    ${dotlet}
+                    this.$emit('input')
+                  }
+                };
+  
+                export default App
+              </script>
+            `,
+          };
 
-                ${dotlet}
-                method() {
-                  ${dotlet}
-                  this.$emit('input')
-                }
-              };
-            </script>
-          `,
-        },
-        expected: expectedOutput,
-      });
-
-      ComponentTestCase({
-        name: '@description',
-        description: 'vue property decorator definition',
-        options: {
-          filecontent: `
-            <script>
-              ${dotlet}
-              @Component
-              class App extends Vue {
-                ${dotlet}
-                @Prop(String) prop!: String
-
-                ${dotlet}
-                data = null
-
-                ${dotlet}
-                get computed() {
-                  return ''
-                }
-
-                ${dotlet}
-                method() {
-                  ${dotlet}
-                  this.$emit('input')
-                }
-              };
-
-              export default App
-            </script>
-          `,
-        },
-        expected: expectedOutput,
+          await expect(options).toParseAs(expectedOutput);
+        });
       });
     });
   }
 
-  ComponentTestCase({
-    name: 'complexe todo example',
-    // only: true,
-    options: {
+  it('complexe todo example', async () => {
+    const options = {
       filecontent: `
         <script>
           const STORAGE_KEY = 'vue-todomvc';
@@ -1744,8 +1724,9 @@ describe('Integration', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       inheritAttrs: true,
       errors: [],
       warnings: [],
@@ -1933,6 +1914,6 @@ describe('Integration', () => {
       ],
       events: [],
       slots: [],
-    },
+    });
   });
 });

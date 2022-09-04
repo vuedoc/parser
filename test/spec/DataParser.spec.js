@@ -1,65 +1,59 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 
 describe('DataParser', () => {
-  ComponentTestCase({
-    name: 'Data with empty value',
-    options: {
+  it('Data with empty value', async () => {
+    const options = {
       filecontent: `
-        <script>
-          export default {
-            data: () => ({
-              initialValue: ''
-            })
-          }
-        </script>
-      `,
-    },
-    expected: {
+          <script>
+            export default {
+              data: () => ({
+                initialValue: ''
+              })
+            }
+          </script>
+        `,
+    };
+
+    await expect(options).toParseAs({
       data: [
         {
-          category: undefined,
-          description: undefined,
           keywords: [],
           kind: 'data',
           name: 'initialValue',
           initialValue: '""',
           type: 'string',
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Automatic type detection',
-    // only: true,
-    options: {
+  it('Automatic type detection', async () => {
+    const options = {
       filecontent: `
-        <script?>
-          export default Vue.extend({
-            data: () => ({
-              a: 1,
-              b: true,
-              c: null,
-              d: 'hello',
-              e: \`hello\`,
-              f: /ab/,
-              g: 100n,
-              h: ~1,
+          <script?>
+            export default Vue.extend({
+              data: () => ({
+                a: 1,
+                b: true,
+                c: null,
+                d: 'hello',
+                e: \`hello\`,
+                f: /ab/,
+                g: 100n,
+                h: ~1,
+              })
             })
-          })
-        </script>
-      `,
-    },
-    expected: {
+          </script>
+        `,
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       data: [
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'number',
           initialValue: '1',
@@ -68,9 +62,6 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'boolean',
           initialValue: 'true',
@@ -79,9 +70,6 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'unknown',
           initialValue: 'null',
@@ -90,9 +78,6 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'string',
           initialValue: '"hello"',
@@ -101,9 +86,6 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'string',
           initialValue: '`hello`',
@@ -112,9 +94,6 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'regexp',
           initialValue: '/ab/',
@@ -123,9 +102,6 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'bigint',
           initialValue: '100n',
@@ -134,40 +110,35 @@ describe('DataParser', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'binary',
           initialValue: '~1',
           name: 'h',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'TSAsExpression',
-    options: {
+  it('TSAsExpression', async () => {
+    const options = {
       filecontent: `
-        <script lang='ts'>
-          export default Vue.extend({
-            data: () => ({
-              // data x
-              x: {} as Record<string, number>
-            } as any)
-          })
-        </script>
-      `,
-    },
-    expected: {
+          <script lang='ts'>
+            export default Vue.extend({
+              data: () => ({
+                // data x
+                x: {} as Record<string, number>
+              } as any)
+            })
+          </script>
+        `,
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       data: [
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
           description: 'data x',
           keywords: [],
           type: 'Record<string, number>',
@@ -175,6 +146,6 @@ describe('DataParser', () => {
           name: 'x',
         },
       ],
-    },
+    });
   });
 });

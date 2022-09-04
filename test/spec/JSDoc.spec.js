@@ -1,7 +1,6 @@
-import { JSDoc } from '../../src/lib/JSDoc.ts';
-import { ComponentTestCase } from '../../src/test/utils.ts';
-import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 import { describe, expect, it } from 'vitest';
+import { JSDoc } from '../../src/lib/JSDoc.ts';
+import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 
 describe('JSDoc', () => {
   describe('parseTypeParam(type)', () => {
@@ -274,10 +273,8 @@ describe('JSDoc', () => {
     });
   });
 
-  ComponentTestCase({
-    name: '@param and @return',
-    description: 'Generic usage',
-    options: {
+  it('@param and @return: Generic usage', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -304,8 +301,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -314,7 +312,6 @@ describe('JSDoc', () => {
             'set(id: string, name?: string, order?: number = 1, values?: string | string[], ...rest: any[]): boolean',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Set the checkbox ID',
           keywords: [],
           name: 'set',
@@ -323,14 +320,12 @@ describe('JSDoc', () => {
               type: 'string',
               name: 'id',
               description: 'The checkbox ID',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'name',
               description: 'The checkbox name',
-              defaultValue: undefined,
               optional: true,
               rest: false,
             },
@@ -349,7 +344,6 @@ describe('JSDoc', () => {
               ],
               name: 'values',
               description: 'The checkbox values',
-              defaultValue: undefined,
               optional: true,
               rest: false,
             },
@@ -357,7 +351,6 @@ describe('JSDoc', () => {
               type: 'any[]',
               name: 'rest',
               description: 'The rest options',
-              defaultValue: undefined,
               optional: true,
               rest: true,
             },
@@ -368,16 +361,11 @@ describe('JSDoc', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  // Names, types, and descriptions
-  // The following examples show how to include names, types, and
-  // descriptions in a @param tag.
-  ComponentTestCase({
-    name: '@param',
-    description: 'Name only',
-    options: {
+  it('@param: Name only', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -393,8 +381,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -403,7 +392,6 @@ describe('JSDoc', () => {
             'nameOnly(somebody: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -411,24 +399,19 @@ describe('JSDoc', () => {
             {
               type: 'unknown',
               name: 'somebody',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'Name and type',
-    options: {
+  it('@param: Name and type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -444,8 +427,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -454,7 +438,6 @@ describe('JSDoc', () => {
             'nameAndType(somebody: string): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name and type',
           keywords: [],
           name: 'nameAndType',
@@ -462,24 +445,19 @@ describe('JSDoc', () => {
             {
               type: 'string',
               name: 'somebody',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'Name, type, and description',
-    options: {
+  it('@param: Name, type, and description', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -495,8 +473,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -505,7 +484,6 @@ describe('JSDoc', () => {
             'nameTypeAndDescription(somebody: string): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name, type, and description',
           keywords: [],
           name: 'nameTypeAndDescription',
@@ -513,24 +491,20 @@ describe('JSDoc', () => {
             {
               type: 'string',
               name: 'somebody',
-              description: 'Somebody\'s name.',
-              defaultValue: undefined,
+              description: "Somebody's name.",
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'Name, type, and description, with a hyphen before the description',
-    options: {
+  it('@param: Name, type, and description, with a hyphen before the description', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -546,8 +520,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -556,7 +531,6 @@ describe('JSDoc', () => {
             'nameTypeAndDescriptionWithHyphen(somebody: string): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name, type, and description, with a hyphen before the description',
           keywords: [],
           name: 'nameTypeAndDescriptionWithHyphen',
@@ -564,29 +538,20 @@ describe('JSDoc', () => {
             {
               type: 'string',
               name: 'somebody',
-              description: 'Somebody\'s name.',
-              defaultValue: undefined,
+              description: "Somebody's name.",
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  // Documenting a parameter's properties
-  // If a parameter is expected to have a specific property, you can
-  // document that property by providing an additional @param tag. For
-  // example, if an employee parameter is expected to have name and
-  // department properties, you can document it as follows:
-  ComponentTestCase({
-    name: '@param',
-    description: 'With parameter properties',
-    options: {
+  it('@param: With parameter properties', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -604,8 +569,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -614,7 +580,6 @@ describe('JSDoc', () => {
             'withParameterProperties(employee: Object): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Assign the project to an employee.',
           keywords: [],
           name: 'withParameterProperties',
@@ -623,37 +588,31 @@ describe('JSDoc', () => {
               type: 'object',
               name: 'employee',
               description: 'The employee who is responsible for the project.',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'employee.name',
               description: 'The name of the employee.',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'employee.department',
-              description: 'The employee\'s department.',
-              defaultValue: undefined,
+              description: "The employee's department.",
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'With destructuring parameter',
-    options: {
+  it('@param: With destructuring parameter', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -671,8 +630,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -681,7 +641,6 @@ describe('JSDoc', () => {
             'withDestructuringParameter(employee: Object): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Assign the project to an employee.',
           keywords: [],
           name: 'withDestructuringParameter',
@@ -690,37 +649,31 @@ describe('JSDoc', () => {
               type: 'object',
               name: 'employee',
               description: 'The employee who is responsible for the project.',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'employee.name',
               description: 'The name of the employee.',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'employee.department',
-              description: 'The employee\'s department.',
-              defaultValue: undefined,
+              description: "The employee's department.",
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'With properties of values in an array',
-    options: {
+  it('@param: With properties of values in an array', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -738,8 +691,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -748,7 +702,6 @@ describe('JSDoc', () => {
             'withPropertiesOfValuesInAnArray(employees: Object[]): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Assign the project to a list of employees.',
           keywords: [],
           name: 'withPropertiesOfValuesInAnArray',
@@ -757,37 +710,31 @@ describe('JSDoc', () => {
               type: 'object[]',
               name: 'employees',
               description: 'The employees who are responsible for the project.',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'employees[].name',
               description: 'The name of an employee.',
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'string',
               name: 'employees[].department',
-              description: 'The employee\'s department.',
-              defaultValue: undefined,
+              description: "The employee's department.",
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'An optional parameter',
-    options: {
+  it('@param: An optional parameter', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -807,8 +754,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -817,7 +765,6 @@ describe('JSDoc', () => {
             'withOptionalParameter(somebody?: string): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'An optional parameter (using JSDoc syntax)',
           keywords: [],
           name: 'withOptionalParameter',
@@ -825,25 +772,21 @@ describe('JSDoc', () => {
             {
               type: 'string',
               name: 'somebody',
-              description: 'Somebody\'s name.',
-              defaultValue: undefined,
+              description: "Somebody's name.",
               optional: true,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'An optional parameter and default value',
-    options: {
+  it('@param: An optional parameter and default value', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -862,8 +805,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -872,7 +816,6 @@ describe('JSDoc', () => {
             'withOptionalParameterAndDefaultValue(somebody?: string = "John Doe"): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'An optional parameter and default value',
           keywords: [],
           name: 'withOptionalParameterAndDefaultValue',
@@ -880,7 +823,7 @@ describe('JSDoc', () => {
             {
               type: 'string',
               name: 'somebody',
-              description: 'Somebody\'s name.',
+              description: "Somebody's name.",
               optional: true,
               defaultValue: '"John Doe"',
               rest: false,
@@ -888,23 +831,14 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  // Multiple types and repeatable parameters
-  // The following examples show how to use type expressions to indicate
-  // that a parameter can accept multiple types (or any type), and that a
-  // parameter can be provided more than once. See the @type tag
-  // documentation for details about the type expressions that JSDoc
-  // supports.
-  ComponentTestCase({
-    name: '@param',
-    description: 'Allows one type OR another type (type union)',
-    options: {
+  it('@param: Allows one type OR another type (type union)', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -926,8 +860,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -936,7 +871,6 @@ describe('JSDoc', () => {
             'withMultipleType(somebody?: string | string[] = "John Doe"): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Allows one type OR another type (type union)',
           keywords: [],
           name: 'withMultipleType',
@@ -947,7 +881,7 @@ describe('JSDoc', () => {
                 'string[]',
               ],
               name: 'somebody',
-              description: 'Somebody\'s name, or an array of names.',
+              description: "Somebody's name, or an array of names.",
               optional: true,
               defaultValue: '"John Doe"',
               rest: false,
@@ -955,17 +889,14 @@ describe('JSDoc', () => {
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'Allows any type',
-    options: {
+  it('@param: Allows any type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -981,8 +912,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -991,7 +923,6 @@ describe('JSDoc', () => {
             'withAnyType(somebody: any): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Allows any type',
           keywords: [],
           name: 'withAnyType',
@@ -1000,23 +931,19 @@ describe('JSDoc', () => {
               type: 'any',
               name: 'somebody',
               description: 'Whatever you want.',
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param',
-    description: 'Allows a parameter to be repeated',
-    options: {
+  it('@param: Allows a parameter to be repeated', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1037,8 +964,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -1066,17 +994,15 @@ describe('JSDoc', () => {
           },
         },
       ],
-    },
+    });
   });
 
   // Callback functions
   // If a parameter accepts a callback function, you can use the @callback
   // tag to define a callback type, then include the callback type in the
   // @param tag.
-  ComponentTestCase({
-    name: '@param',
-    description: '@callback',
-    options: {
+  it('@param: @callback', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1100,8 +1026,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -1110,7 +1037,6 @@ describe('JSDoc', () => {
             'doSomethingAsynchronously(cb: requestCallback): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Does something asynchronously and executes the callback on completion.',
           keywords: [],
           name: 'doSomethingAsynchronously',
@@ -1119,23 +1045,19 @@ describe('JSDoc', () => {
               type: 'requestCallback',
               name: 'cb',
               description: 'The callback that handles the response.',
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@returns',
-    description: 'With type',
-    options: {
+  it('@returns: With type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1153,8 +1075,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -1163,7 +1086,6 @@ describe('JSDoc', () => {
             'withType(a: number, b: number): number',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withType',
@@ -1171,31 +1093,24 @@ describe('JSDoc', () => {
             {
               type: 'number',
               name: 'a',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'number',
               name: 'b',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'number',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@returns',
-    description: 'With union type',
-    options: {
+  it('@returns: With union type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1217,8 +1132,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -1227,7 +1143,6 @@ describe('JSDoc', () => {
             'withMultipleType(a: number, b: number, retArr: boolean): number | Array',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withMultipleType',
@@ -1235,22 +1150,17 @@ describe('JSDoc', () => {
             {
               type: 'number',
               name: 'a',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'number',
               name: 'b',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'boolean',
               name: 'retArr',
               description: 'If set to true, the function will return an array',
-              defaultValue: undefined,
               rest: false,
             },
           ],
@@ -1263,13 +1173,11 @@ describe('JSDoc', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@returns',
-    description: 'With promise',
-    options: {
+  it('@returns: With promise', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1289,8 +1197,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -1299,7 +1208,6 @@ describe('JSDoc', () => {
             'withPromise(a: number, b: number): Promise',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withPromise',
@@ -1307,15 +1215,11 @@ describe('JSDoc', () => {
             {
               type: 'number',
               name: 'a',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'number',
               name: 'b',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
@@ -1325,13 +1229,11 @@ describe('JSDoc', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@returns',
-    description: 'With spread param',
-    options: {
+  it('@returns: With spread param', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -1351,8 +1253,9 @@ describe('JSDoc', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -1361,7 +1264,6 @@ describe('JSDoc', () => {
             'withSpreadParam(a: number, ...b: number[]): Promise',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           name: 'withSpreadParam',
@@ -1369,15 +1271,11 @@ describe('JSDoc', () => {
             {
               type: 'number',
               name: 'a',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
             {
               type: 'number[]',
               name: 'b',
-              description: undefined,
-              defaultValue: undefined,
               rest: true,
             },
           ],
@@ -1387,6 +1285,6 @@ describe('JSDoc', () => {
           },
         },
       ],
-    },
+    });
   });
 });

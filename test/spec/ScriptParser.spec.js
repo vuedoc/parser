@@ -1,12 +1,8 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
-import { join } from 'path';
+import { describe, expect, it } from 'vitest';
 
 describe('ScriptParser', () => {
-  ComponentTestCase({
-    name: 'dynamic import() function',
-    description: 'should successfully parse code with the reserved import keyword',
-    options: {
+  it('dynamic import() function: should successfully parse code with the reserved import keyword', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -16,10 +12,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
-      name: undefined,
-      description: undefined,
+    };
+
+    await expect(options).toParseAs({
       inheritAttrs: true,
       keywords: [],
       errors: [],
@@ -29,13 +24,11 @@ describe('ScriptParser', () => {
       computed: [],
       events: [],
       methods: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Syntax',
-    description: 'exports["default"]',
-    options: {
+  it('Syntax: exports["default"]', async () => {
+    const options = {
       filecontent: `
         <script>
           exports.__esModule = true;
@@ -70,70 +63,64 @@ describe('ScriptParser', () => {
           });
         </script>
       `,
-    },
-    expected: {
-      name: undefined,
+    };
+
+    await expect(options).toParseAs({
       description: 'description',
       inheritAttrs: true,
       events: [],
       errors: [],
       keywords: [],
       methods: [],
-      computed: [{
-        kind: 'computed',
-        name: 'pages',
-        type: 'unknown',
-        dependencies: ['links', 'site'],
-        category: undefined,
-        version: undefined,
-        description: undefined,
-        keywords: [],
-        visibility: 'public',
-      }],
-      data: [{
-        kind: 'data',
-        name: 'currentYear',
-        type: 'unknown',
-        category: undefined,
-        version: undefined,
-        description: undefined,
-        initialValue: 'new Date().getFullYear()',
-        keywords: [],
-        visibility: 'public',
-      }],
-      props: [{
-        kind: 'prop',
-        name: 'links',
-        type: 'object',
-        required: true,
-        default: undefined,
-        describeModel: false,
-        category: undefined,
-        version: undefined,
-        description: undefined,
-        keywords: [],
-        visibility: 'public',
-      }, {
-        kind: 'prop',
-        name: 'site',
-        type: 'Site_1.Site',
-        required: true,
-        default: undefined,
-        describeModel: false,
-        category: undefined,
-        version: undefined,
-        description: undefined,
-        keywords: [],
-        visibility: 'public',
-      }],
+      computed: [
+        {
+          kind: 'computed',
+          name: 'pages',
+          type: 'unknown',
+          dependencies: [
+            'links',
+            'site',
+          ],
+          keywords: [],
+          visibility: 'public',
+        },
+      ],
+      data: [
+        {
+          kind: 'data',
+          name: 'currentYear',
+          type: 'unknown',
+          initialValue: 'new Date().getFullYear()',
+          keywords: [],
+          visibility: 'public',
+        },
+      ],
+      props: [
+        {
+          kind: 'prop',
+          name: 'links',
+          type: 'object',
+          required: true,
+          describeModel: false,
+          keywords: [],
+          visibility: 'public',
+        },
+        {
+          kind: 'prop',
+          name: 'site',
+          type: 'Site_1.Site',
+          required: true,
+          describeModel: false,
+          keywords: [],
+          visibility: 'public',
+        },
+      ],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Syntax',
-    description: 'module.exports',
-    options: {
+  it('Syntax: module.exports', async () => {
+    const options = {
       filecontent: `
         <script>
           exports.__esModule = true;
@@ -168,48 +155,45 @@ describe('ScriptParser', () => {
           });
         </script>
       `,
-    },
-    expected: {
-      name: undefined,
+    };
+
+    await expect(options).toParseAs({
       description: 'description',
       inheritAttrs: true,
       events: [],
       errors: [],
       keywords: [],
       methods: [],
-      computed: [{
-        kind: 'computed',
-        name: 'pages',
-        type: 'unknown',
-        dependencies: ['links', 'site'],
-        category: undefined,
-        version: undefined,
-        description: undefined,
-        keywords: [],
-        visibility: 'public',
-      }],
-      data: [{
-        kind: 'data',
-        name: 'currentYear',
-        type: 'unknown',
-        category: undefined,
-        version: undefined,
-        description: undefined,
-        initialValue: 'new Date().getFullYear()',
-        keywords: [],
-        visibility: 'public',
-      }],
+      computed: [
+        {
+          kind: 'computed',
+          name: 'pages',
+          type: 'unknown',
+          dependencies: [
+            'links',
+            'site',
+          ],
+          keywords: [],
+          visibility: 'public',
+        },
+      ],
+      data: [
+        {
+          kind: 'data',
+          name: 'currentYear',
+          type: 'unknown',
+          initialValue: 'new Date().getFullYear()',
+          keywords: [],
+          visibility: 'public',
+        },
+      ],
       props: [
         {
           kind: 'prop',
           name: 'links',
           type: 'object',
           required: true,
-          default: undefined,
           describeModel: false,
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           visibility: 'public',
         },
@@ -218,40 +202,36 @@ describe('ScriptParser', () => {
           name: 'site',
           type: 'Site_1.Site',
           required: true,
-          default: undefined,
           describeModel: false,
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           visibility: 'public',
         },
       ],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Parsing error',
-    // only: true,
-    options: {
+  it('Parsing error', async () => {
+    const options = {
       filecontent: `
         <script>
           var !*/= mù*! invalid syntax
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [
         'Unexpected token (2:14)',
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'parseComment() with disbaled description',
-    options: {
-      features: ['name'],
+  it('parseComment() with disbaled description', async () => {
+    const options = {
+      features: [
+        'name',
+      ],
       filecontent: `
         <script>
           /**
@@ -261,19 +241,20 @@ describe('ScriptParser', () => {
           export default {}
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'InputText',
-      description: undefined,
       keywords: [],
       errors: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'parseComment() with disabled name',
-    options: {
-      features: ['description'],
+  it('parseComment() with disabled name', async () => {
+    const options = {
+      features: [
+        'description',
+      ],
       filecontent: `
         <script>
           /**
@@ -283,18 +264,17 @@ describe('ScriptParser', () => {
           export default {}
         </script>
       `,
-    },
-    expected: {
-      name: undefined,
+    };
+
+    await expect(options).toParseAs({
       description: 'Component description',
       keywords: [],
       errors: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Handle keyword @name prior than the component name',
-    options: {
+  it('Handle keyword @name prior than the component name', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -305,15 +285,15 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'my-checkbox',
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'with undefined references',
-    options: {
+  it('with undefined references', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -329,8 +309,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: '',
       props: [
         {
@@ -338,10 +319,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -350,10 +328,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-ref',
           type: 'CallsSomeOtherMethod',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -366,13 +341,10 @@ describe('ScriptParser', () => {
           ],
           name: 'someMethodCall',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
         {
@@ -382,44 +354,40 @@ describe('ScriptParser', () => {
           ],
           name: 'someMethodRef',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'empty options.resolver.alias',
-    // only: true,
-    options: {
+  it('empty options.resolver.alias', async () => {
+    const options = {
       resolver: {
         alias: {},
       },
       filecontent: `
-        <script>
-          import Vue from 'vue'
-          import componentName from './myMixin';   
-          import { myMixin as myMixin2 } from '@/myMixin';
-          
-          // define a component that uses this mixin
-          export default Vue.extend({
-            name: componentName,
-            mixins: [myMixin2],
-            props: {
-              somePropCall: MethodThanReturnAString(),
-            },
-          })
-        </script>
-      `,
-    },
-    expected: {
+          <script>
+            import Vue from 'vue'
+            import componentName from './myMixin';   
+            import { myMixin as myMixin2 } from '@/myMixin';
+            
+            // define a component that uses this mixin
+            export default Vue.extend({
+              name: componentName,
+              mixins: [myMixin2],
+              props: {
+                somePropCall: MethodThanReturnAString(),
+              },
+            })
+          </script>
+        `,
+    };
+
+    await expect(options).toParseAs({
       name: '',
       errors: [
         "Cannot find module '@/myMixin'. Make sure to define options.resolver",
@@ -432,45 +400,42 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
       ],
       methods: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'non empty options.resolver.alias',
-    options: {
+  it('non empty options.resolver.alias', async () => {
+    const options = {
       resolver: {
         alias: {
-          '@/': join(__dirname, '../fixtures'),
-          './myMixin': join(__dirname, '../fixtures/myMixin.js'),
+          '@/': '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
+          './myMixin': '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures/myMixin.js',
         },
       },
       filecontent: `
-        <script>
-          import Vue from 'vue'
-          import componentName from './myMixin';   
-          import { myMixin as myMixin2 } from '@/myMixin';
-          
-          // define a component that uses this mixin
-          export default Vue.extend({
-            name: componentName,
-            mixins: [myMixin2],
-            props: {
-              somePropCall: MethodThanReturnAString(),
-            },
-          })
-        </script>
-      `,
-    },
-    expected: {
+          <script>
+            import Vue from 'vue'
+            import componentName from './myMixin';   
+            import { myMixin as myMixin2 } from '@/myMixin';
+            
+            // define a component that uses this mixin
+            export default Vue.extend({
+              name: componentName,
+              mixins: [myMixin2],
+              props: {
+                somePropCall: MethodThanReturnAString(),
+              },
+            })
+          </script>
+        `,
+    };
+
+    await expect(options).toParseAs({
       name: 'MyComponentName',
       warnings: [],
       errors: [],
@@ -480,10 +445,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-ref',
           type: 'CallsSomeOtherMethod',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -492,10 +454,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -508,22 +467,18 @@ describe('ScriptParser', () => {
           ],
           name: 'hello',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Mixin exported as default',
-    options: {
+  it('Mixin exported as default', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue     from 'vue'
@@ -538,8 +493,9 @@ describe('ScriptParser', () => {
           export default RouteMixin
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       methods: [
         {
           kind: 'method',
@@ -548,23 +504,18 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'mixins defined on the same file',
-    // only: true,
-    options: {
+  it('mixins defined on the same file', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue     from 'vue'
@@ -592,8 +543,9 @@ describe('ScriptParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       props: [
         {
@@ -601,10 +553,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-ref',
           type: 'CallsSomeOtherMethod',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -613,10 +562,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -629,24 +575,20 @@ describe('ScriptParser', () => {
           ],
           name: 'hello',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'mixins defined on an external file',
-    options: {
+  it('mixins defined on an external file', async () => {
+    const options = {
       resolver: {
-        basedir: join(__dirname, '../fixtures'),
+        basedir: '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
       },
       filecontent: `
         <script>
@@ -663,8 +605,9 @@ describe('ScriptParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'MyComponentName',
       warnings: [],
       errors: [],
@@ -674,10 +617,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-ref',
           type: 'CallsSomeOtherMethod',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -686,10 +626,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -702,25 +639,20 @@ describe('ScriptParser', () => {
           ],
           name: 'hello',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'mixins defined on an external SFC file',
-    // only: true,
-    options: {
+  it('mixins defined on an external SFC file', async () => {
+    const options = {
       resolver: {
-        basedir: join(__dirname, '../fixtures'),
+        basedir: '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
       },
       filecontent: `
         <script>
@@ -737,8 +669,9 @@ describe('ScriptParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'MyComponentName',
       warnings: [],
       errors: [],
@@ -748,10 +681,7 @@ describe('ScriptParser', () => {
           name: 'name',
           type: 'string',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -760,10 +690,7 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
@@ -776,24 +703,20 @@ describe('ScriptParser', () => {
           ],
           name: 'hello',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'mixins defined on an external SFC file which containing errors',
-    options: {
+  it('mixins defined on an external SFC file which containing errors', async () => {
+    const options = {
       resolver: {
-        basedir: join(__dirname, '../fixtures'),
+        basedir: '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
       },
       filecontent: `
         <script>
@@ -810,8 +733,9 @@ describe('ScriptParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: '',
       warnings: [],
       errors: [
@@ -823,21 +747,17 @@ describe('ScriptParser', () => {
           name: 'some-prop-call',
           type: 'unknown',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
-          default: undefined,
           required: false,
           describeModel: false,
         },
       ],
       methods: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported with custom name',
-    options: {
+  it('@mixin: Mixin exported with custom name', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue     from 'vue'
@@ -853,8 +773,9 @@ describe('ScriptParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -864,22 +785,18 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as object',
-    options: {
+  it('@mixin: Mixin exported as object', async () => {
+    const options = {
       filecontent: `
         <script>
           import {route} from '@pits/plugins/route'
@@ -894,8 +811,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -905,22 +823,18 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function',
-    options: {
+  it('@mixin: Mixin exported as factory function', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue     from 'vue'
@@ -938,8 +852,9 @@ describe('ScriptParser', () => {
           export default () => RouteMixin
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -949,22 +864,18 @@ describe('ScriptParser', () => {
           ],
           name: 'route',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as default factory function with arguments and Vue.extend',
-    options: {
+  it('@mixin: Mixin exported as default factory function with arguments and Vue.extend', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -981,8 +892,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -992,22 +904,18 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as default factory function with arguments and TypeScript',
-    options: {
+  it('@mixin: Mixin exported as default factory function with arguments and TypeScript', async () => {
+    const options = {
       ignoredVisibilities: [],
       filecontent: `
         <script>
@@ -1032,8 +940,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -1043,7 +952,6 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'protected',
-          category: undefined,
           description: 'Testing',
           keywords: [],
           params: [
@@ -1051,7 +959,6 @@ describe('ScriptParser', () => {
               name: 'test',
               type: 'Record<string, any>',
               description: '<-- Parser stops with error',
-              defaultValue: undefined,
               rest: false,
             },
           ],
@@ -1061,12 +968,11 @@ describe('ScriptParser', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function with arguments and Vue.extend (es6',
-    options: {
+  it('@mixin: Mixin exported as factory function with arguments and Vue.extend (es6', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -1083,8 +989,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -1094,22 +1001,18 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function with arguments and Vue.extend',
-    options: {
+  it('@mixin: Mixin exported as factory function with arguments and Vue.extend', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -1126,8 +1029,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -1137,22 +1041,18 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function with arguments and referenced Vue.extend',
-    options: {
+  it('@mixin: Mixin exported as factory function with arguments and referenced Vue.extend', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -1171,8 +1071,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -1182,22 +1083,18 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function and @name',
-    options: {
+  it('@mixin: Mixin exported as factory function and @name', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue from 'vue.js';
@@ -1217,8 +1114,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'InputMixin',
       errors: [],
       keywords: [],
@@ -1228,8 +1126,6 @@ describe('ScriptParser', () => {
           name: 'id',
           type: 'string',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           required: false,
           describeModel: false,
@@ -1237,10 +1133,12 @@ describe('ScriptParser', () => {
         {
           kind: 'prop',
           name: 'v-model',
-          type: ['boolean', 'number', 'string'],
+          type: [
+            'boolean',
+            'number',
+            'string',
+          ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           required: false,
           describeModel: true,
@@ -1253,24 +1151,19 @@ describe('ScriptParser', () => {
             'route(): unknown',
           ],
           name: 'route',
-          category: undefined,
-          description: undefined,
           keywords: [],
           visibility: 'public',
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory arrow function with arguments and referenced Vue.extend',
-    // only: true,
-    options: {
+  it('@mixin: Mixin exported as factory arrow function with arguments and referenced Vue.extend', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue from 'vue.js';
@@ -1288,8 +1181,9 @@ describe('ScriptParser', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'InputMixin',
       errors: [],
       keywords: [],
@@ -1299,8 +1193,6 @@ describe('ScriptParser', () => {
           name: 'id',
           type: 'string',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           required: false,
           describeModel: false,
@@ -1308,10 +1200,12 @@ describe('ScriptParser', () => {
         {
           kind: 'prop',
           name: 'v-model',
-          type: ['boolean', 'number', 'string'],
+          type: [
+            'boolean',
+            'number',
+            'string',
+          ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           required: false,
           describeModel: true,
@@ -1324,23 +1218,19 @@ describe('ScriptParser', () => {
             'route(): unknown',
           ],
           name: 'route',
-          category: undefined,
-          description: undefined,
           keywords: [],
           visibility: 'public',
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function with arguments and ObjectExpression',
-    options: {
+  it('@mixin: Mixin exported as factory function with arguments and ObjectExpression', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -1357,8 +1247,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -1368,22 +1259,18 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@mixin: Mixin exported as factory function with arguments and referenced ObjectExpression',
-    options: {
+  it('@mixin: Mixin exported as factory function with arguments and referenced ObjectExpression', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -1402,8 +1289,9 @@ describe('ScriptParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       keywords: [],
       methods: [
         {
@@ -1413,16 +1301,13 @@ describe('ScriptParser', () => {
           ],
           name: 'myFunction',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 });

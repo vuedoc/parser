@@ -1,11 +1,11 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 
-describe('Class Component', () => {
-  ComponentTestCase({
-    name: '#37 - Class Component',
-    // only: true,
-    options: {
+describe('ClassComponent', () => {
+  it('#37 - Class Component', async () => {
+    const options = {
+      ignoredVisibilities: [
+        'private',
+      ],
       filecontent: `
         <script>
           import Vue from 'vue';
@@ -201,9 +201,9 @@ describe('Class Component', () => {
           export default App;
         </script>
       `,
-      ignoredVisibilities: ['private'],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'App',
       description: 'A class component element',
       inheritAttrs: false,
@@ -215,237 +215,218 @@ describe('Class Component', () => {
         },
       ],
       events: [
-        { kind: 'event',
+        {
+          kind: 'event',
           name: 'created',
           arguments: [],
           description: 'event constructor description',
-          category: undefined,
-          version: undefined,
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'event',
+        {
+          kind: 'event',
           name: 'mounted',
           arguments: [],
           description: 'event mounted description',
-          category: undefined,
-          version: undefined,
           keywords: [],
           visibility: 'public',
         },
       ],
       methods: [
-        { kind: 'method',
+        {
+          kind: 'method',
           name: 'greet',
           params: [],
           description: 'method greet description',
-          category: undefined,
-          version: undefined,
           keywords: [],
           syntax: [
             'greet(): void',
           ],
           visibility: 'public',
           returns: {
-            description: undefined,
             type: 'void',
           },
         },
-        { kind: 'method',
+        {
+          kind: 'method',
           name: '_protectedMethod',
           params: [],
           description: 'method _protectedMethod description',
-          category: undefined,
-          version: undefined,
           keywords: [],
           syntax: [
             '_protectedMethod(): void',
           ],
           visibility: 'protected',
           returns: {
-            description: undefined,
             type: 'void',
           },
         },
       ],
       computed: [
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedMsg',
           type: 'string',
-          category: undefined,
-          version: undefined,
-          dependencies: ['msg'],
+          dependencies: [
+            'msg',
+          ],
           description: 'computed computedMsg description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedString',
           type: 'string',
-          category: undefined,
-          version: undefined,
-          dependencies: ['msg'],
+          dependencies: [
+            'msg',
+          ],
           description: 'computed computedString description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedString2',
           type: 'string',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedString description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedNull',
           type: 'unknown',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedNull description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedBool',
           type: 'boolean',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedBool description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedArray',
           type: 'array',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedArray description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedObject',
           type: 'object',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedObject description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedNewObject',
           type: 'array',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedNewObject description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedCustomeObject',
           type: 'CustomeObject',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed CustomeObject description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedNewObject2',
           type: 'unknown',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedNewObject2 description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedRegExpLiteral',
           type: 'regexp',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedRegExpLiteral description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedBigIntLiteral',
           type: 'bigint',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedBigIntLiteral description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedNumber',
           type: 'number',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedNumber description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedNumber1',
           type: 'boolean',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed computedNumber description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'computedNumber2',
           type: 'string',
-          category: undefined,
-          version: undefined,
-          dependencies: ['msg'],
+          dependencies: [
+            'msg',
+          ],
           description: 'computed computedNumber description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: '[Symbol.species]',
           type: 'unknown',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed [Symbol.species] description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'empty',
           type: 'unknown',
-          category: undefined,
-          version: undefined,
           dependencies: [],
           description: 'computed [Symbol.species] description',
           keywords: [],
           visibility: 'public',
         },
-        { kind: 'computed',
+        {
+          kind: 'computed',
           name: 'something',
           type: 'Array<any>',
-          category: undefined,
-          version: undefined,
           dependencies: [],
-          description: undefined,
           keywords: [],
           visibility: 'public',
         },
@@ -455,8 +436,6 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'msg',
           type: 'string',
-          category: undefined,
-          version: undefined,
           description: 'data msg description',
           initialValue: '"Hello"',
           keywords: [],
@@ -466,22 +445,18 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'helloMsg',
           type: 'string',
-          category: undefined,
-          version: undefined,
           description: 'data helloMsg with expression',
-          initialValue: '\'Hello, \' + this.name',
+          initialValue: "'Hello, ' + this.name",
           keywords: [],
           visibility: 'public',
         },
       ],
       props: [
-        { kind: 'prop',
+        {
+          kind: 'prop',
           name: 'name',
           type: 'string',
-          category: undefined,
-          version: undefined,
           required: false,
-          default: undefined,
           describeModel: false,
           description: 'prop name description',
           keywords: [],
@@ -489,12 +464,11 @@ describe('Class Component', () => {
         },
       ],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'vuedoc.md#25 - Class Component',
-    options: {
+  it('vuedoc.md#25 - Class Component', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue from 'vue';
@@ -524,8 +498,9 @@ describe('Class Component', () => {
           export default App
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'MyComponent',
       description: 'MyComponent description',
       inheritAttrs: true,
@@ -539,9 +514,6 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'routeQueue',
           type: 'array',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           initialValue: '[this.$router.currentRoute]',
           keywords: [],
           visibility: 'public',
@@ -550,9 +522,6 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'historyLength',
           type: 'number',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           initialValue: 'window.history.length',
           keywords: [],
           visibility: 'public',
@@ -561,9 +530,6 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'transitionName',
           type: 'string',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           initialValue: '"slide-left"',
           keywords: [],
           visibility: 'public',
@@ -572,9 +538,6 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'init',
           type: 'boolean',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           initialValue: 'false',
           keywords: [],
           visibility: 'public',
@@ -582,12 +545,11 @@ describe('Class Component', () => {
       ],
       props: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Class Component Visibilities',
-    options: {
+  it('Class Component Visibilities', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue from 'vue';
@@ -629,8 +591,9 @@ describe('Class Component', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'MyComponent',
       description: 'MyComponent description',
       inheritAttrs: true,
@@ -641,15 +604,11 @@ describe('Class Component', () => {
         {
           kind: 'method',
           name: 'shouldBeSeen3',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           keywords: [],
           params: [],
           visibility: 'public',
           returns: {
             type: 'string',
-            description: undefined,
           },
           syntax: [
             'shouldBeSeen3(): string',
@@ -661,9 +620,6 @@ describe('Class Component', () => {
           kind: 'computed',
           name: 'shouldBeSeen2',
           type: 'string',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           keywords: [],
           visibility: 'public',
           dependencies: [],
@@ -674,9 +630,6 @@ describe('Class Component', () => {
           kind: 'data',
           name: 'shouldBeSeen',
           type: 'string',
-          description: undefined,
-          category: undefined,
-          version: undefined,
           initialValue: '"some other string"',
           keywords: [],
           visibility: 'public',
@@ -684,6 +637,6 @@ describe('Class Component', () => {
       ],
       props: [],
       slots: [],
-    },
+    });
   });
 });

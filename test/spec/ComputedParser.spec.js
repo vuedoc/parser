@@ -1,11 +1,8 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 
 describe('ComputedParser', () => {
-  ComponentTestCase({
-    name: 'property function',
-    // only: true,
-    options: {
+  it('property function', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -20,28 +17,28 @@ describe('ComputedParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       computed: [
         {
           kind: 'computed',
           name: 'pages',
           type: 'unknown',
-          dependencies: ['links', 'site'],
-          category: undefined,
-          description: undefined,
+          dependencies: [
+            'links',
+            'site',
+          ],
           keywords: [],
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'getter, setter and event (property function)',
-    // only: true,
-    options: {
+  it('getter, setter and event (property function)', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -57,23 +54,25 @@ describe('ComputedParser', () => {
                   this._pages = value
 
                   this.$emit('update:pages', value)
-                 }
+                  }
               }
             }
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       computed: [
         {
           kind: 'computed',
           name: 'pages',
           type: 'unknown',
-          dependencies: ['links', 'site'],
-          category: undefined,
-          description: undefined,
+          dependencies: [
+            'links',
+            'site',
+          ],
           keywords: [],
           visibility: 'public',
         },
@@ -83,12 +82,9 @@ describe('ComputedParser', () => {
           kind: 'event',
           name: 'update:pages',
           keywords: [],
-          category: undefined,
-          description: undefined,
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: 'value',
               rest: false,
               type: 'unknown',
@@ -96,13 +92,11 @@ describe('ComputedParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'getter, setter and event (object method)',
-    // only: true,
-    options: {
+  it('getter, setter and event (object method)', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -124,17 +118,19 @@ describe('ComputedParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       computed: [
         {
           kind: 'computed',
           name: 'pages',
           type: 'unknown',
-          dependencies: ['links', 'site'],
-          category: undefined,
-          description: undefined,
+          dependencies: [
+            'links',
+            'site',
+          ],
           keywords: [],
           visibility: 'public',
         },
@@ -144,12 +140,9 @@ describe('ComputedParser', () => {
           kind: 'event',
           name: 'update:pages',
           keywords: [],
-          category: undefined,
-          description: undefined,
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: 'value',
               rest: false,
               type: 'unknown',
@@ -157,12 +150,11 @@ describe('ComputedParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'dynamic object key',
-    options: {
+  it('dynamic object key', async () => {
+    const options = {
       filecontent: `
         <script>
           const computedProp2 = 'computedProp2Value'
@@ -175,35 +167,33 @@ describe('ComputedParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       computed: [
         {
           kind: 'computed',
           name: 'computedProp1',
           type: 'number',
-          category: undefined,
-          description: undefined,
           keywords: [],
           dependencies: [],
-          visibility: 'public' },
+          visibility: 'public',
+        },
         {
           kind: 'computed',
           name: 'computedProp2Value',
           type: 'number',
-          category: undefined,
-          description: undefined,
           keywords: [],
           dependencies: [],
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'dependancies',
-    options: {
+  it('dependancies', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -275,15 +265,14 @@ describe('ComputedParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       computed: [
         {
           kind: 'computed',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'classes',
           type: 'array',
@@ -302,8 +291,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'object',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'labelClasses',
           dependencies: [
@@ -315,8 +302,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'hasLabel',
           dependencies: [
@@ -328,8 +313,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'hasFloatingLabel',
           dependencies: [
@@ -341,8 +324,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'isLabelInline',
           dependencies: [
@@ -354,8 +335,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'number',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'valueLength',
           dependencies: [
@@ -366,8 +345,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'hasFeedback',
           dependencies: [
@@ -380,8 +357,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'showError',
           dependencies: [
@@ -394,8 +369,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'showHelp',
           dependencies: [
@@ -408,8 +381,6 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'unknown',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'matchingSuggestions',
           dependencies: [
@@ -424,13 +395,11 @@ describe('ComputedParser', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'unknown',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'nullx',
           dependencies: [],
         },
       ],
-    },
+    });
   });
 });

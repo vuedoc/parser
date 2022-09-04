@@ -1,13 +1,11 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 import { EntryEvent } from '../../src/parsers/VuedocParser.ts';
 import { KeywordsEntry } from '../../src/entity/KeywordsEntry.ts';
 import { Keyword } from '../../src/entity/Keyword.ts';
 
 describe('Plugins', () => {
-  ComponentTestCase({
-    name: 'plugin without parser modification',
-    options: {
+  it('plugin without parser modification', async () => {
+    const options = {
       filecontent: `
         <script setup>
           /**
@@ -18,14 +16,15 @@ describe('Plugins', () => {
           /**
            * Message value
            */
-           const message = myCustomRef('Hello World!');
+            const message = myCustomRef('Hello World!');
         </script>
       `,
       plugins: [
         (_parser) => {},
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       name: 'MyCustomComponent',
@@ -34,19 +33,17 @@ describe('Plugins', () => {
           kind: 'data',
           name: 'message',
           type: 'unknown',
-          category: undefined,
-          version: undefined,
           description: 'Message value',
-          initialValue: 'myCustomRef(\'Hello World!\')',
+          initialValue: "myCustomRef('Hello World!')",
           keywords: [],
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'plugin with additional composition',
-    options: {
+  it('plugin with additional composition', async () => {
+    const options = {
       filecontent: `
         <script setup>
           /**
@@ -67,8 +64,9 @@ describe('Plugins', () => {
           },
         }),
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       data: [
@@ -76,19 +74,17 @@ describe('Plugins', () => {
           kind: 'data',
           name: 'message',
           type: 'string',
-          category: undefined,
-          version: undefined,
           description: 'Message value',
           initialValue: '"Hello World!"',
           keywords: [],
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'intercept and edit EntryEvent<NameEntry>',
-    options: {
+  it('intercept and edit EntryEvent<NameEntry>', async () => {
+    const options = {
       filecontent: `
         <script setup>
           /**
@@ -111,17 +107,17 @@ describe('Plugins', () => {
           });
         },
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       name: 'MyCustomComponentX',
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'intercept and stop propagation of EntryEvent<NameEntry>',
-    options: {
+  it('intercept and stop propagation of EntryEvent<NameEntry>', async () => {
+    const options = {
       filecontent: `
         <script setup>
           /**
@@ -142,20 +138,17 @@ describe('Plugins', () => {
           parser.addEventListener('name', (event) => event.stopImmediatePropagation());
         },
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
-      name: undefined,
-      version: undefined,
-      author: undefined,
       keywords: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'inject additional EntryEvent<KeywordsEntry> on EntryEvent<NameEntry>',
-    options: {
+  it('inject additional EntryEvent<KeywordsEntry> on EntryEvent<NameEntry>', async () => {
+    const options = {
       filecontent: `
         <script setup>
           /**
@@ -180,19 +173,22 @@ describe('Plugins', () => {
           ]))));
         },
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       name: 'MyCustomComponent',
       version: '1.0.0',
-      author: ['Demanou'],
+      author: [
+        'Demanou',
+      ],
       keywords: [
         {
           name: 'copyleft',
           description: '2022',
         },
       ],
-    },
+    });
   });
 });

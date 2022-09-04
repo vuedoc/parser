@@ -1,10 +1,8 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 
 describe('EventParser', () => {
-  ComponentTestCase({
-    name: '$emit without arguments',
-    options: {
+  it('$emit without arguments', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -16,16 +14,16 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '$emit without arguments',
-    options: {
+  it('$emit without arguments', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -37,26 +35,24 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
-          description: undefined,
           visibility: 'public',
           arguments: [],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Rest argument',
-    options: {
+  it('Rest argument', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -68,20 +64,18 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
-          description: undefined,
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: 'this.values',
               rest: true,
               type: 'unknown',
@@ -89,12 +83,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Rest argument with JSDoc',
-    options: {
+  it('Rest argument with JSDoc', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -110,15 +103,15 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -131,12 +124,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Destructuring object argument',
-    options: {
+  it('Destructuring object argument', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -151,20 +143,19 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: '{ value: this.value }',
               rest: false,
               type: 'object',
@@ -172,12 +163,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Destructuring object argument with JSDoc',
-    options: {
+  it('Destructuring object argument with JSDoc', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -193,15 +183,15 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -214,12 +204,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Destructuring array argument',
-    options: {
+  it('Destructuring array argument', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -234,20 +223,19 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: '[this.value]',
               rest: false,
               type: 'array',
@@ -255,12 +243,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Destructuring array argument with JSDoc',
-    options: {
+  it('Destructuring array argument with JSDoc', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -276,15 +263,15 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
@@ -297,12 +284,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Assignment argument',
-    options: {
+  it('Assignment argument', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -317,20 +303,19 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: 'this.cache',
               rest: false,
               type: 'unknown',
@@ -338,12 +323,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Assignment argument with unhandled name',
-    options: {
+  it('Assignment argument with unhandled name', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -358,20 +342,19 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       events: [
         {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emit the input event',
           visibility: 'public',
           arguments: [
             {
-              description: undefined,
               name: 'value',
               rest: false,
               type: 'unknown',
@@ -379,12 +362,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Assignment argument with unhandled name',
-    options: {
+  it('Assignment argument with unhandled name', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -407,18 +389,19 @@ describe('EventParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       computed: [
         {
           kind: 'computed',
           name: 'oven',
           type: 'unknown',
-          dependencies: ['value'],
+          dependencies: [
+            'value',
+          ],
           keywords: [],
-          category: undefined,
-          version: undefined,
           visibility: 'public',
         },
       ],
@@ -427,7 +410,6 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'input',
           keywords: [],
-          category: undefined,
           description: 'Emitted when an oven is selected.',
           visibility: 'public',
           arguments: [
@@ -440,12 +422,11 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'Event in watchers',
-    options: {
+  it('Event in watchers', async () => {
+    const options = {
       filecontent: `
         <template>
           <button @click="fooProp = !fooProp">click me</button>
@@ -515,8 +496,9 @@ describe('EventParser', () => {
         }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       warnings: [],
       computed: [],
@@ -525,8 +507,6 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'foo-changed',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Emitted when fooProp changes',
           visibility: 'public',
           arguments: [
@@ -542,8 +522,6 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'foo-changed2',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Emitted when fooProp changes',
           visibility: 'public',
           arguments: [
@@ -559,8 +537,6 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'foo-changed3',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Emitted when fooProp changes',
           visibility: 'public',
           arguments: [
@@ -576,8 +552,6 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'foo-changed4',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Emitted when fooProp changes',
           visibility: 'public',
           arguments: [
@@ -593,8 +567,6 @@ describe('EventParser', () => {
           kind: 'event',
           name: 'event2',
           keywords: [],
-          category: undefined,
-          version: undefined,
           description: 'Also emitted when fooProp changes',
           visibility: 'public',
           arguments: [
@@ -607,6 +579,6 @@ describe('EventParser', () => {
           ],
         },
       ],
-    },
+    });
   });
 });

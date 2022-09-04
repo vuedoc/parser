@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest';
-
 import { parseComponent } from '../../src/index.ts';
-import { ComponentTestCase } from '../../src/test/utils.ts';
 import { Fixture } from '../lib/Fixture.js';
 
 describe('issues', () => {
@@ -778,9 +776,781 @@ describe('issues', () => {
     });
   });
 
-  ComponentTestCase({
-    name: '#52 - Prop as array type declaration',
-    options: {
+  describe('#27 - undefined default value is parsed as a string', () => {
+    it('should parse undefined default value as it', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                value: {
+                  type: Boolean,
+                  default: undefined
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'boolean',
+          default: 'undefined',
+          name: 'v-model',
+          describeModel: true,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+
+    it('should parse missing default value', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                value: {
+                  type: Boolean
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'boolean',
+          default: undefined,
+          name: 'v-model',
+          describeModel: true,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+
+    it('should parse boolean default value as it', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                bool: {
+                  type: Boolean,
+                  default: false
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'boolean',
+          default: 'false',
+          name: 'bool',
+          describeModel: false,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+
+    it('should parse string default value as it', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                str: {
+                  type: String,
+                  default: 'hello'
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'string',
+          default: '"hello"',
+          name: 'str',
+          describeModel: false,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+
+    it('should parse number default value as it', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                int: {
+                  type: Number,
+                  default: 123
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'number',
+          default: '123',
+          name: 'int',
+          describeModel: false,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+
+    it('should parse null default value as it', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                null: {
+                  type: Object,
+                  default: null
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'object',
+          default: 'null',
+          name: 'null',
+          describeModel: false,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+
+    it('should parse bigint default value as it', () => {
+      const options = {
+        features: ['props'],
+        filecontent: `
+          <script>
+            export default {
+              props: {
+                bigint: {
+                  type: BigInt,
+                  default: 100n
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'prop',
+          visibility: 'public',
+          category: undefined,
+          description: undefined,
+          keywords: [],
+          type: 'bigint',
+          default: '100n',
+          name: 'bigint',
+          describeModel: false,
+          required: false,
+        },
+      ];
+
+      return parseComponent(options).then(({ props }) => {
+        expect(props).toEqual(expected);
+      });
+    });
+  });
+
+  describe('#32 - dynamic (lazy) import() function alongside a regular import', () => {
+    it('should successfully parse component with regular import', () => {
+      const options = {
+        filecontent: `
+          <template>
+            <div>
+              <Lazy />
+            </div>
+          </template>
+          <script>
+            import Regular from './components/Regular.vue'
+            export default {
+              components: {
+                Lazy: import('./components/Lazy.vue')
+              }
+            }
+          </script>
+        `,
+      };
+
+      return parseComponent(options);
+    });
+
+    it('should successfully parse component with lazy import', () => {
+      const options = {
+        filecontent: `
+          <template>
+            <div>
+              <Lazy />
+            </div>
+          </template>
+          <script>
+            import Regular from './components/Regular.vue'
+            export default {
+              computed: {
+                loading() {
+                  return () => import('input.vue')
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      return parseComponent(options);
+    });
+  });
+
+  describe('#29 - Bad format when using code block in comment', () => {
+    it('should successfully parse comment with block comment', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * My beautifull component. Usage:
+             *
+             * \`\`\`
+             * <my-component
+             *     v-model='foo'
+             * />
+             * \`\`\`
+             */
+            export default {}
+
+          </script>
+        `,
+      };
+      const expected = 'My beautifull component. Usage:\n\n```\n<my-component\n    v-model=\'foo\'\n/>\n```';
+
+      return parseComponent(options).then(({ description }) => {
+        expect(description).toEqual(expected);
+      });
+    });
+
+    it('should successfully preserve spaces on keywords', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * Description
+             *
+             * @note Node one
+             * - Line 1
+             *   Line 2
+             * @note Node two
+             * - Line 3
+             * @note Node three
+             */
+            export default {}
+
+          </script>
+        `,
+      };
+      const expectedDescription = 'Description';
+      const expectedKeywords = [
+        {
+          name: 'note',
+          description: 'Node one\n- Line 1\n  Line 2' },
+        {
+          name: 'note',
+          description: 'Node two\n- Line 3' },
+        {
+          name: 'note',
+          description: 'Node three' },
+      ];
+
+      return parseComponent(options).then(({ description, keywords }) => {
+        expect(description).toEqual(expectedDescription);
+        expect(keywords).toEqual(expectedKeywords);
+      });
+    });
+  });
+
+  describe('#30 - Block of comment is broken when using @ in comment in replacement of v-on', () => {
+    it('should successfully parse comment with block comment', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * Usage:
+             * \`\`\`
+             * <my-component @input='doSomething' />
+             * \`\`\`
+             */
+            export default {}
+
+          </script>
+        `,
+      };
+      const expected = 'Usage:\n```\n<my-component @input=\'doSomething\' />\n```';
+
+      return parseComponent(options).then(({ description }) => {
+        expect(description).toEqual(expected);
+      });
+    });
+
+    it('should successfully parse with keywords', () => {
+      const options = {
+        filecontent: `
+          <script>
+            /**
+             * Description
+             *
+             * @note Node one
+             * - Line 1
+             *   Line 2
+             * @note Node two
+             * - Line 3
+             * @note Node three
+             */
+            export default {}
+
+          </script>
+        `,
+      };
+      const expectedDescription = 'Description';
+      const expectedKeywords = [
+        {
+          name: 'note',
+          description: 'Node one\n- Line 1\n  Line 2' },
+        {
+          name: 'note',
+          description: 'Node two\n- Line 3' },
+        {
+          name: 'note',
+          description: 'Node three' },
+      ];
+
+      return parseComponent(options).then(({ description, keywords }) => {
+        expect(description).toEqual(expectedDescription);
+        expect(keywords).toEqual(expectedKeywords);
+      });
+    });
+  });
+
+  describe('#40 - Nested slot documentation', () => {
+    it('should successfully parse nested slots', () => {
+      const options = {
+        filecontent: `
+          <template>
+            <!-- Overrides entire dialog contents -->
+            <slot name="content">
+              <n-module ref="module" :type="type">
+                <!-- Overrides dialog header -->
+                <slot name="header" slot="header">
+                  <n-tile>
+                    <div>
+                      <div :class="config.children.title">{{ title }}</div>
+                    </div>
+
+                    <!-- Overrides dialog header actions, i.e. default close button -->
+                    <slot name="actions" slot="actions">
+                      <n-button @click.native="close" circle ghost color="black">
+                        <n-icon :icon="config.icons.close"></n-icon>
+                      </n-button>
+                    </slot>
+                  </n-tile>
+                </slot>
+
+                <!-- Dialog body -->
+                <slot></slot>
+
+                <!-- Dialog footer -->
+                <slot name="footer" slot="footer"></slot>
+              </n-module>
+            </slot>
+          </template>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'slot',
+          visibility: 'public',
+          category: undefined,
+          description: 'Overrides entire dialog contents',
+          keywords: [],
+          name: 'content',
+          props: [],
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          category: undefined,
+          description: 'Overrides dialog header',
+          keywords: [],
+          name: 'header',
+          props: [],
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          category: undefined,
+          description: 'Overrides dialog header actions, i.e. default close button',
+          keywords: [],
+          name: 'actions',
+          props: [],
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          category: undefined,
+          description: 'Dialog body',
+          keywords: [],
+          name: 'default',
+          props: [],
+        },
+        {
+          kind: 'slot',
+          visibility: 'public',
+          category: undefined,
+          description: 'Dialog footer',
+          keywords: [],
+          name: 'footer',
+          props: [],
+        },
+      ];
+
+      return parseComponent(options).then(({ slots }) => {
+        expect(slots).toEqual(expected);
+      });
+    });
+  });
+
+  describe('#39 - Events parsing on function calls', () => {
+    it('should successfully parse events on this.$nextTick()', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                this.$nextTick(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          category: undefined,
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ events }) => {
+        expect(events).toEqual(expected);
+      });
+    });
+
+    it('should successfully parse events on Vue.nextTick()', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                Vue.nextTick(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          category: undefined,
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ events }) => {
+        expect(events).toEqual(expected);
+      });
+    });
+
+    it('should successfully parse events on callee function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          category: undefined,
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ events }) => {
+        expect(events).toEqual(expected);
+      });
+    });
+
+    it('should successfully parse events on Promise.resolve function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load().then(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          category: undefined,
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ events }) => {
+        expect(events).toEqual(expected);
+      });
+    });
+
+    it('should successfully parse events on Promise.reject function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load().catch(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          category: undefined,
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ events }) => {
+        expect(events).toEqual(expected);
+      });
+    });
+
+    it('should successfully parse events on Promise.finally function', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              created () {
+                load().finally(() => {
+                  /**
+                   * Emits when confirmation dialog is closed
+                   */
+                  this.$emit('close');
+                });
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'event',
+          name: 'close',
+          category: undefined,
+          description: 'Emits when confirmation dialog is closed',
+          arguments: [],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ events }) => {
+        expect(events).toEqual(expected);
+      });
+    });
+  });
+
+  describe('#41 - Duplicate computed properties dependencies', () => {
+    it('should successfully parse dependencies without duplicates', () => {
+      const options = {
+        filecontent: `
+          <script>
+            export default {
+              computed: {
+                bidule () {
+                  const doc = this.docs.find(({ name }) => name === this.name)
+
+                  return this.name && doc.published
+                }
+              }
+            }
+          </script>
+        `,
+      };
+
+      const expected = [
+        {
+          kind: 'computed',
+          name: 'bidule',
+          type: 'boolean',
+          category: undefined,
+          description: undefined,
+          dependencies: ['docs', 'name'],
+          keywords: [],
+          visibility: 'public',
+        },
+      ];
+
+      return parseComponent(options).then(({ computed }) => {
+        expect(computed).toEqual(expected);
+      });
+    });
+  });
+
+  it('#52 - Prop as array type declaration', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -793,28 +1563,30 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       props: [
         {
-          default: undefined,
           describeModel: true,
-          category: undefined,
           description: 'Badge value',
           keywords: [],
           kind: 'prop',
           name: 'v-model',
           required: false,
-          type: ['string', 'number'],
-          visibility: 'public' },
+          type: [
+            'string',
+            'number',
+          ],
+          visibility: 'public',
+        },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#53 - Documenting dynamic slots with @slot',
-    options: {
+  it('#53 - Documenting dynamic slots with @slot', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -833,8 +1605,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       description: 'A functional component with a default slot using render function',
       keywords: [],
@@ -842,7 +1615,6 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
           description: 'A title slot',
           keywords: [],
           name: 'title',
@@ -851,19 +1623,17 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
           description: 'A default slot',
           keywords: [],
           name: 'default',
           props: [],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#53 - Documenting dynamic slots with @slot on template',
-    options: {
+  it('#53 - Documenting dynamic slots with @slot on template', async () => {
+    const options = {
       filecontent: `
         <template>
           <div>
@@ -877,14 +1647,14 @@ describe('issues', () => {
           </div>
         </template>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       slots: [
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
           description: 'A title slot',
           keywords: [],
           name: 'title',
@@ -893,36 +1663,30 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
           description: 'A default slot',
           keywords: [],
           name: 'default',
           props: [],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#56 - Cannot read property \'type\' of null (UiAutocomplete.vue)',
-    // only: true,
-    options: {
-      filecontent: Fixture.get('UiAutocomplete.vue'),
-    },
-    expected: {
+  it("#56 - Cannot read property 'type' of null (UiAutocomplete.vue)", async () => {
+    const options = {
+      filecontent: await Fixture.get('UiAutocomplete.vue'),
+    };
+
+    await expect(options).toParseAs({
       inheritAttrs: true,
       errors: [],
       warnings: [],
       name: 'ui-autocomplete',
-      description: undefined,
       keywords: [],
       slots: [
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'icon',
           props: [],
@@ -930,9 +1694,6 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'default',
           props: [],
@@ -940,9 +1701,6 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'suggestion',
           props: [],
@@ -950,9 +1708,6 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'error',
           props: [],
@@ -960,9 +1715,6 @@ describe('issues', () => {
         {
           kind: 'slot',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'help',
           props: [],
@@ -972,38 +1724,30 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'name',
           type: 'string',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'placeholder',
           type: 'string',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'v-model',
-          type: ['string', 'number'],
+          type: [
+            'string',
+            'number',
+          ],
           default: '""',
           required: false,
           describeModel: true,
@@ -1011,22 +1755,15 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'icon',
           type: 'string',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'icon-position',
           type: 'string',
@@ -1037,22 +1774,15 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'label',
           type: 'string',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'floating-label',
           type: 'boolean',
@@ -1063,35 +1793,24 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'help',
           type: 'string',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'error',
           type: 'string',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'readonly',
           type: 'boolean',
@@ -1102,9 +1821,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'disabled',
           type: 'boolean',
@@ -1115,9 +1831,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'type',
           type: 'string',
@@ -1128,9 +1841,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'suggestions',
           type: 'array',
@@ -1141,9 +1851,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'limit',
           type: 'number',
@@ -1154,9 +1861,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'append',
           type: 'boolean',
@@ -1167,9 +1871,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'append-delimiter',
           type: 'string',
@@ -1180,9 +1881,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'min-chars',
           type: 'number',
@@ -1193,9 +1891,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'show-on-up-down',
           type: 'boolean',
@@ -1206,9 +1901,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'autofocus',
           type: 'boolean',
@@ -1219,22 +1911,15 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'filter',
           type: 'function',
-          default: undefined,
           required: false,
           describeModel: false,
         },
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'highlight-on-first-match',
           type: 'boolean',
@@ -1245,9 +1930,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'cycle-highlight',
           type: 'boolean',
@@ -1258,9 +1940,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'keys',
           type: 'object',
@@ -1271,9 +1950,6 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'invalid',
           type: 'boolean',
@@ -1286,9 +1962,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'initialValue',
           type: 'unknown',
@@ -1297,9 +1970,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'isActive',
           type: 'boolean',
@@ -1308,9 +1978,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'isTouched',
           type: 'boolean',
@@ -1319,9 +1986,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'showDropdown',
           type: 'boolean',
@@ -1330,9 +1994,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'highlightedIndex',
           type: 'number',
@@ -1344,9 +2005,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'array',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'classes',
           dependencies: [
@@ -1364,9 +2022,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'object',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'labelClasses',
           dependencies: [
@@ -1378,9 +2033,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'hasLabel',
           dependencies: [
@@ -1392,9 +2044,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'hasFloatingLabel',
           dependencies: [
@@ -1406,9 +2055,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'isLabelInline',
           dependencies: [
@@ -1420,9 +2066,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'number',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'valueLength',
           dependencies: [
@@ -1433,9 +2076,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'hasFeedback',
           dependencies: [
@@ -1448,9 +2088,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'showError',
           dependencies: [
@@ -1463,9 +2100,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'boolean',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'showHelp',
           dependencies: [
@@ -1478,9 +2112,6 @@ describe('issues', () => {
           kind: 'computed',
           visibility: 'public',
           type: 'unknown',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'matchingSuggestions',
           dependencies: [
@@ -1496,16 +2127,12 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'select',
           arguments: [
             {
               name: 'suggestion',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1513,16 +2140,12 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'highlight-overflow',
           arguments: [
             {
               name: 'index',
               type: 'number',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1530,22 +2153,17 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'highlight',
           arguments: [
             {
               name: 'suggestion',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
             {
               name: 'index',
               type: 'number',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1553,9 +2171,6 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'dropdown-open',
           arguments: [],
@@ -1563,9 +2178,6 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'dropdown-close',
           arguments: [],
@@ -1573,16 +2185,12 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'input',
           arguments: [
             {
               name: 'value',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1590,16 +2198,12 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'focus',
           arguments: [
             {
               name: 'e',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1607,9 +2211,6 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'change',
           arguments: [
@@ -1619,13 +2220,11 @@ describe('issues', () => {
                 'string',
                 'number',
               ],
-              description: undefined,
               rest: false,
             },
             {
               name: 'e',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1633,16 +2232,12 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'blur',
           arguments: [
             {
               name: 'e',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1650,9 +2245,6 @@ describe('issues', () => {
         {
           kind: 'event',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'touch',
           arguments: [],
@@ -1665,23 +2257,17 @@ describe('issues', () => {
             'defaultFilter(suggestion: unknown): unknown',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'defaultFilter',
           params: [
             {
               name: 'suggestion',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
         {
@@ -1690,23 +2276,17 @@ describe('issues', () => {
             'selectSuggestion(suggestion: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'selectSuggestion',
           params: [
             {
               name: 'suggestion',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1715,23 +2295,17 @@ describe('issues', () => {
             'highlightSuggestion(index: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'highlightSuggestion',
           params: [
             {
               name: 'index',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1740,30 +2314,22 @@ describe('issues', () => {
             'selectHighlighted(index: unknown, e: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'selectHighlighted',
           params: [
             {
               name: 'index',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
             {
               name: 'e',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1772,15 +2338,11 @@ describe('issues', () => {
             'openDropdown(): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'openDropdown',
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1789,15 +2351,11 @@ describe('issues', () => {
             'closeDropdown(): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'closeDropdown',
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1806,23 +2364,17 @@ describe('issues', () => {
             'updateValue(value: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'updateValue',
           params: [
             {
               name: 'value',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1831,23 +2383,17 @@ describe('issues', () => {
             'onFocus(e: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'onFocus',
           params: [
             {
               name: 'e',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1856,23 +2402,17 @@ describe('issues', () => {
             'onChange(e: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'onChange',
           params: [
             {
               name: 'e',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1881,23 +2421,17 @@ describe('issues', () => {
             'onBlur(e: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'onBlur',
           params: [
             {
               name: 'e',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1906,23 +2440,17 @@ describe('issues', () => {
             'onExternalClick(e: unknown): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'onExternalClick',
           params: [
             {
               name: 'e',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -1931,33 +2459,61 @@ describe('issues', () => {
             'reset(): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           name: 'reset',
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimal.vue)',
-    options: {
-      filecontent: Fixture.get('UiAutocompleteMinimal.vue'),
-    },
-    expected: {
+  it("#56 - Cannot read property 'type' of null (UiAutocompleteMinimal.vue)", async () => {
+    const options = {
+      filecontent: `
+        <template>
+            <div>
+
+            </div>
+        </template>
+
+        <script>
+
+
+        export default {
+            name: 'ui-autocomplete',
+            methods: {
+                selectSuggestion(suggestion) {
+                    let value;
+
+                    if (this.append) {
+                        value += this.appendDelimiter + (suggestion[this.keys.value] || suggestion);
+                    } else {
+                        value = suggestion[this.keys.value] || suggestion;
+                    }
+
+                    this.updateValue(value);
+                    this.$emit('select', suggestion);
+
+                    this.$nextTick(() => {
+                        this.closeDropdown();
+                        this.$refs.input.focus();
+                    });
+                }
+            },
+        };
+        </script>
+
+      `,
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       name: 'ui-autocomplete',
       methods: [
         {
-          category: undefined,
-          description: undefined,
           keywords: [],
           kind: 'method',
           syntax: [
@@ -1968,28 +2524,23 @@ describe('issues', () => {
             {
               name: 'suggestion',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
       events: [
         {
           name: 'select',
-          category: undefined,
-          description: undefined,
           keywords: [],
           arguments: [
             {
               name: 'suggestion',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -1997,21 +2548,51 @@ describe('issues', () => {
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#56 - Cannot read property \'type\' of null (UiAutocompleteMinimalWorking.vue)',
-    options: {
-      filecontent: Fixture.get('UiAutocompleteMinimalWorking.vue'),
-    },
-    expected: {
+  it("#56 - Cannot read property 'type' of null (UiAutocompleteMinimalWorking.vue)", async () => {
+    const options = {
+      filecontent: `
+        <template>
+            <div>
+                
+            </div>
+        </template>
+        
+        <script>
+        
+        
+        export default {
+            name: 'ui-autocomplete',
+            methods: {
+                selectSuggestion(suggestion) {
+        
+                    if (this.append) {
+                        value += this.appendDelimiter + (suggestion[this.keys.value] || suggestion);
+                    } else {
+                        value = suggestion[this.keys.value] || suggestion;
+                    }
+        
+                    this.updateValue(value);
+                    this.$emit('select', suggestion);
+        
+                    this.$nextTick(() => {
+                        this.closeDropdown();
+                        this.$refs.input.focus();
+                    });
+                }
+            },
+        };
+        </script>
+      `,
+    };
+
+    await expect(options).toParseAs({
       name: 'ui-autocomplete',
       errors: [],
       methods: [
         {
-          category: undefined,
-          description: undefined,
           keywords: [],
           kind: 'method',
           syntax: [
@@ -2022,28 +2603,23 @@ describe('issues', () => {
             {
               name: 'suggestion',
               type: 'unknown',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
-          visibility: 'public' },
+          visibility: 'public',
+        },
       ],
       events: [
         {
           name: 'select',
-          category: undefined,
-          description: undefined,
           keywords: [],
           arguments: [
             {
               name: 'suggestion',
               type: 'unknown',
-              description: undefined,
               rest: false,
             },
           ],
@@ -2051,13 +2627,11 @@ describe('issues', () => {
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#59 - Parser fails when props have an empty validator block',
-    // only: true,
-    options: {
+  it('#59 - Parser fails when props have an empty validator block', async () => {
+    const options = {
       filecontent: `
         <template>
           <div></div>
@@ -2070,29 +2644,26 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       props: [
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'my-prop',
           type: 'unknown',
-          default: undefined,
           required: false,
           describeModel: false,
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#60 - Parser fails when passing an arrow function with no body brackets to another function',
-    options: {
+  it('#60 - Parser fails when passing an arrow function with no body brackets to another function', async () => {
+    const options = {
       filecontent: `
         <template>
           <div></div>
@@ -2107,8 +2678,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -2118,22 +2690,18 @@ describe('issues', () => {
           ],
           name: 'example',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#61 - Parsing event fails when event name is non-primitive value',
-    options: {
+  it('#61 - Parsing event fails when event name is non-primitive value', async () => {
+    const options = {
       filecontent: `
         <script>
           const METHODS = {
@@ -2161,8 +2729,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -2172,13 +2741,11 @@ describe('issues', () => {
           ],
           name: 'close',
           visibility: 'public',
-          category: undefined,
           description: 'Close modal',
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
@@ -2187,25 +2754,22 @@ describe('issues', () => {
           kind: 'event',
           name: 'close',
           visibility: 'public',
-          category: undefined,
           description: 'Emit the `close` event on click',
           keywords: [],
           arguments: [
             {
               type: 'boolean',
-              description: undefined,
               name: 'true',
               rest: false,
             },
           ],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#62 - @ symbol breaks comment parsing',
-    options: {
+  it('#62 - @ symbol breaks comment parsing', async () => {
+    const options = {
       filecontent: `
         <script>
           /**
@@ -2214,16 +2778,16 @@ describe('issues', () => {
           export default {}
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       description: 'Defines if `bleed@small` class should be added to component for mobile view',
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#66 - @returns with type',
-    options: {
+  it('#66 - @returns with type', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -2239,8 +2803,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -2250,37 +2815,30 @@ describe('issues', () => {
           ],
           name: 'sum',
           visibility: 'public',
-          category: undefined,
           description: 'Returns the sum of a and b',
           keywords: [],
           params: [
             {
               name: 'a',
               type: 'number',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
             {
               name: 'b',
               type: 'number',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'number',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#76 - Support for @link params',
-    options: {
+  it('#76 - Support for @link params', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -2295,8 +2853,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -2315,12 +2874,11 @@ describe('issues', () => {
           },
           visibility: 'public' },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#77 - Parsing TypeScript methods doesn\'t work correctly',
-    options: {
+  it("#77 - Parsing TypeScript methods doesn't work correctly", async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue from 'vue'
@@ -2346,18 +2904,16 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'TestMixinFactory',
-      description: undefined,
       errors: [],
       props: [],
-      model: undefined,
       computed: [],
       events: [],
       methods: [
         {
-          category: undefined,
           description: 'Testing',
           keywords: [],
           kind: 'method',
@@ -2380,12 +2936,11 @@ describe('issues', () => {
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#80 - Parser issue with !(...)',
-    options: {
+  it('#80 - Parser issue with !(...)', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -2410,15 +2965,14 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       data: [
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'a',
           type: 'unknown',
@@ -2427,8 +2981,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'b',
           type: 'unknown',
@@ -2437,8 +2989,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'c',
           type: 'number',
@@ -2447,8 +2997,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'd',
           type: 'unknown',
@@ -2457,8 +3005,6 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'e',
           type: 'boolean',
@@ -2467,20 +3013,17 @@ describe('issues', () => {
         {
           kind: 'data',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'f',
           type: 'boolean',
           initialValue: '!!d',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#83 - Parser issue with !(...)',
-    options: {
+  it('#83 - Parser issue with !(...)', async () => {
+    const options = {
       filecontent: `
         <script>
           import Vue from 'vue'
@@ -2506,8 +3049,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -2516,7 +3060,6 @@ describe('issues', () => {
             'myFunction(test: Promise<string>): number',
           ],
           name: 'myFunction',
-          category: undefined,
           description: 'Testing',
           visibility: 'public',
           keywords: [],
@@ -2524,23 +3067,19 @@ describe('issues', () => {
             {
               name: 'test',
               type: 'Promise<string>',
-              defaultValue: undefined,
-              description: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'number',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#83 - Issue with arrow function',
-    options: {
+  it('#83 - Issue with arrow function', async () => {
+    const options = {
       filecontent: `
         <template>
           <div>
@@ -2571,8 +3110,9 @@ describe('issues', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       name: 'TestComponent',
       errors: [],
       methods: [
@@ -2582,23 +3122,19 @@ describe('issues', () => {
             'test(): void',
           ],
           name: 'test',
-          category: undefined,
-          description: undefined,
           visibility: 'public',
           keywords: [],
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'vuedoc/md#19 - does not render default param values for function',
-    options: {
+  it('vuedoc/md#19 - does not render default param values for function', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -2634,8 +3170,9 @@ describe('issues', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       methods: [
         {
           kind: 'method',
@@ -2762,12 +3299,11 @@ describe('issues', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#84 - Method parameters not parsed correctly (typescript)',
-    options: {
+  it('#84 - Method parameters not parsed correctly (typescript)', async () => {
+    const options = {
       filecontent: `
         <template>
             <div>
@@ -2790,8 +3326,9 @@ describe('issues', () => {
             })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       name: 'TestComponent',
       methods: [
@@ -2802,30 +3339,24 @@ describe('issues', () => {
           ],
           name: 'test',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           params: [
             {
               name: 'a',
               type: 'string',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'boolean',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'vuedoc/md#84 - Multiline default breaks table',
-    options: {
+  it('vuedoc/md#84 - Multiline default breaks table', async () => {
+    const options = {
       filecontent: `
         <template>
             <div>
@@ -2853,17 +3384,15 @@ describe('issues', () => {
             })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       name: 'TestComponent',
       props: [
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'Record<string, any>',
           default: '{"a":1,"b":2}',
@@ -2874,23 +3403,18 @@ describe('issues', () => {
         {
           kind: 'prop',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           type: 'string',
-          default: undefined,
           name: 'test-prop2',
           describeModel: false,
           required: false,
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#87 - Typescript Parser Error',
-    options: {
+  it('#87 - Typescript Parser Error', async () => {
+    const options = {
       filecontent: `
         <template>
             <div>
@@ -2927,8 +3451,9 @@ describe('issues', () => {
           })
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       name: 'TestComponent',
       props: [],
@@ -2937,12 +3462,11 @@ describe('issues', () => {
       events: [],
       methods: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#91 - crash when parsing event with anonymous object as value',
-    options: {
+  it('#91 - crash when parsing event with anonymous object as value', async () => {
+    const options = {
       filecontent: `
         <template>
           <i>foo</i>
@@ -2969,13 +3493,13 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [
         "Invalid JSDoc syntax: '{Object} {name, val} - foo event param description'",
       ],
       errors: [],
-      name: undefined,
       props: [],
       data: [],
       computed: [],
@@ -2983,30 +3507,25 @@ describe('issues', () => {
         {
           arguments: [
             {
-              description: undefined,
               name: '{ name: "foo-name", val: "voo-val" }',
               rest: false,
               type: 'object',
             },
           ],
-          category: undefined,
           description: 'Foo event description',
           keywords: [],
           kind: 'event',
           name: 'foo-event',
-          version: undefined,
           visibility: 'public',
         },
       ],
       methods: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#97 - @vuedoc/parser parse class component with error',
-    // only: true,
-    options: {
+  it('#97 - @vuedoc/parser parse class component with error', async () => {
+    const options = {
       filecontent: `
         <template>
           <div>test code</div>
@@ -3031,54 +3550,46 @@ describe('issues', () => {
         }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       name: 'create-menu-list',
       props: [
         {
-          category: undefined,
-          default: undefined,
           describeModel: false,
           keywords: [],
           kind: 'prop',
           name: 'groups',
           required: false,
           type: 'any',
-          version: undefined,
           visibility: 'public',
         },
       ],
       data: [
         {
-          category: undefined,
           initialValue: 'null',
           keywords: [],
           kind: 'data',
           name: 'pageItemList',
           type: 'any',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           initialValue: 'null',
           keywords: [],
           kind: 'data',
           name: 'pageTreeList',
           type: 'any',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          initialValue: 'localStorage.getItem(\'devToken\')',
+          initialValue: "localStorage.getItem('devToken')",
           keywords: [],
           kind: 'data',
           name: 'token',
           type: 'any',
-          version: undefined,
           visibility: 'public',
         },
       ],
@@ -3086,12 +3597,11 @@ describe('issues', () => {
       events: [],
       methods: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#101 - rest operator is not supported?',
-    options: {
+  it('#101 - rest operator is not supported?', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3107,42 +3617,38 @@ describe('issues', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       events: [],
       data: [
         {
-          category: undefined,
           initialValue: '"123"',
           keywords: [],
           kind: 'data',
           name: 'test',
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           initialValue: '"200px"',
           keywords: [],
           kind: 'data',
           name: 'cWidth',
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
       ],
       props: [],
       methods: [],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#102 - EventParser.js:33 Uncaught TypeError: Cannot read property \'raw\' of undefined',
-    options: {
+  it("#102 - EventParser.js:33 Uncaught TypeError: Cannot read property 'raw' of undefined", async () => {
+    const options = {
       filecontent: `
         <template>
           <div class="input-div">
@@ -3258,8 +3764,9 @@ describe('issues', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       name: 'HmAntInput',
@@ -3267,94 +3774,76 @@ describe('issues', () => {
         {
           arguments: [
             {
-              description: undefined,
               name: 'cValue',
               rest: false,
               type: 'unknown',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'update:valuex',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: 'cValue',
               rest: false,
               type: 'string',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'update:value',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: 'e',
               rest: false,
               type: 'unknown',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'change',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: 'e',
               rest: false,
               type: 'unknown',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'press-enter',
-          version: undefined,
           visibility: 'public',
         },
       ],
       data: [
         {
-          category: undefined,
           initialValue: '""',
           keywords: [],
           kind: 'data',
           name: 'cValue',
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           initialValue: '"200px"',
           keywords: [],
           kind: 'data',
           name: 'cWidth',
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
       ],
       props: [
         {
-          category: undefined,
-          default: undefined,
           describeModel: true,
           description: '值',
           keywords: [
@@ -3366,12 +3855,9 @@ describe('issues', () => {
           name: 'v-model',
           required: false,
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          default: undefined,
           describeModel: false,
           description: '前缀图标',
           keywords: [],
@@ -3379,12 +3865,9 @@ describe('issues', () => {
           name: 'prefixicon',
           required: false,
           type: 'Icon',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          default: undefined,
           describeModel: false,
           description: '后缀图标',
           keywords: [],
@@ -3392,11 +3875,9 @@ describe('issues', () => {
           name: 'suffixicon',
           required: false,
           type: 'Icon',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           default: '"输入框"',
           describeModel: false,
           description: '标题',
@@ -3405,11 +3886,9 @@ describe('issues', () => {
           name: 'title',
           required: false,
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           default: '"200"',
           describeModel: false,
           description: '输入框宽度',
@@ -3418,12 +3897,9 @@ describe('issues', () => {
           name: 'width',
           required: false,
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          default: undefined,
           describeModel: false,
           description: '标题宽度',
           keywords: [],
@@ -3431,91 +3907,74 @@ describe('issues', () => {
           name: 'label-width',
           required: false,
           type: 'number',
-          version: undefined,
           visibility: 'public',
         },
       ],
       methods: [
         {
-          category: undefined,
           keywords: [],
           kind: 'method',
           name: 'onChange',
           params: [
             {
-              defaultValue: undefined,
-              description: undefined,
               name: 'e',
               rest: false,
               type: 'unknown',
             },
           ],
           returns: {
-            description: undefined,
             type: 'void',
           },
           syntax: [
             'onChange(e: unknown): void',
           ],
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           keywords: [],
           kind: 'method',
           name: 'onPressEnter',
           params: [
             {
-              defaultValue: undefined,
-              description: undefined,
               name: 'e',
               rest: false,
               type: 'unknown',
             },
           ],
           returns: {
-            description: undefined,
             type: 'void',
           },
           syntax: [
             'onPressEnter(e: unknown): void',
           ],
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
           keywords: [],
           kind: 'method',
           name: 'getCssUnit',
           params: [
             {
-              defaultValue: undefined,
-              description: undefined,
               name: 'value',
               rest: false,
               type: 'unknown',
             },
           ],
           returns: {
-            description: undefined,
             type: 'string',
           },
           syntax: [
             'getCssUnit(value: unknown): string',
           ],
-          version: undefined,
           visibility: 'public',
         },
       ],
       slots: [],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#103 - "...rest" as return value causes error',
-    options: {
+  it('#103 - "...rest" as return value causes error', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3549,69 +4008,72 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       computed: [
         {
-          category: undefined,
-          dependencies: ['something'],
+          dependencies: [
+            'something',
+          ],
           keywords: [],
           kind: 'computed',
           name: 'test',
           type: 'object',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          dependencies: ['something', 'name'],
+          dependencies: [
+            'something',
+            'name',
+          ],
           keywords: [],
           kind: 'computed',
           name: 'test2',
           type: 'object',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          dependencies: ['something', 'name'],
+          dependencies: [
+            'something',
+            'name',
+          ],
           keywords: [],
           kind: 'computed',
           name: 'test3',
           type: 'object',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          dependencies: ['something', 'name'],
+          dependencies: [
+            'something',
+            'name',
+          ],
           keywords: [],
           kind: 'computed',
           name: 'test4',
           type: 'object',
-          version: undefined,
           visibility: 'public',
         },
         {
-          category: undefined,
-          dependencies: ['something', 'name'],
+          dependencies: [
+            'something',
+            'name',
+          ],
           keywords: [],
           kind: 'computed',
           name: 'test5',
           type: 'object',
-          version: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#104 - error if $emit param has the same name as a prop',
-    // only: true,
-    options: {
+  it('#104 - error if $emit param has the same name as a prop', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3635,21 +4097,19 @@ describe('issues', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       props: [
         {
-          category: undefined,
-          default: undefined,
           describeModel: false,
           keywords: [],
           kind: 'prop',
           name: 'something',
           required: true,
           type: 'string',
-          version: undefined,
           visibility: 'public',
         },
       ],
@@ -3657,58 +4117,48 @@ describe('issues', () => {
         {
           arguments: [
             {
-              description: undefined,
               name: 'something',
               rest: false,
               type: 'unknown',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'update:test',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: 'something',
               rest: false,
               type: 'string',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'update:test2',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: 'something',
               rest: false,
               type: 'string',
             },
           ],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'update:test3',
-          version: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#107 - Arguments length for event is wrong',
-    options: {
+  it('#107 - Arguments length for event is wrong', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3738,8 +4188,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       events: [
@@ -3752,55 +4203,46 @@ describe('issues', () => {
               type: 'string',
             },
           ],
-          category: undefined,
           description: 'Wrong arguments length',
           keywords: [],
           kind: 'event',
           name: 'work',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: 'complicatedCondition',
               rest: false,
               type: 'boolean',
             },
           ],
-          category: undefined,
           description: 'Weird name && too much arguments',
           keywords: [],
           kind: 'event',
           name: 'work2',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [
             {
-              description: undefined,
               name: '!this.wrong && this.correct || this.okay',
               rest: false,
               type: 'boolean',
             },
           ],
-          category: undefined,
           description: 'Weird name && too much arguments',
           keywords: [],
           kind: 'event',
           name: 'work3',
-          version: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#106 - $emit is ignored if it is inside an else statement',
-    options: {
+  it('#106 - $emit is ignored if it is inside an else statement', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3814,36 +4256,32 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       events: [
         {
           arguments: [],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'work',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'nope',
-          version: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#105 - $emit inside an arrow function don\'t show up in events array',
-    options: {
+  it("#105 - $emit inside an arrow function don't show up in events array", async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3856,36 +4294,32 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       events: [
         {
           arguments: [],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'work',
-          version: undefined,
           visibility: 'public',
         },
         {
           arguments: [],
-          category: undefined,
           keywords: [],
           kind: 'event',
           name: 'nope',
-          version: undefined,
           visibility: 'public',
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'md#50 - Destructuring an object property with the same name as a data property causes parsing to fail',
-    options: {
+  it('md#50 - Destructuring an object property with the same name as a data property causes parsing to fail', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -3904,8 +4338,9 @@ describe('issues', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       warnings: [],
       errors: [],
       data: [
@@ -3933,6 +4368,6 @@ describe('issues', () => {
           ],
         },
       ],
-    },
+    });
   });
 });

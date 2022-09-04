@@ -1543,8 +1543,8 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   }
 
   getConditionalExpressionType(node: Babel.ConditionalExpression) {
-    const consequentType = this.getNodeType(node.consequent);
-    const alternateType = this.getNodeType(node.alternate);
+    const consequentType = this.getNodeType(node.consequent, Type.unknown);
+    const alternateType = this.getNodeType(node.alternate, Type.unknown);
 
     return consequentType === alternateType
       ? consequentType
@@ -1552,7 +1552,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   }
 
   getExpressionValue(node: Babel.BinaryExpression | Babel.LogicalExpression | Babel.AssignmentExpression | Babel.ConditionalExpression): Value {
-    const type = this.getNodeType(node);
+    const type = this.getNodeType(node, Type.unknown);
     const value = this.getSourceString(node);
 
     return new Value(type, value, value);

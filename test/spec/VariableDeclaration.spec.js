@@ -564,4 +564,36 @@ describe('VariableDeclaration', () => {
       member: false,
     });
   });
+
+  it('should successfully register variable with unary expression which contains object expression', () => {
+    const { scope } = loadSFC(`
+      <script>
+        const currentThread = state.currentThreadID ? state.threads[state.currentThreadID] : {};
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('currentThread');
+    expect(scope.currentThread.value).toEqual({
+      type: ['unknown', 'object'],
+      value: 'state.currentThreadID ? state.threads[state.currentThreadID] : {}',
+      raw: 'state.currentThreadID ? state.threads[state.currentThreadID] : {}',
+      member: false,
+    });
+  });
+
+  it.only('should successfully register variable with unary expression which contains array expression', () => {
+    const { scope } = loadSFC(`
+      <script>        
+        const currentMessages = thread.messages ? thread.messages.map(id => state.messages[id]) : [];
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('currentMessages');
+    expect(scope.currentMessages.value).toEqual({
+      type: ['unknown', 'array'],
+      value: 'thread.messages ? thread.messages.map(id => state.messages[id]) : []',
+      raw: 'thread.messages ? thread.messages.map(id => state.messages[id]) : []',
+      member: false,
+    });
+  });
 });

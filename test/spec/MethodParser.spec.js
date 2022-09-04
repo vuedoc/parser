@@ -1,5 +1,4 @@
-import { ComponentTestCase } from '../../src/test/utils.ts';
-import { describe } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 // [paramName, paramDefaultValue, expectedParamType, expectedDefaultValue = paramDefaultValue]
 const defaultParams = [
@@ -40,13 +39,12 @@ describe('MethodParser', () => {
     const argsWithTyping = paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}`;
     const expectedArgs = paramValue ? `${paramName}: ${expectedType2} = ${paramValue}` : `${paramName}: ${expectedType}`;
 
-    ComponentTestCase({
-      name: `Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`,
-      options: {
+    it(`Default param for function(${paramValue ? `${paramName}: ${expectedType} = ${paramValue}` : `${paramName}: ${expectedType}`}): void`, async () => {
+      const options = {
         filecontent: `
           <script>
             const name = 'Arya Stark'
-
+  
             export default {
               methods: {
                 withDefaultValue(${args}) {},
@@ -55,8 +53,9 @@ describe('MethodParser', () => {
             };
           </script>
         `,
-      },
-      expected: {
+      };
+
+      await expect(options).toParseAs({
         methods: [
           {
             kind: 'method',
@@ -107,13 +106,12 @@ describe('MethodParser', () => {
             },
           },
         ],
-      },
+      });
     });
   });
 
-  ComponentTestCase({
-    name: '@syntax',
-    options: {
+  it('@syntax', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -129,8 +127,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -139,7 +138,6 @@ describe('MethodParser', () => {
             'nameOnly(somebody: string) => void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -147,24 +145,19 @@ describe('MethodParser', () => {
             {
               type: 'unknown',
               name: 'somebody',
-              description: undefined,
-              defaultValue: undefined,
               rest: false,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@syntax',
-    description: 'with rest param and returning arrow function',
-    options: {
+  it('@syntax: with rest param and returning arrow function', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -177,8 +170,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -187,7 +181,6 @@ describe('MethodParser', () => {
             'nameOnly(...somebody: string[]): unknown',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -195,24 +188,19 @@ describe('MethodParser', () => {
             {
               type: 'string[]',
               name: 'somebody',
-              description: undefined,
-              defaultValue: undefined,
               rest: true,
             },
           ],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@syntax',
-    description: 'with rest param and empty arrow function',
-    options: {
+  it('@syntax: with rest param and empty arrow function', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -225,8 +213,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -235,7 +224,6 @@ describe('MethodParser', () => {
             'nameOnly(...somebody: string[]): void',
           ],
           visibility: 'public',
-          category: undefined,
           description: 'Name only',
           keywords: [],
           name: 'nameOnly',
@@ -243,24 +231,19 @@ describe('MethodParser', () => {
             {
               type: 'string[]',
               name: 'somebody',
-              description: undefined,
-              defaultValue: undefined,
               rest: true,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@syntax',
-    description: 'with an unknow identifier method',
-    options: {
+  it('@syntax: with an unknow identifier method', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -270,8 +253,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -280,23 +264,19 @@ describe('MethodParser', () => {
             'nameOnly(): unknown',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'unknown',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'generator method',
-    options: {
+  it('generator method', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -306,8 +286,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -316,23 +297,19 @@ describe('MethodParser', () => {
             '*nameOnly(): void',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'async method',
-    options: {
+  it('async method', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -342,8 +319,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -352,23 +330,19 @@ describe('MethodParser', () => {
             'async nameOnly(): Promise<void>',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'Promise<void>',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'async method with returning statement',
-    options: {
+  it('async method with returning statement', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -380,8 +354,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -390,23 +365,19 @@ describe('MethodParser', () => {
             'async nameOnly(): Promise<number>',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'Promise<number>',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'async method with explicit typing',
-    options: {
+  it('async method with explicit typing', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -416,8 +387,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -426,23 +398,19 @@ describe('MethodParser', () => {
             'async nameOnly(): Promise<string>',
           ],
           visibility: 'public',
-          category: undefined,
-          description: undefined,
           keywords: [],
           name: 'nameOnly',
           params: [],
           returns: {
             type: 'Promise<string>',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'async method with explicit typing',
-    options: {
+  it('async method with explicit typing', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -486,8 +454,9 @@ describe('MethodParser', () => {
           };
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -545,12 +514,11 @@ describe('MethodParser', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '@param with mutiline',
-    options: {
+  it('@param with mutiline', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -566,8 +534,9 @@ describe('MethodParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -598,12 +567,11 @@ describe('MethodParser', () => {
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'TypeScript: Labeled Tuple Elements',
-    options: {
+  it('TypeScript: Labeled Tuple Elements', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -623,8 +591,9 @@ describe('MethodParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -634,22 +603,16 @@ describe('MethodParser', () => {
           ],
           name: 'foo',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           params: [
             {
               name: 'args',
               type: '[string, number]',
-              defaultValue: undefined,
               rest: true,
-              description: undefined,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
         {
@@ -659,31 +622,24 @@ describe('MethodParser', () => {
           ],
           name: 'bar',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           params: [
             {
               name: 'x',
               type: '[first: string, second: number]',
-              defaultValue: undefined,
               rest: false,
-              description: undefined,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'should render undefined as default function param',
-    options: {
+  it('should render undefined as default function param', async () => {
+    const options = {
       filecontent: `
         <script>
           export default {
@@ -693,8 +649,9 @@ describe('MethodParser', () => {
           }
         </script>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       errors: [],
       methods: [
         {
@@ -704,9 +661,6 @@ describe('MethodParser', () => {
           ],
           name: 'parseDate',
           visibility: 'public',
-          category: undefined,
-          description: undefined,
-          version: undefined,
           keywords: [],
           params: [
             {
@@ -714,15 +668,13 @@ describe('MethodParser', () => {
               type: 'unknown',
               defaultValue: 'undefined',
               rest: false,
-              description: undefined,
             },
           ],
           returns: {
             type: 'void',
-            description: undefined,
           },
         },
       ],
-    },
+    });
   });
 });

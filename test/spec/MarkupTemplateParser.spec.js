@@ -1,12 +1,10 @@
-import { describe } from 'vitest';
-import { ComponentTestCase } from '../../src/test/utils.ts';
+import { describe, expect, it } from 'vitest';
 import { PugLoader } from '../../src/loaders/pug.ts';
 import { Loader } from '../../src/lib/Loader.ts';
 
 describe('MarkupTemplateParser', () => {
-  ComponentTestCase({
-    name: 'Pug',
-    options: {
+  it('Pug', async () => {
+    const options = {
       filecontent: `
         <template lang="pug">
           div
@@ -21,14 +19,14 @@ describe('MarkupTemplateParser', () => {
       loaders: [
         Loader.extend('pug', PugLoader),
       ],
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       slots: [
         {
           kind: 'slot',
           name: 'label',
           visibility: 'public',
-          category: undefined,
           description: 'Use this slot to set the label',
           keywords: [],
           props: [],
@@ -37,18 +35,16 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'default',
           visibility: 'public',
-          category: undefined,
           description: 'Use this slot to set the textarea value',
           keywords: [],
           props: [],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: 'slots',
-    options: {
+  it('slots', async () => {
+    const options = {
       filecontent: `
         <template>
           <div>
@@ -63,14 +59,14 @@ describe('MarkupTemplateParser', () => {
           </div>
         </template>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       slots: [
         {
           kind: 'slot',
           name: 'label',
           visibility: 'public',
-          category: undefined,
           description: 'Use this slot to set the label',
           keywords: [],
           props: [],
@@ -79,18 +75,16 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'default',
           visibility: 'public',
-          category: undefined,
           description: 'Use this slot to set the textarea value',
           keywords: [],
           props: [],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#81 - Slot comment not parsed correctly',
-    options: {
+  it('#81 - Slot comment not parsed correctly', async () => {
+    const options = {
       filecontent: `
         <template>
             <div>
@@ -109,14 +103,14 @@ describe('MarkupTemplateParser', () => {
             </div>
         </template>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       slots: [
         {
           kind: 'slot',
           name: 'a',
           visibility: 'public',
-          category: undefined,
           description: 'Slot A',
           keywords: [],
           props: [],
@@ -125,19 +119,16 @@ describe('MarkupTemplateParser', () => {
           kind: 'slot',
           name: 'b',
           visibility: 'public',
-          category: undefined,
           description: 'Slot B',
           keywords: [],
           props: [],
         },
       ],
-    },
+    });
   });
 
-  ComponentTestCase({
-    name: '#89 - dynamic slot names aren\'t supported',
-    // only: true,
-    options: {
+  it("#89 - dynamic slot names aren't supported", async () => {
+    const options = {
       filecontent: `
         <template>
           <table>
@@ -165,50 +156,40 @@ describe('MarkupTemplateParser', () => {
           <slot v-bind:name="'this-does-not2'">hi</slot>
         </template>
       `,
-    },
-    expected: {
+    };
+
+    await expect(options).toParseAs({
       slots: [
         {
           kind: 'slot',
           name: 'prop-value:xxxx',
           visibility: 'public',
-          category: undefined,
-          version: undefined,
           description: 'a slot description',
           keywords: [],
           props: [],
         },
         {
           kind: 'slot',
-          name: 'this-works\'',
+          name: "this-works'",
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           props: [],
         },
         {
           kind: 'slot',
-          name: '\'this-does-not\'',
+          name: "'this-does-not'",
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           props: [],
         },
         {
           kind: 'slot',
-          name: '\'this-does-not2\'',
+          name: "'this-does-not2'",
           visibility: 'public',
-          category: undefined,
-          version: undefined,
-          description: undefined,
           keywords: [],
           props: [],
         },
       ],
-    },
+    });
   });
 });
