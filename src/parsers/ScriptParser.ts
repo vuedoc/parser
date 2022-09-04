@@ -365,15 +365,13 @@ export class ScriptParser<ParseNode = void, Root = never>
   getCompositionValue(options: CompositionValueOptions) {
     const result = super.getCompositionValue(options);
 
-    if ('callee' in options.init && 'name' in options.init.callee && options.init.callee.name === result.composition?.fname) {
+    if (options.init?.type === Syntax.CallExpression && 'callee' in options.init && 'name' in options.init.callee && options.init.callee.name === result.composition?.fname) {
       this.parseIdentifierName(options.init.callee.name, options);
 
       if (options.init.callee.name in this.scope) {
         const ref = this.getScopeValue(options.init.callee.name);
 
         if (ref?.value.type === Type.function && result.composition?.feature !== Feature.methods) {
-          this.parseCompositionTypeParameters(options.init as any);
-
           const tsValue = this.getTSValue(ref.node.value);
           const value = generateUndefineValue.next().value;
 
@@ -383,8 +381,7 @@ export class ScriptParser<ParseNode = void, Root = never>
               result.node = tsValue.node[options.key];
             }
           } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
-            value.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
-              || ScriptParser.parseTsValueType(tsValue);
+            value.type = this.getTypeParameterValue(ref.node.value, options.init) || DTS.parseTsValueType(tsValue);
 
             if (!Array.isArray(tsValue.node)) {
               result.node = tsValue.node as Babel.Node;
@@ -396,8 +393,8 @@ export class ScriptParser<ParseNode = void, Root = never>
           } else {
             result.ref = value;
             result.tsValue = tsValue;
-            result.ref.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
-              || (result.ref.type === Type.unknown ? ScriptParser.parseTsValueType(tsValue) : result.ref.type);
+            result.ref.type = this.getTypeParameterValue(ref.node.value, options.init)
+              || (result.ref.type === Type.unknown ? DTS.parseTsValueType(tsValue) : result.ref.type);
           }
         } else if (result.ref) {
           if (ref.value.type !== Type.unknown) {
@@ -408,8 +405,8 @@ export class ScriptParser<ParseNode = void, Root = never>
           result.tsValue = ref.tsValue;
 
           if (ref.tsValue) {
-            result.ref.type = this.getTypeParameterValue(ref.node.value, result.composition.typeParameterIndex)
-              || ScriptParser.parseTsValueType(ref.tsValue);
+            result.ref.type = this.getTypeParameterValue(ref.node.value, options.init)
+              || DTS.parseTsValueType(ref.tsValue);
           }
         }
 

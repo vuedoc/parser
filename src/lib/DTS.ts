@@ -1,3 +1,4 @@
+import { Parser } from '../../types/Parser.js';
 import { generateArrayGenerator, generateNullGenerator, generateObjectGenerator, Value } from '../entity/Value.js';
 
 export const DTS = {
@@ -65,5 +66,20 @@ export const DTS = {
     }
 
     return type;
+  },
+  parseTsValueType(tsValue: Parser.AST.TSValue) {
+    if (typeof tsValue.type === 'string' || tsValue.type instanceof Array) {
+      return tsValue.type;
+    }
+
+    const raw = {};
+
+    for (const key in tsValue.type) {
+      const type = tsValue.type[key];
+
+      raw[key] = Array.isArray(type) ? type.join('|') : type;
+    }
+
+    return JSON.stringify(raw);
   },
 };

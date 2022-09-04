@@ -581,7 +581,7 @@ describe('VariableDeclaration', () => {
     });
   });
 
-  it.only('should successfully register variable with unary expression which contains array expression', () => {
+  it('should successfully register variable with unary expression which contains array expression', () => {
     const { scope } = loadSFC(`
       <script>        
         const currentMessages = thread.messages ? thread.messages.map(id => state.messages[id]) : [];

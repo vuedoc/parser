@@ -13,6 +13,11 @@ export default defineConfig({
       '@vuedoc/test-utils',
       'test/setup.js',
     ],
+    coverage: {
+      include: [
+        'src/**',
+      ],
+    },
     watchExclude: [
       'test/examples/**',
       'esm/**',

@@ -13,7 +13,6 @@
         "<node_internals>/**",
         "**/node_modules/**",
         "**/coverage/**",
-        "**/esm/**"
       ],
       "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
       "args": ["run", "${relativeFile}"],

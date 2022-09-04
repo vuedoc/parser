@@ -118,71 +118,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return 'leadingComments' in node || 'trailingComments' in node;
   }
 
-  static parseTsValueType(tsValue: Parser.AST.TSValue) {
-    if (typeof tsValue.type === 'string' || tsValue.type instanceof Array) {
-      return tsValue.type;
-    }
-
-    const raw = {};
-
-    for (const key in tsValue.type) {
-      const type = tsValue.type[key];
-
-      raw[key] = Array.isArray(type) ? type.join('|') : type;
-    }
-
-    return JSON.stringify(raw);
-  }
-
-  getTypeParameterValue(node: Babel.Node, typeParameterIndex: number) {
-    if (typeParameterIndex >= 0 && 'typeParameters' in node && 'params' in node.typeParameters) {
-      if (typeParameterIndex < node.typeParameters.params.length) {
-        const tsValue = this.getTSValue(node.typeParameters.params[typeParameterIndex]);
-
-        return AbstractParser.parseTsValueType(tsValue);
-      }
-    }
-
-    return null;
-  }
-
-  parseNodeRef(
-    rawType: string | string[] | Record<string, string>,
-    rawNode: Babel.Node | Babel.Node[] | Record<string, Babel.Node>
-  ): Parser.Value<any> {
-    let ref: Parser.Value<any>;
-
-    if (rawNode instanceof Array) {
-      ref = new Value(rawType as string[], [], '[]');
-      ref.value = rawNode.map((item) => this.getValue(item).value);
-      ref.raw = JSON.stringify(ref.value);
-    } else if (typeof rawType === 'string') {
-      ref = this.getValue(rawNode as Babel.Node);
-      ref.type = rawType;
-    } else {
-      const typeMap = {};
-      const nodeMap = rawNode as Record<string, Babel.Node>;
-
-      ref = generateObjectGenerator.next().value;
-
-      for (const key in rawType) {
-        const type = rawType[key];
-        const node = nodeMap[key];
-        const currentRef = this.parseNodeRef(type, node);
-
-        typeMap[key] = currentRef.type;
-        ref.value[key] = currentRef.value;
-        ref.rawObject[key] = currentRef;
-        ref.rawNode[key] = node;
-      }
-
-      ref.type = DTS.parseType(ref.value);
-      ref.raw = JSON.stringify(ref.value);
-    }
-
-    return ref;
-  }
-
   reset() {
     clear(this.scope);
     Object.assign(this.scope, this.scopeRef);
@@ -812,20 +747,39 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return this.getReturnType(argument, Type.unknown);
   }
 
-  parseCompositionTypeParameters(init: Babel.CallExpression) {
-    if (init.typeParameters && 'name' in init.callee) {
-      const ref = this.getScopeValue(init.callee.name);
+  getTypeParameterDeclaration(node: Babel.Node): Required<Babel.TypeParameterDeclaration> {
+    return 'typeParameters' in node && node.typeParameters && 'params' in node.typeParameters
+      ? node.typeParameters as Required<Babel.TypeParameterDeclaration>
+      : null;
+  }
 
-      if (ref?.node.value.typeParameters) {
-        if (ref.node.value.returnType?.typeAnnotation?.typeParameters) {
-          const originalParams = ref.node.value.returnType.typeAnnotation.typeParameters.params;
+  getTypeParameterValue(functionDeclaration: Babel.Node, callExpression: Babel.CallExpression) {
+    const functionHasTypeParameters = !!this.getTypeParameterDeclaration(functionDeclaration);
 
-          ref.node.value.returnType.typeAnnotation.typeParameters.params = init.typeParameters.params;
-          ref.node.value.extra.$tsvalue = this.getTSValue(ref.node.value, true);
-          ref.node.value.returnType.typeAnnotation.typeParameters.params = originalParams;
+    if (functionHasTypeParameters) {
+      const callTypeParameters = this.getTypeParameterDeclaration(callExpression);
+
+      if (callTypeParameters) {
+        if ('returnType' in functionDeclaration && 'typeAnnotation' in functionDeclaration.returnType && 'typeParameters' in functionDeclaration.returnType.typeAnnotation) {
+          const originalParams = [...functionDeclaration.returnType.typeAnnotation.typeParameters.params];
+
+          functionDeclaration.returnType.typeAnnotation.typeParameters.params.splice(
+            0,
+            callTypeParameters.params.length,
+            ...callTypeParameters.params
+          );
+
+          const tsValue = this.getTSValue(functionDeclaration, true);
+
+          functionDeclaration.returnType.typeAnnotation.typeParameters.params = originalParams as any;
+          delete functionDeclaration.extra.$tsvalue;
+
+          return DTS.parseTsValueType(tsValue);
         }
       }
     }
+
+    return null;
   }
 
   getCompositionValue(options: CompositionValueOptions): CompositionValue {
@@ -857,9 +811,15 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
           ref = generateUndefineValue.next().value;
           ref.type = composition.returningType;
-        } else if (!tsValue && init.typeParameters) {
+        }
+
+        if (init.typeParameters) {
           if (composition.typeParameterIndex >= 0 && composition.typeParameterIndex < init.typeParameters.params.length) {
             tsValue = this.getTSValue(init.typeParameters.params[composition.typeParameterIndex]);
+
+            if (ref) {
+              ref.type = DTS.parseTsValueType(tsValue);
+            }
           }
         }
 
@@ -874,8 +834,6 @@ export class AbstractParser<Source extends Parser.Source, Root> {
             tsValue = this.getTSValue(tsref.node.value);
           }
         }
-
-        this.parseCompositionTypeParameters(init);
 
         if ('parseEntryValue' in composition && typeof composition.parseEntryValue === 'function') {
           ref = composition.parseEntryValue(init, this as any);
@@ -906,16 +864,16 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           }
 
           if (tsValue) {
-            ref.type = this.getTypeParameterValue(argumentNode, composition.typeParameterIndex)
-              || AbstractParser.parseTsValueType(tsValue);
+            ref.type = this.getTypeParameterValue(argumentNode, init)
+              || DTS.parseTsValueType(tsValue);
 
             if (options.key) {
               if (typeof tsValue.type === 'object') {
                 ref.type = Array.isArray(tsValue.type) ? tsValue.type : tsValue.type[options.key];
               }
             } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
-              ref.type = this.getTypeParameterValue(argumentNode, composition.typeParameterIndex)
-                || AbstractParser.parseTsValueType(tsValue);
+              ref.type = this.getTypeParameterValue(argumentNode, init)
+                || DTS.parseTsValueType(tsValue);
             }
           } else if (composition.feature === Feature.computed) {
             if (AbstractParser.isFunction(argument)) {
@@ -988,7 +946,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     ref.function = AbstractParser.isFunction(options.init) || AbstractParser.isTsFunction(options.init);
 
     if (tsValue) {
-      ref.type = AbstractParser.parseTsValueType(tsValue);
+      ref.type = DTS.parseTsValueType(tsValue);
     }
 
     if (options.id.type !== Syntax.Identifier && options.init?.type === Syntax.CallExpression) {
@@ -1510,7 +1468,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       return node.operator === '||' ? this.getExpressionTypeAlternate(node) : Type.boolean;
     }
 
-    if (BOOLEAN_OPERATORS.includes(node.operator)) {
+    if (NUMERIC_OPERATORS.includes(node.operator)) {
       return node.operator === '+' ? this.getExpressionTypeAlternate(node) : Type.number;
     }
 
