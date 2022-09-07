@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseComponent } from '../../src/index.ts';
+import { parseComponent } from '../../src/main.ts';
 import { Fixture } from '../lib/Fixture.js';
 
 describe('issues', () => {
@@ -2004,7 +2004,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'array',
+          type: "Array<string | { 'is-active': unknown; } | { 'is-invalid': unknown; } | { 'is-touched': unknown; } | { 'is-disabled': unknown; } | { 'has-label': unknown; } | { 'has-floating-label': unknown; }>",
           keywords: [],
           name: 'classes',
           dependencies: [
@@ -2021,7 +2021,7 @@ describe('issues', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'object',
+          type: "{ 'is-inline': boolean; 'is-floating': boolean; }",
           keywords: [],
           name: 'labelClasses',
           dependencies: [
@@ -2999,7 +2999,7 @@ describe('issues', () => {
           visibility: 'public',
           keywords: [],
           name: 'd',
-          type: 'unknown',
+          type: 'boolean',
           initialValue: '!(a || b || c)',
         },
         {
@@ -4021,7 +4021,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'computed',
           name: 'test',
-          type: 'object',
+          type: '{ something: string; [rest: string]: any; }',
           visibility: 'public',
         },
         {
@@ -4032,7 +4032,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'computed',
           name: 'test2',
-          type: 'object',
+          type: '{ hello: unknown; name: string; [rest: string]: any; }',
           visibility: 'public',
         },
         {
@@ -4043,7 +4043,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'computed',
           name: 'test3',
-          type: 'object',
+          type: '{ hello: unknown; name: string; [rest: string]: any; }',
           visibility: 'public',
         },
         {
@@ -4054,7 +4054,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'computed',
           name: 'test4',
-          type: 'object',
+          type: '{ hello: unknown; name: string; [rest: string]: any; }',
           visibility: 'public',
         },
         {
@@ -4065,7 +4065,7 @@ describe('issues', () => {
           keywords: [],
           kind: 'computed',
           name: 'test5',
-          type: 'object',
+          type: '{ hello: unknown; name: string; [rest: string]: any; }',
           visibility: 'public',
         },
       ],

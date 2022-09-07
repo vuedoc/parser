@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseComponent, VuedocParser } from '../../src/index.ts';
+import { parseComponent, VuedocParser } from '../../src/main.ts';
 
 /**
  * Code samples from lukehoban/es6features

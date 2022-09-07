@@ -12,6 +12,7 @@ export function loadSFC(sfc) {
   const file = root.fs.loadContent('vue', sfc);
   const parser = root.createScriptParser(file.script, file);
 
+  root.file = file;
   parser.parse();
 
   return parser;

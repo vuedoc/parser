@@ -3,6 +3,8 @@ import { Type } from '../lib/Enum.js';
 
 import * as Babel from '@babel/types';
 
+export const ANY_VALUE = Symbol('any');
+
 const NATIVE_TYPES = [
   'String', 'Number', 'Array', 'Boolean', 'Function',
   'Object', 'Null', 'Symbol', 'Undefined', 'BigInt',
@@ -18,7 +20,7 @@ const NATIVE_TYPES_PREFIX = [
   'Set<',
 ];
 
-export class Value<TValue = string> implements Parser.Value<TValue> {
+export class Value<TValue = any> implements Parser.Value<TValue> {
   type: Parser.Type | Parser.Type[];
   value: TValue;
   raw: string;
@@ -26,13 +28,14 @@ export class Value<TValue = string> implements Parser.Value<TValue> {
   rawNode?: Record<string, Babel.Node> | Babel.Node[];
   member: boolean;
   function?: boolean;
+  expression?: boolean;
   $kind?: string;
 
-  constructor(type?: Parser.Type | Parser.Type[], value?: any, raw?: string) {
+  constructor(type: Parser.Type | Parser.Type[], value: any, raw = '') {
     this.type = type || Type.unknown;
-    this.value = value;
-    this.raw = raw ?? value;
+    this.raw = raw;
     this.member = false;
+    this.value = value;
 
     if (this.value instanceof Array) {
       this.rawObject = [];
@@ -71,6 +74,12 @@ function* nullGenerator(): Generator<Value<null>, Value<null>> {
   }
 }
 
+function* anyGenerator(): Generator<Value<never>, Value<never>> {
+  while (true) {
+    yield new Value<never>(Type.any, ANY_VALUE, '');
+  }
+}
+
 function* objectGenerator(): Generator<Value<object>, Value<object>> {
   while (true) {
     yield new Value<object>(Type.object, {}, '{}');
@@ -85,5 +94,6 @@ function* arrayGenerator(): Generator<Value<any[]>, Value<any[]>> {
 
 export const generateUndefineValue = undefineGenerator();
 export const generateNullGenerator = nullGenerator();
+export const generateAnyGenerator = anyGenerator();
 export const generateObjectGenerator = objectGenerator();
 export const generateArrayGenerator = arrayGenerator();

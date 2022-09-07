@@ -1,5 +1,9 @@
 import { Parser } from '../../types/Parser.js';
-import { generateArrayGenerator, generateNullGenerator, generateObjectGenerator, Value } from '../entity/Value.js';
+import { ANY_VALUE, generateArrayGenerator, generateNullGenerator, generateObjectGenerator, Value } from '../entity/Value.js';
+import { Type } from './Enum.js';
+
+const PARAM_RE = /^[a-zA-Z0-9$&_]+$/;
+const TYPES_TO_TRANSFORM = [Type.object, Type.array];
 
 export const DTS = {
   parseValue(type: string | string[] | Record<string, any>) {
@@ -31,17 +35,31 @@ export const DTS = {
 
     return ref;
   },
-  parseType(value: any): string {
-    const type = typeof value;
+  parseType(ref: Parser.Value<any>): string {
+    if (ref.value === ANY_VALUE) {
+      return Type.any;
+    }
 
-    if (type === 'object') {
-      if (value === null) {
-        return null;
-      }
+    if (!TYPES_TO_TRANSFORM.includes(ref.type as any)) {
+      return typeof ref.type === 'string' ? ref.type : ref.type.join(' | ');
+    }
 
-      if (value instanceof Array) {
-        if (value.length) {
-          const types = value.map(DTS.parseType);
+    if (ref.value === null) {
+      return Type.unknown;
+    }
+
+    const value = ref.value;
+
+    if (TYPES_TO_TRANSFORM.includes(ref.type as any)) {
+      if (ref.rawObject instanceof Array) {
+        if (ref.rawObject.length) {
+          const types = ref.rawObject.map(DTS.parseType).reduce((items, item) => {
+            if (!items.includes(item)) {
+              items.push(item);
+            }
+
+            return items;
+          }, []);
 
           if (types.length === 1) {
             return `${types[0]}[]`;
@@ -50,22 +68,28 @@ export const DTS = {
           return `Array<${types.join(' | ')}>`;
         }
 
-        return 'unknow[]';
+        return `${Type.unknown}[]`;
       }
 
-      let output = '';
+      const output = [];
 
       for (const key in value) {
-        const currentValue = value[key];
-        const currentType = DTS.parseType(currentValue);
+        const currentRef = ref.rawObject[key];
+        const currentType = DTS.parseType(currentRef);
 
-        output += `${key}: ${currentType};`;
+        if (PARAM_RE.test(key)) {
+          output.push(`${key}: ${currentType};`);
+        } else if (key.startsWith('...')) {
+          output.push(`[${key.substring(3)}: string]: ${currentType};`);
+        } else {
+          output.push(`'${key}': ${currentType};`);
+        }
       }
 
-      return `{ ${output} }`;
+      return output.length ? `{ ${output.join(' ')} }` : Type.object;
     }
 
-    return type;
+    return value.type instanceof Array ? value.type.join(' | ') : value.type;
   },
   parseTsValueType(tsValue: Parser.AST.TSValue) {
     if (typeof tsValue.type === 'string' || tsValue.type instanceof Array) {

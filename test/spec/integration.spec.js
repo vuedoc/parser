@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
-import { parseComponent, parseOptions } from '../../src/index.ts';
+import { parseComponent, parseOptions } from '../../src/main.ts';
 import { JSDocTypeSpec } from '../lib/JSDocTypeSpec.js';
 import { Fixture } from '../lib/Fixture.js';
 

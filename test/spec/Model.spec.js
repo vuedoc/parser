@@ -1,4 +1,4 @@
-import { parseComponent } from '../../src/index.ts';
+import { parseComponent } from '../../src/main.ts';
 import { describe, expect, it } from 'vitest';
 
 const filecontent = `

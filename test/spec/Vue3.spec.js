@@ -835,10 +835,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'token',
-          type: [
-            'string',
-            'undefined',
-          ],
+          type: 'string | undefined',
           description: 'The user session token',
           initialValue: 'undefined',
           keywords: [],
@@ -975,7 +972,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'state',
-          type: 'object',
+          type: '{ count: number; }',
           initialValue: '{"count":0}',
           keywords: [],
           visibility: 'public',
@@ -1508,7 +1505,7 @@ describe('Vue3', () => {
           keywords: [],
           kind: 'data',
           name: 'branches',
-          type: 'array',
+          type: 'string[]',
           visibility: 'public',
         },
         {
@@ -1641,7 +1638,7 @@ describe('Vue3', () => {
           keywords: [],
           kind: 'data',
           name: 'branches',
-          type: 'array',
+          type: 'string[]',
           visibility: 'public',
         },
         {
@@ -2081,10 +2078,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'x',
-          type: [
-            'string',
-            'number',
-          ],
+          type: 'string | number',
           initialValue: '1',
           keywords: [],
           visibility: 'public',
@@ -2281,7 +2275,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'obj',
-          type: 'object',
+          type: '{ count: number; }',
           description: 'Message value',
           initialValue: '{"count":0}',
           keywords: [],
@@ -2329,7 +2323,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'original',
-          type: 'object',
+          type: '{ count: number; }',
           initialValue: '{"count":0}',
           keywords: [],
           visibility: 'public',
@@ -2337,7 +2331,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'copy',
-          type: 'object',
+          type: '{ count: number; }',
           initialValue: '{"count":0}',
           keywords: [],
           visibility: 'public',
@@ -2366,7 +2360,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'state',
-          type: 'object',
+          type: '{ count: number; }',
           initialValue: '{"count":1}',
           keywords: [],
           visibility: 'public',
@@ -2400,7 +2394,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'state',
-          type: 'object',
+          type: '{ foo: number; nested: { bar: number; }; }',
           initialValue: '{"foo":1,"nested":{"bar":2}}',
           keywords: [],
           visibility: 'public',
@@ -2434,7 +2428,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'state',
-          type: 'object',
+          type: '{ foo: number; nested: { bar: number; }; }',
           initialValue: '{"foo":1,"nested":{"bar":2}}',
           keywords: [],
           visibility: 'public',
@@ -2465,7 +2459,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'shallow',
-          type: 'object',
+          type: '{ greet: string; }',
           initialValue: '{"greet":"Hello, world"}',
           keywords: [],
           visibility: 'public',
@@ -2570,7 +2564,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'foo',
-          type: 'object',
+          type: '{ nested: object; }',
           initialValue: '{"nested":{}}',
           keywords: [],
           visibility: 'public',
@@ -2578,7 +2572,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'bar',
-          type: 'object',
+          type: '{ nested: object; }',
           initialValue: '{"nested":{}}',
           keywords: [],
           visibility: 'public',
@@ -2611,7 +2605,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'foo',
-          type: 'object',
+          type: '{ nested: object; }',
           initialValue: '{"nested":{}}',
           keywords: [],
           visibility: 'public',
@@ -2619,7 +2613,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'bar',
-          type: 'object',
+          type: '{ nested: object; }',
           initialValue: '{"nested":{}}',
           keywords: [],
           visibility: 'public',
@@ -2738,7 +2732,7 @@ describe('Vue3', () => {
         {
           kind: 'data',
           name: 'state',
-          type: 'object',
+          type: '{ foo: number; bar: number; }',
           initialValue: '{"foo":1,"bar":2}',
           keywords: [],
           visibility: 'public',

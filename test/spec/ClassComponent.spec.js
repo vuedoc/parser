@@ -315,7 +315,7 @@ describe('ClassComponent', () => {
         {
           kind: 'computed',
           name: 'computedArray',
-          type: 'array',
+          type: 'number[]',
           dependencies: [],
           description: 'computed computedArray description',
           keywords: [],
@@ -513,7 +513,7 @@ describe('ClassComponent', () => {
         {
           kind: 'data',
           name: 'routeQueue',
-          type: 'array',
+          type: 'unknown[]',
           initialValue: '[this.$router.currentRoute]',
           keywords: [],
           visibility: 'public',

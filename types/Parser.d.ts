@@ -247,13 +247,14 @@ export namespace Parser {
     readonly scope: Record<string, ScopeEntry>;
   }
 
-  declare class Value<TValue = string> {
+  declare class Value<TValue = any> {
     type: Parser.Type | Parser.Type[];
     value: TValue;
     raw: string;
     rawObject?: Record<string, any>;
     rawNode?: Record<string, Babel.Node> | Babel.Node[];
     member: boolean;
+    expression?: boolean;
     function?: boolean;
     $kind?: string;
     readonly kind: string;
@@ -310,6 +311,7 @@ export namespace Parser {
     type TSValue = {
       node: Babel.Node | Record<string, Babel.Node> | Babel.Node[];
       type: string | string[] | Record<string, string>;
+      kind?: string;
       computed?: boolean;
     };
   }

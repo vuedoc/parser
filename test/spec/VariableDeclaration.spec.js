@@ -53,7 +53,7 @@ describe('VariableDeclaration', () => {
     delete scope.account.value.rawNode;
 
     expect(scope.account.value).toEqual({
-      type: 'object',
+      type: '{ username: string; }',
       value: {
         username: 'chaka_zoulou',
       },
@@ -590,10 +590,31 @@ describe('VariableDeclaration', () => {
 
     expect(scope).toHaveProperty('currentMessages');
     expect(scope.currentMessages.value).toEqual({
-      type: ['unknown', 'array'],
+      type: ['unknown', 'unknown[]'],
       value: 'thread.messages ? thread.messages.map(id => state.messages[id]) : []',
       raw: 'thread.messages ? thread.messages.map(id => state.messages[id]) : []',
       member: false,
     });
+  });
+
+  it('should successfully register array variable with different items', () => {
+    const { scope } = loadSFC(`
+      <script>        
+        const groceryList = [
+          { id: 0, text: 'Vegetables' },
+          { id: 1, text: 'Cheese' },
+          { id: 2, text: 'Whatever else humans are supposed to eat' },
+        ];
+      </script>
+    `);
+
+    expect(scope).toHaveProperty('groceryList');
+    expect(scope.groceryList.value.value).toEqual([
+      { id: 0, text: 'Vegetables' },
+      { id: 1, text: 'Cheese' },
+      { id: 2, text: 'Whatever else humans are supposed to eat' },
+    ]);
+
+    expect(scope.groceryList.value.type).toEqual('{ id: number; text: string; }[]');
   });
 });

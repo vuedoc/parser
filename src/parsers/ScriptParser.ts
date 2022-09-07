@@ -85,15 +85,8 @@ export class ScriptParser<ParseNode = void, Root = never>
     };
   }
 
-  // TODO Handle node.innerComments
-  findComment({ trailingComments = [], leadingComments = trailingComments, ...node }: Babel.Node) {
-    const leadingComment = leadingComments?.reverse()[0];
-
-    if (leadingComment) {
-      return leadingComment.start && node.end && leadingComment.start > node.end ? null : leadingComment.value;
-    }
-
-    return null;
+  findComment(node: Babel.Node) {
+    return node.extra.comment as string | null;
   }
 
   hasExplicitMixinKeyword(node) {
@@ -250,7 +243,7 @@ export class ScriptParser<ParseNode = void, Root = never>
     node.body.forEach((item) => this.parseAstStatement(item));
   }
 
-  parseAstStatement(item: Parser.AST.Statement) {
+  parseAstStatement(item: Babel.Node) {
     switch (item.type) {
       case Syntax.ClassDeclaration:
         this.setScopeValue(item.id.name, item, this.getValue(item));
@@ -363,60 +356,20 @@ export class ScriptParser<ParseNode = void, Root = never>
   }
 
   getCompositionValue(options: CompositionValueOptions) {
-    const result = super.getCompositionValue(options);
+    if (options.init?.type === Syntax.CallExpression && 'callee' in options.init && 'name' in options.init.callee) {
+      const ref = this.getScopeValue(options.init.callee.name);
 
-    if (options.init?.type === Syntax.CallExpression && 'callee' in options.init && 'name' in options.init.callee && options.init.callee.name === result.composition?.fname) {
-      this.parseIdentifierName(options.init.callee.name, options);
-
-      if (options.init.callee.name in this.scope) {
-        const ref = this.getScopeValue(options.init.callee.name);
-
-        if (ref?.value.type === Type.function && result.composition?.feature !== Feature.methods) {
-          const tsValue = this.getTSValue(ref.node.value);
-          const value = generateUndefineValue.next().value;
-
-          if (options.key) {
-            if (typeof tsValue.type === 'object') {
-              value.type = Array.isArray(tsValue.type) ? tsValue.type : tsValue.type[options.key];
-              result.node = tsValue.node[options.key];
-            }
-          } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
-            value.type = this.getTypeParameterValue(ref.node.value, options.init) || DTS.parseTsValueType(tsValue);
-
-            if (!Array.isArray(tsValue.node)) {
-              result.node = tsValue.node as Babel.Node;
-            }
-          }
-
-          if (result.ref) {
-            result.ref.type = value.type;
-          } else {
-            result.ref = value;
-            result.tsValue = tsValue;
-            result.ref.type = this.getTypeParameterValue(ref.node.value, options.init)
-              || (result.ref.type === Type.unknown ? DTS.parseTsValueType(tsValue) : result.ref.type);
-          }
-        } else if (result.ref) {
-          if (ref.value.type !== Type.unknown) {
-            result.ref.type = ref.value.type;
-          }
-        } else {
-          result.ref = ref.value;
-          result.tsValue = ref.tsValue;
-
-          if (ref.tsValue) {
-            result.ref.type = this.getTypeParameterValue(ref.node.value, options.init)
-              || DTS.parseTsValueType(ref.tsValue);
-          }
+      if (ref) {
+        if ('node' in ref && !ref.node.value.extra.$loaded) {
+          this.parseIdentifierName(options.init.callee.name, options);
+          ref.node.value.extra.$loaded = true;
         }
-
-        if (result.node) {
-          result.ref.function = ScriptParser.isFunction(result.node) || ScriptParser.isTsFunction(result.node);
-        }
+      } else {
+        this.parseIdentifierName(options.init.callee.name, options);
       }
     }
 
-    return result;
+    return super.getCompositionValue(options);
   }
 
   parseCallExpression(node) {
@@ -506,19 +459,13 @@ export class ScriptParser<ParseNode = void, Root = never>
       }
     }
 
-    if (node && !node.extra?.$loaded) {
-      node.extra.$loaded = true;
-
+    if (node) {
       if ('body' in node) {
         const register = this.createRegister();
 
         register.parseAst(node);
         Object.entries(register.exposedScope).forEach(([name, exposedScopeEntry]) => {
-          if ((key && name !== key) || ('$ns' in exposedScopeEntry)) {
-            return;
-          }
-
-          if (name in this.scope) {
+          if (name in this.scope && 'value' in exposedScopeEntry) {
             const scopeEntry = this.getScopeValue(local || name);
 
             if (scopeEntry) {
@@ -546,7 +493,7 @@ export class ScriptParser<ParseNode = void, Root = never>
               }
             }
           } else {
-            this.scope[local || name] = exposedScopeEntry;
+            this.scope[name] = exposedScopeEntry;
           }
         });
       } else if (node.type === Syntax.TSDeclareFunction) {
@@ -739,8 +686,8 @@ export class ScriptParser<ParseNode = void, Root = never>
     this.parseMixinsProperty(node);
     this.parseExtendsProperty(node);
 
-    const properties = this.parseElements(node.properties)
-      .filter((property) => 'name' in property.key && property.key.name in Properties);
+    const properties: Array<Babel.ObjectMethod | Babel.ObjectProperty> = this.parseElements(node.properties)
+      .filter((property) => 'key' in property && 'name' in property.key && property.key.name in Properties) as any;
 
     for (const property of properties) {
       if ('value' in property) {
@@ -766,35 +713,27 @@ export class ScriptParser<ParseNode = void, Root = never>
     }
   }
 
-  parseElements<T extends Babel.Expression | Babel.ObjectProperty | Babel.ObjectMethod | Babel.SpreadElement>(elements: T[]) {
-    return elements.reduce((accumulator, item) => {
-      const node = item.type === Syntax.SpreadElement ? item.argument : item;
+  parseElementsItem(
+    element: Babel.Expression | Babel.ObjectProperty | Babel.ObjectMethod | Babel.SpreadElement,
+    item: Babel.Expression | Babel.ObjectProperty | Babel.ObjectMethod
+  ) {
+    switch (item.type) {
+      case Syntax.Identifier: {
+        const ref = this.getIdentifier(item);
 
-      switch (node.type) {
-        case Syntax.Identifier: {
-          const ref = this.getIdentifier(node);
-
-          if ('node' in ref) {
-            accumulator.push(...this.parseElements([ref.node.value as any]));
-          }
-          break;
-        }
-
-        case Syntax.ObjectExpression:
-          accumulator.push(...this.parseElements(node.properties) as any);
-          break;
-
-        case Syntax.CallExpression:
-          this.executeCallExpressionProperty(node, item);
-          break;
-
-        default:
-          accumulator.push(item as Exclude<T, Babel.SpreadElement>);
-          break;
+        return ref && 'node' in ref
+          ? this.parseElements([ref.node.value as any])
+          : [];
       }
 
-      return accumulator;
-    }, [] as Array<Exclude<T, Babel.SpreadElement>>);
+      case Syntax.CallExpression:
+        this.executeCallExpressionProperty(item, element);
+
+        return [];
+
+      default:
+        return super.parseElementsItem(element, item);
+    }
   }
 
   executeCallExpressionProperty(node: Babel.CallExpression, parent: Babel.Node) {
@@ -898,7 +837,7 @@ export class ScriptParser<ParseNode = void, Root = never>
     if ('name' in property.key) {
       if (property.type === Syntax.ObjectProperty) {
         if (property.value.type === Syntax.ObjectExpression) {
-          property.value.properties = this.parseElements(property.value.properties);
+          property.value.properties = this.parseElements(property.value.properties) as any;
         }
       }
 

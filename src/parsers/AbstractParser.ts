@@ -1,5 +1,4 @@
-import { RestValue } from '../entity/RestValue.js';
-import { Value, generateUndefineValue, generateNullGenerator, generateObjectGenerator, generateArrayGenerator } from '../entity/Value.js';
+import { Value, generateUndefineValue, generateNullGenerator, generateObjectGenerator, generateArrayGenerator, generateAnyGenerator } from '../entity/Value.js';
 import { Syntax, Type, CompositionTypes, Feature, CompositionFeature } from '../lib/Enum.js';
 import { clear, get } from '@b613/utils/lib/object.js';
 import { Entry } from '../../types/Entry.js';
@@ -67,10 +66,8 @@ function normalizeType(item: { type: Parser.Type | Parser.Type[] }) {
 }
 
 function copyComments(dest: Babel.Node, source: Babel.Node) {
-  if (AbstractParser.hasComments(source) && !AbstractParser.hasComments(dest)) {
-    dest.leadingComments = source.leadingComments;
-    // dest.trailingComments = source.trailingComments;
-    // dest.innerComments = source.innerComments;
+  if (source.extra.comment && !dest.extra.comment) {
+    dest.extra.comment = source.extra.comment;
   }
 }
 
@@ -251,6 +248,16 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       .forEach((declaration) => this.parseVariableDeclarator(declaration, node));
   }
 
+  parseNonCompositionRef(decoratorValue: CompositionValue, ref: Parser.Value<any>, nodeTyping: Babel.Node, initNode: Babel.Node) {
+    if (!decoratorValue.composition) {
+      const tsType = this.getTSType(nodeTyping, this.getNodeType(initNode));
+
+      if (tsType !== Type.unknown) {
+        ref.type = tsType;
+      }
+    }
+  }
+
   parseVariableDeclarator(declarator: Parser.AST.VariableDeclarator, node: Parser.AST.VariableDeclaration) {
     if (declarator.init) {
       this.setLeftSidePart(declarator.init, node, declarator);
@@ -282,6 +289,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
             ? declarator.id?.typeAnnotation
             : declarator;
 
+        this.parseNonCompositionRef(decoratorValue, ref, nodeTyping, initNode);
         this.setScopeValue(name, nodeValue, ref, {
           nodeTyping,
           nodeComment,
@@ -366,7 +374,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
 
         case Syntax.ArrayPattern: {
           const tsValue = this.getTSValue(options.init);
-          const node = tsValue.type === Type.array ? (tsValue.node as Babel.ArrayExpression).elements[index] : {
+          const node = tsValue.kind === Type.array ? (tsValue.node as Babel.ArrayExpression).elements[index] : {
             type: Syntax.NullLiteral,
           };
 
@@ -461,7 +469,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
                   key: source,
                   local: name,
                   init: options.init,
-                  id: options.id as any,
+                  id: options.id,
                 });
 
                 const ref = defaultValue || decoratorValue.ref || generateUndefineValue.next().value;
@@ -474,6 +482,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
                   copyComments(nodeComment, decoratorValue.node);
                 }
 
+                this.parseNonCompositionRef(decoratorValue, ref, element, initNode);
                 this.setScopeValue(name, nodeValue, ref, {
                   source,
                   nodeComment,
@@ -582,7 +591,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     if (key in this.scope) {
       const ref = this.scope[key];
 
-      if (!('$ns' in ref)) {
+      if ('node' in ref) {
         return ref;
       }
     }
@@ -602,6 +611,21 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return LEFT_SIDEPART_KEY in node.extra;
   }
 
+  getReturnNode(node: Babel.Node): Babel.Node | null {
+    const _node = node as any;
+
+    if (AbstractParser.isFunction(_node)) {
+      const blockNode = _node.body?.body || _node.body;
+      const returnNode: Babel.Node = blockNode instanceof Array
+        ? blockNode.length === 1 ? blockNode[0] : blockNode.find((node) => node.type === Syntax.ReturnStatement)
+        : blockNode;
+
+      return returnNode?.type === Syntax.ReturnStatement ? returnNode.argument : returnNode;
+    }
+
+    return null;
+  }
+
   getReturnType(node: Babel.Node, defaultType: Parser.Type = Type.unknown): Parser.Type | Parser.Type[] {
     let type: Parser.Type | Parser.Type[] = defaultType;
     const _node = node as any;
@@ -612,20 +636,11 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       type = _node.typeAnnotation.typeAnnotation.type === Syntax.TSFunctionType
         ? this.getTSValue(_node.typeAnnotation.typeAnnotation.typeAnnotation).type as string
         : this.getTSValue(_node.typeAnnotation.typeAnnotation).type as string;
-    } else if (AbstractParser.isFunction(_node)) {
-      const blockNode = _node.body?.body || _node.body;
-      const returnNode: Babel.Node = blockNode instanceof Array
-        ? blockNode.length === 1 ? blockNode[0] : blockNode.find((node) => node.type === Syntax.ReturnStatement)
-        : blockNode;
+    } else if (AbstractParser.isFunction(node)) {
+      const returnNode: Babel.Node = this.getReturnNode(node);
 
       if (returnNode) {
         switch (returnNode.type) {
-          case Syntax.ReturnStatement:
-            type = 'argument' in returnNode
-              ? this.getNodeType(returnNode.argument, type)
-              : Type.unknown;
-            break;
-
           case Syntax.Identifier:
             type = this.getValue(returnNode).type;
             break;
@@ -642,7 +657,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         type = Type.void;
       }
 
-      if (_node.async) {
+      if ('async' in node && node.async) {
         type = `${Type.Promise}<${type}>`;
       }
     }
@@ -654,8 +669,15 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     let type: Parser.Type | Parser.Type[] = defaultType;
 
     switch (node.type) {
-      case Syntax.Identifier:
-        type = this.getValue(node).type;
+      case Syntax.Identifier: {
+        const ref = this.getScopeValue(node.name);
+
+        type = ref ? ref.value.type : this.getValue(node).type;
+        break;
+      }
+
+      case Syntax.ReturnStatement:
+        type = node.argument ? this.getNodeType(node.argument, defaultType) : defaultType;
         break;
 
       case Syntax.CallExpression:
@@ -700,11 +722,11 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
 
       case Syntax.ArrayExpression:
-        type = Type.array;
+        type = DTS.parseType(this.getValue(node));
         break;
 
       case Syntax.ObjectExpression:
-        type = Type.object;
+        type = DTS.parseType(this.getValue(node));
         break;
 
       case Syntax.NullLiteral:
@@ -787,12 +809,13 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     let refNode: Babel.Node;
     let argumentNode: Babel.Node;
     let tsValue = this.getDeclaratorType(options);
+    let fname: string;
     const init: Babel.Node = options.init.type === Syntax.TSAsExpression
       ? options.init.expression
       : options.init;
 
     if (init.type === Syntax.CallExpression && 'callee' in init && 'name' in init.callee) {
-      const fname = init.callee.name;
+      fname = init.callee.name;
       let composition = this.composition.get(fname, [
         // order is important
         CompositionFeature.props,
@@ -890,55 +913,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           }
         }
 
-        if (options.key) {
-          if (tsValue) {
-            const keyType = typeof tsValue.type === 'string'
-              ? tsValue.type
-              : tsValue.type[options.key];
-
-            if (!ref) {
-              const keyref = this.getScopeValue(options.key);
-
-              if (keyref) {
-                ref = keyref.value;
-                tsValue = keyref.tsValue;
-                refNode = keyref.node.value;
-              } else {
-                ref = generateUndefineValue.next().value;
-              }
-            }
-
-            if (typeof tsValue.type === Type.object && typeof ref.value === 'object') {
-              const rawRef = options.key in ref.rawObject
-                ? ref.rawObject[options.key]
-                : generateUndefineValue.next().value;
-
-              ref.value = rawRef.value;
-              ref.raw = rawRef.raw;
-
-              if (typeof ref.value === 'undefined' && keyType instanceof Array && keyType.includes(Type.undefined)) {
-                ref.raw = 'undefined';
-              }
-            }
-
-            ref.type = keyType;
-            refNode = tsValue.node[options.key];
-          } else if (ref?.type === Type.object) {
-            ref = options.key in ref.rawObject
-              ? ref.rawObject[options.key]
-              : generateUndefineValue.next().value;
-          }
-        }
-
-        if (!ref && tsValue) {
-          ref = DTS.parseValue(tsValue.type);
-        }
-
-        if (ref && refNode) {
-          ref.function = AbstractParser.isFunction(refNode) || AbstractParser.isTsFunction(refNode);
-        }
-
-        return { ref, tsValue, composition, node: refNode, argument: argumentNode };
+        return this.getCallExpressionComposition(fname, options, { ref, tsValue, composition, node: refNode, argument: argumentNode });
       }
     }
 
@@ -954,7 +929,164 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       ref.raw = '';
     }
 
-    return { ref, tsValue };
+    return fname
+      ? this.getCallExpressionComposition(fname, options, { ref, tsValue })
+      : {};
+  }
+
+  private parseRaw(ref: Parser.Value<any>) {
+    if (!ref.rawObject) {
+      switch (ref.type) {
+        case Type.object:
+          ref.rawObject = {};
+          break;
+
+        case Type.array:
+          ref.rawObject = [];
+          break;
+      }
+    }
+
+    if (!ref.rawNode) {
+      switch (ref.type) {
+        case Type.object:
+          ref.rawNode = {};
+          break;
+
+        case Type.array:
+          ref.rawNode = [];
+          break;
+      }
+    }
+  }
+
+  private getCallExpressionComposition(fname: string, options: CompositionValueOptions, result: CompositionValue): CompositionValue {
+    const refScope = this.getScopeValue(fname);
+
+    if (refScope) {
+      if (refScope.value.type === Type.function && result.composition && result.composition?.feature !== Feature.methods) {
+        const tsValue = this.getTSValue(refScope.node.value);
+        const value = generateUndefineValue.next().value;
+
+        if (options.key) {
+          if (typeof tsValue.type === 'object') {
+            value.type = Array.isArray(tsValue.type) ? tsValue.type : tsValue.type[options.key];
+            result.node = tsValue.node[options.key];
+          }
+        } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
+          value.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression) || DTS.parseTsValueType(tsValue);
+
+          if (!Array.isArray(tsValue.node)) {
+            result.node = tsValue.node as Babel.Node;
+          }
+        }
+
+        if (result.ref) {
+          result.ref.type = value.type;
+        } else {
+          result.ref = value;
+          result.tsValue = tsValue;
+          result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
+            || (result.ref.type === Type.unknown ? DTS.parseTsValueType(tsValue) : result.ref.type);
+        }
+      } else if (result.ref) {
+        if (AbstractParser.isFunction(refScope.node.value)) {
+          const returnType = this.getReturnType(refScope.node.value);
+
+          if (options.key) {
+            const ref = this.getScopeValue(options.key);
+
+            if (ref && 'node' in ref) {
+              result.ref = ref.value;
+              result.argument = ref.node.value;
+              result.node = ref.node.comment;
+            } else {
+              const returnNode = this.getReturnNode(refScope.node.value);
+              const returnValue = this.getValue(returnNode);
+
+              if (returnValue.rawObject && options.key in returnValue.rawObject) {
+                result.ref = returnValue.rawObject[options.key];
+                result.argument = returnValue.rawNode[options.key];
+                // result.node = returnValue.rawNode[options.key];
+                // result.tsValue = this.getTSValue(returnNode);
+              }
+            }
+          } else {
+            // result.node = refScope.node.value;
+            // result.tsValue = {
+            //   node: refScope.node.value,
+            //   type: returnType,
+            // };
+          }
+        } else if (refScope.value.type === Type.function) {
+          result.ref.type = this.getReturnType(refScope.node.value);
+        } else if (refScope.value.type !== Type.unknown) {
+          result.ref.type = refScope.value.type;
+        }
+      } else {
+        result.ref = refScope.value;
+        result.tsValue = refScope.tsValue;
+
+        if (refScope.tsValue) {
+          result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
+            || DTS.parseTsValueType(refScope.tsValue);
+        }
+      }
+    }
+
+    if (options.key) {
+      if (result.tsValue) {
+        const keyType = typeof result.tsValue.type === 'string'
+          ? result.tsValue.type
+          : result.tsValue.type[options.key];
+
+        if (!result.ref) {
+          const keyref = this.getScopeValue(options.key);
+
+          if (keyref) {
+            result.ref = keyref.value;
+            result.tsValue = keyref.tsValue;
+            result.node = keyref.node.value;
+          } else {
+            result.ref = generateUndefineValue.next().value;
+          }
+        }
+
+        if (typeof result.tsValue.type === Type.object && typeof result.ref.value === 'object') {
+          this.parseRaw(result.ref);
+
+          const rawRef = options.key in result.ref.rawObject
+            ? result.ref.rawObject[options.key]
+            : generateUndefineValue.next().value;
+
+          result.ref.value = rawRef.value;
+          result.ref.raw = rawRef.raw;
+
+          if (typeof result.ref.value === 'undefined' && keyType instanceof Array && keyType.includes(Type.undefined)) {
+            result.ref.raw = 'undefined';
+          }
+        }
+
+        result.ref.type = keyType;
+        result.node = result.tsValue.node[options.key];
+      } else if (result.ref?.type === Type.object) {
+        this.parseRaw(result.ref);
+
+        result.ref = options.key in result.ref.rawObject
+          ? result.ref.rawObject[options.key]
+          : generateUndefineValue.next().value;
+      }
+    }
+
+    if (!result.ref && result.tsValue) {
+      result.ref = DTS.parseValue(result.tsValue.type);
+    }
+
+    if (result.ref && result.node) {
+      result.ref.function = AbstractParser.isFunction(options.init) || AbstractParser.isTsFunction(options.init);
+    }
+
+    return result;
   }
 
   getDeclaratorValue(options: CompositionValueOptions) {
@@ -1107,10 +1239,10 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return type;
   }
 
-  getTSInterfaceBody(node: Babel.TSInterfaceBody) {
+  getElementsObject(elements: Array<Babel.TSTypeElement | Babel.ObjectProperty | Babel.ObjectMethod>) {
     const ref = {};
 
-    for (const item of node.body) {
+    for (const item of elements) {
       const key = this.parseKey(item as any);
       const tsValue = this.getTSValue(item);
 
@@ -1139,8 +1271,24 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         }
         break;
 
+      case Syntax.ArrayExpression:
+        node.extra.$tsvalue = { node, kind: Type.array, type: Object.values(this.getElementsObject(node.elements as any)) };
+        break;
+
+      case Syntax.ObjectExpression:
+        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObject(node.properties as any) };
+        break;
+
+      case Syntax.ObjectMethod:
+        node.extra.$tsvalue = { node, kind: Type.function, type: this.getNodeType(node) };
+        break;
+
+      case Syntax.ObjectProperty:
+        node.extra.$tsvalue = this.getTSValue(node.value, force);
+        break;
+
       case Syntax.TSInterfaceDeclaration:
-        node.extra.$tsvalue = { node, type: this.getTSInterfaceBody(node.body) };
+        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObject(node.body.body) };
         break;
 
       case Syntax.TSTypeParameterInstantiation:
@@ -1172,7 +1320,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         const ref = this.getScopeValue(node.name);
 
         node.extra.$tsvalue = ref
-          ? (ref.tsValue ? ref.tsValue : this.getTSValue(ref.node.value))
+          ? (ref.tsValue ? ref.tsValue : this.getTSValue(ref.node.value, force))
           : { node, type: this.getInlineSourceString(node) };
         break;
       }
@@ -1202,13 +1350,13 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       case Syntax.TSDeclareFunction:
         if ('returnType' in node) {
           copyComments(node.returnType, node);
-          node.extra.$tsvalue = this.getTSValue(node.returnType, force);
+          node.extra.$tsvalue = { ...this.getTSValue(node.returnType, force), kind: Type.function };
         }
         break;
     }
 
     if (!node.extra.$tsvalue) {
-      node.extra.$tsvalue = { node, type: this.getTSType(node) };
+      node.extra.$tsvalue = { node, kind: Type.unknown, type: this.getTSType(node) };
     }
 
     return node.extra.$tsvalue as any;
@@ -1234,40 +1382,92 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return type;
   }
 
-  getObjectExpressionValue(node): Value<object> {
-    const object = generateObjectGenerator.next().value;
+  parseElements<T extends Babel.Expression | Babel.ObjectProperty | Babel.ObjectMethod | Babel.SpreadElement>(elements: T[]) {
+    return elements.reduce((accumulator, element) => {
+      const node = element.type === Syntax.SpreadElement ? element.argument : element as Exclude<T, Babel.SpreadElement>;
+      const items = this.parseElementsItem(element, node);
 
-    for (const item of node.properties) {
+      if (items.length) {
+        accumulator.push(...items);
+      } else if (element.type === Syntax.SpreadElement && element.argument?.type === Syntax.Identifier) {
+        const varName = `...${element.argument.name}`;
+        const ref = generateAnyGenerator.next().value;
+
+        this.setScopeValue(varName, element, ref);
+        accumulator.push({
+          type: Syntax.Identifier,
+          name: varName,
+        });
+      }
+
+      return accumulator;
+    }, [] as Array<Exclude<T, Babel.SpreadElement> | Babel.Identifier>);
+  }
+
+  parseElementsItem(
+    _element: Babel.Expression | Babel.ObjectProperty | Babel.ObjectMethod | Babel.SpreadElement,
+    item: Babel.Expression | Babel.ObjectProperty | Babel.ObjectMethod
+  ) {
+    switch (item.type) {
+      case Syntax.Identifier: {
+        const ref = this.getScopeValue(item.name);
+
+        return ref && 'node' in ref
+          ? this.parseElements([ref.node.value])
+          : [];
+      }
+
+      case Syntax.ObjectExpression:
+        return this.parseElements(item.properties);
+
+      default:
+        return [item];
+    }
+  }
+
+  getObjectExpressionValue(node: Babel.ObjectExpression): Value<object> {
+    const object = generateObjectGenerator.next().value;
+    const setValue = (key: string, ref: Parser.Value, refNode: Babel.Node) => {
+      object.value[key] = ref.expression ? ref : ref.value;
+      object.rawObject[key] = ref;
+      object.rawNode[key] = refNode;
+    };
+
+    for (const item of this.parseElements(node.properties)) {
       switch (item.type) {
         case Syntax.ObjectProperty: {
           const ref = this.getValue(item.value);
-          const refNode = item.value.type === Syntax.Identifier && item.value.name in this.scope && 'node' in this.scope[item.value.name]
-            ? (this.scope[item.value.name] as Parser.ScopeEntry).node.value
-            : item.value;
+          const key = 'name' in item.key ? item.key.name : this.getValue(item.key).value;
 
-          object.value[item.key.name] = ref.value;
-          object.rawObject[item.key.name] = ref;
-          object.rawNode[item.key.name] = refNode;
+          if (typeof key === 'string') {
+            const refNode = item.value.type === Syntax.Identifier && item.value.name in this.scope && 'node' in this.scope[item.value.name]
+              ? (this.scope[item.value.name] as Parser.ScopeEntry).node.value
+              : item.value;
 
-          if (item.value.type === Syntax.Identifier && !(item.key.name in this.scope)) {
-            this.setScopeValue(item.key.name, item.value, ref);
+            setValue(key, ref, refNode);
+
+            if (item.value.type === Syntax.Identifier && !(key in this.scope)) {
+              this.setScopeValue(key, item.value, ref);
+            }
           }
           break;
         }
 
-        case Syntax.SpreadElement:
-          object.value[item.argument.name] = new RestValue(Type.object, item.argument.name);
-          break;
-
-        default: {
+        case Syntax.Identifier: {
           const ref = this.getValue(item);
-          const refNode = item.type === Syntax.Identifier && item.name in this.scope && 'node' in this.scope[item.name]
+          const refNode = item.name in this.scope && 'node' in this.scope[item.name]
             ? (this.scope[item.name] as Parser.ScopeEntry).node.value
             : item;
 
-          object.value[item.key.name] = ref.value;
-          object.rawObject[item.key.name] = ref;
-          object.rawNode[item.key.name] = refNode;
+          setValue(item.name, ref, refNode);
+          break;
+        }
+
+        default: {
+          const ref = this.getValue(item);
+          const key = 'name' in item.key ? item.key.name : this.getValue(item.key).value;
+
+          setValue(key, ref, item);
           break;
         }
       }
@@ -1298,10 +1498,10 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return this.getSourceString(node).replace(DUPLICATED_SPACES_RE, ' ');
   }
 
-  getSourceValue(node, type = node.type) {
+  getSourceValue(node, type: Parser.Type | Parser.Type[] = Type.unknown) {
     const value = this.getSourceString(node);
 
-    return new Value(type, value);
+    return new Value(type, value, value);
   }
 
   getIdentifierValue(node: Babel.Identifier): Parser.Value<any> | Parser.NS {
@@ -1444,7 +1644,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   }
 
   getCallExpression(node: Babel.CallExpression): Parser.Value<any> {
-    let type: string | string[] = Type.unknown;
+    let type: Parser.Type | Parser.Type[] = Type.unknown;
 
     if ('name' in node.callee) {
       const ref = this.getScopeValue(node.callee.name);
@@ -1519,7 +1719,12 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   getArrayExpression(node: Babel.ArrayExpression): Value<any[]> {
     const output = generateArrayGenerator.next().value;
 
-    output.value = node.elements.map((element) => this.getValue(element).value);
+    output.value = node.elements.map((element) => {
+      const ref = this.getValue(element);
+
+      return ref.expression ? ref : ref.value;
+    });
+
     output.rawObject = node.elements.map((element) => {
       const ref = this.getValue(element);
 
@@ -1555,10 +1760,10 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         return new Value(Type.number, node.value, node.extra?.raw as string);
 
       case Syntax.BigIntLiteral:
-        return new Value(Type.bigint, node.extra?.raw as string);
+        return new Value(Type.bigint, node.extra?.raw, node.extra?.raw as string);
 
       case Syntax.RegExpLiteral:
-        return new Value(Type.regexp, node.extra?.raw as string);
+        return new Value(Type.regexp, node.extra?.raw as string, node.extra?.raw as string);
 
       case Syntax.ArrayExpression:
         return this.getArrayExpression(node);

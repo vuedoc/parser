@@ -158,7 +158,7 @@ export class CompositionParser extends ScriptParser {
     this.parseAstStatement(node);
   }
 
-  parseAstStatement(item) {
+  parseAstStatement(item: Babel.Node) {
     switch (item.type) {
       case Syntax.ReturnStatement:
         this.parseReturnStatement(item);
@@ -170,8 +170,8 @@ export class CompositionParser extends ScriptParser {
     }
   }
 
-  parseReturnStatement(node) {
-    switch (node.argument.type) {
+  parseReturnStatement(node: Babel.ReturnStatement) {
+    switch (node.argument?.type) {
       case Syntax.ObjectExpression: {
         this.parseReturnObjectExpression(node.argument);
         break;
@@ -186,57 +186,53 @@ export class CompositionParser extends ScriptParser {
   }
 
   parseReturnObjectExpression(node: Babel.ObjectExpression) {
-    for (const property of node.properties) {
-      if (property.type === Syntax.SpreadElement) {
-        // TODO Handle spread object
-      } else {
-        if (property.type === Syntax.ObjectProperty) {
-          this.parseObjectProperty(property);
-        }
-
-        if ('value' in property && this.features.length) {
-          let callExpressionNode: Babel.CallExpression;
-          let propertyKey: string;
-
-          switch (property.value.type) {
-            case Syntax.Identifier: {
-              const ref = this.getScopeValue(property.value.name);
-
-              if (ref?.composition) {
-                this.parseCompositionFeatureEntry(ref.key, ref.composition, {
-                  id: property as any,
-                });
-                continue;
-              } else if (ref?.node.value.type === Syntax.CallExpression) {
-                callExpressionNode = ref.node.value;
-                propertyKey = ref.key;
-              }
-              break;
-            }
-
-            case Syntax.CallExpression:
-              callExpressionNode = property.value;
-
-              if ('name' in property.key) {
-                propertyKey = property.key.name;
-              }
-              break;
-          }
-
-          if (callExpressionNode?.type === Syntax.CallExpression && propertyKey) {
-            const result = this.parseCompositionCallExpression(propertyKey, {
-              id: property as any,
-              init: callExpressionNode,
-            });
-
-            if (result) {
-              continue;
-            }
-          }
-        }
-
-        this.parseData(property);
+    for (const property of this.parseElements(node.properties)) {
+      if (property.type === Syntax.ObjectProperty) {
+        this.parseObjectProperty(property);
       }
+
+      if ('value' in property && this.features.length) {
+        let callExpressionNode: Babel.CallExpression;
+        let propertyKey: string;
+
+        switch (property.value.type) {
+          case Syntax.Identifier: {
+            const ref = this.getScopeValue(property.value.name);
+
+            if (ref?.composition) {
+              this.parseCompositionFeatureEntry(ref.key, ref.composition, {
+                id: property,
+              });
+              continue;
+            } else if (ref?.node.value.type === Syntax.CallExpression) {
+              callExpressionNode = ref.node.value;
+              propertyKey = ref.key;
+            }
+            break;
+          }
+
+          case Syntax.CallExpression:
+            callExpressionNode = property.value;
+
+            if ('name' in property.key) {
+              propertyKey = property.key.name;
+            }
+            break;
+        }
+
+        if (callExpressionNode?.type === Syntax.CallExpression && propertyKey) {
+          const result = this.parseCompositionCallExpression(propertyKey, {
+            id: property as any,
+            init: callExpressionNode,
+          });
+
+          if (result) {
+            continue;
+          }
+        }
+      }
+
+      this.parseData(property);
     }
   }
 
@@ -438,7 +434,11 @@ export class CompositionParser extends ScriptParser {
     const ref = this.getScopeValue(nameToHandle) || this.getScopeValue(name);
 
     if (ref) {
-      this.emitScopeEntry(composition.feature, ref);
+      const feature = ref.function || CompositionParser.isTsFunction(ref.node.value)
+        ? CompositionFeature.methods
+        : composition.feature;
+
+      this.emitScopeEntry(feature, ref);
     }
   }
 

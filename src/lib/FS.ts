@@ -10,12 +10,14 @@ import { merge } from '@b613/utils/lib/object.js';
 import { ImportResolver } from '../../types/ImportResolver.js';
 import { Loader, LoaderOptions } from './Loader.js';
 
+import * as Babel from '@babel/types';
+
 type FSOptions = Options & {
   plugins?: ParserPlugin[];
 };
 
 // https://github.com/babel/babel/issues/13855#issuecomment-945123514
-const traverse = typeof _traverse === 'function' ? _traverse : _traverse.default;
+const traverse: typeof import('@babel/traverse').default = typeof _traverse === 'function' ? _traverse : (_traverse as any).default;
 const defaultResolver: ImportResolver = {
   basedir: process.cwd(),
   extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
@@ -80,6 +82,16 @@ function parseAlias(path: string, aliasMap: Record<string, string>) {
   return path;
 }
 
+function findComment({ trailingComments = [], leadingComments = trailingComments, ...node }: Babel.Node) {
+  const leadingComment = leadingComments?.reverse()[0];
+
+  if (leadingComment) {
+    return leadingComment.start && node.end && leadingComment.start > node.end ? null : leadingComment.value;
+  }
+
+  return null;
+}
+
 function loadFileContent(loaderName: string, filecontent: string, { plugins = [], ...options }: FSOptions) {
   const loaderOptions: LoaderOptions = {
     definitions: options.loaders,
@@ -119,6 +131,7 @@ function loadFileContent(loaderName: string, filecontent: string, { plugins = []
           }
 
           path.node.extra.file = file;
+          path.node.extra.comment = findComment(path.node);
         }
       },
     });

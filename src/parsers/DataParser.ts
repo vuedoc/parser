@@ -7,6 +7,7 @@ import { Feature, Syntax, Tag, Type } from '../lib/Enum.js';
 import { KeywordsUtils } from '../utils/KeywordsUtils.js';
 import { Parser } from '../../types/Parser.js';
 import { Value } from '../entity/Value.js';
+import { DTS } from '../lib/DTS.js';
 
 export type ParseDataValueOptions = {
   name: string;
@@ -18,6 +19,8 @@ export type ParseDataValueOptions = {
 export type ParseDataValueTypedOptions = ParseDataValueOptions & {
   type?: Parser.Type | Parser.Type[];
 };
+
+const EXCLUDED_VAL_TYPES = [Type.object, Type.undefined, Type.unknown];
 
 export class DataParser<
   Root extends ScriptParser<any, any> = ScriptParser<any, any>
@@ -75,6 +78,12 @@ export class DataParser<
 
       if (_type === Type.null) {
         _type = Type.unknown;
+      }
+
+      const valType = DTS.parseType(value);
+
+      if (!EXCLUDED_VAL_TYPES.includes(valType as any) || _type === Type.unknown) {
+        _type = valType;
       }
 
       const entry = new DataEntry({

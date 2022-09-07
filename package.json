@@ -4,7 +4,7 @@
   "description": "Generate a JSON documentation for a Vue file",
   "type": "module",
   "exports": {
-    ".": "./esm/index.js",
+    ".": "./esm/main.js",
     "./types": "./types/index.d.ts",
     "./enum": "./esm/lib/Enum.js",
     "./entity/computed": "./esm/entity/ComputedEntry.js",
@@ -18,7 +18,6 @@
     "./entity/model": "./esm/entity/ModelEntry.js",
     "./entity/name": "./esm/entity/NameEntry.js",
     "./entity/prop": "./esm/entity/PropEntry.js",
-    "./entity/rest": "./esm/entity/RestValue.js",
     "./entity/slot": "./esm/entity/SlotEntry.js",
     "./entity/value": "./esm/entity/Value.js",
     "./jsdoc": "./esm/lib/JSDoc.js",
@@ -32,14 +31,13 @@
     "./schema/options": "./esm/schema/options.js",
     "./utils/KeywordsUtils": "./esm/utils/KeywordsUtils.js"
   },
-  "main": "./esm/index.js",
+  "main": "./esm/main.js",
   "types": "./types/index.d.ts",
   "scripts": {
     "preversion": "yarn test",
     "build": "tsc",
     "prepack": "yarn build",
     "test": "vitest",
-    "testui": "vitest --ui",
     "coverage": "vitest run --coverage",
     "examples": "UPDATE_EXAMPLES_RESULTS=true node_modules/.bin/vitest --run Compatibility.spec.js",
     "lint": "eslint .",
@@ -91,16 +89,16 @@
   "dependencies": {
     "@b613/utils": "^1.0.0-beta21",
     "@babel/parser": "^7.18.11",
-    "@babel/traverse": "^7.18.11",
+    "@babel/traverse": "^7.19.0",
     "resolve": "^1.22.1",
     "vue-template-compiler": "^2.6.14"
   },
   "devDependencies": {
+    "@types/babel__traverse": "^7.18.1",
     "@types/pug": "^2.0.6",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
-    "@vitest/coverage-c8": "^0.22.0",
-    "@vitest/ui": "^0.22.0",
+    "@vitest/coverage-c8": "^0.23.0",
     "@vuedoc/test-utils": "^1.1.1",
     "eslint": "^8.20.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -113,7 +111,7 @@
     "pug": "^3.0.2",
     "typescript": "^4.7.4",
     "vite": "^3.0.2",
-    "vitest": "^0.22.0"
+    "vitest": "^0.23.0"
   },
   "peerDependencies": {
     "@types/node": "^18.6.3",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseComponent } from '../../src/index.ts';
+import { parseComponent } from '../../src/main.ts';
 
 describe('#44 - Inline Template', () => {
   it('should successfully parse component with inline template', () => {

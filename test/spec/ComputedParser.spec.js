@@ -275,7 +275,7 @@ describe('ComputedParser', () => {
           visibility: 'public',
           keywords: [],
           name: 'classes',
-          type: 'array',
+          type: "Array<string | { 'is-active': unknown; } | { 'is-invalid': unknown; } | { 'is-touched': unknown; } | { 'is-disabled': unknown; } | { 'has-label': unknown; } | { 'has-floating-label': unknown; }>",
           dependencies: [
             'type',
             'iconPosition',
@@ -290,7 +290,7 @@ describe('ComputedParser', () => {
         {
           kind: 'computed',
           visibility: 'public',
-          type: 'object',
+          type: "{ 'is-inline': boolean; 'is-floating': boolean; }",
           keywords: [],
           name: 'labelClasses',
           dependencies: [

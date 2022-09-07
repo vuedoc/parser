@@ -24,6 +24,7 @@
     ]
   },
   "include": [
+    "types/index.d.ts",
     "src/**/*.ts"
   ],
   "exclude": [
