@@ -208,6 +208,7 @@ export namespace Parser {
     parseElements(elements: (Babel.Expression | Babel.SpreadElement)[]): Babel.Expression[];
     parseElements(elements: (Babel.ObjectMethod | Babel.ObjectProperty | Babel.SpreadElement)[]): Array<Babel.ObjectMethod | Babel.ObjectProperty>;
     getValue<T = any>(node: Babel.Node | null): Value<T>;
+    getTypingValue<T = any>(node: Babel.Node): Value<T> | null;
     getIdentifier(node: Babel.Identifier): ScopeEntry | NS | null;
     getReturnType(node: Babel.Node, defaultType?: Type): Type | Type[];
     getScopeValue(key: string): ScopeEntry<any, any, any> | null;

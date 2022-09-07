@@ -53,3 +53,5 @@ jspm_packages
 *.png
 esm/
 sample.js
+src/plugins
+test/plugins

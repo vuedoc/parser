@@ -4,7 +4,7 @@ import { Entry } from '../types/Entry.js';
 import { Feature, DEFAULT_IGNORED_VISIBILITIES, DEFAULT_ENCODING, FeatureEvent } from './lib/Enum.js';
 import { KeywordsUtils } from './utils/KeywordsUtils.js';
 import { PropEntry } from './entity/PropEntry.js';
-import { ParsingOptions, ParsingResult } from '@vuedoc/parser';
+import { ParsingOptions, ParsingResult } from '../types/main.js';
 
 export * from './lib/Enum.js';
 export { Loader } from './lib/Loader.js';

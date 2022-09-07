@@ -19,7 +19,7 @@ import { TypeScriptLoader } from '../loaders/typescript.js';
 
 import { Entry } from '../../types/Entry.js';
 import { File, FileSystem } from '../../types/FileSystem.js';
-import { IndexPlugin } from '@vuedoc/parser';
+import { IndexPlugin } from '../../types/main.js';
 import { Parser } from '../../types/Parser.js';
 
 type AsyncOperation = () => Promise<void>;

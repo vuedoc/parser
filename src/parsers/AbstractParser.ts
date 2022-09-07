@@ -43,6 +43,7 @@ const FUNCTION_EXPRESSIONS = [
   Syntax.FunctionExpression,
   Syntax.ArrowFunctionExpression,
   Syntax.FunctionDeclaration,
+  Syntax.TSDeclareMethod,
   Syntax.TSDeclareFunction,
   Syntax.TSFunctionType,
 ];
@@ -960,80 +961,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     }
   }
 
-  private getCallExpressionComposition(fname: string, options: CompositionValueOptions, result: CompositionValue): CompositionValue {
-    const refScope = this.getScopeValue(fname);
-
-    if (refScope) {
-      if (refScope.value.type === Type.function && result.composition && result.composition?.feature !== Feature.methods) {
-        const tsValue = this.getTSValue(refScope.node.value);
-        const value = generateUndefineValue.next().value;
-
-        if (options.key) {
-          if (typeof tsValue.type === 'object') {
-            value.type = Array.isArray(tsValue.type) ? tsValue.type : tsValue.type[options.key];
-            result.node = tsValue.node[options.key];
-          }
-        } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
-          value.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression) || DTS.parseTsValueType(tsValue);
-
-          if (!Array.isArray(tsValue.node)) {
-            result.node = tsValue.node as Babel.Node;
-          }
-        }
-
-        if (result.ref) {
-          result.ref.type = value.type;
-        } else {
-          result.ref = value;
-          result.tsValue = tsValue;
-          result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
-            || (result.ref.type === Type.unknown ? DTS.parseTsValueType(tsValue) : result.ref.type);
-        }
-      } else if (result.ref) {
-        if (AbstractParser.isFunction(refScope.node.value)) {
-          const returnType = this.getReturnType(refScope.node.value);
-
-          if (options.key) {
-            const ref = this.getScopeValue(options.key);
-
-            if (ref && 'node' in ref) {
-              result.ref = ref.value;
-              result.argument = ref.node.value;
-              result.node = ref.node.comment;
-            } else {
-              const returnNode = this.getReturnNode(refScope.node.value);
-              const returnValue = this.getValue(returnNode);
-
-              if (returnValue.rawObject && options.key in returnValue.rawObject) {
-                result.ref = returnValue.rawObject[options.key];
-                result.argument = returnValue.rawNode[options.key];
-                // result.node = returnValue.rawNode[options.key];
-                // result.tsValue = this.getTSValue(returnNode);
-              }
-            }
-          } else {
-            // result.node = refScope.node.value;
-            // result.tsValue = {
-            //   node: refScope.node.value,
-            //   type: returnType,
-            // };
-          }
-        } else if (refScope.value.type === Type.function) {
-          result.ref.type = this.getReturnType(refScope.node.value);
-        } else if (refScope.value.type !== Type.unknown) {
-          result.ref.type = refScope.value.type;
-        }
-      } else {
-        result.ref = refScope.value;
-        result.tsValue = refScope.tsValue;
-
-        if (refScope.tsValue) {
-          result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
-            || DTS.parseTsValueType(refScope.tsValue);
-        }
-      }
-    }
-
+  private parseCallExpressionCompositionKey(options: CompositionValueOptions, result: CompositionValue) {
     if (options.key) {
       if (result.tsValue) {
         const keyType = typeof result.tsValue.type === 'string'
@@ -1077,6 +1005,73 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           : generateUndefineValue.next().value;
       }
     }
+  }
+
+  private getCallExpressionComposition(fname: string, options: CompositionValueOptions, result: CompositionValue): CompositionValue {
+    const refScope = this.getScopeValue(fname);
+
+    if (refScope) {
+      if (refScope.value.type === Type.function && result.composition && result.composition?.feature !== Feature.methods) {
+        const tsValue = this.getTSValue(refScope.node.value);
+        const value = generateUndefineValue.next().value;
+
+        if (options.key) {
+          if (typeof tsValue.type === 'object') {
+            value.type = Array.isArray(tsValue.type) ? tsValue.type : tsValue.type[options.key];
+            result.node = tsValue.node[options.key];
+          }
+        } else if (options.id.type === Syntax.Identifier || options.id.type === Syntax.ObjectProperty) {
+          value.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression) || DTS.parseTsValueType(tsValue);
+
+          if (!Array.isArray(tsValue.node)) {
+            result.node = tsValue.node as Babel.Node;
+          }
+        }
+
+        if (result.ref) {
+          result.ref.type = value.type;
+        } else {
+          result.ref = value;
+          result.tsValue = tsValue;
+          result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
+            || (result.ref.type === Type.unknown ? DTS.parseTsValueType(tsValue) : result.ref.type);
+        }
+      } else if (result.ref) {
+        if (AbstractParser.isFunction(refScope.node.value)) {
+          if (options.key) {
+            const ref = this.getScopeValue(options.key);
+
+            if (ref && 'node' in ref) {
+              result.ref = ref.value;
+              result.argument = ref.node.value;
+              result.node = ref.node.comment;
+            } else {
+              const returnNode = this.getReturnNode(refScope.node.value);
+              const returnValue = this.getValue(returnNode);
+
+              if (returnValue.rawObject && options.key in returnValue.rawObject) {
+                result.ref = returnValue.rawObject[options.key];
+                result.argument = returnValue.rawNode[options.key];
+              }
+            }
+          }
+        } else if (refScope.value.type === Type.function) {
+          result.ref.type = this.getReturnType(refScope.node.value);
+        } else if (refScope.value.type !== Type.unknown) {
+          result.ref.type = refScope.value.type;
+        }
+      } else {
+        result.ref = refScope.value;
+        result.tsValue = refScope.tsValue;
+
+        if (refScope.tsValue) {
+          result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
+            || DTS.parseTsValueType(refScope.tsValue);
+        }
+      }
+    }
+
+    this.parseCallExpressionCompositionKey(options, result);
 
     if (!result.ref && result.tsValue) {
       result.ref = DTS.parseValue(result.tsValue.type);
@@ -1214,6 +1209,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         type = node.types.map((item) => this.getTSTypeRaw(item));
         break;
 
+      case Syntax.TSDeclareMethod:
       case Syntax.TSDeclareFunction:
         if ('returnType' in node) {
           type = this.getTSTypeRaw(node.returnType, defaultType);
@@ -1239,7 +1235,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
     return type;
   }
 
-  getElementsObject(elements: Array<Babel.TSTypeElement | Babel.ObjectProperty | Babel.ObjectMethod>) {
+  getElementsObjectType(elements: Array<Babel.TSTypeElement | Babel.ObjectProperty | Babel.ObjectMethod>) {
     const ref = {};
 
     for (const item of elements) {
@@ -1272,11 +1268,11 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
 
       case Syntax.ArrayExpression:
-        node.extra.$tsvalue = { node, kind: Type.array, type: Object.values(this.getElementsObject(node.elements as any)) };
+        node.extra.$tsvalue = { node, kind: Type.array, type: Object.values(this.getElementsObjectType(node.elements as any)) };
         break;
 
       case Syntax.ObjectExpression:
-        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObject(node.properties as any) };
+        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObjectType(node.properties as any) };
         break;
 
       case Syntax.ObjectMethod:
@@ -1288,7 +1284,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
 
       case Syntax.TSInterfaceDeclaration:
-        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObject(node.body.body) };
+        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObjectType(node.body.body) };
         break;
 
       case Syntax.TSTypeParameterInstantiation:
@@ -1347,6 +1343,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
       }
 
+      case Syntax.TSDeclareMethod:
       case Syntax.TSDeclareFunction:
         if ('returnType' in node) {
           copyComments(node.returnType, node);
@@ -1636,7 +1633,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   getMemberValue(node: Babel.MemberExpression, key: string) {
     const member = this.getMemberExpression(node);
 
-    if (typeof member.value === 'object' && key in member.value) {
+    if (typeof member.rawObject === 'object' && key in member.rawObject) {
       return member.rawObject[key];
     }
 

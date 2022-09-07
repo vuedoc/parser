@@ -30,6 +30,7 @@
   "exclude": [
     "esm",
     "coverage",
+    "src/plugins",
     "node_modules",
     "**/__mocks__"
   ]

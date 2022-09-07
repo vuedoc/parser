@@ -17,7 +17,7 @@ import { CompositionValueOptions } from './AbstractParser.js';
 import { NameEntry } from '../entity/NameEntry.js';
 import { DescriptionEntry } from '../entity/DescriptionEntry.js';
 import { KeywordsEntry } from '../entity/KeywordsEntry.js';
-import { generateUndefineValue } from '../entity/Value.js';
+import { generateUndefineValue, Value } from '../entity/Value.js';
 import { ImportResolver } from '../../types/ImportResolver.js';
 
 import { TSTypeAliasDeclaration, TSInterfaceDeclaration, TSDeclareFunction, TSEnumDeclaration, ImportDeclaration } from '@babel/types';
@@ -184,6 +184,160 @@ export class ScriptParser<ParseNode = void, Root = never>
     this.scope[ref.key] = ref;
   }
 
+  getElementsObjectValue(elements: Array<Babel.TSTypeElement | Babel.ObjectProperty | Babel.ObjectMethod>) {
+    const ref = new Value(Type.object, {}, '{}');
+
+    for (const item of elements) {
+      const key = this.parseKey(item as any);
+      const tvalue = this.getTypingValue(item);
+
+      ref.value[key] = undefined;
+      ref.rawObject[key] = tvalue;
+      ref.rawNode[key] = item;
+    }
+
+    return ref;
+  }
+
+  getTypingValue<T = any>(node: Babel.Node): Parser.Value<T> | null {
+    if (node.extra.$tvalue) {
+      return node.extra.$tvalue as Parser.Value<T>;
+    }
+
+    switch (node.type) {
+      case Syntax.TSAsExpression:
+      case Syntax.TSTypeAnnotation:
+      case Syntax.TSPropertySignature:
+        node.extra.$tvalue = this.getTypingValue(node.typeAnnotation);
+        break;
+
+      case Syntax.TSTypeParameterInstantiation:
+        if (node.params.length) {
+          node.extra.$tvalue = this.getTypingValue(node.params[0]);
+        }
+        break;
+
+      case Syntax.TSTypeReference:
+        node.extra.$tvalue = this.getTypingValue(node.typeName);
+        break;
+
+      case Syntax.TSTypeParameter:
+        if (node.constraint) {
+          node.extra.$tvalue = this.getTypingValue(node.constraint);
+        } else if (node.default) {
+          node.extra.$tvalue = this.getTypingValue(node.default);
+        }
+        break;
+
+      case Syntax.TSInterfaceDeclaration:
+        node.extra.$tvalue = this.getElementsObjectValue(node.body.body);
+        break;
+
+      case Syntax.TSTypeLiteral:
+        node.extra.$tvalue = this.getElementsObjectValue(node.members);
+        break;
+
+      case Syntax.Identifier: {
+        const ref = this.getScopeValue(node.name);
+
+        node.extra.$tvalue = ref && 'node' in ref
+          ? this.getTypingValue(ref.node.value)
+          : generateUndefineValue.next().value;
+        break;
+      }
+
+      case Syntax.CallExpression:
+        if (node.typeParameters) {
+          node.extra.$tvalue = this.getTypingValue(node.typeParameters);
+        }
+        break;
+
+      case Syntax.ArrayExpression:
+        node.extra.$tvalue = this.getElementsObjectValue(node.elements as any);
+        break;
+
+      case Syntax.ObjectExpression:
+        node.extra.$tvalue = this.getElementsObjectValue(node.properties as any);
+        break;
+    }
+
+    if (!node.extra.$tvalue) {
+      const ref: Parser.Value<any> = generateUndefineValue.next().value;
+
+      switch (node.type) {
+        case Syntax.TSAnyKeyword:
+          ref.type = Type.any;
+          break;
+
+        case Syntax.TSBooleanKeyword:
+          ref.type = Type.boolean;
+          break;
+
+        case Syntax.TSNumberKeyword:
+          ref.type = Type.number;
+          break;
+
+        case Syntax.TSBigIntKeyword:
+          ref.type = Type.bigint;
+          break;
+
+        case Syntax.TSNeverKeyword:
+          ref.type = Type.never;
+          break;
+
+        case Syntax.TSNullKeyword:
+          ref.type = Type.null;
+          ref.value = null;
+          ref.raw = 'null';
+          break;
+
+        case Syntax.TSUndefinedKeyword:
+          ref.type = Type.unknown;
+          break;
+
+        case Syntax.TSStringKeyword:
+          ref.type = Type.string;
+          ref.value = '';
+          ref.raw = '';
+          break;
+
+        case Syntax.TSArrayType:
+          ref.type = Type.array;
+          ref.value = [];
+          ref.raw = '[]';
+          ref.rawNode = [];
+          ref.rawObject = [];
+          break;
+
+        case Syntax.TSMappedType:
+        case Syntax.TSObjectKeyword:
+          ref.type = Type.object;
+          ref.value = {};
+          ref.raw = '{}';
+          ref.rawNode = {};
+          ref.rawObject = {};
+          break;
+
+        case Syntax.TSSymbolKeyword:
+          ref.type = Type.symbol;
+          ref.value = '';
+          ref.raw = '';
+          break;
+
+        case Syntax.TSFunctionType:
+        case Syntax.TSMethodSignature:
+          ref.type = Type.function;
+          ref.value = '';
+          ref.raw = '';
+          break;
+      }
+
+      node.extra.$tvalue = ref;
+    }
+
+    return node.extra.$tvalue as Parser.Value<T>;
+  }
+
   parse(_node: ParseNode) {
     this.transverse(this.source.ast.program.body);
     this.parseAst(this.source.ast.program);
@@ -285,6 +439,7 @@ export class ScriptParser<ParseNode = void, Root = never>
         this.parseTSInterfaceDeclaration(item);
         break;
 
+      case Syntax.TSDeclareMethod:
       case Syntax.TSDeclareFunction:
         this.parseTSDeclareFunction(item);
         break;
@@ -307,10 +462,11 @@ export class ScriptParser<ParseNode = void, Root = never>
     this.setScopeValue(item.id.name, item.body, generateUndefineValue.next().value, { tsValue });
   }
 
-  parseTSDeclareFunction(item: TSDeclareFunction) {
+  parseTSDeclareFunction(item: TSDeclareFunction | Babel.TSDeclareMethod) {
+    const name = 'id' in item ? item.id.name : this.parseKey(item);
     const tsValue = this.getTSValue(item);
 
-    this.setScopeValue(item.id.name, item, generateUndefineValue.next().value, { tsValue });
+    this.setScopeValue(name, item, generateUndefineValue.next().value, { tsValue });
   }
 
   parseTSEnumDeclaration(item: TSEnumDeclaration) {
@@ -496,7 +652,7 @@ export class ScriptParser<ParseNode = void, Root = never>
             this.scope[name] = exposedScopeEntry;
           }
         });
-      } else if (node.type === Syntax.TSDeclareFunction) {
+      } else if (node.type === Syntax.TSDeclareFunction || node.type === Syntax.TSDeclareMethod) {
         const ref = this.getTSValue(node);
 
         if (typeof ref.type === 'object') {
