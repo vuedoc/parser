@@ -21,7 +21,7 @@ import { generateUndefineValue, Value } from '../entity/Value.js';
 import { ImportResolver } from '../../types/ImportResolver.js';
 
 import { TSTypeAliasDeclaration, TSInterfaceDeclaration, TSDeclareFunction, TSEnumDeclaration, ImportDeclaration } from '@babel/types';
-import { Syntax, Properties, Feature, Tag, PropTypesTag, Type } from '../lib/Enum.js';
+import { Syntax, Properties, Feature, Tag, PropTypesTag, Type, CompositionComputedTypes, CompositionFeature } from '../lib/Enum.js';
 import { KeywordsUtils } from '../utils/KeywordsUtils.js';
 import { JSXParser } from './JSXParser.js';
 
@@ -53,6 +53,7 @@ export class ScriptParser<ParseNode = void, Root = never>
   defaultModelPropName = 'value';
   enableNestedEventsParsing: boolean;
   imports: Record<string, Import> = {};
+  missingIdentifierNames: Record<string, Parser.ScopeEntry>;
   createRegister: RegisterFactory;
   file: Readonly<File>;
   parsers: {
@@ -76,6 +77,7 @@ export class ScriptParser<ParseNode = void, Root = never>
     this.file = file;
     this.createRegister = createRegister;
     this.enableNestedEventsParsing = true;
+    this.missingIdentifierNames = {};
     this.parsers = {
       data: new DataParser(this, this.emitter, this.source, this.scope),
       computed: new ComputedParser(this, this.emitter, this.source, this.scope),
@@ -450,23 +452,44 @@ export class ScriptParser<ParseNode = void, Root = never>
     }
   }
 
-  parseTSTypeAliasDeclaration(item: TSTypeAliasDeclaration) {
-    const tsValue = this.getTSValue(item.typeAnnotation);
+  parseTSTypeAliasDeclaration(node: TSTypeAliasDeclaration) {
+    const tsValue = this.getTSValue(node.typeAnnotation);
 
-    this.setScopeValue(item.id.name, item.typeAnnotation, generateUndefineValue.next().value, { tsValue });
+    this.setScopeValue(node.id.name, node.typeAnnotation, generateUndefineValue.next().value, { tsValue });
+    this.parseMissingTypeNameReferences(node.id.name, tsValue);
   }
 
-  parseTSInterfaceDeclaration(item: TSInterfaceDeclaration) {
-    const tsValue = this.getTSValue(item);
+  parseTSInterfaceDeclaration(node: TSInterfaceDeclaration) {
+    const tsValue = this.getTSValue(node);
 
-    this.setScopeValue(item.id.name, item.body, generateUndefineValue.next().value, { tsValue });
+    this.setScopeValue(node.id.name, node.body, generateUndefineValue.next().value, { tsValue });
+    this.parseMissingTypeNameReferences(node.id.name, tsValue);
   }
 
-  parseTSDeclareFunction(item: TSDeclareFunction | Babel.TSDeclareMethod) {
-    const name = 'id' in item ? item.id.name : this.parseKey(item);
-    const tsValue = this.getTSValue(item);
+  parseMissingTypeNameReferences(name: string, tsValue: Parser.AST.TSValue) {
+    if (name in this.missingIdentifierNames) {
+      this.missingIdentifierNames[name].tsValue = tsValue;
+      this.missingIdentifierNames[name].node.value.extra.$tsvalue = tsValue;
 
-    this.setScopeValue(name, item, generateUndefineValue.next().value, { tsValue });
+      delete this.missingIdentifierNames[name];
+    }
+  }
+
+  parseTSDeclareFunction(node: TSDeclareFunction | Babel.TSDeclareMethod) {
+    const name = 'id' in node ? node.id.name : this.parseKey(node);
+    const tsValue = this.getTSValue(node);
+
+    this.setScopeValue(name, node, generateUndefineValue.next().value, { tsValue });
+
+    if (typeof tsValue.type === 'string' && 'type' in tsValue.node && 'typeName' in tsValue.node) {
+      if (tsValue.node.typeName.type === Syntax.Identifier) {
+        const ref = this.getScopeValue(tsValue.node.typeName.name);
+
+        if (!ref) {
+          this.missingIdentifierNames[tsValue.node.typeName.name] = this.getScopeValue(name);
+        }
+      }
+    }
   }
 
   parseTSEnumDeclaration(item: TSEnumDeclaration) {
@@ -662,11 +685,20 @@ export class ScriptParser<ParseNode = void, Root = never>
             }
 
             const type = ref.type[name];
-            const value = DTS.parseValue(type);
+            const typeArg = typeof type === 'string' || type instanceof Array
+              ? type
+              : ('type' in type ? type.type : Type.unknown);
+            const value = DTS.parseValue(typeArg);
             const itemNode = ref.node[name];
             const tsValue = this.getTSValue(itemNode);
             const isFunction = ScriptParser.isTsFunction(itemNode);
             const refNode = isFunction ? tsValue.node : itemNode;
+            const composition: Parser.CompiledComposition | undefined = tsValue.compositionType
+              ? {
+                feature: CompositionComputedTypes.includes(tsValue.compositionType) ? CompositionFeature.computed : CompositionFeature.data,
+                fname: 'undefined',
+              }
+              : undefined;
 
             itemNode.extra.$composition = {
               fname: fname,
@@ -678,6 +710,7 @@ export class ScriptParser<ParseNode = void, Root = never>
               value,
               tsValue,
               function: isFunction,
+              composition,
               computed: itemNode.computed || itemNode.extra.computed,
               node: {
                 value: refNode,

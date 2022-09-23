@@ -17,3 +17,14 @@ declare module '@vuedoc/types' {
     };
   };
 }
+
+declare module '@vuedoc/parser/entity/value' {
+  import { Parser } from './Parser';
+
+  export declare class Value<T> extends Parser.Value<T> {}
+  export declare const generateUndefineValue: Generator<Parser.Value<undefined>, Parser.Value<undefined>, unknown>;
+  export declare const generateNullGenerator: Generator<Parser.Value<null>, Parser.Value<null>, unknown>;
+  export declare const generateAnyGenerator: Generator<Parser.Value<never>, Parser.Value<never>, unknown>;
+  export declare const generateObjectGenerator: Generator<Parser.Value<object>, Parser.Value<object>, unknown>;
+  export declare const generateArrayGenerator: Generator<Parser.Value<any[]>, Parser.Value<any[]>, unknown>;
+}

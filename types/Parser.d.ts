@@ -314,6 +314,7 @@ export namespace Parser {
       type: string | string[] | Record<string, string>;
       kind?: string;
       computed?: boolean;
+      compositionType?: string;
     };
   }
 

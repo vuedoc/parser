@@ -316,7 +316,7 @@ export class CompositionParser extends ScriptParser {
   parseCompositionFeature(fname: string, node, nameToHandle?: string) {
     const { declarator = node.extra.$declarator || node } = this.getLeftSidePart(node, {} as any);
 
-    if (declarator.init?.type === Syntax.CallExpression) {
+    if (declarator.init?.type === Syntax.CallExpression && !(fname in this.scope)) {
       this.parseImportedDeclarator(declarator);
     }
 
@@ -416,7 +416,7 @@ export class CompositionParser extends ScriptParser {
     const ref = this.getScopeValue(key);
     const feature = ref && (ref.function || CompositionParser.isTsFunction(ref.node.value))
       ? CompositionFeature.methods
-      : composition.feature;
+      : ref.composition?.feature || composition.feature;
 
     this.emitScopeEntry(feature, ref);
   }
@@ -436,7 +436,7 @@ export class CompositionParser extends ScriptParser {
     if (ref) {
       const feature = ref.function || CompositionParser.isTsFunction(ref.node.value)
         ? CompositionFeature.methods
-        : composition.feature;
+        : ref.composition?.feature || composition.feature;
 
       this.emitScopeEntry(feature, ref);
     }

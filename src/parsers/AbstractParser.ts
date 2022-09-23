@@ -48,6 +48,13 @@ const FUNCTION_EXPRESSIONS = [
   Syntax.TSFunctionType,
 ];
 
+const TS_FUNCTION_EXPRESSIONS = [
+  Syntax.TSDeclareMethod,
+  Syntax.TSDeclareFunction,
+  Syntax.TSFunctionType,
+  Syntax.TSDeclareFunction,
+];
+
 export function* generateName(prefix: string): Generator<string, string> {
   let index = 0;
 
@@ -100,7 +107,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   }
 
   static isTsFunction(node: Babel.Node) {
-    if (node.type === Syntax.TSFunctionType) {
+    if (TS_FUNCTION_EXPRESSIONS.includes(node.type)) {
       return true;
     }
 
@@ -294,6 +301,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         this.setScopeValue(name, nodeValue, ref, {
           nodeTyping,
           nodeComment,
+          tsValue: decoratorValue.tsValue,
           composition: decoratorValue.composition,
           isFunction: AbstractParser.isFunction(initNode) || AbstractParser.isTsFunction(initNode),
         });
@@ -369,13 +377,13 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           const defaultValue = this.getValue(element.right);
           const memberRef = this.getVariableDeclarationElementIdentifier(index, options, defaultValue);
 
-          this.setScopeValue(name, element, memberRef);
+          this.setScopeValue(name, element, memberRef); 
           break;
         }
 
         case Syntax.ArrayPattern: {
           const tsValue = this.getTSValue(options.init);
-          const node = tsValue.kind === Type.array ? (tsValue.node as Babel.ArrayExpression).elements[index] : {
+          const node = tsValue.kind === Type.array && 'elements' in tsValue.node ? (tsValue.node as Babel.ArrayExpression).elements[index] : {
             type: Syntax.NullLiteral,
           };
 
@@ -489,6 +497,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
                   nodeComment,
                   nodeTyping: element,
                   composition: decoratorValue.composition,
+                  tsValue: decoratorValue.tsValue,
                 });
                 break;
               }
@@ -521,6 +530,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         this.setScopeValue(element.argument.name, element, rest, {
           nodeTyping: element,
           composition: decoratorValue.composition,
+          tsValue: decoratorValue.tsValue,
         });
         break;
       }
@@ -559,7 +569,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       value,
       source,
       tsValue,
-      function: isFunction,
+      function: isFunction || value.function,
       computed: node.computed || node.extra.computed,
       composition,
       node: {
@@ -577,7 +587,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       const ref = this.getScopeValue(key);
 
       if (ref?.composition) {
-        scopeValue.composition = ref.composition;
+        scopeValue.composition = { ...scopeValue.composition, ...ref.composition };
       }
     }
 
@@ -964,7 +974,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   private parseCallExpressionCompositionKey(options: CompositionValueOptions, result: CompositionValue) {
     if (options.key) {
       if (result.tsValue) {
-        const keyType = typeof result.tsValue.type === 'string'
+        const keyType: string | Parser.AST.TSValue = typeof result.tsValue.type === 'string'
           ? result.tsValue.type
           : result.tsValue.type[options.key];
 
@@ -980,7 +990,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           }
         }
 
-        if (typeof result.tsValue.type === Type.object && typeof result.ref.value === 'object') {
+        if (typeof result.tsValue.type === 'object' && typeof result.ref.value === 'object') {
           this.parseRaw(result.ref);
 
           const rawRef = options.key in result.ref.rawObject
@@ -995,7 +1005,13 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           }
         }
 
-        result.ref.type = keyType;
+        if (typeof keyType === 'string' || keyType instanceof Array) {
+          result.ref.type = keyType;
+        } else {
+          result.ref.type = keyType.type as string;
+          result.tsValue = keyType;
+        }
+
         result.node = result.tsValue.node[options.key];
       } else if (result.ref?.type === Type.object) {
         this.parseRaw(result.ref);
@@ -1047,11 +1063,14 @@ export class AbstractParser<Source extends Parser.Source, Root> {
               result.node = ref.node.comment;
             } else {
               const returnNode = this.getReturnNode(refScope.node.value);
-              const returnValue = this.getValue(returnNode);
 
-              if (returnValue.rawObject && options.key in returnValue.rawObject) {
-                result.ref = returnValue.rawObject[options.key];
-                result.argument = returnValue.rawNode[options.key];
+              if (returnNode) {
+                const returnValue = this.getValue(returnNode);
+
+                if (returnValue.rawObject && options.key in returnValue.rawObject) {
+                  result.ref = returnValue.rawObject[options.key];
+                  result.argument = returnValue.rawNode[options.key];
+                }
               }
             }
           }
@@ -1061,12 +1080,12 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           result.ref.type = refScope.value.type;
         }
       } else {
-        result.ref = refScope.value;
+        result.ref = generateUndefineValue.next().value;
         result.tsValue = refScope.tsValue;
 
-        if (refScope.tsValue) {
+        if (result.tsValue) {
           result.ref.type = this.getTypeParameterValue(refScope.node.value, options.init as Babel.CallExpression)
-            || DTS.parseTsValueType(refScope.tsValue);
+            || DTS.parseTsValueType(result.tsValue);
         }
       }
     }
@@ -1077,7 +1096,10 @@ export class AbstractParser<Source extends Parser.Source, Root> {
       result.ref = DTS.parseValue(result.tsValue.type);
     }
 
-    if (result.ref && result.node) {
+    if (result.tsValue && AbstractParser.isTsFunction(result.tsValue.node as Babel.Node)) {
+      result.ref.function = true;
+      result.node = result.tsValue.node as Babel.Node;
+    } else if (result.ref && result.node) {
       result.ref.function = AbstractParser.isFunction(options.init) || AbstractParser.isTsFunction(options.init);
     }
 
@@ -1236,16 +1258,18 @@ export class AbstractParser<Source extends Parser.Source, Root> {
   }
 
   getElementsObjectType(elements: Array<Babel.TSTypeElement | Babel.ObjectProperty | Babel.ObjectMethod>) {
-    const ref = {};
+    const type = {};
+    const node = {};
 
     for (const item of elements) {
       const key = this.parseKey(item as any);
       const tsValue = this.getTSValue(item);
 
-      ref[key] = tsValue;
+      type[key] = tsValue;
+      node[key] = item;
     }
 
-    return ref;
+    return { type, node };
   }
 
   getTSValue(node: Babel.Node, force = false): Parser.AST.TSValue {
@@ -1267,12 +1291,15 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         }
         break;
 
-      case Syntax.ArrayExpression:
-        node.extra.$tsvalue = { node, kind: Type.array, type: Object.values(this.getElementsObjectType(node.elements as any)) };
+      case Syntax.ArrayExpression: {
+        const result = this.getElementsObjectType(node.elements as any);
+
+        node.extra.$tsvalue = { kind: Type.array, type: Object.values(result.type), node };
         break;
+      }
 
       case Syntax.ObjectExpression:
-        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObjectType(node.properties as any) };
+        node.extra.$tsvalue = { kind: Type.object, ...this.getElementsObjectType(node.properties as any), node };
         break;
 
       case Syntax.ObjectMethod:
@@ -1284,7 +1311,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
         break;
 
       case Syntax.TSInterfaceDeclaration:
-        node.extra.$tsvalue = { node, kind: Type.object, type: this.getElementsObjectType(node.body.body) };
+        node.extra.$tsvalue = { kind: Type.object, ...this.getElementsObjectType(node.body.body) };
         break;
 
       case Syntax.TSTypeParameterInstantiation:
@@ -1301,7 +1328,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
             ref.node = ref.node.params[0];
           }
 
-          node.extra.$tsvalue = { ...ref, computed: true };
+          node.extra.$tsvalue = { ...ref, computed: true, compositionType: node.typeName.name };
         } else if (node.typeParameters) {
           const typeName = this.getSourceString(node.typeName);
           const params = node.typeParameters.params.map((param) => this.getInlineSourceString(param));

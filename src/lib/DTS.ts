@@ -99,9 +99,13 @@ export const DTS = {
     const raw = {};
 
     for (const key in tsValue.type) {
-      const type = tsValue.type[key];
+      const type: any = tsValue.type[key];
 
-      raw[key] = Array.isArray(type) ? type.join('|') : type;
+      raw[key] = Array.isArray(type)
+        ? type.join('|')
+        : typeof type === 'string'
+          ? type
+          : typeof type === 'object' && 'type' in type ? type.type : type;
     }
 
     return JSON.stringify(raw);
