@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { Fixture } from '../lib/Fixture.js';
 
 describe('ScriptParser', () => {
   it('dynamic import() function: should successfully parse code with the reserved import keyword', async () => {
@@ -413,8 +414,8 @@ describe('ScriptParser', () => {
     const options = {
       resolver: {
         alias: {
-          '@/': '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
-          './myMixin': '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures/myMixin.js',
+          '@/': Fixture.path,
+          './myMixin': Fixture.resolve('myMixin.js'),
         },
       },
       filecontent: `
@@ -588,7 +589,7 @@ describe('ScriptParser', () => {
   it('mixins defined on an external file', async () => {
     const options = {
       resolver: {
-        basedir: '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
+        basedir: Fixture.path,
       },
       filecontent: `
         <script>
@@ -652,7 +653,7 @@ describe('ScriptParser', () => {
   it('mixins defined on an external SFC file', async () => {
     const options = {
       resolver: {
-        basedir: '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
+        basedir: Fixture.path,
       },
       filecontent: `
         <script>
@@ -716,7 +717,7 @@ describe('ScriptParser', () => {
   it('mixins defined on an external SFC file which containing errors', async () => {
     const options = {
       resolver: {
-        basedir: '/home/demsking/Workspace/projects/vuedoc-parser/test/fixtures',
+        basedir: Fixture.path,
       },
       filecontent: `
         <script>
