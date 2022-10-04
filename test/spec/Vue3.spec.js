@@ -79,7 +79,9 @@ describe('Vue3', () => {
     };
 
     await expect(options).toParseAs({
-      errors: [],
+      errors: [
+        "Cannot find module 'vue-router'. Make sure to define options.resolver",
+      ],
       warnings: [],
       computed: [],
       data: [
@@ -93,7 +95,7 @@ describe('Vue3', () => {
         },
       ],
       props: [],
-    });
+    }, { fakeNodeModulesPaths: [] });
   });
 
   it('defineComponent()', async () => {
