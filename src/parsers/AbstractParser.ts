@@ -377,7 +377,7 @@ export class AbstractParser<Source extends Parser.Source, Root> {
           const defaultValue = this.getValue(element.right);
           const memberRef = this.getVariableDeclarationElementIdentifier(index, options, defaultValue);
 
-          this.setScopeValue(name, element, memberRef); 
+          this.setScopeValue(name, element, memberRef);
           break;
         }
 

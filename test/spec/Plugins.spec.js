@@ -1,8 +1,7 @@
-import { describe, expect, it, test } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { EntryEvent } from '../../src/parsers/VuedocParser.ts';
 import { KeywordsEntry } from '../../src/entity/KeywordsEntry.ts';
 import { Keyword } from '../../src/entity/Keyword.ts';
-// import { createVuexPlugin } from '/home/demsking/Workspace/projects/vuedoc-plugin-vuex/src/index.ts';
 
 describe('Plugins', () => {
   it('plugin without parser modification', async () => {
