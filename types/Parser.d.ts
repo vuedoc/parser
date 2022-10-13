@@ -339,6 +339,11 @@ export namespace Parser {
     constructor();
   }
 
+  class FatalErrorEvent extends Event {
+    readonly error: Error;
+    constructor(err: Error);
+  }
+
   interface EventListener<T extends EntryEvent | MessageEvent> {
     (evt: T): void;
   }
@@ -371,6 +376,12 @@ export namespace Parser {
     addEventListener(
       type: 'end',
       callback: EventListener<EndEvent>,
+      options?: boolean | AddEventListenerOptions
+    ): void;
+
+    addEventListener(
+      type: 'fatal',
+      callback: EventListener<FatalErrorEvent>,
       options?: boolean | AddEventListenerOptions
     ): void;
 

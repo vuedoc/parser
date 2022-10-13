@@ -221,11 +221,7 @@ describe('ScriptParser', () => {
       `,
     };
 
-    await expect(options).toParseAs({
-      errors: [
-        'Unexpected token (2:14)',
-      ],
-    });
+    await expect(options).toParseWithError('Unexpected token (2:14)');
   });
 
   it('parseComment() with disbaled description', async () => {

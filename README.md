@@ -1359,6 +1359,13 @@ interface Parser extends EventTarget {
     callback: EventListener<EndEvent>,
     options?: boolean | AddEventListenerOptions
   ): void;
+  ): void;
+
+  addEventListener(
+    type: 'fatal',
+    callback: EventListener<FatalErrorEvent>,
+    options?: boolean | AddEventListenerOptions
+  ): void;
 }
 
 type EventType = 'computed' | 'data' | 'description' | 'event' | 'inheritAttrs' | 'keyword' | 'method' | 'model' | 'name' | 'prop';

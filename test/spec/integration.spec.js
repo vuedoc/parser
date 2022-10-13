@@ -985,8 +985,8 @@ describe('integration', () => {
       });
     });
 
-    it('should return component syntax warning', async () => {
-      const { warnings } = await parseComponent({
+    it('should return component syntax error', async () => {
+      const { errors } = await parseComponent({
         filecontent: `
           <template>
             <input>
@@ -994,7 +994,7 @@ describe('integration', () => {
         `,
       });
 
-      expect(warnings).toEqual([
+      expect(errors).toEqual([
         'tag <input> has no matching end tag.',
       ]);
     });

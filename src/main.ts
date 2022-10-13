@@ -101,7 +101,7 @@ export function synchronizeParsingResult(parser: VuedocParser, component: Extend
 export async function parseComponent(options: ParsingOptions): Promise<ParsingResult> {
   const resolvedOptions = await parseOptions(options);
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const component: ExtendedParsingResult = {
       name: undefined,
       description: undefined,
@@ -143,8 +143,10 @@ export async function parseComponent(options: ParsingOptions): Promise<ParsingRe
 
     parser.addEventListener<Entry.ModelEntry>('model', handleEventEntry(component.model));
 
+    parser.addEventListener('fatal', (event) => reject(event.error));
+
     parser.addEventListener('end', () => {
-      if ('file' in parser) {
+      if ('file' in parser && (parser as any).file) {
         synchronizeParsingResult(parser as any, component);
       }
 

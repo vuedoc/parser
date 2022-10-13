@@ -11,7 +11,7 @@ import { clear, merge } from '@b613/utils/lib/object.js';
 import { RegisterFactory, ScriptRegisterParser } from './ScriptRegisterParser.js';
 
 import { FS, ParsingError } from '../lib/FS.js';
-import { Loader } from '../lib/Loader.js';
+import { Loader, MissingLoaderError } from '../lib/Loader.js';
 import { VueLoader } from '../loaders/vue.js';
 import { HtmlLoader } from '../loaders/html.js';
 import { JavaScriptLoader } from '../loaders/javascript.js';
@@ -75,6 +75,14 @@ export class MessageEvent extends Event implements Parser.MessageEvent<Parser.Me
 export class EndEvent extends Event implements Parser.EndEvent {
   constructor() {
     super('end', { cancelable: false });
+  }
+}
+
+export class FatalErrorEvent extends Event implements Parser.FatalErrorEvent {
+  readonly error: Error;
+  constructor(err: Error) {
+    super('fatal', { cancelable: false });
+    this.error = err;
   }
 }
 
@@ -264,15 +272,14 @@ export class VuedocParser extends EventTarget implements Parser.Interface {
         this.file = this.fs.loadFile(this.options.filename);
       }
     } catch (err) {
-      if (err instanceof ParsingError) {
-        this.emitWarning(err.message);
-        this.emitEnd();
-      } else {
+      if (err instanceof MissingLoaderError || err instanceof ParsingError) {
         this.emitError(err.message);
         this.emitEnd();
-
-        return;
+      } else {
+        this.dispatchEvent(new FatalErrorEvent(err));
       }
+
+      return;
     }
 
     if (!this.file) {
